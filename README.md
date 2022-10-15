@@ -4,6 +4,8 @@
 
 ### 기획
 
+[캐릭터 조작](./Docs/CharacterManipulation.md)
+
 ## 플레이
 
 ## 환경
