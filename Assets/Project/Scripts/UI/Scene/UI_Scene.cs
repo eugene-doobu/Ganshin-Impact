@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UI_Scene : UI_Base
+namespace GanShin.UI
 {
-	public override void Init()
+	public class UI_Scene : UI_Base
 	{
-		Managers.UI.SetCanvas(gameObject, false);
+		public override void Init()
+		{
+			Managers.UI.SetCanvas(gameObject, false);
+		}
 	}
 }

@@ -1,6 +1,6 @@
 {
     "name": "GanShinAssembly",
-    "rootNamespace": "GanShinAssembly",
+    "rootNamespace": "GanShin",
     "references": [
         "GUID:3cca5c461dda041498226b03f57f48b7",
         "GUID:75469ad4d38634e559750d17036d5f7c"
