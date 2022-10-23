@@ -445,6 +445,12 @@ public partial class @GanshinActions : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""None"",
+            ""id"": ""b8dfc5c9-a7e5-41e4-8391-adb0972b96b7"",
+            ""actions"": [],
+            ""bindings"": []
         }
     ],
     ""controlSchemes"": []
@@ -469,6 +475,8 @@ public partial class @GanshinActions : IInputActionCollection2, IDisposable
         m_PlayerMovement_ShortcutNumber8 = m_PlayerMovement.FindAction("ShortcutNumber8", throwIfNotFound: true);
         m_PlayerMovement_ShortcutNumber9 = m_PlayerMovement.FindAction("ShortcutNumber9", throwIfNotFound: true);
         m_PlayerMovement_ShortcutNumber0 = m_PlayerMovement.FindAction("ShortcutNumber0", throwIfNotFound: true);
+        // None
+        m_None = asset.FindActionMap("None", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -693,6 +701,31 @@ public partial class @GanshinActions : IInputActionCollection2, IDisposable
         }
     }
     public PlayerMovementActions @PlayerMovement => new PlayerMovementActions(this);
+
+    // None
+    private readonly InputActionMap m_None;
+    private INoneActions m_NoneActionsCallbackInterface;
+    public struct NoneActions
+    {
+        private @GanshinActions m_Wrapper;
+        public NoneActions(@GanshinActions wrapper) { m_Wrapper = wrapper; }
+        public InputActionMap Get() { return m_Wrapper.m_None; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(NoneActions set) { return set.Get(); }
+        public void SetCallbacks(INoneActions instance)
+        {
+            if (m_Wrapper.m_NoneActionsCallbackInterface != null)
+            {
+            }
+            m_Wrapper.m_NoneActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+            }
+        }
+    }
+    public NoneActions @None => new NoneActions(this);
     public interface IPlayerMovementActions
     {
         void OnMovement(InputAction.CallbackContext context);
@@ -713,5 +746,8 @@ public partial class @GanshinActions : IInputActionCollection2, IDisposable
         void OnShortcutNumber8(InputAction.CallbackContext context);
         void OnShortcutNumber9(InputAction.CallbackContext context);
         void OnShortcutNumber0(InputAction.CallbackContext context);
+    }
+    public interface INoneActions
+    {
     }
 }

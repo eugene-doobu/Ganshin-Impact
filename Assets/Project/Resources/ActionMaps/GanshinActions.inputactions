@@ -1,5 +1,5 @@
 {
-    "name": "PlayerActions",
+    "name": "GanshinActions",
     "maps": [
         {
             "name": "PlayerMovement",
@@ -423,6 +423,12 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "None",
+            "id": "b8dfc5c9-a7e5-41e4-8391-adb0972b96b7",
+            "actions": [],
+            "bindings": []
         }
     ],
     "controlSchemes": []

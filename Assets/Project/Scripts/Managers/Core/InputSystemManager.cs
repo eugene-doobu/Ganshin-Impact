@@ -8,6 +8,7 @@ namespace GanShin.InputSystem
 {
     public enum eActiomMap
     {
+        NONE,
         PLAYER_MOVEMENT,
     }
     
@@ -23,10 +24,6 @@ namespace GanShin.InputSystem
             _playerActions  = new GanshinActions();
             InitActionMapDict();
             ChangeActionMap(eActiomMap.PLAYER_MOVEMENT);
-
-            _inputActionMap = _playerActions.PlayerMovement;
-            
-            _playerActions.PlayerMovement.Attack.performed += ctx => Debug.Log("Attack");
         }
         
         private void ChangeActionMap(eActiomMap actionMap)
@@ -38,6 +35,7 @@ namespace GanShin.InputSystem
 
         private void InitActionMapDict()
         {
+            _actionMapDict.Add(eActiomMap.NONE, new ActionMapNone(_playerActions.None));
             _actionMapDict.Add(eActiomMap.PLAYER_MOVEMENT, new ActionMapPlayerMove(_playerActions.PlayerMovement));
         }
     }
