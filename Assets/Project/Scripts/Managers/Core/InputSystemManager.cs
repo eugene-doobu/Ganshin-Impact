@@ -13,27 +13,32 @@ namespace GanShin.InputSystem
     
     public class InputSystemManager
     {
+        private readonly Dictionary<eActiomMap, ActionMapBase> _actionMapDict = new ();
+
         private GanshinActions _playerActions;
         private InputActionMap _inputActionMap;
             
         public void Init()
         {
             _playerActions  = new GanshinActions();
-            InitActionMap(eActiomMap.PLAYER_MOVEMENT);
+            InitActionMapDict();
+            ChangeActionMap(eActiomMap.PLAYER_MOVEMENT);
+
+            _inputActionMap = _playerActions.PlayerMovement;
             
             _playerActions.PlayerMovement.Attack.performed += ctx => Debug.Log("Attack");
         }
         
-        private void InitActionMap(eActiomMap actionMap)
+        private void ChangeActionMap(eActiomMap actionMap)
         {
             _inputActionMap?.Disable();
-            switch (actionMap)
-            {
-                case eActiomMap.PLAYER_MOVEMENT:
-                    _inputActionMap = _playerActions.PlayerMovement;
-                    break;
-            }
-            _inputActionMap?.Enable();
+            _inputActionMap = _actionMapDict[actionMap].GetActionMap();
+            _inputActionMap.Enable();
+        }
+
+        private void InitActionMapDict()
+        {
+            _actionMapDict.Add(eActiomMap.PLAYER_MOVEMENT, new ActionMapPlayerMove(_playerActions.PlayerMovement));
         }
     }
 }
