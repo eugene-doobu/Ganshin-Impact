@@ -36,7 +36,8 @@ namespace GanShin
 
         #endregion
     
-    	void Start()
+        // TODO: 씬 오브젝트에 의존하지 않도록 변경 필요
+    	void Awake()
         {
             Init();
     	}

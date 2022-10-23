@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
 
@@ -14,10 +12,15 @@ namespace GanShin.InputSystem
     
     public class InputSystemManager
     {
+        // TODO: AnyKeyInput 추가
+        
         private readonly Dictionary<eActiomMap, ActionMapBase> _actionMapDict = new ();
-
+        
+        
         private GanshinActions _playerActions;
         private InputActionMap _inputActionMap;
+        
+        public ActionMapBase GetActionMap(eActiomMap type) => _actionMapDict[type];
             
         public void Init()
         {
@@ -26,7 +29,7 @@ namespace GanShin.InputSystem
             ChangeActionMap(eActiomMap.PLAYER_MOVEMENT);
         }
         
-        private void ChangeActionMap(eActiomMap actionMap)
+        public void ChangeActionMap(eActiomMap actionMap)
         {
             _inputActionMap?.Disable();
             _inputActionMap = _actionMapDict[actionMap].GetActionMap();
