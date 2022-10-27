@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
@@ -12,21 +13,35 @@ namespace GanShin.InputSystem
     
     public class InputSystemManager
     {
-        // TODO: AnyKeyInput 추가
-        
         private readonly Dictionary<eActiomMap, ActionMapBase> _actionMapDict = new ();
-        
+
+        private Action<InputControl> _onAnyKeyInput;
         
         private GanshinActions _playerActions;
         private InputActionMap _inputActionMap;
         
         public ActionMapBase GetActionMap(eActiomMap type) => _actionMapDict[type];
+        
+        public event Action<InputControl> OnAnyKeyInput
+        {
+            add 
+            {
+                _onAnyKeyInput -= value;
+                _onAnyKeyInput += value;
+            }
+            remove => _onAnyKeyInput -= value;
+        }
             
         public void Init()
         {
             _playerActions  = new GanshinActions();
             InitActionMapDict();
             ChangeActionMap(eActiomMap.PLAYER_MOVEMENT);
+            
+            UnityEngine.InputSystem.InputSystem.onAnyButtonPress.
+                Call(anyKey => _onAnyKeyInput.Invoke(anyKey));
+
+            Managers.Input.OnAnyKeyInput += control => UnityEngine.Debug.Log(control);
         }
         
         public void ChangeActionMap(eActiomMap actionMap)

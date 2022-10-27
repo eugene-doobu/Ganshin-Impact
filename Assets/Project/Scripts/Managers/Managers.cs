@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using GanShin.InputSystem;
+﻿using GanShin.InputSystem;
 using GanShin.UI;
 using GanShin.SceneManagement;
 using GanShin.AssetManagement;
@@ -39,7 +37,6 @@ namespace GanShin
         // TODO: 씬 오브젝트에 의존하지 않도록 변경 필요
     	void Awake()
         {
-            Init();
     	}
     
         void Update()
@@ -48,7 +45,7 @@ namespace GanShin
         }
     
         static void Init()
-        {
+        {   
             if (s_instance == null)
             {
     			GameObject go = GameObject.Find("@Managers");
