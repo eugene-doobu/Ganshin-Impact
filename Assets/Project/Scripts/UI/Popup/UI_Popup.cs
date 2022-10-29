@@ -2,15 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UI_Popup : UI_Base
+namespace GanShin.UI
 {
-    public override void Init()
+    public class UI_Popup : UI_Base
     {
-        Managers.UI.SetCanvas(gameObject, true);
-    }
+        public override void Init()
+        {
+            Managers.UI.SetCanvas(gameObject, true);
+        }
 
-    public virtual void ClosePopupUI()
-    {
-        Managers.UI.ClosePopupUI(this);
+        public virtual void ClosePopupUI()
+        {
+            Managers.UI.ClosePopupUI(this);
+        }
     }
 }
+
