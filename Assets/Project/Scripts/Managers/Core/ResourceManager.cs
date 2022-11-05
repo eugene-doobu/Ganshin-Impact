@@ -28,7 +28,7 @@ namespace GanShin.AssetManagement
             GameObject original = Load<GameObject>($"Prefabs/{path}");
             if (original == null)
             {
-                Debug.Log($"Failed to load prefab : {path}");
+                GanDebugger.Log($"Failed to load prefab : {path}");
                 return null;
             }
     

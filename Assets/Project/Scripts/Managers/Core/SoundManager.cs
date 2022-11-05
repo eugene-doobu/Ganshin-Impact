@@ -93,7 +93,7 @@ namespace GanShin.Sound
 			}
 
 			if (audioClip == null)
-				Debug.Log($"AudioClip Missing ! {path}");
+				GanDebugger.Log($"AudioClip Missing ! {path}");
 
 			return audioClip;
 	    }

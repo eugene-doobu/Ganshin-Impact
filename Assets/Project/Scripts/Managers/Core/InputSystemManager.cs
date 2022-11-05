@@ -40,8 +40,6 @@ namespace GanShin.InputSystem
             
             UnityEngine.InputSystem.InputSystem.onAnyButtonPress.
                 Call(anyKey => _onAnyKeyInput.Invoke(anyKey));
-
-            Managers.Input.OnAnyKeyInput += control => UnityEngine.Debug.Log(control);
         }
         
         public void ChangeActionMap(eActiomMap actionMap)

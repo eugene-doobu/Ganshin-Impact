@@ -102,7 +102,7 @@ namespace GanShin.UI
 
 	        if (_popupStack.Peek() != popup)
 	        {
-	            Debug.Log("Close Popup Failed!");
+	            GanDebugger.Log("Close Popup Failed!");
 	            return;
 	        }
 
