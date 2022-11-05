@@ -25,6 +25,7 @@ namespace GanShin
         private UIManager            _ui            = new();
         private InputSystemManager   _input         = new();
         private VirtualCameraManager _virtualCamera = new();
+        private CameraManager        _camera        = new();
     
         public static DataManager          Data          => Instance._data;
         public static PoolManager          Pool          => Instance._pool;
@@ -33,21 +34,29 @@ namespace GanShin
         public static SoundManager         Sound         => Instance._sound;
         public static UIManager            UI            => Instance._ui;
         public static InputSystemManager   Input         => Instance._input;
+        
+        //TODO: CameraManager에 통합하자
         public static VirtualCameraManager VirtualCamera => Instance._virtualCamera;
+        public static CameraManager        Camera        => Instance._camera;
 
         #endregion
     
         // TODO: 씬 오브젝트에 의존하지 않도록 변경 필요
-    	void Awake()
+        private void Awake()
         {
     	}
     
-        void Update()
+        private void Update()
         {
-    
+	        s_instance._camera?.OnUpdate();
         }
+        
+        private void LateUpdate()
+		{
+			s_instance._camera?.OnLateUpdate();
+		}
     
-        static void Init()
+        private static void Init()
         {   
             if (s_instance == null)
             {
@@ -65,6 +74,7 @@ namespace GanShin
                 s_instance._pool.Init();
                 s_instance._sound.Init();
                 s_instance._input.Init();
+                s_instance._camera.Init();
             }		
     	}
     
