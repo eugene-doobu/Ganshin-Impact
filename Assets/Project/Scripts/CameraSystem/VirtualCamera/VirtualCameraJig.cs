@@ -21,12 +21,12 @@ namespace GanShin.CameraSystem
 
         private void OnEnable()
         {
-            Managers.VirtualCamera.AddVirtualCamera(this);
+            Managers.Camera.AddVirtualCamera(this);
         }
 
         private void OnDisable()
         {
-            Managers.VirtualCamera.RemoveVirtualCamera(this);
+            Managers.Camera.RemoveVirtualCamera(this);
         }
     }
 }

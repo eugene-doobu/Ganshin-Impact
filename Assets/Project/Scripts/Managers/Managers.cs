@@ -24,7 +24,6 @@ namespace GanShin
         private SoundManager         _sound         = new();
         private UIManager            _ui            = new();
         private InputSystemManager   _input         = new();
-        private VirtualCameraManager _virtualCamera = new();
         private CameraManager        _camera        = new();
     
         public static DataManager          Data          => Instance._data;
@@ -34,9 +33,6 @@ namespace GanShin
         public static SoundManager         Sound         => Instance._sound;
         public static UIManager            UI            => Instance._ui;
         public static InputSystemManager   Input         => Instance._input;
-        
-        //TODO: CameraManager에 통합하자
-        public static VirtualCameraManager VirtualCamera => Instance._virtualCamera;
         public static CameraManager        Camera        => Instance._camera;
 
         #endregion

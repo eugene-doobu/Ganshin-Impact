@@ -11,7 +11,9 @@ namespace GanShin.CameraSystem
     
     public class CameraManager
     {
-        private Dictionary<eCameraState, CameraBase> _cameraStates = new();
+        private Dictionary<string, VirtualCameraJig> _virtualCameraDict = new();
+        private Dictionary<eCameraState, CameraBase> _cameraStates      = new();
+        
         private CameraBase _currentCamera;
 
         public void Init()
@@ -42,5 +44,23 @@ namespace GanShin.CameraSystem
             _cameraStates.Add(eCameraState.AVATAR_CAMERA, new AvatarCamera());
             // TODO: InteractionCamera, CinematicCamera 등 추가
         }
+
+        #region VirtualCamera
+
+        public void AddVirtualCamera(VirtualCameraJig jig)
+        {
+            _virtualCameraDict[jig.Name] = jig;
+        }
+        
+        public void RemoveVirtualCamera(VirtualCameraJig jig)
+        {
+            if (!_virtualCameraDict.ContainsKey(jig.Name))
+            {
+                GanDebugger.CameraLogError("RemoveVirtualCamera: jig not found");
+            }
+            _virtualCameraDict.Remove(jig.Name);
+        }
+
+        #endregion VirtualCamera
     }
 }
