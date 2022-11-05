@@ -4,11 +4,11 @@ using GanShin.InputSystem;
 
 namespace GanShin.CameraSystem
 {
-    public class AvatarCamera : CameraBase
+    public class CharacterCamera : CameraBase
     {
         private InputSystemManager _input;
         
-        public AvatarCamera()
+        public CharacterCamera()
         {
             _input = Managers.Input;
         }

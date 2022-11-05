@@ -6,7 +6,8 @@ namespace GanShin.CameraSystem
 {
     public enum eCameraState
     {
-        AVATAR_CAMERA,
+        DEFAULT,
+        CHARACTER_CAMERA,
     }
     
     public class CameraManager
@@ -19,7 +20,7 @@ namespace GanShin.CameraSystem
         public void Init()
         {
             CameraStateDictionaryInit();
-            ChangeCamera(eCameraState.AVATAR_CAMERA);
+            ChangeState(eCameraState.CHARACTER_CAMERA);
         }
 
         public void OnUpdate()
@@ -32,7 +33,7 @@ namespace GanShin.CameraSystem
             _currentCamera?.OnLateUpdate();
         }
         
-        public void ChangeCamera(eCameraState cameraState)
+        public void ChangeState(eCameraState cameraState)
         {
             _currentCamera?.OnDisable();
             _currentCamera = _cameraStates[cameraState];
@@ -41,7 +42,7 @@ namespace GanShin.CameraSystem
         
         private void CameraStateDictionaryInit()
         {
-            _cameraStates.Add(eCameraState.AVATAR_CAMERA, new AvatarCamera());
+            _cameraStates.Add(eCameraState.CHARACTER_CAMERA, new CharacterCamera());
             // TODO: InteractionCamera, CinematicCamera 등 추가
         }
 
