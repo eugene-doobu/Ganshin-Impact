@@ -69,7 +69,7 @@ namespace GanShin.Creature
         {
             if (_input.GetActionMap(eActiomMap.PLAYER_MOVEMENT) is not ActionMapPlayerMove actionMap)
             {
-                Debug.LogError($"[{nameof(Creature)}] actionMap is null!");
+                GanDebugger.LogError(nameof(PlayerController),"actionMap is null!");
                 return;
             }
 
@@ -126,40 +126,34 @@ namespace GanShin.Creature
          
         protected virtual void OnMovement(Vector2 value)
         {
-            Debug.Log($"[{nameof(Creature)}] OnMovement - value: {value}");
             _lastMovementValue = value;
         }
         
         protected virtual void OnDash(bool value)
         {
-            Debug.Log($"[{nameof(Creature)}] OnDash - value: {value}");
+            
         }
         
         protected virtual void OnInteraction(bool value)
         {
-            Debug.Log($"[{nameof(Creature)}] OnInteraction - value: {value}");
         }
         
         protected virtual void OnJump()
         {
-            Debug.Log($"[{nameof(Creature)}] OnJump");
         }
         
         // 공격류: 캐릭터마다 다른 특징을 가지고 있으므로 가상함수로 구현
         
         protected virtual void OnAttack(bool value)
         {               
-            Debug.Log($"[{nameof(Creature)}] OnAttack - value: {value}");
         }
         
         protected virtual void OnBaseSkill(bool value)
         {
-            Debug.Log($"[{nameof(Creature)}] OnBaseSkill - value: {value}");
         }
         
         protected virtual void OnUltimateSkill(bool value)
         {
-            Debug.Log($"[{nameof(Creature)}] OnUltimateSkill - value: {value}");
         }
         
         #endregion ActionEvent
