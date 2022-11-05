@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace GanShin
 {
-    public static class GanDebugger
+    public static partial class GanDebugger
     {
         public static bool IsDebugging = true;
         
