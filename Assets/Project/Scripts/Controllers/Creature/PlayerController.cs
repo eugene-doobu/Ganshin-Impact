@@ -10,8 +10,9 @@ namespace GanShin.Creature
     {
         #region Static
 
-        private static int ANIM_PRAM_HASH_MOVE_FORWARD = UnityEngine.Animator.StringToHash("MoveForward");
-        private static int ANIM_PRAM_HASH_MOVE_RIGHT   = UnityEngine.Animator.StringToHash("MoveRight");
+        private static int ANIM_PRAM_HASH_ISMOVE       = Animator.StringToHash("IsMove");
+        private static int ANIM_PRAM_HASH_MOVE_FORWARD = Animator.StringToHash("MoveForward");
+        private static int ANIM_PRAM_HASH_MOVE_RIGHT   = Animator.StringToHash("MoveRight");
         
         #endregion Static
         
@@ -114,6 +115,7 @@ namespace GanShin.Creature
             _moveForwardAnimValue = Mathf.Lerp(_moveForwardAnimValue, _lastMovementValue.y, _moveAnimSmoothFactor * Time.deltaTime);
             _moveRightAnimValue   = Mathf.Lerp(_moveRightAnimValue, _lastMovementValue.x, _moveAnimSmoothFactor * Time.deltaTime);
             
+            Animator.SetBool(ANIM_PRAM_HASH_ISMOVE, _lastMovementValue != Vector2.zero);
             Animator.SetFloat(ANIM_PRAM_HASH_MOVE_FORWARD, _moveForwardAnimValue);
             Animator.SetFloat(ANIM_PRAM_HASH_MOVE_RIGHT, _moveRightAnimValue);
         }
