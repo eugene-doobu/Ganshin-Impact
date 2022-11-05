@@ -4,20 +4,32 @@ using UnityEngine;
 
 namespace GanShin.Creature
 {
+    // TODO: abstract class로 변환 후 각 캐릭터별로 클래스를 구현해서 사용예정
     [RequireComponent(typeof(CharacterController))]
     public class PlayerController : CreatureController
     {
+        #region Static
+
+        private static int ANIM_PRAM_HASH_MOVE_FORWARD = UnityEngine.Animator.StringToHash("MoveForward");
+        private static int ANIM_PRAM_HASH_MOVE_RIGHT   = UnityEngine.Animator.StringToHash("MoveRight");
+        
+        #endregion Static
+        
         #region Variables
         
         private InputSystemManager  _input;
         private CharacterController _characterController;
         
-        private Camera   _camera; // TODO: CameraManager 활용 예정
+        private Camera _camera; // TODO: CameraManager 활용 예정
 
         private float _jumpTimeoutDelta;
         private float _attackTimeoutDelta;
 
         private Vector2 _lastMovementValue;
+
+        private float _moveAnimSmoothFactor = 4f;
+        private float _moveForwardAnimValue;
+        private float _moveRightAnimValue;
         
         #endregion Variables
         
@@ -88,15 +100,8 @@ namespace GanShin.Creature
 
         protected override void Movement(float moveSpeed)
         {
+            MovementAnimation();
             if (_lastMovementValue == Vector2.zero) return;
-            
-            // if (_hasAnimator && value == Vector2.zero)
-            // {
-            //     _animator.SetBool("IsMove", false);
-            //     return;
-            // }
-            //
-            // _animator.SetBool("IsMove", true);
 
             var direction = new Vector3(_lastMovementValue.x, 0, _lastMovementValue.y);
             _characterController.Move(direction * moveSpeed * Time.deltaTime);
@@ -105,6 +110,12 @@ namespace GanShin.Creature
         private void MovementAnimation()
         {
             if (!HasAnimator) return;
+            
+            _moveForwardAnimValue = Mathf.Lerp(_moveForwardAnimValue, _lastMovementValue.y, _moveAnimSmoothFactor * Time.deltaTime);
+            _moveRightAnimValue   = Mathf.Lerp(_moveRightAnimValue, _lastMovementValue.x, _moveAnimSmoothFactor * Time.deltaTime);
+            
+            Animator.SetFloat(ANIM_PRAM_HASH_MOVE_FORWARD, _moveForwardAnimValue);
+            Animator.SetFloat(ANIM_PRAM_HASH_MOVE_RIGHT, _moveRightAnimValue);
         }
 
         #endregion Movement

@@ -23,8 +23,8 @@ namespace GanShin.Creature
 
         #region TableData // TODO: 별도의 클래스로 분리 후 json 파일로 관리 예정
 
-        private float _moveSpeed   = 6f;
-        private float _rotateSpeed = 5f;
+        private float _moveSpeed   = 4f;
+        private float _rotateSpeed = 2f;
 
         #endregion TableData
         
@@ -32,6 +32,7 @@ namespace GanShin.Creature
         // TODO: MapController의 Init로 변경
         protected virtual void Awake()
         {
+            // Unity Null체크의 비용은 무겁기 때문에 미리 체크한 후 결과를 캐싱하여 사용
             _hasAnimator = TryGetComponent(out _animator);
         }
 
