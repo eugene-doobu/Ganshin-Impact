@@ -3,6 +3,7 @@ using GanShin.UI;
 using GanShin.SceneManagement;
 using GanShin.AssetManagement;
 using GanShin.Sound;
+using GanShin.CameraSystem;
 using UnityEngine;
 
 namespace GanShin
@@ -16,21 +17,23 @@ namespace GanShin
     	#endregion
     
     	#region Core
-    	private DataManager        _data     = new DataManager();
-    	private PoolManager        _pool     = new PoolManager();
-        private ResourceManager    _resource = new ResourceManager();
-        private SceneManagerEx     _scene    = new SceneManagerEx();
-        private SoundManager       _sound    = new SoundManager();
-        private UIManager          _ui       = new UIManager();
-        private InputSystemManager _input    = new InputSystemManager();
+    	private DataManager          _data          = new();
+    	private PoolManager          _pool          = new();
+        private ResourceManager      _resource      = new();
+        private SceneManagerEx       _scene         = new();
+        private SoundManager         _sound         = new();
+        private UIManager            _ui            = new();
+        private InputSystemManager   _input         = new();
+        private VirtualCameraManager _virtualCamera = new();
     
-        public static DataManager        Data     => Instance._data;
-        public static PoolManager        Pool     => Instance._pool;
-        public static ResourceManager    Resource => Instance._resource;
-        public static SceneManagerEx     Scene    => Instance._scene;
-        public static SoundManager       Sound    => Instance._sound;
-        public static UIManager          UI       => Instance._ui;
-        public static InputSystemManager Input    => Instance._input;
+        public static DataManager          Data          => Instance._data;
+        public static PoolManager          Pool          => Instance._pool;
+        public static ResourceManager      Resource      => Instance._resource;
+        public static SceneManagerEx       Scene         => Instance._scene;
+        public static SoundManager         Sound         => Instance._sound;
+        public static UIManager            UI            => Instance._ui;
+        public static InputSystemManager   Input         => Instance._input;
+        public static VirtualCameraManager VirtualCamera => Instance._virtualCamera;
 
         #endregion
     
