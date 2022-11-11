@@ -34,3 +34,8 @@ Look 초기화 동작 중에는 Look 입력을 처리하지 않는다.
 
 마우스 휠 입력을 받아 카메라의 거리를 조절한다
 
+
+
+
+https://github.com/eugene-doobu/Ganshin-Impact/issues/2
+
