@@ -20,9 +20,9 @@ namespace GanShin.Creature
         
         private InputSystemManager  _input;
         private CharacterController _characterController;
-        
-        private Camera _camera; // TODO: CameraManager 활용 예정
 
+        private Transform _tr;
+        
         private float _jumpTimeoutDelta;
         private float _attackTimeoutDelta;
 
@@ -41,10 +41,9 @@ namespace GanShin.Creature
         {
             base.Awake();
             
-            _input       = Managers.Input;
-            _camera      = Camera.main;
-            
+            _input               = Managers.Input;
             _characterController = GetComponent<CharacterController>();
+            _tr                  = GetComponent<Transform>();
 
             AddInputEvent();
         }
@@ -104,8 +103,19 @@ namespace GanShin.Creature
             MovementAnimation();
             if (_lastMovementValue == Vector2.zero) return;
 
-            var direction = new Vector3(_lastMovementValue.x, 0, _lastMovementValue.y);
+            var mainCamera    = Managers.Camera.MainCamera;
+            var cameraForward = Vector3.forward;
+            var cameraRight   = Vector3.right;
+            if (!ReferenceEquals(mainCamera, null))
+            {
+                cameraForward = Vector3.ProjectOnPlane(mainCamera.transform.forward, Vector3.up);
+                cameraRight   = Vector3.Cross(Vector3.up, cameraForward);
+            }
+
+            var direction = cameraForward * _lastMovementValue.y + cameraRight * _lastMovementValue.x;
             _characterController.Move(direction * moveSpeed * Time.deltaTime);
+            
+            _tr.LookAt(cameraForward + _tr.position);
         }
 
         private void MovementAnimation()

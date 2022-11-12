@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
+
+#nullable enable
 
 namespace GanShin.CameraSystem
 {
@@ -15,7 +18,33 @@ namespace GanShin.CameraSystem
         private Dictionary<string, VirtualCameraJig> _virtualCameraDict = new();
         private Dictionary<eCameraState, CameraBase> _cameraStates      = new();
         
-        private CameraBase _currentCamera;
+        private CameraBase? _currentCamera;
+
+        private CinemachineBrain? _mainBrain;
+        private Camera?           _mainCamera;
+        public Camera? MainCamera
+        {
+            set
+            {
+                _mainCamera = value;
+                if (_mainCamera == null)
+                {
+                    _mainBrain = null;
+                    return;
+                }
+                _mainBrain = _mainCamera.gameObject.GetOrAddComponent<CinemachineBrain>();
+            }
+            get
+            {
+                if (ReferenceEquals(_mainCamera, null))
+                {
+                    _mainCamera = Camera.main;
+                    if (_mainCamera == null) return null;
+                    _mainBrain  = _mainCamera.gameObject.GetOrAddComponent<CinemachineBrain>();
+                }
+                return _mainCamera;
+            }
+        }
 
         public void Init()
         {
