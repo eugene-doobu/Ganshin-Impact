@@ -1,66 +1,95 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
+using GanShin.InputSystem;
+using GanShin.UI;
+using GanShin.SceneManagement;
+using GanShin.AssetManagement;
+using GanShin.Sound;
+using GanShin.CameraSystem;
 using UnityEngine;
 
-public class Managers : MonoBehaviour
+namespace GanShin
 {
-    static Managers s_instance; // 유일성이 보장된다
-    static Managers Instance { get { Init(); return s_instance; } } // 유일한 매니저를 갖고온다
-
-	#region Contents
-	#endregion
-
-	#region Core
-	DataManager _data = new DataManager();
-    PoolManager _pool = new PoolManager();
-    ResourceManager _resource = new ResourceManager();
-    SceneManagerEx _scene = new SceneManagerEx();
-    SoundManager _sound = new SoundManager();
-    UIManager _ui = new UIManager();
-
-    public static DataManager Data { get { return Instance._data; } }
-    public static PoolManager Pool { get { return Instance._pool; } }
-    public static ResourceManager Resource { get { return Instance._resource; } }
-    public static SceneManagerEx Scene { get { return Instance._scene; } }
-    public static SoundManager Sound { get { return Instance._sound; } }
-    public static UIManager UI { get { return Instance._ui; } }
-	#endregion
-
-	void Start()
+	public class Managers : MonoBehaviour
     {
-        Init();
-	}
+        static Managers s_instance;
+        static Managers Instance { get { Init(); return s_instance; } }
 
-    void Update()
-    {
+        public static bool InstanceExist { get; private set; } = false;
+    
+    	#region Contents
+    	#endregion
+    
+    	#region Core
+    	private DataManager          _data          = new();
+    	private PoolManager          _pool          = new();
+        private ResourceManager      _resource      = new();
+        private SceneManagerEx       _scene         = new();
+        private SoundManager         _sound         = new();
+        private UIManager            _ui            = new();
+        private InputSystemManager   _input         = new();
+        private CameraManager        _camera        = new();
+    
+        public static DataManager          Data          => Instance._data;
+        public static PoolManager          Pool          => Instance._pool;
+        public static ResourceManager      Resource      => Instance._resource;
+        public static SceneManagerEx       Scene         => Instance._scene;
+        public static SoundManager         Sound         => Instance._sound;
+        public static UIManager            UI            => Instance._ui;
+        public static InputSystemManager   Input         => Instance._input;
+        public static CameraManager        Camera        => Instance._camera;
 
-    }
-
-    static void Init()
-    {
-        if (s_instance == null)
+        #endregion
+    
+        // TODO: 씬 오브젝트에 의존하지 않도록 변경 필요
+        private void Awake()
         {
-			GameObject go = GameObject.Find("@Managers");
-            if (go == null)
+    	}
+    
+        private void Update()
+        {
+	        s_instance._camera?.OnUpdate();
+        }
+        
+        private void LateUpdate()
+		{
+			s_instance._camera?.OnLateUpdate();
+		}
+
+        private void OnDestroy()
+        {
+	        InstanceExist = false;
+        }
+
+        private static void Init()
+        {   
+            if (s_instance == null)
             {
-                go = new GameObject { name = "@Managers" };
-                go.AddComponent<Managers>();
-            }
+    			GameObject go = GameObject.Find("@Managers");
+                if (go == null)
+                {
+                    go = new GameObject { name = "@Managers" };
+                    go.AddComponent<Managers>();
+                }
+    
+                DontDestroyOnLoad(go);
+                s_instance = go.GetComponent<Managers>();
+    
+                s_instance._data.Init();
+                s_instance._pool.Init();
+                s_instance._sound.Init();
+                s_instance._input.Init();
+                s_instance._camera.Init();
 
-            DontDestroyOnLoad(go);
-            s_instance = go.GetComponent<Managers>();
-
-            s_instance._data.Init();
-            s_instance._pool.Init();
-            s_instance._sound.Init();
-        }		
-	}
-
-    public static void Clear()
-    {
-        Sound.Clear();
-        Scene.Clear();
-        UI.Clear();
-        Pool.Clear();
+                InstanceExist = true;
+            }		
+    	}
+    
+        public static void Clear()
+        {
+            Sound.Clear();
+            Scene.Clear();
+            UI.Clear();
+            Pool.Clear();
+        }
     }
 }

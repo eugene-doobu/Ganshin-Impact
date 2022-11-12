@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using GanShin;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -29,7 +30,7 @@ public abstract class UI_Base : MonoBehaviour
 				objects[i] = Util.FindChild<T>(gameObject, names[i], true);
 
 			if (objects[i] == null)
-				Debug.Log($"Failed to bind({names[i]})");
+				GanDebugger.Log($"Failed to bind({names[i]})");
 		}
 	}
 
