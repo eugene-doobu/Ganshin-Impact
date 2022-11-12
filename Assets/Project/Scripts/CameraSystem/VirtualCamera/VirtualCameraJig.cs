@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
 
+#nullable enable
+
 namespace GanShin.CameraSystem
 {
     [RequireComponent(typeof(CinemachineVirtualCamera))]
@@ -11,7 +13,7 @@ namespace GanShin.CameraSystem
     {
         [field:SerializeField] public string Name { get; private set; }
         
-        private CinemachineVirtualCamera _virtualCamera;
+        private CinemachineVirtualCamera? _virtualCamera;
         
         private void Awake()
         {
@@ -21,11 +23,14 @@ namespace GanShin.CameraSystem
 
         private void OnEnable()
         {
+            if (!Managers.InstanceExist) return;
+            if (Managers.Camera == null) return;
             Managers.Camera.AddVirtualCamera(this);
         }
 
         private void OnDisable()
         {
+            if (!Managers.InstanceExist) return;
             Managers.Camera.RemoveVirtualCamera(this);
         }
     }

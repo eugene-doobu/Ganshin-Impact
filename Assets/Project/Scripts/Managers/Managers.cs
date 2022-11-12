@@ -1,4 +1,5 @@
-﻿using GanShin.InputSystem;
+﻿using System;
+using GanShin.InputSystem;
 using GanShin.UI;
 using GanShin.SceneManagement;
 using GanShin.AssetManagement;
@@ -10,8 +11,10 @@ namespace GanShin
 {
 	public class Managers : MonoBehaviour
     {
-        static Managers s_instance; // 유일성이 보장된다
-        static Managers Instance { get { Init(); return s_instance; } } // 유일한 매니저를 갖고온다
+        static Managers s_instance;
+        static Managers Instance { get { Init(); return s_instance; } }
+
+        public static bool InstanceExist { get; private set; } = false;
     
     	#region Contents
     	#endregion
@@ -51,7 +54,12 @@ namespace GanShin
 		{
 			s_instance._camera?.OnLateUpdate();
 		}
-    
+
+        private void OnDestroy()
+        {
+	        InstanceExist = false;
+        }
+
         private static void Init()
         {   
             if (s_instance == null)
@@ -71,6 +79,8 @@ namespace GanShin
                 s_instance._sound.Init();
                 s_instance._input.Init();
                 s_instance._camera.Init();
+
+                InstanceExist = true;
             }		
     	}
     

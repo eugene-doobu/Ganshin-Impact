@@ -32,6 +32,11 @@ namespace GanShin.CameraSystem
         {
             _currentCamera?.OnLateUpdate();
         }
+
+        public void ChangeTarget(Transform transform)
+        {
+            _currentCamera?.ChangeTarget(transform);
+        }
         
         public void ChangeState(eCameraState cameraState)
         {
