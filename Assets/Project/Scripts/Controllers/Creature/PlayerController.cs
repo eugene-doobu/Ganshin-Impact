@@ -31,6 +31,8 @@ namespace GanShin.Creature
         private float _moveAnimSmoothFactor = 4f;
         private float _moveForwardAnimValue;
         private float _moveRightAnimValue;
+
+        private float _rotationSmoothFactor = 8f;
         
         #endregion Variables
         
@@ -112,10 +114,11 @@ namespace GanShin.Creature
                 cameraRight   = Vector3.Cross(Vector3.up, cameraForward);
             }
 
-            var direction = cameraForward * _lastMovementValue.y + cameraRight * _lastMovementValue.x;
+            var direction = (cameraForward * _lastMovementValue.y + cameraRight * _lastMovementValue.x).normalized;
             _characterController.Move(direction * moveSpeed * Time.deltaTime);
-            
-            _tr.LookAt(cameraForward + _tr.position);
+
+            var rotDirection = Vector3.Lerp(_tr.forward, direction, _rotationSmoothFactor * Time.deltaTime);
+            _tr.LookAt(rotDirection + _tr.position);
         }
 
         private void MovementAnimation()
