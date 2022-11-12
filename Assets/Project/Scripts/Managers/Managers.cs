@@ -5,6 +5,7 @@ using GanShin.SceneManagement;
 using GanShin.AssetManagement;
 using GanShin.Sound;
 using GanShin.CameraSystem;
+using GanShin.MapObject;
 using UnityEngine;
 
 namespace GanShin
@@ -20,14 +21,15 @@ namespace GanShin
     	#endregion
     
     	#region Core
-    	private DataManager          _data          = new();
-    	private PoolManager          _pool          = new();
-        private ResourceManager      _resource      = new();
-        private SceneManagerEx       _scene         = new();
-        private SoundManager         _sound         = new();
-        private UIManager            _ui            = new();
-        private InputSystemManager   _input         = new();
-        private CameraManager        _camera        = new();
+    	private DataManager        _data      = new();
+    	private PoolManager        _pool      = new();
+        private ResourceManager    _resource  = new();
+        private SceneManagerEx     _scene     = new();
+        private SoundManager       _sound     = new();
+        private UIManager          _ui        = new();
+        private InputSystemManager _input     = new();
+        private CameraManager      _camera    = new();
+        private MapObjectManager   _mapObject = new();
     
         public static DataManager          Data          => Instance._data;
         public static PoolManager          Pool          => Instance._pool;
@@ -37,6 +39,7 @@ namespace GanShin
         public static UIManager            UI            => Instance._ui;
         public static InputSystemManager   Input         => Instance._input;
         public static CameraManager        Camera        => Instance._camera;
+        public static MapObjectManager     MapObject     => Instance._mapObject;
 
         #endregion
     
@@ -47,6 +50,7 @@ namespace GanShin
     
         private void Update()
         {
+	        s_instance._mapObject?.OnUpdate();
 	        s_instance._camera?.OnUpdate();
         }
         
@@ -78,6 +82,7 @@ namespace GanShin
                 s_instance._pool.Init();
                 s_instance._sound.Init();
                 s_instance._input.Init();
+                s_instance._mapObject.Init();
                 s_instance._camera.Init();
 
                 InstanceExist = true;
@@ -86,10 +91,11 @@ namespace GanShin
     
         public static void Clear()
         {
-            Sound.Clear();
-            Scene.Clear();
-            UI.Clear();
-            Pool.Clear();
+            s_instance._sound.Clear();
+            s_instance._scene.Clear();
+            s_instance._ui.Clear();
+            s_instance._pool.Clear();
+            s_instance._mapObject?.Clear();
         }
     }
 }
