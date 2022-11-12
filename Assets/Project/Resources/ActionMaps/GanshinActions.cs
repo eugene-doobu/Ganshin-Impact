@@ -64,6 +64,15 @@ public partial class @GanshinActions : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""Zoom"",
+                    ""type"": ""Value"",
+                    ""id"": ""de74ed53-5157-4bed-b8d5-25504c1ae1ab"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": ""Normalize(min=-1,max=1)"",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
                     ""name"": ""Jump"",
                     ""type"": ""PassThrough"",
                     ""id"": ""45bfd80f-33d5-4f54-8ab5-5ac39c067e90"",
@@ -443,6 +452,17 @@ public partial class @GanshinActions : IInputActionCollection2, IDisposable
                     ""action"": ""Attack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8bfdc73b-1053-4a85-900a-650b356b4063"",
+                    ""path"": ""<Mouse>/scroll/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Zoom"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -461,6 +481,7 @@ public partial class @GanshinActions : IInputActionCollection2, IDisposable
         m_PlayerMovement_Look = m_PlayerMovement.FindAction("Look", throwIfNotFound: true);
         m_PlayerMovement_Dash = m_PlayerMovement.FindAction("Dash", throwIfNotFound: true);
         m_PlayerMovement_Attack = m_PlayerMovement.FindAction("Attack", throwIfNotFound: true);
+        m_PlayerMovement_Zoom = m_PlayerMovement.FindAction("Zoom", throwIfNotFound: true);
         m_PlayerMovement_Jump = m_PlayerMovement.FindAction("Jump", throwIfNotFound: true);
         m_PlayerMovement_BaseSkill = m_PlayerMovement.FindAction("BaseSkill", throwIfNotFound: true);
         m_PlayerMovement_UltimateSkill = m_PlayerMovement.FindAction("UltimateSkill", throwIfNotFound: true);
@@ -540,6 +561,7 @@ public partial class @GanshinActions : IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerMovement_Look;
     private readonly InputAction m_PlayerMovement_Dash;
     private readonly InputAction m_PlayerMovement_Attack;
+    private readonly InputAction m_PlayerMovement_Zoom;
     private readonly InputAction m_PlayerMovement_Jump;
     private readonly InputAction m_PlayerMovement_BaseSkill;
     private readonly InputAction m_PlayerMovement_UltimateSkill;
@@ -562,6 +584,7 @@ public partial class @GanshinActions : IInputActionCollection2, IDisposable
         public InputAction @Look => m_Wrapper.m_PlayerMovement_Look;
         public InputAction @Dash => m_Wrapper.m_PlayerMovement_Dash;
         public InputAction @Attack => m_Wrapper.m_PlayerMovement_Attack;
+        public InputAction @Zoom => m_Wrapper.m_PlayerMovement_Zoom;
         public InputAction @Jump => m_Wrapper.m_PlayerMovement_Jump;
         public InputAction @BaseSkill => m_Wrapper.m_PlayerMovement_BaseSkill;
         public InputAction @UltimateSkill => m_Wrapper.m_PlayerMovement_UltimateSkill;
@@ -597,6 +620,9 @@ public partial class @GanshinActions : IInputActionCollection2, IDisposable
                 @Attack.started -= m_Wrapper.m_PlayerMovementActionsCallbackInterface.OnAttack;
                 @Attack.performed -= m_Wrapper.m_PlayerMovementActionsCallbackInterface.OnAttack;
                 @Attack.canceled -= m_Wrapper.m_PlayerMovementActionsCallbackInterface.OnAttack;
+                @Zoom.started -= m_Wrapper.m_PlayerMovementActionsCallbackInterface.OnZoom;
+                @Zoom.performed -= m_Wrapper.m_PlayerMovementActionsCallbackInterface.OnZoom;
+                @Zoom.canceled -= m_Wrapper.m_PlayerMovementActionsCallbackInterface.OnZoom;
                 @Jump.started -= m_Wrapper.m_PlayerMovementActionsCallbackInterface.OnJump;
                 @Jump.performed -= m_Wrapper.m_PlayerMovementActionsCallbackInterface.OnJump;
                 @Jump.canceled -= m_Wrapper.m_PlayerMovementActionsCallbackInterface.OnJump;
@@ -655,6 +681,9 @@ public partial class @GanshinActions : IInputActionCollection2, IDisposable
                 @Attack.started += instance.OnAttack;
                 @Attack.performed += instance.OnAttack;
                 @Attack.canceled += instance.OnAttack;
+                @Zoom.started += instance.OnZoom;
+                @Zoom.performed += instance.OnZoom;
+                @Zoom.canceled += instance.OnZoom;
                 @Jump.started += instance.OnJump;
                 @Jump.performed += instance.OnJump;
                 @Jump.canceled += instance.OnJump;
@@ -732,6 +761,7 @@ public partial class @GanshinActions : IInputActionCollection2, IDisposable
         void OnLook(InputAction.CallbackContext context);
         void OnDash(InputAction.CallbackContext context);
         void OnAttack(InputAction.CallbackContext context);
+        void OnZoom(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnBaseSkill(InputAction.CallbackContext context);
         void OnUltimateSkill(InputAction.CallbackContext context);

@@ -39,7 +39,7 @@ namespace GanShin.InputSystem
             ChangeActionMap(eActiomMap.PLAYER_MOVEMENT);
             
             UnityEngine.InputSystem.InputSystem.onAnyButtonPress.
-                Call(anyKey => _onAnyKeyInput.Invoke(anyKey));
+                Call(anyKey => _onAnyKeyInput?.Invoke(anyKey));
         }
         
         public void ChangeActionMap(eActiomMap actionMap)

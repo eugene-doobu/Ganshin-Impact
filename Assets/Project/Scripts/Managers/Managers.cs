@@ -1,50 +1,66 @@
-﻿using GanShin.InputSystem;
+﻿using System;
+using GanShin.InputSystem;
 using GanShin.UI;
 using GanShin.SceneManagement;
 using GanShin.AssetManagement;
 using GanShin.Sound;
+using GanShin.CameraSystem;
 using UnityEngine;
 
 namespace GanShin
 {
 	public class Managers : MonoBehaviour
     {
-        static Managers s_instance; // 유일성이 보장된다
-        static Managers Instance { get { Init(); return s_instance; } } // 유일한 매니저를 갖고온다
+        static Managers s_instance;
+        static Managers Instance { get { Init(); return s_instance; } }
+
+        public static bool InstanceExist { get; private set; } = false;
     
     	#region Contents
     	#endregion
     
     	#region Core
-    	private DataManager        _data     = new DataManager();
-    	private PoolManager        _pool     = new PoolManager();
-        private ResourceManager    _resource = new ResourceManager();
-        private SceneManagerEx     _scene    = new SceneManagerEx();
-        private SoundManager       _sound    = new SoundManager();
-        private UIManager          _ui       = new UIManager();
-        private InputSystemManager _input    = new InputSystemManager();
+    	private DataManager          _data          = new();
+    	private PoolManager          _pool          = new();
+        private ResourceManager      _resource      = new();
+        private SceneManagerEx       _scene         = new();
+        private SoundManager         _sound         = new();
+        private UIManager            _ui            = new();
+        private InputSystemManager   _input         = new();
+        private CameraManager        _camera        = new();
     
-        public static DataManager        Data     => Instance._data;
-        public static PoolManager        Pool     => Instance._pool;
-        public static ResourceManager    Resource => Instance._resource;
-        public static SceneManagerEx     Scene    => Instance._scene;
-        public static SoundManager       Sound    => Instance._sound;
-        public static UIManager          UI       => Instance._ui;
-        public static InputSystemManager Input    => Instance._input;
+        public static DataManager          Data          => Instance._data;
+        public static PoolManager          Pool          => Instance._pool;
+        public static ResourceManager      Resource      => Instance._resource;
+        public static SceneManagerEx       Scene         => Instance._scene;
+        public static SoundManager         Sound         => Instance._sound;
+        public static UIManager            UI            => Instance._ui;
+        public static InputSystemManager   Input         => Instance._input;
+        public static CameraManager        Camera        => Instance._camera;
 
         #endregion
     
         // TODO: 씬 오브젝트에 의존하지 않도록 변경 필요
-    	void Awake()
+        private void Awake()
         {
     	}
     
-        void Update()
+        private void Update()
         {
-    
+	        s_instance._camera?.OnUpdate();
         }
-    
-        static void Init()
+        
+        private void LateUpdate()
+		{
+			s_instance._camera?.OnLateUpdate();
+		}
+
+        private void OnDestroy()
+        {
+	        InstanceExist = false;
+        }
+
+        private static void Init()
         {   
             if (s_instance == null)
             {
@@ -62,6 +78,9 @@ namespace GanShin
                 s_instance._pool.Init();
                 s_instance._sound.Init();
                 s_instance._input.Init();
+                s_instance._camera.Init();
+
+                InstanceExist = true;
             }		
     	}
     
