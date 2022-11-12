@@ -8,6 +8,8 @@ using UnityEngine;
 
 namespace GanShin.CameraSystem
 {
+    // Body : 3rd Person Follow
+    // Aim : Composer
     public class CharacterCamera : CameraBase
     {
         #region Variables
@@ -17,6 +19,9 @@ namespace GanShin.CameraSystem
         private CameraBodyTarget?         _cameraBodyTarget;
         private CinemachineVirtualCamera? _virtualCamera;
 
+        private Cinemachine3rdPersonFollow? _body;
+        private CinemachineComposer?        _aim;
+
         private float _topClamp = 70f;
         private float _bottomClamp = -30f;
 
@@ -25,6 +30,13 @@ namespace GanShin.CameraSystem
         
         private float _lookYawMagnitude = 0.2f;
         private float _lookPitchMagnitude = 0.15f;
+
+        private float _targetZoom       = 2f;
+        private float _zoomSmoothFactor = 4f;
+        private float _zoomMagnitude    = 0.0015f;
+        private float _zoomThreshHold   = 0.1f;
+        private float _zoomMinValue     = 1f;
+        private float _zoomMaxValue     = 4f;
         
         #endregion Variables
 
@@ -63,6 +75,21 @@ namespace GanShin.CameraSystem
                 return;
             }
             
+            _body = _virtualCamera.GetCinemachineComponent<Cinemachine3rdPersonFollow>();
+            if (_body == null)
+            {
+                GanDebugger.CameraLogError("Failed to get body component");
+                return;
+            }
+            _targetZoom = _body.CameraDistance;
+
+            _aim = _virtualCamera.GetCinemachineComponent<CinemachineComposer>();
+            if (_aim == null)
+            {
+                GanDebugger.CameraLogError("Failed to get aim component");
+                return;
+            }
+            
             Object.DontDestroyOnLoad(virtualCameraObj);
             
             GanDebugger.CameraLog("Virtual camera initialized");
@@ -87,6 +114,7 @@ namespace GanShin.CameraSystem
         {
             base.OnLateUpdate();
             CameraRotation();
+            CameraZoom();
         }
         
         public override void OnDisable()
@@ -114,7 +142,7 @@ namespace GanShin.CameraSystem
         
         #endregion CameraBase
 
-        #region RotateCamera
+        #region CameraProcess
 
         private void CameraRotation()
         {
@@ -128,7 +156,14 @@ namespace GanShin.CameraSystem
             _cameraBodyTarget!.SetRotation(targetRotate);
         }
 
-        #endregion RotateCamera
+        private void CameraZoom()
+        {
+            if (_body == null) return;
+            if (_zoomThreshHold < Mathf.Abs(_body.CameraDistance - _targetZoom))
+                _body.CameraDistance = Mathf.Lerp(_body.CameraDistance, _targetZoom, Time.deltaTime * _zoomSmoothFactor);
+        }
+
+        #endregion CameraProcess
         
         #region Input
 
@@ -141,6 +176,7 @@ namespace GanShin.CameraSystem
             }
 
             actionMap.OnLook += OnLook;
+            actionMap.OnZoom += OnZoom;
         }
 
         private void RemoveInputEvent()
@@ -149,6 +185,7 @@ namespace GanShin.CameraSystem
                 return;
 
             actionMap.OnLook -= OnLook;
+            actionMap.OnZoom -= OnZoom;
         }
         
         private void OnLook(Vector2 value)
@@ -161,6 +198,13 @@ namespace GanShin.CameraSystem
             
             _cinemachineTargetYaw   += value.x * _lookYawMagnitude;
             _cinemachineTargetPitch += value.y * _lookPitchMagnitude;
+        }
+
+        private void OnZoom(float value)
+        {
+            value       *= _zoomMagnitude;
+            _targetZoom =  Mathf.Clamp(_targetZoom + value, _zoomMinValue, _zoomMaxValue);
+            Debug.LogWarning(_targetZoom);
         }
 
         #endregion Input

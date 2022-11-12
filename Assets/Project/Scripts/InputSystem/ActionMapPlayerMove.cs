@@ -11,6 +11,7 @@ namespace GanShin.InputSystem
         public Action<bool>    OnDash;
         public Action<bool>    OnAttack;
         public Action          OnJump;
+        public Action<float>   OnZoom;
         public Action<bool>    OnBaseSkill;
         public Action<bool>    OnUltimateSkill;
         public Action<bool>    OnInteraction;
@@ -36,6 +37,8 @@ namespace GanShin.InputSystem
             actionMap.Attack.performed          += OnAttackPerformed;
             actionMap.Attack.canceled           += OnAttackCanceled;
             actionMap.Jump.performed            += OnJumpPerformed;
+            actionMap.Zoom.performed            += OnZoomPerformed;
+            actionMap.Zoom.canceled             += OnZoomCanceled;
             actionMap.BaseSkill.performed       += OnBaseSkillPerformed;
             actionMap.BaseSkill.canceled        += OnBaseSkillCanceled;
             actionMap.UltimateSkill.performed   += OnUltimateSkillPerformed;
@@ -109,6 +112,19 @@ namespace GanShin.InputSystem
         {
             OnJump?.Invoke();
             GanDebugger.InputLog($"OnJump - value: {true}");
+        }
+        
+        private void OnZoomPerformed(InputAction.CallbackContext context)
+        {
+            var value = context.ReadValue<float>();
+            OnZoom?.Invoke(value);
+            GanDebugger.InputLog($"OnZoom - value: {value}");
+        }
+        
+        private void OnZoomCanceled(InputAction.CallbackContext context)
+        {
+            OnZoom?.Invoke(0);
+            GanDebugger.InputLog($"OnZoom - value: 0");
         }
         
         private void OnBaseSkillPerformed(InputAction.CallbackContext context)
