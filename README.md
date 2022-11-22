@@ -25,9 +25,17 @@
 
 ## 사용 에셋
 
+### 아트 리소스
+
 - [POLYGON Dungeon Realms](https://assetstore.unity.com/packages/3d/environments/dungeons/polygon-dungeon-realms-low-poly-3d-art-by-synty-189093)
 - [POLYGON Fantasy Rivals](https://assetstore.unity.com/packages/3d/characters/humanoids/fantasy/polygon-fantasy-rivals-low-poly-3d-art-by-synty-118399)
 - [POLYGON Samurai](https://assetstore.unity.com/packages/3d/environments/polygon-samurai-low-poly-3d-art-by-synty-89551)
 - [Epic Toon FX](https://assetstore.unity.com/packages/vfx/particles/epic-toon-fx-57772)
 - [Ai](https://assetstore.unity.com/packages/3d/characters/humanoids/humans/ai-80561)
 - [Riko](https://assetstore.unity.com/packages/3d/characters/humanoids/fantasy/riko-74357)
+- [Hara Demon](https://assetstore.unity.com/packages/3d/characters/humanoids/fantasy/hara-demon-86283)
+- [Monsters Ultimate Pack 02 Cute Series](https://assetstore.unity.com/packages/3d/characters/creatures/monsters-ultimate-pack-02-cute-series-179083)
+
+### 툴
+
+- [Data Bind for Unity](https://assetstore.unity.com/packages/tools/gui/data-bind-for-unity-28301)
