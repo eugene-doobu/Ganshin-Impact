@@ -37,14 +37,12 @@
 - [JSON .NET For Unity](https://assetstore.unity.com/packages/tools/input-management/json-net-for-unity-11347)
 - [Odin Inspector and Serializer](https://assetstore.unity.com/packages/tools/utilities/odin-inspector-and-serializer-89041)
 - [RiderFlow](https://assetstore.unity.com/packages/tools/level-design/riderflow-218574)
-- [DotWeen](https://assetstore.unity.com/packages/tools/visual-scripting/dotween-pro-32416)
+- [DOTween](https://assetstore.unity.com/packages/tools/visual-scripting/dotween-pro-32416)
 
 
 ### 패키지
 
 - Input System
-- DOTween
 - UniTask
 - Zstring
 - JSON .NET For Unity
-
