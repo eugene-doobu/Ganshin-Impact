@@ -35,8 +35,8 @@
 
 ### 애니메이션 리소스
 
--[Basic Motions](https://assetstore.unity.com/packages/3d/animations/basic-motions-157744)
--[Oriental Sword AnimSet](https://assetstore.unity.com/packages/3d/animations/oriental-sword-animset-71318)
+- [Basic Motions](https://assetstore.unity.com/packages/3d/animations/basic-motions-157744)
+- [Oriental Sword AnimSet](https://assetstore.unity.com/packages/3d/animations/oriental-sword-animset-71318)
 
 ### 기타 아트 리소스
 
@@ -50,7 +50,6 @@
 - [Odin Inspector and Serializer](https://assetstore.unity.com/packages/tools/utilities/odin-inspector-and-serializer-89041)
 - [RiderFlow](https://assetstore.unity.com/packages/tools/level-design/riderflow-218574)
 - [DOTween](https://assetstore.unity.com/packages/tools/visual-scripting/dotween-pro-32416)
-
 
 ### 패키지
 
