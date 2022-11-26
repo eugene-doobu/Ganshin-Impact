@@ -21,11 +21,11 @@
 ### 배경 모델링 리소스
 
 - [POLYGON Dungeon Realms](https://assetstore.unity.com/packages/3d/environments/dungeons/polygon-dungeon-realms-low-poly-3d-art-by-synty-189093)
-- [POLYGON Fantasy Rivals](https://assetstore.unity.com/packages/3d/characters/humanoids/fantasy/polygon-fantasy-rivals-low-poly-3d-art-by-synty-118399)
 - [POLYGON Samurai](https://assetstore.unity.com/packages/3d/environments/polygon-samurai-low-poly-3d-art-by-synty-89551)
 
 ### 캐릭터 모델링 리소스
 
+- [POLYGON Fantasy Rivals](https://assetstore.unity.com/packages/3d/characters/humanoids/fantasy/polygon-fantasy-rivals-low-poly-3d-art-by-synty-118399)
 - [Ai](https://assetstore.unity.com/packages/3d/characters/humanoids/humans/ai-80561)
 - [Riko](https://assetstore.unity.com/packages/3d/characters/humanoids/fantasy/riko-74357)
 - [Hara Demon](https://assetstore.unity.com/packages/3d/characters/humanoids/fantasy/hara-demon-86283)
