@@ -13,7 +13,8 @@
 
 - Unity 2022.1.13f1
 - Universal Render Pipeline
-- Window, il2cpp
+- Color Space: Gamma
+- Window, Mono
 
 ## 사용 에셋 / 패키지
 
