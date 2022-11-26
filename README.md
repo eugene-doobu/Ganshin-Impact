@@ -23,7 +23,7 @@
 - Zstring
 - JSON .NET For Unity
 
-## 사용 에셋
+## 사용 에셋 / 라이브러리 
 
 ### 아트 리소스
 
