@@ -22,15 +22,27 @@ namespace GanShin.Creature
 
         private Transform _tr;
         
-        private float _jumpTimeoutDelta;
-        private float _attackTimeoutDelta;
-
         private Vector2 _lastMovementValue;
 
+        [Header("Movement")]
+        [SerializeField] 
         private float _moveAnimSmoothFactor = 4f;
         private float _moveAnimValue;
 
+        [SerializeField] 
         private float _rotationSmoothFactor = 8f;
+        
+        [Header("Jump")]
+        [SerializeField] 
+        private float _jumpPower    = 5f;
+        [SerializeField] 
+        private float _jumpCooldown = 0.5f;
+        
+        private float _jumpTimer    = 0f;
+        private float _jumpVelocity = 0f;
+        private bool  _desiredJump  = false;
+        [SerializeField]
+        private float _gravity      = -9.8f;
         
         #endregion Variables
         
@@ -51,6 +63,7 @@ namespace GanShin.Creature
         protected override void Update()
         {
             base.Update();
+            Jump();
         }
 
         private void OnDestroy()
@@ -129,6 +142,25 @@ namespace GanShin.Creature
             Animator.SetFloat(ANIM_PRAM_HASH_MOVE_SPEED, _moveAnimValue);
         }
 
+        private void Jump()
+        {
+            _jumpTimer -= Time.deltaTime;
+            _jumpTimer =  Mathf.Clamp(_jumpTimer, -1f, _jumpTimer);
+            
+            var value = _desiredJump;
+            _desiredJump = false;
+            
+            _jumpVelocity += _gravity * Time.deltaTime;
+
+            if (value && _jumpTimer <= 0f)
+            {
+                _jumpVelocity = Mathf.Sqrt(_jumpPower * -_gravity);
+                _jumpTimer    =  _jumpCooldown;
+            }
+            
+            _characterController.Move(Vector3.up * _jumpVelocity * Time.deltaTime);
+        }
+
         #endregion Movement
         
         #region ActionEvent
@@ -151,6 +183,8 @@ namespace GanShin.Creature
         
         protected virtual void OnJump()
         {
+            if (_characterController.isGrounded)
+                _desiredJump = true;
         }
         
         // 공격류: 캐릭터마다 다른 특징을 가지고 있으므로 가상함수로 구현
