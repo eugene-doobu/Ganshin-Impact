@@ -10,9 +10,8 @@ namespace GanShin.Creature
     {
         #region Static
 
-        private static int ANIM_PRAM_HASH_ISMOVE       = Animator.StringToHash("IsMove");
-        private static int ANIM_PRAM_HASH_MOVE_FORWARD = Animator.StringToHash("MoveForward");
-        private static int ANIM_PRAM_HASH_MOVE_RIGHT   = Animator.StringToHash("MoveRight");
+        private static int ANIM_PRAM_HASH_ISMOVE     = Animator.StringToHash("IsMove");
+        private static int ANIM_PRAM_HASH_MOVE_SPEED = Animator.StringToHash("MoveSpeed");
         
         #endregion Static
         
@@ -29,8 +28,7 @@ namespace GanShin.Creature
         private Vector2 _lastMovementValue;
 
         private float _moveAnimSmoothFactor = 4f;
-        private float _moveForwardAnimValue;
-        private float _moveRightAnimValue;
+        private float _moveAnimValue;
 
         private float _rotationSmoothFactor = 8f;
         
@@ -125,12 +123,10 @@ namespace GanShin.Creature
         {
             if (!HasAnimator) return;
             
-            _moveForwardAnimValue = Mathf.Lerp(_moveForwardAnimValue, _lastMovementValue.y, _moveAnimSmoothFactor * Time.deltaTime);
-            _moveRightAnimValue   = Mathf.Lerp(_moveRightAnimValue, _lastMovementValue.x, _moveAnimSmoothFactor * Time.deltaTime);
+            _moveAnimValue = Mathf.Lerp(_moveAnimValue, _lastMovementValue.magnitude, _moveAnimSmoothFactor * Time.deltaTime);
             
             Animator.SetBool(ANIM_PRAM_HASH_ISMOVE, _lastMovementValue != Vector2.zero);
-            Animator.SetFloat(ANIM_PRAM_HASH_MOVE_FORWARD, _moveForwardAnimValue);
-            Animator.SetFloat(ANIM_PRAM_HASH_MOVE_RIGHT, _moveRightAnimValue);
+            Animator.SetFloat(ANIM_PRAM_HASH_MOVE_SPEED, _moveAnimValue);
         }
 
         #endregion Movement
