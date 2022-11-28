@@ -128,8 +128,8 @@ namespace GanShin.Creature
             var direction = (cameraForward * _lastMovementValue.y + cameraRight * _lastMovementValue.x).normalized;
             _characterController.Move(direction * moveSpeed * Time.deltaTime);
 
-            var rotDirection = Vector3.Lerp(_tr.forward, direction, _rotationSmoothFactor * Time.deltaTime);
-            _tr.LookAt(rotDirection + _tr.position);
+            var targetRotation = Quaternion.LookRotation(direction);
+            _tr.rotation = Quaternion.Slerp(_tr.rotation, targetRotation, _rotationSmoothFactor * Time.deltaTime);
         }
 
         private void MovementAnimation()
