@@ -10,13 +10,13 @@ namespace GanShin.Creature
         #region Variables
 
         private bool     _hasAnimator;
-        private Animator _animator;
+        private Animator _objAnimator;
         
         #endregion Variables
 
         #region Properties
 
-        protected Animator Animator => _animator;
+        protected Animator ObjAnimator => _objAnimator;
         protected bool HasAnimator => _hasAnimator;
         
         #endregion Properties
@@ -33,7 +33,7 @@ namespace GanShin.Creature
         protected virtual void Awake()
         {
             // Unity Null체크의 비용은 무겁기 때문에 미리 체크한 후 결과를 캐싱하여 사용
-            _hasAnimator = TryGetComponent(out _animator);
+            _hasAnimator = TryGetComponent(out _objAnimator);
         }
 
         protected virtual void Start()

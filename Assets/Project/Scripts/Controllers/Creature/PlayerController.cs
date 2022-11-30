@@ -12,6 +12,8 @@ namespace GanShin.Creature
 
         private static int ANIM_PRAM_HASH_ISMOVE     = Animator.StringToHash("IsMove");
         private static int ANIM_PRAM_HASH_MOVE_SPEED = Animator.StringToHash("MoveSpeed");
+        private static int ANIM_PRAM_HASH_JUMP_START = Animator.StringToHash("JumpStart");
+        private static int ANIM_PRAM_HASH_IS_GROUND  = Animator.StringToHash("IsGround");
         
         #endregion Static
         
@@ -64,6 +66,7 @@ namespace GanShin.Creature
         {
             base.Update();
             Jump();
+            SetAnimationParamIsGround();
         }
 
         private void OnDestroy()
@@ -113,7 +116,7 @@ namespace GanShin.Creature
 
         protected override void Movement(float moveSpeed)
         {
-            MovementAnimation();
+            PlayMovementAnimation();
             if (_lastMovementValue == Vector2.zero) return;
 
             var mainCamera    = Managers.Camera.MainCamera;
@@ -132,14 +135,14 @@ namespace GanShin.Creature
             _tr.rotation = Quaternion.Slerp(_tr.rotation, targetRotation, _rotationSmoothFactor * Time.deltaTime);
         }
 
-        private void MovementAnimation()
+        private void PlayMovementAnimation()
         {
             if (!HasAnimator) return;
             
             _moveAnimValue = Mathf.Lerp(_moveAnimValue, _lastMovementValue.magnitude, _moveAnimSmoothFactor * Time.deltaTime);
             
-            Animator.SetBool(ANIM_PRAM_HASH_ISMOVE, _lastMovementValue != Vector2.zero);
-            Animator.SetFloat(ANIM_PRAM_HASH_MOVE_SPEED, _moveAnimValue);
+            ObjAnimator.SetBool(ANIM_PRAM_HASH_ISMOVE, _lastMovementValue != Vector2.zero);
+            ObjAnimator.SetFloat(ANIM_PRAM_HASH_MOVE_SPEED, _moveAnimValue);
         }
 
         private void Jump()
@@ -156,9 +159,22 @@ namespace GanShin.Creature
             {
                 _jumpVelocity = Mathf.Sqrt(_jumpPower * -_gravity);
                 _jumpTimer    =  _jumpCooldown;
+                PlayJumpAnimation();
             }
             
             _characterController.Move(Vector3.up * _jumpVelocity * Time.deltaTime);
+        }
+
+        private void PlayJumpAnimation()
+        {
+            if (!HasAnimator) return;
+            ObjAnimator.SetTrigger(ANIM_PRAM_HASH_JUMP_START);
+        }
+
+        private void SetAnimationParamIsGround()
+        {
+            if (!HasAnimator) return;
+            ObjAnimator.SetBool(ANIM_PRAM_HASH_IS_GROUND, _characterController.isGrounded);
         }
 
         #endregion Movement
