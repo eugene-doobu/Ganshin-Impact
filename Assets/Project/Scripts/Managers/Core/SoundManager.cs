@@ -6,7 +6,7 @@ namespace GanShin.Sound
 {
 	public class SoundManager
 	{
-	    AudioSource[] _audioSources = new AudioSource[(int)Define.Sound.MaxCount];
+	    AudioSource[] _audioSources = new AudioSource[(int)Define.eSound.MaxCount];
 	    Dictionary<string, AudioClip> _audioClips = new Dictionary<string, AudioClip>();
 
 	    // MP3 Player   -> AudioSource
@@ -21,7 +21,7 @@ namespace GanShin.Sound
 	            root = new GameObject { name = "@Sound" };
 	            Object.DontDestroyOnLoad(root);
 
-	            string[] soundNames = System.Enum.GetNames(typeof(Define.Sound));
+	            string[] soundNames = System.Enum.GetNames(typeof(Define.eSound));
 	            for (int i = 0; i < soundNames.Length - 1; i++)
 	            {
 	                GameObject go = new GameObject { name = soundNames[i] };
@@ -29,7 +29,7 @@ namespace GanShin.Sound
 	                go.transform.parent = root.transform;
 	            }
 
-	            _audioSources[(int)Define.Sound.Bgm].loop = true;
+	            _audioSources[(int)Define.eSound.Bgm].loop = true;
 	        }
 	    }
 
@@ -43,20 +43,20 @@ namespace GanShin.Sound
 	        _audioClips.Clear();
 	    }
 
-	    public void Play(string path, Define.Sound type = Define.Sound.Effect, float pitch = 1.0f)
+	    public void Play(string path, Define.eSound type = Define.eSound.Effect, float pitch = 1.0f)
 	    {
 	        AudioClip audioClip = GetOrAddAudioClip(path, type);
 	        Play(audioClip, type, pitch);
 	    }
 
-		public void Play(AudioClip audioClip, Define.Sound type = Define.Sound.Effect, float pitch = 1.0f)
+		public void Play(AudioClip audioClip, Define.eSound type = Define.eSound.Effect, float pitch = 1.0f)
 		{
 	        if (audioClip == null)
 	            return;
 
-			if (type == Define.Sound.Bgm)
+			if (type == Define.eSound.Bgm)
 			{
-				AudioSource audioSource = _audioSources[(int)Define.Sound.Bgm];
+				AudioSource audioSource = _audioSources[(int)Define.eSound.Bgm];
 				if (audioSource.isPlaying)
 					audioSource.Stop();
 
@@ -66,20 +66,20 @@ namespace GanShin.Sound
 			}
 			else
 			{
-				AudioSource audioSource = _audioSources[(int)Define.Sound.Effect];
+				AudioSource audioSource = _audioSources[(int)Define.eSound.Effect];
 				audioSource.pitch = pitch;
 				audioSource.PlayOneShot(audioClip);
 			}
 		}
 
-		AudioClip GetOrAddAudioClip(string path, Define.Sound type = Define.Sound.Effect)
+		AudioClip GetOrAddAudioClip(string path, Define.eSound type = Define.eSound.Effect)
 	    {
 			if (path.Contains("Sounds/") == false)
 				path = $"Sounds/{path}";
 
 			AudioClip audioClip = null;
 
-			if (type == Define.Sound.Bgm)
+			if (type == Define.eSound.Bgm)
 			{
 				audioClip = Managers.Resource.Load<AudioClip>(path);
 			}

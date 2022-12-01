@@ -7,7 +7,7 @@ namespace GanShin.SceneManagement
 {
 	public abstract class BaseScene : MonoBehaviour
 	{
-		public Define.Scene SceneType { get; protected set; } = Define.Scene.Unknown;
+		public Define.eScene ESceneType { get; protected set; } = Define.eScene.Unknown;
 
 		void Awake()
 		{
