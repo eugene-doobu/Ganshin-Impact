@@ -15,6 +15,7 @@ namespace GanShin.Director
         private Light _light;
         
         private bool _firstFrameHappened;
+        
         private Color _defaultColor;
         private float _defaultIntensity;
         private float _defaultBounceIntensity;
@@ -27,14 +28,34 @@ namespace GanShin.Director
             
             CheckFirstFrame(light);
             
-            var currentTime = (float)playable.GetTime() / (float)playable.GetDuration();
-            
-            light.color           = _color;
-            light.intensity       = _intensity;
-            light.bounceIntensity = _bounceIntensity;
-            light.range           = _range;
-        }
+            int inputCount = playable.GetInputCount();
 
+            Color blendedColor           = Color.clear;
+            float blendedIntensity       = 0f;
+            float blendedBounceIntensity = 0f;
+            float blendedRange           = 0f;
+            float totalWeight            = 0f;
+
+            for (int i = 0; i < inputCount; i++)
+            {
+                float inputWeight = playable.GetInputWeight(i);
+                ScriptPlayable<LightControlBehaviour> inputPlayable = 
+                    (ScriptPlayable<LightControlBehaviour>)playable.GetInput(i);
+                LightControlBehaviour input = inputPlayable.GetBehaviour();
+            
+                blendedColor           += input._color * inputWeight;
+                blendedIntensity       += input._intensity * inputWeight;
+                blendedBounceIntensity += input._bounceIntensity * inputWeight;
+                blendedRange           += input._range * inputWeight;
+                totalWeight            += inputWeight;
+            }
+
+            light.color           = blendedColor + _defaultColor * (1f - totalWeight);
+            light.intensity       = blendedIntensity + _defaultIntensity * (1f - totalWeight);
+            light.bounceIntensity = blendedBounceIntensity + _defaultBounceIntensity * (1f - totalWeight);
+            light.range           = blendedRange + _defaultRange * (1f - totalWeight);
+        }
+        
         public override void PrepareFrame(Playable playable, FrameData info)
         {
         }
@@ -52,6 +73,17 @@ namespace GanShin.Director
 
         public override void OnBehaviourPause(Playable playable, FrameData info)
         {
+            InitializeData();
+        }
+
+        public override void OnPlayableDestroy(Playable playable)
+        {
+            InitializeData();
+            _light = null;
+        }
+
+        private void InitializeData()
+        {
             _firstFrameHappened = false;
 
             if (_light == null)
@@ -61,11 +93,6 @@ namespace GanShin.Director
             _light.intensity       = _defaultIntensity;
             _light.bounceIntensity = _defaultBounceIntensity;
             _light.range           = _defaultRange;
-        }
-
-        public override void OnPlayableDestroy(Playable playable)
-        {
-            _light = null;
         }
     }
 }

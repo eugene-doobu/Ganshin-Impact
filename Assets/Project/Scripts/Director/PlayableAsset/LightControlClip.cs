@@ -18,7 +18,6 @@ namespace GanShin.Director
         public override Playable CreatePlayable(PlayableGraph graph, GameObject owner)
         {
             var playable  = ScriptPlayable<LightControlBehaviour>.Create(graph, _template);
-            var behaviour = playable.GetBehaviour();
             return playable;
         }
     }

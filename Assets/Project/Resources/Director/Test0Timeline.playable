@@ -177,7 +177,7 @@ MonoBehaviour:
   m_Name: LightControlClip(Clone)(Clone)
   m_EditorClassIdentifier: 
   _template:
-    _color: {r: 0.034380913, g: 1, b: 0, a: 1}
+    _color: {r: 0.035294294, g: 1, b: 0, a: 1}
     _intensity: 1
     _bounceIntensity: 1
     _range: 10
