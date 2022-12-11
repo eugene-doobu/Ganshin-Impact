@@ -13,7 +13,7 @@ namespace GanShin.Director
     {
         public override Playable CreateTrackMixer(PlayableGraph graph, GameObject go, int inputCount)
         {
-            return ScriptPlayable<LightControlBehaviour>.Create (graph, inputCount);
+            return ScriptPlayable<LightControlBehaviour>.Create(graph, inputCount);
         }
     }
 }
