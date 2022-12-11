@@ -55,10 +55,6 @@ namespace GanShin.Director
             light.bounceIntensity = blendedBounceIntensity + _defaultBounceIntensity * (1f - totalWeight);
             light.range           = blendedRange + _defaultRange * (1f - totalWeight);
         }
-        
-        public override void PrepareFrame(Playable playable, FrameData info)
-        {
-        }
 
         private void CheckFirstFrame(Light light)
         {
