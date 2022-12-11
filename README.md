@@ -13,8 +13,7 @@
 
 - Unity 2022.1.13f1
 - Universal Render Pipeline
-- Color Space: Gamma
-- Window, Mono
+- UI - MVVM Architecture
 
 ## 사용 에셋 / 패키지
 
