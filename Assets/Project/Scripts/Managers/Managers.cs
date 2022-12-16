@@ -43,7 +43,7 @@ namespace GanShin
 
         #region UnityEvent
         
-        private void OnInit()
+        private static void OnInit()
         {
 	        s_instance._data.Init();
 	        s_instance._pool.Init();
