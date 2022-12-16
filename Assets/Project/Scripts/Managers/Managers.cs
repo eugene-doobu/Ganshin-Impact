@@ -43,6 +43,9 @@ namespace GanShin
 
         #region UnityEvent
         
+        /// <summary>
+        /// RuntimeInitializeLoadType.BeforeSceneLoad 타이밍에 시작
+        /// </summary>
         private static void OnInit()
         {
 	        s_instance._data.Init();
