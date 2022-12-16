@@ -21,14 +21,14 @@ namespace GanShin
     
     	#region Core
         
-    	private DataManager        _data     = new();
-    	private PoolManager        _pool     = new();
-        private ResourceManager    _resource = new();
-        private SceneManagerEx     _scene    = new();
-        private SoundManager       _sound    = new();
-        private UIManager          _ui       = new();
-        private InputSystemManager _input    = new();
-        private CameraManager      _camera   = new();
+    	private readonly DataManager        _data     = new();
+    	private readonly PoolManager        _pool     = new();
+        private readonly ResourceManager    _resource = new();
+        private readonly SceneManagerEx     _scene    = new();
+        private readonly SoundManager       _sound    = new();
+        private readonly UIManager          _ui       = new();
+        private readonly InputSystemManager _input    = new();
+        private readonly CameraManager      _camera   = new();
     
         public static DataManager        Data     => Instance._data;
         public static PoolManager        Pool     => Instance._pool;
