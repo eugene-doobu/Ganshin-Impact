@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace GanShin.UI
 {
@@ -20,6 +21,17 @@ namespace GanShin.UI
 					root = new GameObject { name = "@UI_Root" };
 	            return root;
 			}
+	    }
+	    
+	    public void Init()
+	    {
+		    Object eventSystem = Object.FindObjectOfType(typeof(EventSystem));
+		    if (ReferenceEquals(eventSystem, null))
+		    {
+			    eventSystem      = Managers.Resource.Instantiate("UI/EventSystem");
+			    eventSystem.name = "@EventSystem";
+		    }
+		    Object.DontDestroyOnLoad(eventSystem);
 	    }
 
 	    public void SetCanvas(GameObject go, bool sort = true)

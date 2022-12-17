@@ -48,6 +48,7 @@ namespace GanShin
         /// </summary>
         private static void OnInit()
         {
+	        s_instance._ui.Init();
 	        s_instance._data.Init();
 	        s_instance._pool.Init();
 	        s_instance._sound.Init();
