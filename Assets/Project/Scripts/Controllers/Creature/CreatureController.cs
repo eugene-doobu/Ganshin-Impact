@@ -24,7 +24,6 @@ namespace GanShin.Creature
         #region TableData // TODO: 별도의 클래스로 분리 후 json 파일로 관리 예정
 
         private float _moveSpeed   = 4f;
-        private float _rotateSpeed = 2f;
 
         #endregion TableData
         

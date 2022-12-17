@@ -9,7 +9,7 @@ namespace GanShin.Director
 {
     public class TimelineDirector : GanshinDirector
     {
-        protected TimelineAsset TimelineAsset { get; set; }
+        protected TimelineAsset? TimelineAsset { get; set; }
         
         protected override void Awake()
         {
