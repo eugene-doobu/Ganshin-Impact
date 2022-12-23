@@ -11,7 +11,7 @@ namespace GanShin.CameraSystem
     [RequireComponent(typeof(CinemachineVirtualCamera))]
     public class VirtualCameraJig : MonoBehaviour
     {
-        [field:SerializeField] public string Name { get; private set; }
+        [field:SerializeField] public string Name { get; private set; } = String.Empty;
         
         private CinemachineVirtualCamera? _virtualCamera;
         
