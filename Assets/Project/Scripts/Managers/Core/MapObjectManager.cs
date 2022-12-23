@@ -67,7 +67,6 @@ namespace GanShin.MapObject
             return null;
         }
         
-        
         public CreatureObject? GetCreatureObject(long id)
         {
             if(_creatureObjects.ContainsKey(id))
