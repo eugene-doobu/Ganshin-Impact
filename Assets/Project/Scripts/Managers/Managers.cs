@@ -5,6 +5,7 @@ using GanShin.SceneManagement;
 using GanShin.AssetManagement;
 using GanShin.Sound;
 using GanShin.CameraSystem;
+using GanShin.MapObject;
 using UnityEngine;
 
 namespace GanShin
@@ -21,14 +22,15 @@ namespace GanShin
     
     	#region Core
         
-    	private readonly DataManager        _data     = new();
-    	private readonly PoolManager        _pool     = new();
-        private readonly ResourceManager    _resource = new();
-        private readonly SceneManagerEx     _scene    = new();
-        private readonly SoundManager       _sound    = new();
-        private readonly UIManager          _ui       = new();
-        private readonly InputSystemManager _input    = new();
-        private readonly CameraManager      _camera   = new();
+    	private readonly DataManager        _data      = new();
+    	private readonly PoolManager        _pool      = new();
+        private readonly ResourceManager    _resource  = new();
+        private readonly SceneManagerEx     _scene     = new();
+        private readonly SoundManager       _sound     = new();
+        private readonly UIManager          _ui        = new();
+        private readonly InputSystemManager _input     = new();
+        private readonly CameraManager      _camera    = new();
+        private readonly MapObjectManager   _mapObject = new();
     
         public static DataManager        Data     => Instance._data;
         public static PoolManager        Pool     => Instance._pool;
@@ -38,6 +40,7 @@ namespace GanShin
         public static UIManager          UI       => Instance._ui;
         public static InputSystemManager Input    => Instance._input;
         public static CameraManager      Camera   => Instance._camera;
+        public static MapObjectManager   MapObject => Instance._mapObject;
 
         #endregion
 
