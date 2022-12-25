@@ -1,0 +1,16 @@
+{
+    "name": "GanShinEditorAssembly",
+    "rootNamespace": "GanShinEditorAssembly",
+    "references": [
+        "GUID:a2b942295dee3ab47b594262a47f233e"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using GanShin.Utils;
 using UnityEngine;
 
 #nullable enable
@@ -9,8 +10,7 @@ namespace GanShin.CameraSystem
 {
     public class CameraBodyTarget : MonoBehaviour
     {
-        // TODO: Apply Readonly Attribute
-        [SerializeField] private Transform? _target;
+        [ReadOnly] [SerializeField] private Transform? _target;
         
         [SerializeField] private float _tracingTargetSmoothFactor = 6f;
         [SerializeField] private float _rotationSmoothFactor = 6f;
