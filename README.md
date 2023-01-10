@@ -14,6 +14,8 @@
 - Unity 2022.1.13f1
 - Universal Render Pipeline
 - UI - MVVM Architecture
+- UniTask기반 비동기 처리
+- Zenject
 
 ## 사용 에셋 / 패키지
 
@@ -56,3 +58,4 @@
 - UniTask
 - Zstring
 - JSON .NET For Unity
+- Zenject
