@@ -9,10 +9,13 @@ namespace GanShin.SceneManagement
     {
         public BaseScene CurrentScene { get { return GameObject.FindObjectOfType<BaseScene>(); } }
 
+        public SceneManagerEx()
+        {
+            SceneManager.sceneUnloaded += OnSceneUnLoaded;
+        }
+        
         public void LoadScene(Define.Scene type)
         {
-            Managers.Clear();
-
             SceneManager.LoadScene(GetSceneName(type));
         }
 
@@ -22,7 +25,7 @@ namespace GanShin.SceneManagement
             return name;
         }
 
-        public void Clear()
+        private void OnSceneUnLoaded(Scene scene)
         {
             CurrentScene.Clear();
         }

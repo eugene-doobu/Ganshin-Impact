@@ -1,6 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace GanShin.AssetManagement
 {
@@ -73,6 +73,8 @@ namespace GanShin.AssetManagement
         {
             _root = new GameObject { name = "@Pool_Root" }.transform;
             Object.DontDestroyOnLoad(_root);
+
+            SceneManager.sceneUnloaded += OnSceneUnLoaded;
         }
 
         public void CreatePool(GameObject original, int count = 5)
@@ -111,10 +113,10 @@ namespace GanShin.AssetManagement
             return _pool[name].Original;
         }
 
-        public void Clear()
+        private void OnSceneUnLoaded(Scene scene)
         {
             foreach (Transform child in _root)
-                GameObject.Destroy(child.gameObject);
+                Object.Destroy(child.gameObject);
 
             _pool.Clear();
         }

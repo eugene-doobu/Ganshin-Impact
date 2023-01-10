@@ -14,7 +14,7 @@ namespace GanShin.CameraSystem
         CHARACTER_CAMERA,
     }
     
-    public class CameraManager
+    public class CameraManager : ITickable, ILateTickable
     {
         private Dictionary<string, VirtualCameraJig> _virtualCameraDict = new();
         private Dictionary<eCameraState, CameraBase> _cameraStates      = new();
@@ -52,13 +52,14 @@ namespace GanShin.CameraSystem
             CameraStateDictionaryInit();
             ChangeState(eCameraState.CHARACTER_CAMERA);
         }
-
-        public void OnUpdate()
+        
+        public void Tick()
         {
             _currentCamera?.OnUpdate();
         }
+        
 
-        public void OnLateUpdate()
+        public void LateTick()
         {
             _currentCamera?.OnLateUpdate();
         }

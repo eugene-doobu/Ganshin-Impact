@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace GanShin.Sound
 {
@@ -31,9 +32,11 @@ namespace GanShin.Sound
 
 			    _audioSources[(int)Define.Sound.Bgm].loop = true;
 		    }
+
+		    SceneManager.sceneUnloaded += OnSceneUnLoaded;
 	    }
 
-	    public void Clear()
+	    private void OnSceneUnLoaded(Scene scene)
 	    {
 	        foreach (AudioSource audioSource in _audioSources)
 	        {

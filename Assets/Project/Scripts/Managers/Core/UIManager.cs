@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 namespace GanShin.UI
 {
@@ -21,6 +22,7 @@ namespace GanShin.UI
 			    eventSystem.name = "@EventSystem";
 		    }
 		    Object.DontDestroyOnLoad(eventSystem);
+		    SceneManager.sceneUnloaded += OnSceneUnLoaded;
 	    }
 
 	    public GameObject Root
@@ -138,7 +140,7 @@ namespace GanShin.UI
 	            ClosePopupUI();
 	    }
 
-	    public void Clear()
+	    private void OnSceneUnLoaded(Scene scene)
 	    {
 	        CloseAllPopupUI();
 	        _sceneUI = null;

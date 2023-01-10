@@ -45,33 +45,6 @@ namespace GanShin
         #endregion
 
         #region UnityEvent
-        
-        private void Awake()
-        {
-        }
-
-        private void Start()
-        {
-	        
-        }
-    
-        private void Update()
-        {
-	        s_instance._camera?.OnUpdate();
-        }
-        
-        private void LateUpdate()
-        {
-	        s_instance._camera?.OnLateUpdate();
-        }
-    
-        public static void Clear()
-        {
-	        Sound.Clear();
-	        Scene.Clear();
-	        UI.Clear();
-	        Pool.Clear();
-        }
 
         private void OnDestroy()
         {
