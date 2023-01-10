@@ -1,6 +1,8 @@
 using System;
+using GanShin.CameraSystem;
 using GanShin.InputSystem;
 using UnityEngine;
+using Zenject;
 
 namespace GanShin.Creature
 {
@@ -18,7 +20,9 @@ namespace GanShin.Creature
         
         #region Variables
         
-        private InputSystemManager  _input;
+        [Inject] private InputSystemManager _input;
+        [Inject] private CameraManager      _camera;
+        
         private CharacterController _characterController;
 
         private Transform _tr;
@@ -41,7 +45,6 @@ namespace GanShin.Creature
         {
             base.Awake();
             
-            _input               = Managers.Input;
             _characterController = GetComponent<CharacterController>();
             _tr                  = GetComponent<Transform>();
 
@@ -103,7 +106,7 @@ namespace GanShin.Creature
             MovementAnimation();
             if (_lastMovementValue == Vector2.zero) return;
 
-            var mainCamera    = Managers.Camera.MainCamera;
+            var mainCamera    = _camera.MainCamera;
             var cameraForward = Vector3.forward;
             var cameraRight   = Vector3.right;
             if (!ReferenceEquals(mainCamera, null))

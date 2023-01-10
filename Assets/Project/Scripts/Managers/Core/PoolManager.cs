@@ -1,14 +1,20 @@
 ﻿using System.Collections.Generic;
+using GanShin.SceneManagement;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Zenject;
 
 namespace GanShin.AssetManagement
 {
+    [UsedImplicitly]
     public class PoolManager
     {
 	    #region Pool
 	    class Pool
         {
+            [Inject] private SceneManagerEx _scene;
+        
             public GameObject Original { get; private set; }
             public Transform Root { get; set; }
 
@@ -56,7 +62,7 @@ namespace GanShin.AssetManagement
 
                 // DontDestroyOnLoad 해제 용도
                 if (parent == null)
-                    poolable.transform.parent = Managers.Scene.CurrentScene.transform;
+                    poolable.transform.parent = _scene.CurrentScene.transform;
 
                 poolable.transform.parent = parent;
                 poolable.IsUsing = true;

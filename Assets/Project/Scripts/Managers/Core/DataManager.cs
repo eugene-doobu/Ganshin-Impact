@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine;
+using Zenject;
 
 namespace GanShin.AssetManagement
 {
@@ -10,8 +12,11 @@ namespace GanShin.AssetManagement
         Dictionary<Key, Value> MakeDict();
     }
 
+    [UsedImplicitly]
     public class DataManager
     {
+        [Inject] private ResourceManager _resource;
+        
         //public Dictionary<int, Data.Stat> StatDict { get; private set; } = new Dictionary<int, Data.Stat>();
 
         public DataManager()
@@ -21,7 +26,7 @@ namespace GanShin.AssetManagement
 
         Loader LoadJson<Loader, Key, Value>(string path) where Loader : ILoader<Key, Value>
         {
-            TextAsset textAsset = Managers.Resource.Load<TextAsset>($"Data/{path}");
+            TextAsset textAsset = _resource.Load<TextAsset>($"Data/{path}");
             return JsonUtility.FromJson<Loader>(textAsset.text);
         }
     }

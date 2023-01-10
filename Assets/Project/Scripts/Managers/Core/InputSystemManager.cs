@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
 
@@ -11,6 +12,7 @@ namespace GanShin.InputSystem
         PLAYER_MOVEMENT,
     }
     
+    [UsedImplicitly]
     public class InputSystemManager
     {
         private readonly Dictionary<eActiomMap, ActionMapBase> _actionMapDict = new ();

@@ -1,6 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
+using JetBrains.Annotations;
 using UnityEngine;
 using Zenject;
 
@@ -14,7 +14,8 @@ namespace GanShin.CameraSystem
         CHARACTER_CAMERA,
     }
     
-    public class CameraManager : ITickable, ILateTickable
+    [UsedImplicitly]
+    public class CameraManager : IInitializable, ITickable, ILateTickable
     {
         private Dictionary<string, VirtualCameraJig> _virtualCameraDict = new();
         private Dictionary<eCameraState, CameraBase> _cameraStates      = new();
@@ -50,6 +51,10 @@ namespace GanShin.CameraSystem
         public CameraManager()
         {
             CameraStateDictionaryInit();
+        }
+        
+        public void Initialize()
+        {
             ChangeState(eCameraState.CHARACTER_CAMERA);
         }
         
@@ -58,7 +63,6 @@ namespace GanShin.CameraSystem
             _currentCamera?.OnUpdate();
         }
         
-
         public void LateTick()
         {
             _currentCamera?.OnLateUpdate();

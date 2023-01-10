@@ -1,12 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using GanShin.AssetManagement;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Zenject;
 
 namespace GanShin.Sound
 {
+	[UsedImplicitly]
 	public class SoundManager
 	{
+		[Inject] private ResourceManager _resource;
+		
 	    AudioSource[] _audioSources = new AudioSource[(int)Define.Sound.MaxCount];
 	    Dictionary<string, AudioClip> _audioClips = new Dictionary<string, AudioClip>();
 
@@ -84,13 +90,13 @@ namespace GanShin.Sound
 
 			if (type == Define.Sound.Bgm)
 			{
-				audioClip = Managers.Resource.Load<AudioClip>(path);
+				audioClip = _resource.Load<AudioClip>(path);
 			}
 			else
 			{
 				if (_audioClips.TryGetValue(path, out audioClip) == false)
 				{
-					audioClip = Managers.Resource.Load<AudioClip>(path);
+					audioClip = _resource.Load<AudioClip>(path);
 					_audioClips.Add(path, audioClip);
 				}
 			}

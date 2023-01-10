@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace GanShin.SceneManagement
 {
+    [UsedImplicitly]
     public class SceneManagerEx
     {
         public BaseScene CurrentScene { get { return GameObject.FindObjectOfType<BaseScene>(); } }

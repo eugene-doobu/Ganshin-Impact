@@ -1,39 +1,48 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using GanShin.AssetManagement;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using Zenject;
 
 namespace GanShin.UI
 {
-    public class UIManager
-	{
+	[UsedImplicitly]
+    public class UIManager : IInitializable
+    {
+	    [Inject] private ResourceManager _resource;
+		
 	    int _order = 10;
 
 	    Stack<UI_Popup> _popupStack = new Stack<UI_Popup>();
 	    UI_Scene _sceneUI = null;
 
+	    public GameObject Root
+	    {
+		    get
+		    {
+			    GameObject root = GameObject.Find("@UI_Root");
+			    if (root == null)
+				    root = new GameObject { name = "@UI_Root" };
+			    return root;
+		    }
+	    }
+
 	    public UIManager()
+	    {
+		    SceneManager.sceneUnloaded += OnSceneUnLoaded;
+	    }
+
+	    public void Initialize()
 	    {
 		    Object eventSystem = Object.FindObjectOfType(typeof(EventSystem));
 		    if (ReferenceEquals(eventSystem, null))
 		    {
-			    eventSystem      = Managers.Resource.Instantiate("UI/EventSystem");
+			    eventSystem      = _resource.Instantiate("UI/EventSystem");
 			    eventSystem.name = "@EventSystem";
 		    }
 		    Object.DontDestroyOnLoad(eventSystem);
-		    SceneManager.sceneUnloaded += OnSceneUnLoaded;
-	    }
-
-	    public GameObject Root
-	    {
-	        get
-	        {
-				GameObject root = GameObject.Find("@UI_Root");
-				if (root == null)
-					root = new GameObject { name = "@UI_Root" };
-	            return root;
-			}
 	    }
 
 	    public void SetCanvas(GameObject go, bool sort = true)
@@ -58,7 +67,7 @@ namespace GanShin.UI
 			if (string.IsNullOrEmpty(name))
 				name = typeof(T).Name;
 
-			GameObject go = Managers.Resource.Instantiate($"UI/WorldSpace/{name}");
+			GameObject go = _resource.Instantiate($"UI/WorldSpace/{name}");
 			if (parent != null)
 				go.transform.SetParent(parent);
 
@@ -74,7 +83,7 @@ namespace GanShin.UI
 			if (string.IsNullOrEmpty(name))
 				name = typeof(T).Name;
 
-			GameObject go = Managers.Resource.Instantiate($"UI/SubItem/{name}");
+			GameObject go = _resource.Instantiate($"UI/SubItem/{name}");
 			if (parent != null)
 				go.transform.SetParent(parent);
 
@@ -86,8 +95,8 @@ namespace GanShin.UI
 			if (string.IsNullOrEmpty(name))
 				name = typeof(T).Name;
 
-			GameObject go = Managers.Resource.Instantiate($"UI/Scene/{name}");
-			T sceneUI = Util.GetOrAddComponent<T>(go);
+			GameObject go      = _resource.Instantiate($"UI/Scene/{name}");
+			T          sceneUI = Util.GetOrAddComponent<T>(go);
 	        _sceneUI = sceneUI;
 
 			go.transform.SetParent(Root.transform);
@@ -100,8 +109,8 @@ namespace GanShin.UI
 	        if (string.IsNullOrEmpty(name))
 	            name = typeof(T).Name;
 
-	        GameObject go = Managers.Resource.Instantiate($"UI/Popup/{name}");
-	        T popup = Util.GetOrAddComponent<T>(go);
+	        GameObject go    = _resource.Instantiate($"UI/Popup/{name}");
+	        T          popup = Util.GetOrAddComponent<T>(go);
 	        _popupStack.Push(popup);
 
 	        go.transform.SetParent(Root.transform);
@@ -129,7 +138,7 @@ namespace GanShin.UI
 	            return;
 
 	        UI_Popup popup = _popupStack.Pop();
-	        Managers.Resource.Destroy(popup.gameObject);
+	        _resource.Destroy(popup.gameObject);
 	        popup = null;
 	        _order--;
 	    }
@@ -145,5 +154,5 @@ namespace GanShin.UI
 	        CloseAllPopupUI();
 	        _sceneUI = null;
 	    }
-	}
+    }
 }
