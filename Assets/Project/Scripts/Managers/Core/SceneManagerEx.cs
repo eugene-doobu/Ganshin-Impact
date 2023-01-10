@@ -1,18 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace GanShin.SceneManagement
 {
+    [UsedImplicitly]
     public class SceneManagerEx
     {
         public BaseScene CurrentScene { get { return GameObject.FindObjectOfType<BaseScene>(); } }
 
+        public SceneManagerEx()
+        {
+            SceneManager.sceneUnloaded += OnSceneUnLoaded;
+        }
+        
         public void LoadScene(Define.Scene type)
         {
-            Managers.Clear();
-
             SceneManager.LoadScene(GetSceneName(type));
         }
 
@@ -22,7 +27,7 @@ namespace GanShin.SceneManagement
             return name;
         }
 
-        public void Clear()
+        private void OnSceneUnLoaded(Scene scene)
         {
             CurrentScene.Clear();
         }

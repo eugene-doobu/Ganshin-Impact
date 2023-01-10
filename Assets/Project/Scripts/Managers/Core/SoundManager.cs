@@ -1,11 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using GanShin.AssetManagement;
+using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using Zenject;
 
 namespace GanShin.Sound
 {
+	[UsedImplicitly]
 	public class SoundManager
 	{
+		[Inject] private ResourceManager _resource;
+		
 	    AudioSource[] _audioSources = new AudioSource[(int)Define.Sound.MaxCount];
 	    Dictionary<string, AudioClip> _audioClips = new Dictionary<string, AudioClip>();
 
@@ -13,27 +20,29 @@ namespace GanShin.Sound
 	    // MP3 음원     -> AudioClip
 	    // 관객(귀)     -> AudioListener
 
-	    public void Init()
+	    public SoundManager()
 	    {
-	        GameObject root = GameObject.Find("@Sound");
-	        if (root == null)
-	        {
-	            root = new GameObject { name = "@Sound" };
-	            Object.DontDestroyOnLoad(root);
+		    GameObject root = GameObject.Find("@Sound");
+		    if (root == null)
+		    {
+			    root = new GameObject { name = "@Sound" };
+			    Object.DontDestroyOnLoad(root);
 
-	            string[] soundNames = System.Enum.GetNames(typeof(Define.Sound));
-	            for (int i = 0; i < soundNames.Length - 1; i++)
-	            {
-	                GameObject go = new GameObject { name = soundNames[i] };
-	                _audioSources[i] = go.AddComponent<AudioSource>();
-	                go.transform.parent = root.transform;
-	            }
+			    string[] soundNames = System.Enum.GetNames(typeof(Define.Sound));
+			    for (int i = 0; i < soundNames.Length - 1; i++)
+			    {
+				    GameObject go = new GameObject { name = soundNames[i] };
+				    _audioSources[i]    = go.AddComponent<AudioSource>();
+				    go.transform.parent = root.transform;
+			    }
 
-	            _audioSources[(int)Define.Sound.Bgm].loop = true;
-	        }
+			    _audioSources[(int)Define.Sound.Bgm].loop = true;
+		    }
+
+		    SceneManager.sceneUnloaded += OnSceneUnLoaded;
 	    }
 
-	    public void Clear()
+	    private void OnSceneUnLoaded(Scene scene)
 	    {
 	        foreach (AudioSource audioSource in _audioSources)
 	        {
@@ -81,13 +90,13 @@ namespace GanShin.Sound
 
 			if (type == Define.Sound.Bgm)
 			{
-				audioClip = Managers.Resource.Load<AudioClip>(path);
+				audioClip = _resource.Load<AudioClip>(path);
 			}
 			else
 			{
 				if (_audioClips.TryGetValue(path, out audioClip) == false)
 				{
-					audioClip = Managers.Resource.Load<AudioClip>(path);
+					audioClip = _resource.Load<AudioClip>(path);
 					_audioClips.Add(path, audioClip);
 				}
 			}

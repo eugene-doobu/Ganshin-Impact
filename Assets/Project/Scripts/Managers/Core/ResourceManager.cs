@@ -1,11 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.InputSystem.iOS;
+using Zenject;
 
 namespace GanShin.AssetManagement
 {
+    [UsedImplicitly]
     public class ResourceManager
     {
+        [Inject] private PoolManager _pool;
+        
         public T Load<T>(string path) where T : Object
         {
             if (typeof(T) == typeof(GameObject))
@@ -15,7 +21,7 @@ namespace GanShin.AssetManagement
                 if (index >= 0)
                     name = name.Substring(index + 1);
     
-                GameObject go = Managers.Pool.GetOriginal(name);
+                GameObject go = _pool.GetOriginal(name);
                 if (go != null)
                     return go as T;
             }
@@ -33,7 +39,7 @@ namespace GanShin.AssetManagement
             }
     
             if (original.GetComponent<Poolable>() != null)
-                return Managers.Pool.Pop(original, parent).gameObject;
+                return _pool.Pop(original, parent).gameObject;
     
             GameObject go = Object.Instantiate(original, parent);
             go.name = original.name;
@@ -48,7 +54,7 @@ namespace GanShin.AssetManagement
             Poolable poolable = go.GetComponent<Poolable>();
             if (poolable != null)
             {
-                Managers.Pool.Push(poolable);
+                _pool.Push(poolable);
                 return;
             }
     

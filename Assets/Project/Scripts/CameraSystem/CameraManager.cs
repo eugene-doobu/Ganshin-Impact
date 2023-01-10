@@ -1,7 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
+using JetBrains.Annotations;
 using UnityEngine;
+using Zenject;
 
 #nullable enable
 
@@ -13,7 +14,8 @@ namespace GanShin.CameraSystem
         CHARACTER_CAMERA,
     }
     
-    public class CameraManager
+    [UsedImplicitly]
+    public class CameraManager : IInitializable, ITickable, ILateTickable
     {
         private Dictionary<string, VirtualCameraJig> _virtualCameraDict = new();
         private Dictionary<eCameraState, CameraBase> _cameraStates      = new();
@@ -46,18 +48,22 @@ namespace GanShin.CameraSystem
             }
         }
 
-        public void Init()
+        public CameraManager()
         {
             CameraStateDictionaryInit();
+        }
+        
+        public void Initialize()
+        {
             ChangeState(eCameraState.CHARACTER_CAMERA);
         }
-
-        public void OnUpdate()
+        
+        public void Tick()
         {
             _currentCamera?.OnUpdate();
         }
-
-        public void OnLateUpdate()
+        
+        public void LateTick()
         {
             _currentCamera?.OnLateUpdate();
         }
