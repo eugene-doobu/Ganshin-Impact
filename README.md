@@ -33,6 +33,7 @@
 - [Monsters Ultimate Pack 02 Cute Series](https://assetstore.unity.com/packages/3d/characters/creatures/monsters-ultimate-pack-02-cute-series-179083)
 - [Polygonal - Creatures Pack](https://assetstore.unity.com/packages/3d/characters/creatures/polygonal-creatures-pack-116781)
 - [Fire Dragon](https://assetstore.unity.com/packages/3d/characters/creatures/fire-dragon-45786)
+- [Monsters Fire Pack](https://assetstore.unity.com/packages/3d/characters/creatures/monsters-fire-pack-175328) (에셋스토어 무료이벤트 에셋)
 
 ### 애니메이션 리소스
 
