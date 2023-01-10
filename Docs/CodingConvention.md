@@ -30,3 +30,10 @@ GanDebuger.LogError($"[{nameof(Creature)}] actionMap is null!");
 
 TriggerEnter와 같은 이벤트는 MonoBehaviour 상속을 받아서 구현
 
+## 3. 비동기처리
+
+(여기서의 비동기는 멀티쓰레드로 작동하는 구현을 의미하는게 아닌, 요청 후 결과를 기다리지 않고 다음 작업을 진행하는 의미)
+
+UniTask 활용
+
+코루틴을 사용하지 않음, 유니티 내부 구현상 코루틴을 사용하는 경우에도 uniTask로 변환하여 사용
