@@ -31,10 +31,10 @@ namespace GanShin.InputSystem
             }
             remove => _onAnyKeyInput -= value;
         }
-            
-        public void Init()
+
+        public InputSystemManager()
         {
-            _playerActions  = new GanshinActions();
+            _playerActions = new GanshinActions();
             InitActionMapDict();
             ChangeActionMap(eActiomMap.PLAYER_MOVEMENT);
             

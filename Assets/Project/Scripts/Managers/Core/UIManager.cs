@@ -12,6 +12,17 @@ namespace GanShin.UI
 	    Stack<UI_Popup> _popupStack = new Stack<UI_Popup>();
 	    UI_Scene _sceneUI = null;
 
+	    public UIManager()
+	    {
+		    Object eventSystem = Object.FindObjectOfType(typeof(EventSystem));
+		    if (ReferenceEquals(eventSystem, null))
+		    {
+			    eventSystem      = Managers.Resource.Instantiate("UI/EventSystem");
+			    eventSystem.name = "@EventSystem";
+		    }
+		    Object.DontDestroyOnLoad(eventSystem);
+	    }
+
 	    public GameObject Root
 	    {
 	        get
@@ -21,17 +32,6 @@ namespace GanShin.UI
 					root = new GameObject { name = "@UI_Root" };
 	            return root;
 			}
-	    }
-	    
-	    public void Init()
-	    {
-		    Object eventSystem = Object.FindObjectOfType(typeof(EventSystem));
-		    if (ReferenceEquals(eventSystem, null))
-		    {
-			    eventSystem      = Managers.Resource.Instantiate("UI/EventSystem");
-			    eventSystem.name = "@EventSystem";
-		    }
-		    Object.DontDestroyOnLoad(eventSystem);
 	    }
 
 	    public void SetCanvas(GameObject go, bool sort = true)

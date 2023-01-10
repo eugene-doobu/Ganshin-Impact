@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
+using Zenject;
 
 #nullable enable
 
@@ -46,7 +47,7 @@ namespace GanShin.CameraSystem
             }
         }
 
-        public void Init()
+        public CameraManager()
         {
             CameraStateDictionaryInit();
             ChangeState(eCameraState.CHARACTER_CAMERA);

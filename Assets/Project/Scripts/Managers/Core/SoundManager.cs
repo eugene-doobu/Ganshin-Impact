@@ -13,24 +13,24 @@ namespace GanShin.Sound
 	    // MP3 음원     -> AudioClip
 	    // 관객(귀)     -> AudioListener
 
-	    public void Init()
+	    public SoundManager()
 	    {
-	        GameObject root = GameObject.Find("@Sound");
-	        if (root == null)
-	        {
-	            root = new GameObject { name = "@Sound" };
-	            Object.DontDestroyOnLoad(root);
+		    GameObject root = GameObject.Find("@Sound");
+		    if (root == null)
+		    {
+			    root = new GameObject { name = "@Sound" };
+			    Object.DontDestroyOnLoad(root);
 
-	            string[] soundNames = System.Enum.GetNames(typeof(Define.Sound));
-	            for (int i = 0; i < soundNames.Length - 1; i++)
-	            {
-	                GameObject go = new GameObject { name = soundNames[i] };
-	                _audioSources[i] = go.AddComponent<AudioSource>();
-	                go.transform.parent = root.transform;
-	            }
+			    string[] soundNames = System.Enum.GetNames(typeof(Define.Sound));
+			    for (int i = 0; i < soundNames.Length - 1; i++)
+			    {
+				    GameObject go = new GameObject { name = soundNames[i] };
+				    _audioSources[i]    = go.AddComponent<AudioSource>();
+				    go.transform.parent = root.transform;
+			    }
 
-	            _audioSources[(int)Define.Sound.Bgm].loop = true;
-	        }
+			    _audioSources[(int)Define.Sound.Bgm].loop = true;
+		    }
 	    }
 
 	    public void Clear()

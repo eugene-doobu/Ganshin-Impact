@@ -46,19 +46,6 @@ namespace GanShin
 
         #region UnityEvent
         
-        /// <summary>
-        /// RuntimeInitializeLoadType.BeforeSceneLoad 타이밍에 시작
-        /// </summary>
-        private static void OnInit()
-        {
-	        s_instance._ui.Init();
-	        s_instance._data.Init();
-	        s_instance._pool.Init();
-	        s_instance._sound.Init();
-	        s_instance._input.Init();
-	        s_instance._camera.Init();
-        } 
-        
         private void Awake()
         {
         }
@@ -106,7 +93,6 @@ namespace GanShin
     
 	        DontDestroyOnLoad(go);
 	        s_instance = go.GetComponent<Managers>();
-	        OnInit();
 	        
 	        InstanceExist = true;
         }

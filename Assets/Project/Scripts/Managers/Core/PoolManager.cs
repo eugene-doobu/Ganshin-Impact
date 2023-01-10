@@ -66,16 +66,13 @@ namespace GanShin.AssetManagement
         }
 	    #endregion
 
-	    Dictionary<string, Pool> _pool = new Dictionary<string, Pool>();
-        Transform _root;
+	    private readonly Dictionary<string, Pool> _pool = new Dictionary<string, Pool>();
+        private readonly Transform _root;
 
-        public void Init()
+        public PoolManager()
         {
-            if (_root == null)
-            {
-                _root = new GameObject { name = "@Pool_Root" }.transform;
-                Object.DontDestroyOnLoad(_root);
-            }
+            _root = new GameObject { name = "@Pool_Root" }.transform;
+            Object.DontDestroyOnLoad(_root);
         }
 
         public void CreatePool(GameObject original, int count = 5)
