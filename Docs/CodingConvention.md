@@ -17,5 +17,16 @@ GanDebuger.LogError($"[{nameof(Creature)}] actionMap is null!");
 
 - 매니저격 클래스는 ProjectInstaller에서 바인딩
 - 매니저격 클래스는 AsSingle().NonLazy()로 구현
-- 가능하면 Unity Event를 사용하지 않고 구현(IInitializable, ITickable, ILateTickable, IDisposal 등 이용)
-- 
+- 가능하면 Unity Event를 사용하지 않고 구현
+- 유니티 이벤트가 꼭 필요한 경우가 아닌 이상 MonoBehaviour 사용 최소화
+
+### Unity Event 대응
+
+- Awake : 생성자
+- Start : IInitializable
+- Update : ITickable
+- ILateTickable : ILateTickable
+- OnDestroty : IDisposal
+
+TriggerEnter와 같은 이벤트는 MonoBehaviour 상속을 받아서 구현
+
