@@ -1,39 +1,48 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using GanShin.AssetManagement;
+using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using Zenject;
 
 namespace GanShin.Sound
 {
+	[UsedImplicitly]
 	public class SoundManager
 	{
-	    AudioSource[] _audioSources = new AudioSource[(int)Define.eSound.MaxCount];
+		[Inject] private ResourceManager _resource;
+		
+	    AudioSource[] _audioSources = new AudioSource[(int)Define.Sound.MaxCount];
 	    Dictionary<string, AudioClip> _audioClips = new Dictionary<string, AudioClip>();
 
 	    // MP3 Player   -> AudioSource
 	    // MP3 음원     -> AudioClip
 	    // 관객(귀)     -> AudioListener
 
-	    public void Init()
+	    public SoundManager()
 	    {
-	        GameObject root = GameObject.Find("@Sound");
-	        if (root == null)
-	        {
-	            root = new GameObject { name = "@Sound" };
-	            Object.DontDestroyOnLoad(root);
+		    GameObject root = GameObject.Find("@Sound");
+		    if (root == null)
+		    {
+			    root = new GameObject { name = "@Sound" };
+			    Object.DontDestroyOnLoad(root);
 
-	            string[] soundNames = System.Enum.GetNames(typeof(Define.eSound));
-	            for (int i = 0; i < soundNames.Length - 1; i++)
-	            {
-	                GameObject go = new GameObject { name = soundNames[i] };
-	                _audioSources[i] = go.AddComponent<AudioSource>();
-	                go.transform.parent = root.transform;
-	            }
+			    string[] soundNames = System.Enum.GetNames(typeof(Define.Sound));
+			    for (int i = 0; i < soundNames.Length - 1; i++)
+			    {
+				    GameObject go = new GameObject { name = soundNames[i] };
+				    _audioSources[i]    = go.AddComponent<AudioSource>();
+				    go.transform.parent = root.transform;
+			    }
 
-	            _audioSources[(int)Define.eSound.Bgm].loop = true;
-	        }
+			    _audioSources[(int)Define.Sound.Bgm].loop = true;
+		    }
+
+		    SceneManager.sceneUnloaded += OnSceneUnLoaded;
 	    }
 
-	    public void Clear()
+	    private void OnSceneUnLoaded(Scene scene)
 	    {
 	        foreach (AudioSource audioSource in _audioSources)
 	        {
@@ -43,20 +52,20 @@ namespace GanShin.Sound
 	        _audioClips.Clear();
 	    }
 
-	    public void Play(string path, Define.eSound type = Define.eSound.Effect, float pitch = 1.0f)
+	    public void Play(string path, Define.Sound type = Define.Sound.Effect, float pitch = 1.0f)
 	    {
 	        AudioClip audioClip = GetOrAddAudioClip(path, type);
 	        Play(audioClip, type, pitch);
 	    }
 
-		public void Play(AudioClip audioClip, Define.eSound type = Define.eSound.Effect, float pitch = 1.0f)
+		public void Play(AudioClip audioClip, Define.Sound type = Define.Sound.Effect, float pitch = 1.0f)
 		{
 	        if (audioClip == null)
 	            return;
 
-			if (type == Define.eSound.Bgm)
+			if (type == Define.Sound.Bgm)
 			{
-				AudioSource audioSource = _audioSources[(int)Define.eSound.Bgm];
+				AudioSource audioSource = _audioSources[(int)Define.Sound.Bgm];
 				if (audioSource.isPlaying)
 					audioSource.Stop();
 
@@ -66,28 +75,28 @@ namespace GanShin.Sound
 			}
 			else
 			{
-				AudioSource audioSource = _audioSources[(int)Define.eSound.Effect];
+				AudioSource audioSource = _audioSources[(int)Define.Sound.Effect];
 				audioSource.pitch = pitch;
 				audioSource.PlayOneShot(audioClip);
 			}
 		}
 
-		AudioClip GetOrAddAudioClip(string path, Define.eSound type = Define.eSound.Effect)
+		AudioClip GetOrAddAudioClip(string path, Define.Sound type = Define.Sound.Effect)
 	    {
 			if (path.Contains("Sounds/") == false)
 				path = $"Sounds/{path}";
 
 			AudioClip audioClip = null;
 
-			if (type == Define.eSound.Bgm)
+			if (type == Define.Sound.Bgm)
 			{
-				audioClip = Managers.Resource.Load<AudioClip>(path);
+				audioClip = _resource.Load<AudioClip>(path);
 			}
 			else
 			{
 				if (_audioClips.TryGetValue(path, out audioClip) == false)
 				{
-					audioClip = Managers.Resource.Load<AudioClip>(path);
+					audioClip = _resource.Load<AudioClip>(path);
 					_audioClips.Add(path, audioClip);
 				}
 			}

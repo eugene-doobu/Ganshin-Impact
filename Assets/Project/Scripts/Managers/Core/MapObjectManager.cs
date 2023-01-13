@@ -1,10 +1,11 @@
-using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 
 #nullable enable
 
 namespace GanShin.MapObject
 {
+    [UsedImplicitly]
     public class MapObjectManager
     {
         private Dictionary<long, CreatureObject> _creatureObjects = new ();
