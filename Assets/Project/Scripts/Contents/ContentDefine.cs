@@ -6,6 +6,7 @@ namespace GanShin
 {
     public enum ePlayerAttack
     {
+        NONE,
         RIKO_BASIC_ATTAK1,
         RIKO_BASIC_ATTAK2,
         RIKO_BASIC_ATTAK3,
