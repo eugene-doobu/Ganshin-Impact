@@ -33,10 +33,15 @@ namespace GanShin.Creature
         private CharacterController _characterController;
 
         private Transform _tr;
+        private Transform _wristLeftTr;
+        private Transform _wristRightTr;
         
         private Vector2 _lastMovementValue;
 
         private float _moveAnimValue;
+        
+        [SerializeField]
+        private PlayerWeaponBase _weapon;
 
         [SerializeField] 
         private float rotationSmoothFactor = 8f;
@@ -91,10 +96,9 @@ namespace GanShin.Creature
         protected override void Awake()
         {
             base.Awake();
-            
-            _characterController = GetComponent<CharacterController>();
-            _tr                  = GetComponent<Transform>();
 
+            InitializeAvatar();
+            InitializeWeapon();
             AddInputEvent();
         }
 
@@ -122,6 +126,20 @@ namespace GanShin.Creature
         #endregion Mono
 
         #region StateCheck
+
+        private void InitializeAvatar()
+        {
+            _characterController = GetComponent<CharacterController>();
+            _tr                  = GetComponent<Transform>();
+            
+            _wristLeftTr  = _tr.RecursiveFind(AvatarDefine.WristLeftBone);
+            _wristRightTr = _tr.RecursiveFind(AvatarDefine.WristRightBone);
+        }
+
+        private void InitializeWeapon()
+        {
+            _weapon.Owner = this;
+        }
 
         protected void CheckOnGround()
         {

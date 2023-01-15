@@ -1,5 +1,11 @@
 namespace GanShin.Content
 {
+    public struct AvatarDefine
+    {
+        public static string WristRightBone = "Wrist_R";
+        public static string WristLeftBone  = "Wrist_L";
+    }
+    
     public enum ePlayerAttack
     {
         NONE,
