@@ -9,7 +9,7 @@ using GanShin.Content.Weapon;
 using UnityEngine;
 using Zenject;
 
-namespace GanShin.Creature
+namespace GanShin.Content.Creature
 {
     // TODO: abstract class로 변환 후 각 캐릭터별로 클래스를 구현해서 사용예정
     [RequireComponent(typeof(CharacterController))]

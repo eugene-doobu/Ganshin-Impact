@@ -7,6 +7,12 @@
             
         }
         
+        public struct Tag
+        {
+            public static string Player  = "Player";
+            public static string Monster = "Monster";
+        }
+        
         public enum eScene
         {
             Unknown,
