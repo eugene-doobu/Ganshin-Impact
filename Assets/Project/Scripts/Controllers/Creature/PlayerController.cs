@@ -1,7 +1,11 @@
 using System;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using GanShin.CameraSystem;
 using GanShin.InputSystem;
+using GanShin.Utils;
+using GanShin.Content;
+using GanShin.Content.Weapon;
 using UnityEngine;
 using Zenject;
 
@@ -13,9 +17,11 @@ namespace GanShin.Creature
     {
         #region Static
 
-        private static int ANIM_PRAM_HASH_ISMOVE     = Animator.StringToHash("IsMove");
-        private static int ANIM_PRAM_HASH_MOVE_SPEED = Animator.StringToHash("MoveSpeed");
-        private static int ANIM_PRAM_HASH_ROLL_START = Animator.StringToHash("RollStart");
+        private static int ANIM_PRAM_HASH_ISMOVE       = Animator.StringToHash("IsMove");
+        private static int ANIM_PRAM_HASH_MOVE_SPEED   = Animator.StringToHash("MoveSpeed");
+        private static int ANIM_PRAM_HASH_ROLL_START   = Animator.StringToHash("RollStart");
+        private static int ANIM_PRAM_HASH_ATTACK_STATE = Animator.StringToHash("AttackState");
+        private static int ANIM_PRAM_HASH_SET_IDLE     = Animator.StringToHash("SetIdle");
         
         #endregion Static
         
@@ -27,10 +33,15 @@ namespace GanShin.Creature
         private CharacterController _characterController;
 
         private Transform _tr;
+        private Transform _wristLeftTr;
+        private Transform _wristRightTr;
         
         private Vector2 _lastMovementValue;
 
         private float _moveAnimValue;
+        
+        [SerializeField]
+        private PlayerWeaponBase _weapon;
 
         [SerializeField] 
         private float rotationSmoothFactor = 8f;
@@ -54,9 +65,30 @@ namespace GanShin.Creature
         private float _groundCheckRadius = 0.1f;
         [SerializeField] 
         private LayerMask _groundLayerMask;
+        
+        [Space]
+        // TODO: Attack 관련 내용 별도의 클래스를 조합하여 관리
+        [Header("Attack")]
+        [SerializeField]
+        private float _attackCooldown = 0.2f;
+
+        [SerializeField] 
+        private float _attackToIdleTime = 1f;
+
+        [field: SerializeField, ReadOnly] 
+        public ePlayerAttack PlayerAttack { get; private set; }
+
+        [SerializeField] 
+        private bool _isOnUltimate;
+        
+        private bool _canAttack = true;
+        private bool _desiredAttack;
 
         private bool _isOnGround;
         
+        private CancellationTokenSource _attackCancellationTokenSource;
+        private bool _isOnAttack;
+
         #endregion Variables
 
         #region Mono
@@ -64,10 +96,9 @@ namespace GanShin.Creature
         protected override void Awake()
         {
             base.Awake();
-            
-            _characterController = GetComponent<CharacterController>();
-            _tr                  = GetComponent<Transform>();
 
+            InitializeAvatar();
+            InitializeWeapon();
             AddInputEvent();
         }
 
@@ -84,6 +115,7 @@ namespace GanShin.Creature
             base.Update();
             Roll();
             ApplyGravity();
+            Attack();
         }
 
         private void OnDestroy()
@@ -94,6 +126,20 @@ namespace GanShin.Creature
         #endregion Mono
 
         #region StateCheck
+
+        private void InitializeAvatar()
+        {
+            _characterController = GetComponent<CharacterController>();
+            _tr                  = GetComponent<Transform>();
+            
+            _wristLeftTr  = _tr.RecursiveFind(AvatarDefine.WristLeftBone);
+            _wristRightTr = _tr.RecursiveFind(AvatarDefine.WristRightBone);
+        }
+
+        private void InitializeWeapon()
+        {
+            _weapon.Owner = this;
+        }
 
         protected void CheckOnGround()
         {
@@ -186,11 +232,11 @@ namespace GanShin.Creature
             
             if (!_canRoll) return;
             PlayRollAnimation();
-            JumpTimer().Forget();
+            DelayRoll().Forget();
             _canRoll = false;
         }
 
-        private async UniTask JumpTimer()
+        private async UniTask DelayRoll()
         {
             await UniTask.Delay(TimeSpan.FromSeconds(rollCooldown));
             _canRoll = true;
@@ -208,6 +254,109 @@ namespace GanShin.Creature
         }
 
         #endregion Movement
+
+        #region Attack
+
+        // TODO: 캐릭터별로 다르게 처리 + 별도의 공격 클래스를 만들어서 처리
+        private void Attack()
+        {
+            if (!_desiredAttack) return;
+            _desiredAttack = false;
+            
+            if (!_canAttack) return;
+            _canAttack = false;
+            DelayAttack().Forget();
+            
+            bool _isTryAttack = false;
+            switch (PlayerAttack)
+            {
+                case ePlayerAttack.NONE:
+                    if (!_isOnUltimate)
+                    {
+                        PlayerAttack = ePlayerAttack.RIKO_BASIC_ATTAK1;
+                        ObjAnimator.SetInteger(ANIM_PRAM_HASH_ATTACK_STATE, 1);
+                    }
+                    else
+                    {
+                        PlayerAttack = ePlayerAttack.RIKO_ULTI_ATTAK1;
+                        ObjAnimator.SetInteger(ANIM_PRAM_HASH_ATTACK_STATE, 5);
+                    }
+                    _isTryAttack = true;
+                    break;
+                case ePlayerAttack.RIKO_BASIC_ATTAK1:
+                    PlayerAttack = ePlayerAttack.RIKO_BASIC_ATTAK2;
+                    ObjAnimator.SetInteger(ANIM_PRAM_HASH_ATTACK_STATE, 2);
+                    _isTryAttack = true;
+                    break;
+                case ePlayerAttack.RIKO_BASIC_ATTAK2:
+                    PlayerAttack = ePlayerAttack.RIKO_BASIC_ATTAK3;
+                    ObjAnimator.SetInteger(ANIM_PRAM_HASH_ATTACK_STATE, 3);
+                    _isTryAttack = true;
+                    break;
+                case ePlayerAttack.RIKO_BASIC_ATTAK3:
+                    PlayerAttack = ePlayerAttack.RIKO_BASIC_ATTAK4;
+                    ObjAnimator.SetInteger(ANIM_PRAM_HASH_ATTACK_STATE, 4);
+                    _isTryAttack = true;
+                    break;
+                case ePlayerAttack.RIKO_ULTI_ATTAK1:
+                    PlayerAttack = ePlayerAttack.RIKO_ULTI_ATTAK2;
+                    ObjAnimator.SetInteger(ANIM_PRAM_HASH_ATTACK_STATE, 6);
+                    _isTryAttack = true;
+                    break;
+                case ePlayerAttack.RIKO_ULTI_ATTAK2:
+                    PlayerAttack = ePlayerAttack.RIKO_ULTI_ATTAK3;
+                    ObjAnimator.SetInteger(ANIM_PRAM_HASH_ATTACK_STATE, 7);
+                    _isTryAttack = true;
+                    break;
+                case ePlayerAttack.RIKO_ULTI_ATTAK3:
+                    PlayerAttack = ePlayerAttack.RIKO_ULTI_ATTAK4;
+                    ObjAnimator.SetInteger(ANIM_PRAM_HASH_ATTACK_STATE, 8);
+                    _isTryAttack = true;
+                    break;
+            }
+
+            if (_isTryAttack)
+            {
+                if (_attackCancellationTokenSource != null)
+                    DisposeAttackCancellationTokenSource();
+                _attackCancellationTokenSource = new CancellationTokenSource();
+                ReturnToIdle().Forget();
+            }
+        }
+
+        private UniTask? _returnToIdleTask;
+
+        private async UniTask DelayAttack()
+        {
+            await UniTask.Delay(TimeSpan.FromSeconds(_attackCooldown));
+            _canAttack = true;
+        }
+        
+        private async UniTask ReturnToIdle()
+        {
+            _isOnAttack = true;
+            
+            await UniTask.Delay(TimeSpan.FromSeconds(_attackToIdleTime), cancellationToken:                 
+                _attackCancellationTokenSource.Token);
+            
+            _canAttack   = true;
+            _isOnAttack  = false;
+            PlayerAttack = ePlayerAttack.NONE;
+            ObjAnimator.SetTrigger(ANIM_PRAM_HASH_SET_IDLE);
+            ObjAnimator.SetInteger(ANIM_PRAM_HASH_ATTACK_STATE, 0);
+            
+            DisposeAttackCancellationTokenSource();
+        }
+        
+        private void DisposeAttackCancellationTokenSource()
+        {
+            if (_attackCancellationTokenSource == null) return;
+            _attackCancellationTokenSource.Cancel();
+            _attackCancellationTokenSource.Dispose();
+            _attackCancellationTokenSource = null;
+        }
+
+        #endregion Attack
         
         #region ActionEvent
 
@@ -234,6 +383,7 @@ namespace GanShin.Creature
         
         protected virtual void OnAttack(bool value)
         {               
+            if (_isOnGround) _desiredAttack = true;
         }
         
         protected virtual void OnBaseSkill(bool value)

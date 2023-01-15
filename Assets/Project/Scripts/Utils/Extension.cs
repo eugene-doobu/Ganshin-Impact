@@ -12,6 +12,21 @@ namespace GanShin
 		{
 			return Util.GetOrAddComponent<T>(go);
 		}
+		
+		public static Transform RecursiveFind(this Transform parent, string name)
+		{
+			foreach (Transform child in parent)
+			{
+				if(child.name == name)
+				{
+					return child;
+				}
+				var found = RecursiveFind(child, name);
+				if (found != null) 
+					return found;
+			}
+			return null;
+		}
 
 		public static void BindEvent(this GameObject go, Action<PointerEventData> action, Define.eUIEvent type = Define.eUIEvent.Click)
 		{
