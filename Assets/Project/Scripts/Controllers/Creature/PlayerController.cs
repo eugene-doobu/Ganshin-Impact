@@ -71,6 +71,13 @@ namespace GanShin.Creature
             AddInputEvent();
         }
 
+        protected override void Start()
+        {
+            base.Start();
+            // TODO: 매니저격 클래스에서 셋팅할 예정
+            _camera.ChangeTarget(_tr);
+        }
+        
         protected override void Update()
         {
             CheckOnGround();
