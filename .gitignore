@@ -4,6 +4,7 @@
 # Jetbrain Rider Cache
 .idea/
 Assets/Plugins/Editor/JetBrains*
+Assets/RiderFlow.UserData*
 
 # Visual Studio Code
 .vscode/

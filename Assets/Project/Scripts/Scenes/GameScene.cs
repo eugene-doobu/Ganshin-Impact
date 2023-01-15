@@ -10,7 +10,7 @@ namespace GanShin.SceneManagement
         {
             base.Init();
 
-            SceneType = Define.Scene.Game;
+            ESceneType = Define.eScene.Game;
             //Managers.UI.ShowSceneUI<UI_Inven>();
             //Dictionary<int, Data.Stat> dict = Managers.Data.StatDict;
             //gameObject.GetOrAddComponent<CursorController>();

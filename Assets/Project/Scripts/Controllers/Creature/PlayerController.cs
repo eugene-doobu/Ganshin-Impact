@@ -1,4 +1,5 @@
 using System;
+using Cysharp.Threading.Tasks;
 using GanShin.CameraSystem;
 using GanShin.InputSystem;
 using UnityEngine;
@@ -12,9 +13,9 @@ namespace GanShin.Creature
     {
         #region Static
 
-        private static int ANIM_PRAM_HASH_ISMOVE       = Animator.StringToHash("IsMove");
-        private static int ANIM_PRAM_HASH_MOVE_FORWARD = Animator.StringToHash("MoveForward");
-        private static int ANIM_PRAM_HASH_MOVE_RIGHT   = Animator.StringToHash("MoveRight");
+        private static int ANIM_PRAM_HASH_ISMOVE     = Animator.StringToHash("IsMove");
+        private static int ANIM_PRAM_HASH_MOVE_SPEED = Animator.StringToHash("MoveSpeed");
+        private static int ANIM_PRAM_HASH_ROLL_START = Animator.StringToHash("RollStart");
         
         #endregion Static
         
@@ -27,17 +28,36 @@ namespace GanShin.Creature
 
         private Transform _tr;
         
-        private float _jumpTimeoutDelta;
-        private float _attackTimeoutDelta;
-
         private Vector2 _lastMovementValue;
 
-        private float _moveAnimSmoothFactor = 4f;
-        private float _moveForwardAnimValue;
-        private float _moveRightAnimValue;
+        private float _moveAnimValue;
+
+        [SerializeField] 
+        private float rotationSmoothFactor = 8f;
+        
+        [SerializeField] 
+        private float rollCooldown = 0.5f;
+         
+        [SerializeField]
+        private float _gravity = -1f;
+        
+        private bool _canRoll = true;
+        private bool _desiredRoll;
+
+        [Space] 
+        [Header("GroundCheck")]
+        [SerializeField]
+        private float _rayStartPosOffset = 0.3f;
+        [SerializeField] 
+        private float _groundCheckDistance = 0.5f;
+        [SerializeField] 
+        private float _groundCheckRadius = 0.1f;
+        [SerializeField] 
+        private LayerMask _groundLayerMask;
+
+        private bool _isOnGround;
         
         #endregion Variables
-        
 
         #region Mono
 
@@ -51,9 +71,19 @@ namespace GanShin.Creature
             AddInputEvent();
         }
 
+        protected override void Start()
+        {
+            base.Start();
+            // TODO: 매니저격 클래스에서 셋팅할 예정
+            _camera.ChangeTarget(_tr);
+        }
+        
         protected override void Update()
         {
+            CheckOnGround();
             base.Update();
+            Roll();
+            ApplyGravity();
         }
 
         private void OnDestroy()
@@ -62,6 +92,23 @@ namespace GanShin.Creature
         }
 
         #endregion Mono
+
+        #region StateCheck
+
+        protected void CheckOnGround()
+        {
+            var rayStartPos = _tr.position + Vector3.up * _rayStartPosOffset;
+            if (Physics.SphereCast(rayStartPos, _groundCheckRadius, Vector3.down, out var hit, _groundCheckDistance, _groundLayerMask))
+            {
+                _isOnGround = true;
+            }
+            else
+            {
+                _isOnGround = false;
+            }
+        }
+
+        #endregion StateCheck
 
         protected virtual void LoadData()
         {
@@ -79,7 +126,7 @@ namespace GanShin.Creature
             actionMap.OnAttack        += OnAttack;
             actionMap.OnDash          += OnDash;
             actionMap.OnInteraction   += OnInteraction;
-            actionMap.OnJump          += OnJump;
+            actionMap.OnRoll          += OnRoll;
             actionMap.OnMovement      += OnMovement;
             actionMap.OnBaseSkill     += OnBaseSkill;
             actionMap.OnUltimateSkill += OnUltimateSkill;
@@ -93,7 +140,7 @@ namespace GanShin.Creature
             actionMap.OnAttack        -= OnAttack;
             actionMap.OnDash          -= OnDash;
             actionMap.OnInteraction   -= OnInteraction;
-            actionMap.OnJump          -= OnJump;
+            actionMap.OnRoll          -= OnRoll;
             actionMap.OnMovement      -= OnMovement;
             actionMap.OnBaseSkill     -= OnBaseSkill;
             actionMap.OnUltimateSkill -= OnUltimateSkill;
@@ -103,7 +150,7 @@ namespace GanShin.Creature
 
         protected override void Movement(float moveSpeed)
         {
-            MovementAnimation();
+            PlayMovementAnimation();
             if (_lastMovementValue == Vector2.zero) return;
 
             var mainCamera    = _camera.MainCamera;
@@ -115,22 +162,49 @@ namespace GanShin.Creature
                 cameraRight   = Vector3.Cross(Vector3.up, cameraForward);
             }
 
-            var direction = cameraForward * _lastMovementValue.y + cameraRight * _lastMovementValue.x;
+            var direction = (cameraForward * _lastMovementValue.y + cameraRight * _lastMovementValue.x).normalized;
             _characterController.Move(direction * moveSpeed * Time.deltaTime);
-            
-            _tr.LookAt(cameraForward + _tr.position);
+
+            var targetRotation = Quaternion.LookRotation(direction);
+            _tr.rotation = Quaternion.Slerp(_tr.rotation, targetRotation, rotationSmoothFactor * Time.deltaTime);
         }
 
-        private void MovementAnimation()
+        private void PlayMovementAnimation()
         {
             if (!HasAnimator) return;
             
-            _moveForwardAnimValue = Mathf.Lerp(_moveForwardAnimValue, _lastMovementValue.y, _moveAnimSmoothFactor * Time.deltaTime);
-            _moveRightAnimValue   = Mathf.Lerp(_moveRightAnimValue, _lastMovementValue.x, _moveAnimSmoothFactor * Time.deltaTime);
+            _moveAnimValue = Mathf.Lerp(_moveAnimValue, _lastMovementValue.magnitude, rotationSmoothFactor * Time.deltaTime);
             
-            Animator.SetBool(ANIM_PRAM_HASH_ISMOVE, _lastMovementValue != Vector2.zero);
-            Animator.SetFloat(ANIM_PRAM_HASH_MOVE_FORWARD, _moveForwardAnimValue);
-            Animator.SetFloat(ANIM_PRAM_HASH_MOVE_RIGHT, _moveRightAnimValue);
+            ObjAnimator.SetBool(ANIM_PRAM_HASH_ISMOVE, _lastMovementValue != Vector2.zero);
+            ObjAnimator.SetFloat(ANIM_PRAM_HASH_MOVE_SPEED, _moveAnimValue);
+        }
+        
+        private void Roll()
+        {
+            if (!_desiredRoll) return;
+            _desiredRoll = false;
+            
+            if (!_canRoll) return;
+            PlayRollAnimation();
+            JumpTimer().Forget();
+            _canRoll = false;
+        }
+
+        private async UniTask JumpTimer()
+        {
+            await UniTask.Delay(TimeSpan.FromSeconds(rollCooldown));
+            _canRoll = true;
+        }
+
+        private void PlayRollAnimation()
+        {
+            if (!HasAnimator) return;
+            ObjAnimator.SetTrigger(ANIM_PRAM_HASH_ROLL_START);
+        }
+
+        private void ApplyGravity()
+        {
+            _characterController.Move(Vector3.up * _gravity * Time.deltaTime);
         }
 
         #endregion Movement
@@ -153,11 +227,10 @@ namespace GanShin.Creature
         {
         }
         
-        protected virtual void OnJump()
+        protected virtual void OnRoll()
         {
+            if (_isOnGround) _desiredRoll = true;
         }
-        
-        // 공격류: 캐릭터마다 다른 특징을 가지고 있으므로 가상함수로 구현
         
         protected virtual void OnAttack(bool value)
         {               

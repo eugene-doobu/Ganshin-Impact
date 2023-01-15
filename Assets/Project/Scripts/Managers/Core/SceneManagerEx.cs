@@ -16,14 +16,14 @@ namespace GanShin.SceneManagement
             SceneManager.sceneUnloaded += OnSceneUnLoaded;
         }
         
-        public void LoadScene(Define.Scene type)
+        public void LoadScene(Define.eScene type)
         {
             SceneManager.LoadScene(GetSceneName(type));
         }
 
-        string GetSceneName(Define.Scene type)
+        string GetSceneName(Define.eScene type)
         {
-            string name = System.Enum.GetName(typeof(Define.Scene), type);
+            string name = System.Enum.GetName(typeof(Define.eScene), type);
             return name;
         }
 

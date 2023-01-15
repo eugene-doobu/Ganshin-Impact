@@ -11,7 +11,7 @@ namespace GanShin.SceneManagement
 	{
 		[Inject] private ResourceManager _resource;
 		
-		public Define.Scene SceneType { get; protected set; } = Define.Scene.Unknown;
+		public Define.eScene ESceneType { get; protected set; } = Define.eScene.Unknown;
 
 		void Awake()
 		{
