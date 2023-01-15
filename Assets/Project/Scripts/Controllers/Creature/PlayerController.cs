@@ -1,4 +1,5 @@
 using System;
+using Cysharp.Threading.Tasks;
 using GanShin.CameraSystem;
 using GanShin.InputSystem;
 using UnityEngine;
@@ -14,8 +15,7 @@ namespace GanShin.Creature
 
         private static int ANIM_PRAM_HASH_ISMOVE     = Animator.StringToHash("IsMove");
         private static int ANIM_PRAM_HASH_MOVE_SPEED = Animator.StringToHash("MoveSpeed");
-        private static int ANIM_PRAM_HASH_JUMP_START = Animator.StringToHash("JumpStart");
-        private static int ANIM_PRAM_HASH_IS_GROUND  = Animator.StringToHash("IsGround");
+        private static int ANIM_PRAM_HASH_ROLL_START = Animator.StringToHash("RollStart");
         
         #endregion Static
         
@@ -30,28 +30,34 @@ namespace GanShin.Creature
         
         private Vector2 _lastMovementValue;
 
-        [Header("Movement")]
-        [SerializeField] 
-        private float _moveAnimSmoothFactor = 4f;
         private float _moveAnimValue;
 
         [SerializeField] 
-        private float _rotationSmoothFactor = 8f;
+        private float rotationSmoothFactor = 8f;
         
-        [Header("Jump")]
         [SerializeField] 
-        private float _jumpPower    = 5f;
-        [SerializeField] 
-        private float _jumpCooldown = 0.5f;
-        
-        private float _jumpTimer    = 0f;
-        private float _jumpVelocity = 0f;
-        private bool  _desiredJump  = false;
+        private float rollCooldown = 0.5f;
+         
         [SerializeField]
-        private float _gravity      = -9.8f;
+        private float _gravity = -1f;
+        
+        private bool _canRoll = true;
+        private bool _desiredRoll;
+
+        [Space] 
+        [Header("GroundCheck")]
+        [SerializeField]
+        private float _rayStartPosOffset = 0.3f;
+        [SerializeField] 
+        private float _groundCheckDistance = 0.5f;
+        [SerializeField] 
+        private float _groundCheckRadius = 0.1f;
+        [SerializeField] 
+        private LayerMask _groundLayerMask;
+
+        private bool _isOnGround;
         
         #endregion Variables
-        
 
         #region Mono
 
@@ -67,9 +73,10 @@ namespace GanShin.Creature
 
         protected override void Update()
         {
+            CheckOnGround();
             base.Update();
-            Jump();
-            SetAnimationParamIsGround();
+            Roll();
+            ApplyGravity();
         }
 
         private void OnDestroy()
@@ -78,6 +85,23 @@ namespace GanShin.Creature
         }
 
         #endregion Mono
+
+        #region StateCheck
+
+        protected void CheckOnGround()
+        {
+            var rayStartPos = _tr.position + Vector3.up * _rayStartPosOffset;
+            if (Physics.SphereCast(rayStartPos, _groundCheckRadius, Vector3.down, out var hit, _groundCheckDistance, _groundLayerMask))
+            {
+                _isOnGround = true;
+            }
+            else
+            {
+                _isOnGround = false;
+            }
+        }
+
+        #endregion StateCheck
 
         protected virtual void LoadData()
         {
@@ -95,7 +119,7 @@ namespace GanShin.Creature
             actionMap.OnAttack        += OnAttack;
             actionMap.OnDash          += OnDash;
             actionMap.OnInteraction   += OnInteraction;
-            actionMap.OnJump          += OnJump;
+            actionMap.OnRoll          += OnRoll;
             actionMap.OnMovement      += OnMovement;
             actionMap.OnBaseSkill     += OnBaseSkill;
             actionMap.OnUltimateSkill += OnUltimateSkill;
@@ -109,7 +133,7 @@ namespace GanShin.Creature
             actionMap.OnAttack        -= OnAttack;
             actionMap.OnDash          -= OnDash;
             actionMap.OnInteraction   -= OnInteraction;
-            actionMap.OnJump          -= OnJump;
+            actionMap.OnRoll          -= OnRoll;
             actionMap.OnMovement      -= OnMovement;
             actionMap.OnBaseSkill     -= OnBaseSkill;
             actionMap.OnUltimateSkill -= OnUltimateSkill;
@@ -135,49 +159,45 @@ namespace GanShin.Creature
             _characterController.Move(direction * moveSpeed * Time.deltaTime);
 
             var targetRotation = Quaternion.LookRotation(direction);
-            _tr.rotation = Quaternion.Slerp(_tr.rotation, targetRotation, _rotationSmoothFactor * Time.deltaTime);
+            _tr.rotation = Quaternion.Slerp(_tr.rotation, targetRotation, rotationSmoothFactor * Time.deltaTime);
         }
 
         private void PlayMovementAnimation()
         {
             if (!HasAnimator) return;
             
-            _moveAnimValue = Mathf.Lerp(_moveAnimValue, _lastMovementValue.magnitude, _moveAnimSmoothFactor * Time.deltaTime);
+            _moveAnimValue = Mathf.Lerp(_moveAnimValue, _lastMovementValue.magnitude, rotationSmoothFactor * Time.deltaTime);
             
             ObjAnimator.SetBool(ANIM_PRAM_HASH_ISMOVE, _lastMovementValue != Vector2.zero);
             ObjAnimator.SetFloat(ANIM_PRAM_HASH_MOVE_SPEED, _moveAnimValue);
         }
-
-        private void Jump()
+        
+        private void Roll()
         {
-            _jumpTimer -= Time.deltaTime;
-            _jumpTimer =  Mathf.Clamp(_jumpTimer, -1f, _jumpTimer);
+            if (!_desiredRoll) return;
+            _desiredRoll = false;
             
-            var value = _desiredJump;
-            _desiredJump = false;
-            
-            _jumpVelocity += _gravity * Time.deltaTime;
-
-            if (value && _jumpTimer <= 0f)
-            {
-                _jumpVelocity = Mathf.Sqrt(_jumpPower * -_gravity);
-                _jumpTimer    =  _jumpCooldown;
-                PlayJumpAnimation();
-            }
-            
-            _characterController.Move(Vector3.up * _jumpVelocity * Time.deltaTime);
+            if (!_canRoll) return;
+            PlayRollAnimation();
+            JumpTimer().Forget();
+            _canRoll = false;
         }
 
-        private void PlayJumpAnimation()
+        private async UniTask JumpTimer()
         {
-            if (!HasAnimator) return;
-            ObjAnimator.SetTrigger(ANIM_PRAM_HASH_JUMP_START);
+            await UniTask.Delay(TimeSpan.FromSeconds(rollCooldown));
+            _canRoll = true;
         }
 
-        private void SetAnimationParamIsGround()
+        private void PlayRollAnimation()
         {
             if (!HasAnimator) return;
-            ObjAnimator.SetBool(ANIM_PRAM_HASH_IS_GROUND, _characterController.isGrounded);
+            ObjAnimator.SetTrigger(ANIM_PRAM_HASH_ROLL_START);
+        }
+
+        private void ApplyGravity()
+        {
+            _characterController.Move(Vector3.up * _gravity * Time.deltaTime);
         }
 
         #endregion Movement
@@ -200,13 +220,10 @@ namespace GanShin.Creature
         {
         }
         
-        protected virtual void OnJump()
+        protected virtual void OnRoll()
         {
-            if (_characterController.isGrounded)
-                _desiredJump = true;
+            if (_isOnGround) _desiredRoll = true;
         }
-        
-        // 공격류: 캐릭터마다 다른 특징을 가지고 있으므로 가상함수로 구현
         
         protected virtual void OnAttack(bool value)
         {               
