@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace GanShin
+namespace GanShin.Content
 {
     public enum ePlayerAttack
     {

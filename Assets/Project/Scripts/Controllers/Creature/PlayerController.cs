@@ -4,6 +4,8 @@ using Cysharp.Threading.Tasks;
 using GanShin.CameraSystem;
 using GanShin.InputSystem;
 using GanShin.Utils;
+using GanShin.Content;
+using GanShin.Content.Weapon;
 using UnityEngine;
 using Zenject;
 
