@@ -18,4 +18,14 @@ namespace GanShin.Content
         RIKO_ULTI_ATTAK3,
         RIKO_ULTI_ATTAK4,
     }
+
+    public enum eMonsterState
+    {
+        CREATED,
+        IDLE,
+        TRACING,
+        KNOCK_BACK,
+        ATTACK,
+        DEAD,
+    }
 }

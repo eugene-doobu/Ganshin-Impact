@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GanShin.Creature
+namespace GanShin.Content.Creature
 {
     public abstract class CreatureController : MonoBehaviour
     {
@@ -23,7 +23,8 @@ namespace GanShin.Creature
 
         #region TableData // TODO: 별도의 클래스로 분리 후 json 파일로 관리 예정
 
-        private float _moveSpeed   = 4f;
+        [SerializeField]
+        protected float _moveSpeed   = 4f;
 
         #endregion TableData
         
