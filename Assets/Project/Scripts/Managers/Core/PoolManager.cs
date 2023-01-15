@@ -1,14 +1,20 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using GanShin.SceneManagement;
+using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using Zenject;
 
 namespace GanShin.AssetManagement
 {
+    [UsedImplicitly]
     public class PoolManager
     {
 	    #region Pool
 	    class Pool
         {
+            [Inject] private SceneManagerEx _scene;
+        
             public GameObject Original { get; private set; }
             public Transform Root { get; set; }
 
@@ -56,7 +62,7 @@ namespace GanShin.AssetManagement
 
                 // DontDestroyOnLoad 해제 용도
                 if (parent == null)
-                    poolable.transform.parent = Managers.Scene.CurrentScene.transform;
+                    poolable.transform.parent = _scene.CurrentScene.transform;
 
                 poolable.transform.parent = parent;
                 poolable.IsUsing = true;
@@ -66,16 +72,15 @@ namespace GanShin.AssetManagement
         }
 	    #endregion
 
-	    Dictionary<string, Pool> _pool = new Dictionary<string, Pool>();
-        Transform _root;
+	    private readonly Dictionary<string, Pool> _pool = new Dictionary<string, Pool>();
+        private readonly Transform _root;
 
-        public void Init()
+        public PoolManager()
         {
-            if (_root == null)
-            {
-                _root = new GameObject { name = "@Pool_Root" }.transform;
-                Object.DontDestroyOnLoad(_root);
-            }
+            _root = new GameObject { name = "@Pool_Root" }.transform;
+            Object.DontDestroyOnLoad(_root);
+
+            SceneManager.sceneUnloaded += OnSceneUnLoaded;
         }
 
         public void CreatePool(GameObject original, int count = 5)
@@ -114,10 +119,10 @@ namespace GanShin.AssetManagement
             return _pool[name].Original;
         }
 
-        public void Clear()
+        private void OnSceneUnLoaded(Scene scene)
         {
             foreach (Transform child in _root)
-                GameObject.Destroy(child.gameObject);
+                Object.Destroy(child.gameObject);
 
             _pool.Clear();
         }

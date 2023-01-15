@@ -7,6 +7,7 @@ using UnityEngine;
 
 namespace GanShin.CameraSystem
 {
+    // TODO: 각 카메라 상태마다 VirtualCamera를 들고 있어야 한다.
     public abstract class CameraBase
     {
         protected Transform? Target { get; private set; }

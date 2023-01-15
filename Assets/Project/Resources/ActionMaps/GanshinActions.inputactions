@@ -51,7 +51,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Jump",
+                    "name": "Roll",
                     "type": "PassThrough",
                     "id": "45bfd80f-33d5-4f54-8ab5-5ac39c067e90",
                     "expectedControlType": "Button",
@@ -273,7 +273,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Jump",
+                    "action": "Roll",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

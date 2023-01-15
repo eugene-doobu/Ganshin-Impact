@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
+using Zenject;
 
 #nullable enable
 
@@ -11,7 +12,9 @@ namespace GanShin.CameraSystem
     [RequireComponent(typeof(CinemachineVirtualCamera))]
     public class VirtualCameraJig : MonoBehaviour
     {
-        [field:SerializeField] public string Name { get; private set; }
+        [Inject] private CameraManager? _camera;
+        
+        [field:SerializeField] public string Name { get; private set; } = String.Empty;
         
         private CinemachineVirtualCamera? _virtualCamera;
         
@@ -23,15 +26,14 @@ namespace GanShin.CameraSystem
 
         private void OnEnable()
         {
-            if (!Managers.InstanceExist) return;
-            if (Managers.Camera == null) return;
-            Managers.Camera.AddVirtualCamera(this);
+            if (_camera == null) return;
+            _camera.AddVirtualCamera(this);
         }
 
         private void OnDisable()
         {
-            if (!Managers.InstanceExist) return;
-            Managers.Camera.RemoveVirtualCamera(this);
+            if (_camera == null) return;
+            _camera.RemoveVirtualCamera(this);
         }
     }
 }

@@ -1,7 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
+using JetBrains.Annotations;
 using UnityEngine;
+using Zenject;
 
 #nullable enable
 
@@ -13,8 +14,11 @@ namespace GanShin.CameraSystem
         CHARACTER_CAMERA,
     }
     
-    public class CameraManager
+    [UsedImplicitly]
+    public class CameraManager : IInitializable, ITickable, ILateTickable
     {
+        [Inject] private CharacterCamera? _characterCamera;
+        
         private Dictionary<string, VirtualCameraJig> _virtualCameraDict = new();
         private Dictionary<eCameraState, CameraBase> _cameraStates      = new();
         
@@ -45,19 +49,24 @@ namespace GanShin.CameraSystem
                 return _mainCamera;
             }
         }
-
-        public void Init()
+        
+        [UsedImplicitly]
+        public CameraManager()
+        {
+        }
+        
+        public void Initialize()
         {
             CameraStateDictionaryInit();
             ChangeState(eCameraState.CHARACTER_CAMERA);
         }
-
-        public void OnUpdate()
+        
+        public void Tick()
         {
             _currentCamera?.OnUpdate();
         }
-
-        public void OnLateUpdate()
+        
+        public void LateTick()
         {
             _currentCamera?.OnLateUpdate();
         }
@@ -76,7 +85,7 @@ namespace GanShin.CameraSystem
         
         private void CameraStateDictionaryInit()
         {
-            _cameraStates.Add(eCameraState.CHARACTER_CAMERA, new CharacterCamera());
+            _cameraStates.Add(eCameraState.CHARACTER_CAMERA, _characterCamera);
             // TODO: InteractionCamera, CinematicCamera 등 추가
         }
 

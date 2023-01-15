@@ -2,7 +2,18 @@
 {
     public class Define
     {
-        public enum Scene
+        public enum eLayer
+        {
+            
+        }
+        
+        public struct Tag
+        {
+            public static string Player  = "Player";
+            public static string Monster = "Monster";
+        }
+        
+        public enum eScene
         {
             Unknown,
             Login,
@@ -10,14 +21,14 @@
             Game,
         }
 
-        public enum Sound
+        public enum eSound
         {
             Bgm,
             Effect,
             MaxCount,
         }
 
-        public enum UIEvent
+        public enum eUIEvent
         {
             Click,
             Drag,

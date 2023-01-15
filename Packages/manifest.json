@@ -1,5 +1,7 @@
 {
   "dependencies": {
+    "com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask",
+    "com.cysharp.zstring": "https://github.com/Cysharp/ZString.git?path=src/ZString.Unity/Assets/Scripts/ZString",
     "com.unity.cinemachine": "2.8.9",
     "com.unity.collab-proxy": "1.17.1",
     "com.unity.ide.rider": "3.0.15",
@@ -9,7 +11,7 @@
     "com.unity.render-pipelines.universal": "13.1.8",
     "com.unity.test-framework": "1.1.31",
     "com.unity.textmeshpro": "3.0.6",
-    "com.unity.timeline": "1.7.1",
+    "com.unity.timeline": "1.7.2",
     "com.unity.ugui": "1.0.0",
     "com.unity.modules.ai": "1.0.0",
     "com.unity.modules.androidjni": "1.0.0",

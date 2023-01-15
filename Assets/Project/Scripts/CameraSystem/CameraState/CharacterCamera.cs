@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
+using GanShin.AssetManagement;
 using GanShin.InputSystem;
 using UnityEngine;
+using Zenject;
 
 #nullable enable
 
@@ -14,7 +16,8 @@ namespace GanShin.CameraSystem
     {
         #region Variables
 
-        private readonly InputSystemManager _input;
+        [Inject] private InputSystemManager? _input;
+        [Inject] private ResourceManager?    _resource;
         
         private CameraBodyTarget?         _cameraBodyTarget;
         private CinemachineVirtualCamera? _virtualCamera;
@@ -42,11 +45,6 @@ namespace GanShin.CameraSystem
 
         #region Initialization
 
-        public CharacterCamera()
-        {
-            _input = Managers.Input;
-        }
-
         private void InitializeCameraBodyTarget()
         {  
             var cameraBodyTargetObj = new GameObject("@CameraBodyTarget");
@@ -58,7 +56,7 @@ namespace GanShin.CameraSystem
 
         private void InitializeVirtualCamera()
         {
-            var virtualCameraPrefab = Managers.Resource.Load<GameObject>("Camera/PlayerVirtualCamera");
+            var virtualCameraPrefab = _resource!.Load<GameObject>("Camera/PlayerVirtualCamera");
             if (virtualCameraPrefab == null)
             {
                 GanDebugger.CameraLogError("Failed to load virtual camera prefab");
@@ -169,7 +167,7 @@ namespace GanShin.CameraSystem
 
         private void AddInputEvent()
         {
-            if (_input.GetActionMap(eActiomMap.PLAYER_MOVEMENT) is not ActionMapPlayerMove actionMap)
+            if (_input!.GetActionMap(eActiomMap.PLAYER_MOVEMENT) is not ActionMapPlayerMove actionMap)
             {
                 GanDebugger.CameraLogError("actionMap is null!");
                 return;
@@ -181,6 +179,8 @@ namespace GanShin.CameraSystem
 
         private void RemoveInputEvent()
         {
+            if (_input == null) return;
+            
             if (_input.GetActionMap(eActiomMap.PLAYER_MOVEMENT) is not ActionMapPlayerMove actionMap)
                 return;
 
