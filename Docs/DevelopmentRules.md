@@ -37,3 +37,10 @@ TriggerEnter와 같은 이벤트는 MonoBehaviour 상속을 받아서 구현
 UniTask 활용
 
 코루틴을 사용하지 않음, 유니티 내부 구현상 코루틴을 사용하는 경우에도 uniTask로 변환하여 사용
+
+## 4. UI MVVM
+
+UI는 DataBinder를 이용하여 MVVM 으로 구현
+
+1. view와 viewModel은 DataBinder를 통해 서로를 구독하여 데이터를 전송
+1. viewModel은 dataBinderContext로 표현
