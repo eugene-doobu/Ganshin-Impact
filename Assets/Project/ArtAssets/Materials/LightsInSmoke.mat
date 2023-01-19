@@ -22,8 +22,21 @@ Material:
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
-    m_TexEnvs: []
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Ints: []
-    m_Floats: []
-    m_Colors: []
+    m_Floats:
+    - _CloudIntensity1: 0.5
+    - _CloudIntensity2: 1
+    - _CloudIntensity3: 1
+    - _LightIntensity1: 1
+    - _LightIntensity2: 1
+    - _LightIntensity3: 1
+    m_Colors:
+    - _LightColor1: {r: 0.56, g: 0.07951998, b: 0.07951998, a: 0}
+    - _LightColor2: {r: 0.16690195, g: 0.56, b: 0.16690195, a: 0}
+    - _LightColor3: {r: 0.16690195, g: 0.16690195, b: 0.56, a: 0}
   m_BuildTextureStacks: []

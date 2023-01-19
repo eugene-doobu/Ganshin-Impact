@@ -2,10 +2,24 @@
 // https://www.shadertoy.com/view/MdyGzR
 Shader "Effect2D/LightsInSmoke"
 {
-	// TODO: Add properties here
 	Properties
 	{
+		_LightColor1("LightColor1", Color) = (1.0, 0.3, 0.3, 1)
+		_LightColor2("LightColor2", Color) = (0.3, 1.0, 0.3, 1)
+		_LightColor3("LightColor3", Color) = (0.3, 0.3, 1.0, 1)
+		
+		[Space]
+		_LightIntensity1("LightIntensity1", Float) = 1.0
+		_LightIntensity2("LightIntensity2", Float) = 1.0
+		_LightIntensity3("LightIntensity3", Float) = 1.0
+		
+		[Space]
+		_CloudIntensity1("CloudIntensity1", Float) = 0.7
+		_CloudIntensity2("CloudIntensity2", Float) = 0.7
+		_CloudIntensity3("CloudIntensity3", Float) = 0.7
+		
 		// UI 에러 방지를 위한 프로퍼티
+		[HideInInspector]
 		_MainTex ("Not used texture", 2D) = "black" {}
 	}
 
@@ -38,6 +52,17 @@ Shader "Effect2D/LightsInSmoke"
 			};
 
 			//Variables
+			fixed4 _LightColor1;
+			fixed4 _LightColor2;
+			fixed4 _LightColor3;
+			
+			fixed _LightIntensity1;
+			fixed _LightIntensity2;
+			fixed _LightIntensity3;
+
+			fixed _CloudIntensity1;
+			fixed _CloudIntensity2;
+			fixed _CloudIntensity3;
 
 			fixed3 fmod289(fixed3 x)
 			{
@@ -180,31 +205,25 @@ Shader "Effect2D/LightsInSmoke"
 	
 			fixed4 frag(VertexOutput i) : SV_Target
 			{
-				fixed2 uv =  i.uv/1;
+				const fixed2 uv =  i.uv/1;
+				const fixed2 center = fixed2(0.5,0.5);
 
-				fixed2 center = fixed2(0.5,0.5*(1/1));
+				const fixed2 light1 = fixed2(sin(_Time.y*1.2+50.0)*1.0 + cos(_Time.y*0.4+10.0)*0.6,sin(_Time.y*1.2+100.0)*0.8 + cos(_Time.y*0.2+20.0)*-0.2)*0.2+center;
+				const fixed2 light2 = fixed2(sin(_Time.y+3.0)*-2.0,cos(_Time.y+7.0)*1.0)*0.2+center;
+				const fixed2 light3 = fixed2(sin(_Time.y+3.0)*2.0,cos(_Time.y+14.0)*-1.0)*0.2+center;
 
-				fixed2 light1 = fixed2(sin(_Time.y*1.2+50.0)*1.0 + cos(_Time.y*0.4+10.0)*0.6,sin(_Time.y*1.2+100.0)*0.8 + cos(_Time.y*0.2+20.0)*-0.2)*0.2+center;
-				fixed3 lightColor1 = fixed3(1.0, 0.3, 0.3);
+				const fixed cloudIntensity1 = _CloudIntensity1 * (1.0-(2.5*distance(uv, light1)));
+				const fixed lightIntensity1 = _LightIntensity1/(100.0*distance(uv,light1));
 
-				fixed2 light2 = fixed2(sin(_Time.y+3.0)*-2.0,cos(_Time.y+7.0)*1.0)*0.2+center;
-				fixed3 lightColor2 = fixed3(0.3, 1.0, 0.3);
+				const fixed cloudIntensity2 = _CloudIntensity2 * (1.0-(2.5*distance(uv, light2)));
+				const fixed lightIntensity2 = _LightIntensity2/(100.0*distance(uv,light2));
 
-				fixed2 light3 = fixed2(sin(_Time.y+3.0)*2.0,cos(_Time.y+14.0)*-1.0)*0.2+center;
-				fixed3 lightColor3 = fixed3(0.3, 0.3, 1.0);
+				const fixed cloudIntensity3 = _CloudIntensity3 * (1.0-(2.5*distance(uv, light3)));
+				const fixed lightIntensity3 = _LightIntensity3/(100.0*distance(uv,light3));
 
-				fixed cloudIntensity1 = 0.7*(1.0-(2.5*distance(uv, light1)));
-				fixed lighIntensity1 = 1.0/(100.0*distance(uv,light1));
-
-				fixed cloudIntensity2 = 0.7*(1.0-(2.5*distance(uv, light2)));
-				fixed lighIntensity2 = 1.0/(100.0*distance(uv,light2));
-
-				fixed cloudIntensity3 = 0.7*(1.0-(2.5*distance(uv, light3)));
-				fixed lighIntensity3 = 1.0/(100.0*distance(uv,light3));
-
-				return fixed4(GetCloudIntensity(cloudIntensity1, clouds(uv)) * lightColor1 + lighIntensity1*lightColor1 +
-				          GetCloudIntensity(cloudIntensity2, clouds(uv)) * lightColor2 + lighIntensity2*lightColor2 +
-				          GetCloudIntensity(cloudIntensity3, clouds(uv)) * lightColor3 + lighIntensity3*lightColor3 
+				return fixed4(GetCloudIntensity(cloudIntensity1, clouds(uv)) * _LightColor1.xyz + lightIntensity1 * _LightColor1.xyz +
+				          GetCloudIntensity(cloudIntensity2, clouds(uv)) * _LightColor2.xyz + lightIntensity2 * _LightColor2.xyz +
+				          GetCloudIntensity(cloudIntensity3, clouds(uv)) * _LightColor3.xyz + lightIntensity3 * _LightColor3.xyz 
 				          ,1.0);
 			}
 			ENDCG
