@@ -2,14 +2,13 @@
 using GanShin.AssetManagement;
 using JetBrains.Annotations;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using Zenject;
 
 namespace GanShin.UI
 {
 	[UsedImplicitly]
-    public class UIManager : IInitializable
+    public partial class UIManager : IInitializable
     {
 	    [Inject] private ResourceManager _resource;
 		
@@ -29,6 +28,8 @@ namespace GanShin.UI
 		    }
 	    }
 
+	    public GameObject GlobalRoot { get; private set; } = null;
+
 	    public UIManager()
 	    {
 		    SceneManager.sceneUnloaded += OnSceneUnLoaded;
@@ -36,13 +37,9 @@ namespace GanShin.UI
 
 	    public void Initialize()
 	    {
-		    Object eventSystem = Object.FindObjectOfType(typeof(EventSystem));
-		    if (ReferenceEquals(eventSystem, null))
-		    {
-			    eventSystem      = _resource.Instantiate("UI/EventSystem");
-			    eventSystem.name = "@EventSystem";
-		    }
-		    Object.DontDestroyOnLoad(eventSystem);
+		    AddEventSystem();
+		    AddGlobalUIRoot();
+		    InitializeGlobalUIs();
 	    }
 
 	    public void SetCanvas(GameObject go, bool sort = true)
