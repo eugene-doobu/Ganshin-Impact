@@ -6,7 +6,7 @@ Shader "Effect2D/LightsInSmoke"
 	Properties
 	{
 		// UI 에러 방지를 위한 프로퍼티
-		_MainTex ("Example (R16)", 2D) = "black" {}
+		_MainTex ("Not used texture", 2D) = "black" {}
 	}
 
 	SubShader
