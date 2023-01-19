@@ -5,7 +5,8 @@ Shader "Effect2D/LightsInSmoke"
 	// TODO: Add properties here
 	Properties
 	{
-		//Properties
+		// UI 에러 방지를 위한 프로퍼티
+		_MainTex ("Example (R16)", 2D) = "black" {}
 	}
 
 	SubShader
