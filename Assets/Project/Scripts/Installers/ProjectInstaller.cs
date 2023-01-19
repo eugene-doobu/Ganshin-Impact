@@ -27,7 +27,11 @@ namespace Ganshin
             Container.Bind<InputSystemManager>().AsSingle().NonLazy();
             Container.Bind<SceneManagerEx>().AsSingle().NonLazy();
             Container.Bind<SoundManager>().AsSingle().NonLazy();
-            Container.Bind<UIManager>().AsSingle().NonLazy();
+            Container.Bind(
+                    typeof(UIManager),
+                    typeof(IInitializable)
+                    )
+                    .To<UIManager>().AsSingle().NonLazy();
             Container.Bind(
                 typeof(CameraManager),
                 typeof(IInitializable),
