@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
+using UnityEngine;
 
 namespace GanShin.UI
 {
@@ -28,7 +29,7 @@ namespace GanShin.UI
             get => _progress;
             set
             {
-                _progress = value;
+                _progress = Mathf.Clamp(value, 0, 1f);
                 OnPropertyChanged();
             }
         }

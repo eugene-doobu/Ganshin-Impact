@@ -56,7 +56,6 @@ namespace GanShin.UI
 	    {
 		    AddEventSystem();
 		    AddGlobalUIRoot();
-		    InitializeGlobalUIs();
 	    }
     }
 }

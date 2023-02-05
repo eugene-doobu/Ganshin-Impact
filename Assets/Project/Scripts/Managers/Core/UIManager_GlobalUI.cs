@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Zenject;
 
 namespace GanShin.UI
 {
@@ -11,8 +12,16 @@ namespace GanShin.UI
     
     public partial class UIManager
     {
-        private readonly Dictionary<eGlobalUI, GameObject> _globalUIs = new ();
-        public GameObject GetGlobalUI(eGlobalUI ui) => 
+#region Define
+        public struct GlobalUIName
+        {
+            private const string Root    = "Prefabs/UI/Global/";
+            public static readonly string Loading = $"{Root}UI_LoadingScene";
+        }
+#endregion Define
+        
+        private readonly Dictionary<eGlobalUI, GlobalUIRootBase> _globalUIs = new ();
+        public GlobalUIRootBase GetGlobalUI(eGlobalUI ui) => 
             _globalUIs.ContainsKey(ui) ? _globalUIs[ui] : null;
             
         public void OnGlobalUI(eGlobalUI ui, bool isOn)
@@ -20,12 +29,12 @@ namespace GanShin.UI
             if (isOn)
             {
                 if (_globalUIs.ContainsKey(ui))
-                    _globalUIs[ui].SetActive(true);
+                    _globalUIs[ui].gameObject.SetActive(true);
             }
             else
             {
                 if (_globalUIs.ContainsKey(ui))
-                    _globalUIs[ui].SetActive(false);
+                    _globalUIs[ui].gameObject.SetActive(false);
             }
         }
 
@@ -45,25 +54,29 @@ namespace GanShin.UI
         {
             GlobalRoot = new GameObject {name = "@Global_UI_Root"};
             Object.DontDestroyOnLoad(GlobalRoot);
+
+            foreach (var obj in _globalUIs.Values)
+                obj.transform.SetParent(GlobalRoot.transform);
         }
 
-        private void InitializeGlobalUIs()
+        [Inject]
+        public void InjectGlobalUI(UIRootLoadingScene uiRootLoadingScene)
         {
-            AddLoadingSceneUI();
+            AddGlobalUI(uiRootLoadingScene, eGlobalUI.LOADING);
         }
 
-        /// <summary>
-        /// TODO: Zenject를 통한 방식으로 변경 필요
-        /// </summary>
-        private void AddLoadingSceneUI()
+        private void AddGlobalUI(GlobalUIRootBase root, eGlobalUI type)
         {
-            return;
-            GameObject loadingUI = _resource.Instantiate("UI/Global/UI_LoadingScene", GlobalRoot.transform);
-            loadingUI.transform.SetParent(GlobalRoot.transform);
-            loadingUI.transform.localPosition = Vector3.zero;
-            loadingUI.transform.localScale = Vector3.one;
-            loadingUI.SetActive(false);
-            _globalUIs.Add(eGlobalUI.LOADING, loadingUI);
+            var tr = root.transform;
+            if (!ReferenceEquals(GlobalRoot, null))
+                tr.SetParent(GlobalRoot.transform);
+            tr.localPosition = Vector3.zero;
+            tr.localScale = Vector3.one;
+
+            var obj = root.gameObject;
+            obj.SetActive(false);
+            
+            _globalUIs.Add(type, root);
         }
     }
 }

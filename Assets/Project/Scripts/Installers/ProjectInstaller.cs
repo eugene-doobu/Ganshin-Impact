@@ -52,7 +52,9 @@ namespace Ganshin
 
         private void InstallGlobalUIs()
         {
-            Container.Bind<GlobalUIRootBase>().FromComponentInNewPrefabResource("Prefabs/UI/Global/UI_LoadingScene").AsSingle()
+            Container.Bind<UIRootLoadingScene>()
+                .FromComponentInNewPrefabResource(UIManager.GlobalUIName.Loading)
+                .AsSingle()
                 .NonLazy();
         }
     }
