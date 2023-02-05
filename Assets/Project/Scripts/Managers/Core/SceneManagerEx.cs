@@ -1,24 +1,45 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
+using GanShin.UI;
 using JetBrains.Annotations;
-using UnityEngine;
 using UnityEngine.SceneManagement;
+using Zenject;
+using Object = UnityEngine.Object;
 
 namespace GanShin.SceneManagement
 {
     [UsedImplicitly]
     public class SceneManagerEx
     {
-        public BaseScene CurrentScene { get { return GameObject.FindObjectOfType<BaseScene>(); } }
+        [Inject] private UIManager          _ui;
+        [Inject] private UIRootLoadingScene _loadingScene;
+        [Inject(Id = LoadingSceneInstaller.ChangeSceneDelayId)] 
+        private float _changeSceneDelay;
+        
+        public BaseScene CurrentScene => Object.FindObjectOfType<BaseScene>();
 
         public SceneManagerEx()
         {
             SceneManager.sceneUnloaded += OnSceneUnLoaded;
         }
         
-        public void LoadScene(Define.eScene type)
+        public async UniTask LoadScene(Define.eScene type)
         {
-            SceneManager.LoadScene(GetSceneName(type));
+            _ui.OnGlobalUI(eGlobalUI.LOADING, true);
+            await SceneManager.LoadSceneAsync(GetSceneName(Define.eScene.LoadingScene)).ToUniTask();
+            await UniTask.Delay(TimeSpan.FromMilliseconds(_changeSceneDelay));
+            await SceneManager.LoadSceneAsync(GetSceneName(type))
+                .ToUniTask(Progress.Create<float>(ApplyProgressToLoadingBar));
+            await UniTask.NextFrame();
+            _ui.OnGlobalUI(eGlobalUI.LOADING, false);
+        }
+
+        private void ApplyProgressToLoadingBar(float x)
+        {
+            if (ReferenceEquals(_loadingScene, null)) return;
+            _loadingScene.SetProgress(x);
         }
 
         string GetSceneName(Define.eScene type)
@@ -29,7 +50,8 @@ namespace GanShin.SceneManagement
 
         private void OnSceneUnLoaded(Scene scene)
         {
-            CurrentScene.Clear();
+            if(CurrentScene != null)
+                CurrentScene.Clear();
         }
     }
 }

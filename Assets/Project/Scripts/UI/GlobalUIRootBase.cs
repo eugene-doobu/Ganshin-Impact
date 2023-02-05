@@ -10,6 +10,8 @@ namespace GanShin.UI
         {
             base.Awake();
         }
+
+        public abstract void InitializeContextData();
         
         public abstract void ClearContextData();
     }

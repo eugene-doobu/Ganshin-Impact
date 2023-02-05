@@ -15,4 +15,6 @@ MonoBehaviour:
   tips:
   - "\uBC84\uAC70\uC6B8\uB550 \uBC84\uAC70 \uBA39\uC5B4\uC694"
   - "\uACE0\uC591\uC774\uAC00 \uC800 \uCCD0\uB2E4\uBD10\uC694"
-  - "\uB0E5"
+  - "\uC624\uB298 \uB1CC \uC880 \uB290\uB9AC\uB2E4"
+  progressSmoothFactor: 12
+  changeSceneDelay: 100

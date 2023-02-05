@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 8672049831222675685}
   - component: {fileID: 4663624141220156253}
   - component: {fileID: 4417309515151907957}
-  - component: {fileID: 4316336910173198674}
+  - component: {fileID: 1843077420840214070}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Image_Progress
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -60,7 +60,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.241, g: 0.6993767, b: 1, a: 1}
+  m_Color: {r: 0.011115999, g: 0.4832676, b: 0.794, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -77,7 +77,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &4316336910173198674
+--- !u!114 &1843077420840214070
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -86,7 +86,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 218563606152397852}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6641a5718a78ca440a924e816259c0fe, type: 3}
+  m_Script: {fileID: 11500000, guid: 834fe4df156a8204a8a06bf6f5b55f28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Data:
@@ -102,8 +102,6 @@ MonoBehaviour:
     Reference: {fileID: 4417309515151907957}
     Type: 3
   constantTarget: {fileID: 0}
-  ChangePerSecond: 1
-  NeverReduceFillAmount: 0
 --- !u!1 &1744915595695391904
 GameObject:
   m_ObjectHideFlags: 0
@@ -374,7 +372,7 @@ GameObject:
   - component: {fileID: 6493773211707705557}
   - component: {fileID: 673129038977247363}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Text_Tip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -28,13 +28,15 @@ namespace GanShin.UI
         {
             if (isOn)
             {
-                if (_globalUIs.ContainsKey(ui))
-                    _globalUIs[ui].gameObject.SetActive(true);
+                if (!_globalUIs.ContainsKey(ui)) return;
+                _globalUIs[ui].gameObject.SetActive(true);
+                _globalUIs[ui].InitializeContextData();    
             }
             else
             {
-                if (_globalUIs.ContainsKey(ui))
-                    _globalUIs[ui].gameObject.SetActive(false);
+                if (!_globalUIs.ContainsKey(ui)) return;
+                _globalUIs[ui].ClearContextData();
+                _globalUIs[ui].gameObject.SetActive(false);
             }
         }
 
