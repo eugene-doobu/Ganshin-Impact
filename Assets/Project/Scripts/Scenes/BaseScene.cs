@@ -9,8 +9,6 @@ namespace GanShin.SceneManagement
 {
 	public abstract class BaseScene : MonoBehaviour
 	{
-		[Inject] private ResourceManager _resource;
-		
 		public Define.eScene ESceneType { get; protected set; } = Define.eScene.Unknown;
 
 		void Awake()
@@ -20,9 +18,6 @@ namespace GanShin.SceneManagement
 
 		protected virtual void Init()
 		{
-			Object obj = GameObject.FindObjectOfType(typeof(EventSystem));
-			if (obj == null)
-				_resource.Instantiate("UI/EventSystem").name = "@EventSystem";
 		}
 
 		public abstract void Clear();
