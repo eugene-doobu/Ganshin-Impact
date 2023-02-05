@@ -17,6 +17,7 @@
         {
             Unknown,
             LoadingScene,
+            LobbyScene,
             Demo,
             Login,
             Lobby,

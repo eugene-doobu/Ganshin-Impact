@@ -6,9 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/External/PolygonSamurai/Scenes/Demo.unity
-    guid: 9a36afe203cf34b4fad518f34185f921
+    path: Assets/Project/Scenes/LobbyScene.unity
+    guid: 9e24a5c9e4d59f9488f9ff751b205fbc
   - enabled: 1
     path: Assets/Project/Scenes/LoadingScene.unity
     guid: a5704a75490fd90409e1df7e402c366e
+  - enabled: 1
+    path: Assets/External/PolygonSamurai/Scenes/Demo.unity
+    guid: 9a36afe203cf34b4fad518f34185f921
   m_configObjects: {}
