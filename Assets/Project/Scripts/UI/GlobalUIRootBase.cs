@@ -8,7 +8,7 @@ namespace GanShin.UI
     {
         protected override void Awake()
         {
-            
+            base.Awake();
         }
         
         public abstract void ClearContextData();

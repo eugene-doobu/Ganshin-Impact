@@ -17,9 +17,7 @@ namespace Ganshin
         {
             InstallManagers();
             InstallCameras();
-
-            Container.Bind<GlobalUIRootBase>().FromComponentInNewPrefabResource("Prefabs/UI/Global/UI_LoadingScene").AsSingle()
-                .NonLazy();
+            InstallGlobalUIs();
         }
         
         private void InstallManagers()
@@ -50,6 +48,12 @@ namespace Ganshin
         private void InstallCameras()
         {
             Container.Bind<CharacterCamera>().AsSingle().NonLazy();
+        }
+
+        private void InstallGlobalUIs()
+        {
+            Container.Bind<GlobalUIRootBase>().FromComponentInNewPrefabResource("Prefabs/UI/Global/UI_LoadingScene").AsSingle()
+                .NonLazy();
         }
     }
 }

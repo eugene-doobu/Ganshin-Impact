@@ -1,5 +1,4 @@
 using System.ComponentModel;
-using UnityEngine;
 
 namespace GanShin.UI
 {
@@ -10,18 +9,6 @@ namespace GanShin.UI
         
         protected override INotifyPropertyChanged InitializeDataContext() =>
             new LoadingSceneDataContext();
-
-        public void Update()
-        {
-            if(Input.GetKeyDown("]"))
-            {
-                LoadingSceneDataContext.Progress += 0.1f;
-            }
-            else if (Input.GetKeyDown("["))
-            {
-                LoadingSceneDataContext.Progress -= 0.1f;
-            }
-        }
 
         public override void ClearContextData()
         {
