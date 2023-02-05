@@ -1,0 +1,16 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace GanShin.UI
+{
+    public abstract class GlobalUIRootBase : UIRootBase
+    {
+        protected override void Awake()
+        {
+            
+        }
+        
+        public abstract void ClearContextData();
+    }
+}

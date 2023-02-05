@@ -30,8 +30,8 @@ Material:
     m_Ints: []
     m_Floats:
     - _CloudIntensity1: 0.5
-    - _CloudIntensity2: 1
-    - _CloudIntensity3: 1
+    - _CloudIntensity2: 0.5
+    - _CloudIntensity3: 0.5
     - _LightIntensity1: 1
     - _LightIntensity2: 1
     - _LightIntensity3: 1
