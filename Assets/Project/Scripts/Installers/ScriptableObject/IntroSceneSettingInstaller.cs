@@ -5,8 +5,8 @@ using Zenject;
 
 namespace GanShin
 {    
-    [CreateAssetMenu(menuName = "Installers/LobbySettingInstaller")]
-    public class LobbySettingInstaller : ScriptableObjectInstaller<LobbySettingInstaller>
+    [CreateAssetMenu(menuName = "Installers/IntroSceneSettingInstaller")]
+    public class IntroSceneSettingInstaller : ScriptableObjectInstaller<IntroSceneSettingInstaller>
     {
         [Serializable][UsedImplicitly]
         public class BridgeSettings

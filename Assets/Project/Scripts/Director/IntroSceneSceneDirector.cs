@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace GanShin.Director
 {
-    public class LoginSceneDirector : TimelineDirector
+    public class IntroSceneSceneDirector : TimelineDirector
     {
         // TODO 
     }
