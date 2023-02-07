@@ -3,7 +3,7 @@ using JetBrains.Annotations;
 using UnityEngine;
 using Zenject;
 
-namespace GanShin
+namespace GanShin.Director.IntroScene
 {    
     [CreateAssetMenu(menuName = "Installers/IntroSceneSettingInstaller")]
     public class IntroSceneSettingInstaller : ScriptableObjectInstaller<IntroSceneSettingInstaller>
@@ -11,6 +11,8 @@ namespace GanShin
         [Serializable][UsedImplicitly]
         public class BridgeSettings
         {
+            public int   numberOfBridge         = 30;
+            public int   numOfY0BridgeWhenStart = 2;
             public float bridgeDistanceInterval = 5f;
             public float bridgeUpSpeed          = 1f;
             public float bridgeSpawnYPosition   = -2.5f;
@@ -35,11 +37,20 @@ namespace GanShin
         
         public BridgeSettings bridgeSettings;
         public BridgePrefabs  bridgePrefabs;
+        public string directorPrefabPath = "Prefabs/Decoration/IntroScene/IntroSceneDirector";
 
         public override void InstallBindings()
         {            
-            Container.BindInstance(bridgeSettings);
-            Container.BindInstance(bridgePrefabs);
+            Container.BindInstance(bridgeSettings)
+                .AsSingle()
+                .NonLazy();;
+            Container.BindInstance(bridgePrefabs)
+                .AsSingle()
+                .NonLazy();;
+            Container.Bind<IntroSceneSceneDirector>()
+                .FromComponentInNewPrefabResource(directorPrefabPath)
+                .AsSingle()
+                .NonLazy();
         }
     }
 }

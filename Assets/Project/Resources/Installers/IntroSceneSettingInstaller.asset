@@ -13,11 +13,12 @@ MonoBehaviour:
   m_Name: IntroSceneSettingInstaller
   m_EditorClassIdentifier: 
   bridgeSettings:
+    numberOfBridge: 10
     bridgeDistanceInterval: 5
     bridgeUpSpeed: 1
     bridgeSpawnYPosition: -2.5
     bridge1SpawnRate: 0.8
-    pillarSpawnRate: 0.3
+    pillarSpawnRate: 0.4
     pillar1SpawnRate: 0.3
     pillar2SpawnRate: 0.3
   bridgePrefabs:
@@ -26,3 +27,4 @@ MonoBehaviour:
     pillar1: {fileID: 1470111321101913718, guid: 7abffffb99b37d340a796921c17301e7, type: 3}
     pillar2: {fileID: 3457327108819025257, guid: 9be3fe95b61b2de49bf0a9b2ef2d6930, type: 3}
     pillar3: {fileID: 9199229787048172971, guid: 9c48a7983059eac4fb0ab585ef00c9bc, type: 3}
+  directorPrefabPath: Prefabs/Decoration/IntroScene/IntroSceneDirector
