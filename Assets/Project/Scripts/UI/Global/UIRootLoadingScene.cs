@@ -8,10 +8,10 @@ namespace GanShin.UI
 {
     public class UIRootLoadingScene : GlobalUIRootBase
     {
-        [Inject(Id = LoadingSceneInstaller.TipsId)] 
+        [Inject(Id = LoadingSettingInstaller.TipsId)] 
         private List<string> _tips;
         
-        [Inject(Id = LoadingSceneInstaller.ProgressSmoothFactorId)] 
+        [Inject(Id = LoadingSettingInstaller.ProgressSmoothFactorId)] 
         private float _progressSmoothFactor;
         
         public LoadingSceneDataContext LoadingSceneDataContext => 

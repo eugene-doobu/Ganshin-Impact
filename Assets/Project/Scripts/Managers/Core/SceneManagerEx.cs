@@ -15,7 +15,7 @@ namespace GanShin.SceneManagement
     {
         [Inject] private UIManager          _ui;
         [Inject] private UIRootLoadingScene _loadingScene;
-        [Inject(Id = LoadingSceneInstaller.ChangeSceneDelayId)] 
+        [Inject(Id = LoadingSettingInstaller.ChangeSceneDelayId)] 
         private float _changeSceneDelay;
         
         public BaseScene CurrentScene => Object.FindObjectOfType<BaseScene>();
