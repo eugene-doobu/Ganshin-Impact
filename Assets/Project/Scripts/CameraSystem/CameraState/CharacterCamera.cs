@@ -204,7 +204,6 @@ namespace GanShin.CameraSystem
         {
             value       *= _zoomMagnitude;
             _targetZoom =  Mathf.Clamp(_targetZoom + value, _zoomMinValue, _zoomMaxValue);
-            Debug.LogWarning(_targetZoom);
         }
 
         #endregion Input

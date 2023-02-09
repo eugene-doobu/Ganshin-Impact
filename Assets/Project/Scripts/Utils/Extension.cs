@@ -28,11 +28,6 @@ namespace GanShin
 			return null;
 		}
 
-		public static void BindEvent(this GameObject go, Action<PointerEventData> action, Define.eUIEvent type = Define.eUIEvent.Click)
-		{
-			UI_Base.BindEvent(go, action, type);
-		}
-
 		public static bool IsValid(this GameObject go)
 		{
 			return go != null && go.activeSelf;

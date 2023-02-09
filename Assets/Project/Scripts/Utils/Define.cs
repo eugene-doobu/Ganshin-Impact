@@ -16,6 +16,9 @@
         public enum eScene
         {
             Unknown,
+            LoadingScene,
+            LobbyScene,
+            Demo,
             Login,
             Lobby,
             Game,

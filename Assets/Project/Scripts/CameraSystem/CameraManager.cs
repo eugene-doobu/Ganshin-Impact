@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Cinemachine;
 using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Zenject;
 
 #nullable enable
@@ -53,6 +54,7 @@ namespace GanShin.CameraSystem
         [UsedImplicitly]
         public CameraManager()
         {
+            SceneManager.sceneUnloaded += OnSceneUnLoaded;
         }
         
         public void Initialize()
@@ -69,6 +71,11 @@ namespace GanShin.CameraSystem
         public void LateTick()
         {
             _currentCamera?.OnLateUpdate();
+        }
+
+        private void OnSceneUnLoaded(Scene scene)
+        {
+            MainCamera = null;
         }
 
         public void ChangeTarget(Transform transform)

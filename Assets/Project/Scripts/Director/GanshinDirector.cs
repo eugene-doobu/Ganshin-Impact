@@ -1,7 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Playables;
 
@@ -14,17 +10,14 @@ namespace GanShin.Director
     {
         public PlayableDirector? PlayableDirector { get; set; }
         
-        #region MonoBehaviour
-
+#region MonoBehaviour
         protected virtual void Awake()
         {
             PlayableDirector = GetComponent<PlayableDirector>();
         }
+#endregion MonoBehaviour
 
-        #endregion MonoBehaviour
-
-        #region PlayableDirector
-
+#region PlayableDirector
         public virtual void Play(IDirectorMessage? message = null)
         {
             PlayableDirector!.Play();
@@ -44,7 +37,6 @@ namespace GanShin.Director
         {
             PlayableDirector!.Pause();
         }
-        
-        #endregion PlayableDirector
+#endregion PlayableDirector
     }
 }

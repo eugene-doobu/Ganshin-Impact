@@ -1,29 +1,19 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using Cysharp.Threading.Tasks;
 using UnityEngine;
+using Zenject;
 
 namespace GanShin.SceneManagement
 {
     public class GameScene : BaseScene
     {
+        [Inject] private SceneManagerEx _scene;
+        
         protected override void Init()
         {
             base.Init();
-
-            ESceneType = Define.eScene.Game;
-            //Managers.UI.ShowSceneUI<UI_Inven>();
-            //Dictionary<int, Data.Stat> dict = Managers.Data.StatDict;
-            //gameObject.GetOrAddComponent<CursorController>();
-
-            //GameObject player = Managers.Game.Spawn(Define.WorldObject.Player, "UnityChan");
-            //Camera.main.gameObject.GetOrAddComponent<CameraController>().SetPlayer(player);
-
-            ////Managers.Game.Spawn(Define.WorldObject.Monster, "Knight");
-            //GameObject go = new GameObject { name = "SpawningPool" };
-            //SpawningPool pool = go.GetOrAddComponent<SpawningPool>();
-            //pool.SetKeepMonsterCount(2);
+            ESceneType = Define.eScene.Demo;
         }
-
+        
         public override void Clear()
         {
         
