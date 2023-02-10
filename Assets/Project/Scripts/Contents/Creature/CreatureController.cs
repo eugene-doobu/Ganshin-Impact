@@ -7,28 +7,28 @@ namespace GanShin.Content.Creature
 {
     public abstract class CreatureController : MonoBehaviour
     {
-        #region Variables
+#region Variables
 
         private bool     _hasAnimator;
         private Animator _objAnimator;
-        
-        #endregion Variables
 
-        #region Properties
+#endregion Variables
+
+#region Properties
 
         protected Animator ObjAnimator => _objAnimator;
-        protected bool HasAnimator => _hasAnimator;
-        
-        #endregion Properties
+        protected bool     HasAnimator => _hasAnimator;
 
-        #region TableData // TODO: 별도의 클래스로 분리 후 json 파일로 관리 예정
+#endregion Properties
 
-        [SerializeField]
-        protected float _moveSpeed   = 4f;
+#region TableData // TODO: 별도의 클래스로 분리 후 json 파일로 관리 예정
 
-        #endregion TableData
-        
-        #region Mono
+        [SerializeField] protected float _moveSpeed = 4f;
+
+#endregion TableData
+
+#region Mono
+
         // TODO: MapController의 Init로 변경
         protected virtual void Awake()
         {
@@ -38,7 +38,6 @@ namespace GanShin.Content.Creature
 
         protected virtual void Start()
         {
-        
         }
 
         // TODO: MapController의 OnUpdate로 변경
@@ -46,7 +45,8 @@ namespace GanShin.Content.Creature
         {
             Movement(_moveSpeed);
         }
-        #endregion Mono
+
+#endregion Mono
 
         protected abstract void Movement(float moveSpeed);
     }
