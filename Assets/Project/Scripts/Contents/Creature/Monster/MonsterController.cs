@@ -12,7 +12,18 @@ namespace GanShin.Content.Creature.Monster
     {
         protected Transform Target;
 
-        [field: SerializeField, ReadOnly] public eMonsterState State { get; protected set; } = eMonsterState.CREATED;
+        [field: SerializeField, ReadOnly]
+        private eMonsterState state;
+
+        public virtual eMonsterState State
+        {
+            get => state;
+            protected set
+            {
+                if(state == value) return;
+                state = value;
+            }
+        }
 
         protected override void Awake()
         {
