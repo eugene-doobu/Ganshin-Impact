@@ -1,7 +1,13 @@
 using UnityEngine;
 
-namespace GanShin.Content.Creature.Monsters
+namespace GanShin.Content.Creature.Monster
 {
+    public enum eFieldMonsterType
+    {
+        DEFAULT,
+        HUMANOID,
+    }
+    
     public abstract class FieldMonsterAnimBase
     {
         public abstract void Initialize(Animator animator);

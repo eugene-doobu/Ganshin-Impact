@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using GanShin.Content.Creature.Monsters;
 using UnityEngine;
 
 namespace GanShin.Content.Creature.Monster
@@ -11,7 +10,7 @@ namespace GanShin.Content.Creature.Monster
     /// </summary>
     public class FieldMonsterAnimatorController : FieldMonsterAnimBase
     {
-        private enum eAnimation
+        private enum eAnimState
         {
             IDLE = 1,
             MOVE,
@@ -22,39 +21,44 @@ namespace GanShin.Content.Creature.Monster
         
         private static readonly int AnimParam = Animator.StringToHash("animation");
         
+        private float    _attackAnimLength;
         private Animator _animator;
         private bool     _isInitialized;
-        
-        private eAnimation _currentAnimation;
 
         public override void Initialize(Animator animator)
         {
-            _animator = animator;
+            _animator      = animator;
+            _isInitialized = true;
         }
 
         public override void OnAttack()
         {
             if (!_isInitialized) return;
+            _animator.SetInteger(AnimParam, (int) eAnimState.ATTACK);
         }
 
         public override void OnDamaged()
         {
             if (!_isInitialized) return;
+            _animator.SetInteger(AnimParam, (int) eAnimState.DAMAGED);
         }
 
         public override void OnDie()
         {
             if (!_isInitialized) return;
+            _animator.SetInteger(AnimParam, (int) eAnimState.DIE);
         }
 
         public override void OnIdle()
         {
             if (!_isInitialized) return;
+            _animator.SetInteger(AnimParam, (int) eAnimState.IDLE);
         }
 
         public override void OnMove()
         {
             if (!_isInitialized) return;
+            _animator.SetInteger(AnimParam, (int) eAnimState.MOVE);
         }
     }
 }
