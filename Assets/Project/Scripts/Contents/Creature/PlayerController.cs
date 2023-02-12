@@ -15,83 +15,72 @@ namespace GanShin.Content.Creature
     [RequireComponent(typeof(CharacterController))]
     public class PlayerController : CreatureController
     {
-        #region Static
+#region Static
 
         private static int ANIM_PRAM_HASH_ISMOVE       = Animator.StringToHash("IsMove");
         private static int ANIM_PRAM_HASH_MOVE_SPEED   = Animator.StringToHash("MoveSpeed");
         private static int ANIM_PRAM_HASH_ROLL_START   = Animator.StringToHash("RollStart");
         private static int ANIM_PRAM_HASH_ATTACK_STATE = Animator.StringToHash("AttackState");
         private static int ANIM_PRAM_HASH_SET_IDLE     = Animator.StringToHash("SetIdle");
-        
-        #endregion Static
-        
-        #region Variables
-        
+
+#endregion Static
+
+#region Variables
+
         [Inject] private InputSystemManager _input;
         [Inject] private CameraManager      _camera;
-        
+
         private CharacterController _characterController;
 
         private Transform _tr;
         private Transform _wristLeftTr;
         private Transform _wristRightTr;
-        
+
         private Vector2 _lastMovementValue;
 
         private float _moveAnimValue;
-        
-        [SerializeField]
-        private PlayerWeaponBase _weapon;
 
-        [SerializeField] 
-        private float rotationSmoothFactor = 8f;
-        
-        [SerializeField] 
-        private float rollCooldown = 0.5f;
-         
-        [SerializeField]
-        private float _gravity = -1f;
-        
+        [SerializeField] private PlayerWeaponBase _weapon;
+
+        [SerializeField] private float rotationSmoothFactor = 8f;
+
+        [SerializeField] private float rollCooldown = 0.5f;
+
+        [SerializeField] private float _gravity = -1f;
+
         private bool _canRoll = true;
         private bool _desiredRoll;
 
-        [Space] 
-        [Header("GroundCheck")]
-        [SerializeField]
+        [Space] [Header("GroundCheck")] [SerializeField]
         private float _rayStartPosOffset = 0.3f;
-        [SerializeField] 
-        private float _groundCheckDistance = 0.5f;
-        [SerializeField] 
-        private float _groundCheckRadius = 0.1f;
-        [SerializeField] 
-        private LayerMask _groundLayerMask;
-        
+
+        [SerializeField] private float     _groundCheckDistance = 0.5f;
+        [SerializeField] private float     _groundCheckRadius   = 0.1f;
+        [SerializeField] private LayerMask _groundLayerMask;
+
         [Space]
         // TODO: Attack 관련 내용 별도의 클래스를 조합하여 관리
         [Header("Attack")]
         [SerializeField]
         private float _attackCooldown = 0.2f;
 
-        [SerializeField] 
-        private float _attackToIdleTime = 1f;
+        [SerializeField] private float _attackToIdleTime = 1f;
 
-        [field: SerializeField, ReadOnly] 
-        public ePlayerAttack PlayerAttack { get; private set; }
+        [field: SerializeField, ReadOnly] public ePlayerAttack PlayerAttack { get; private set; }
 
-        [SerializeField] 
-        private bool _isOnUltimate;
-        
+        [SerializeField] private bool _isOnUltimate;
+
         private bool _canAttack = true;
         private bool _desiredAttack;
 
         private bool _isOnGround;
-        
+
         private CancellationTokenSource _attackCancellationTokenSource;
-        private bool _isOnAttack;
+        private bool                    _isOnAttack;
 
-        #endregion Variables
+#endregion Variables
 
-        #region Mono
+#region Mono
 
         protected override void Awake()
         {
@@ -108,7 +97,7 @@ namespace GanShin.Content.Creature
             // TODO: 매니저격 클래스에서 셋팅할 예정
             _camera.ChangeTarget(_tr);
         }
-        
+
         protected override void Update()
         {
             CheckOnGround();
@@ -123,15 +112,15 @@ namespace GanShin.Content.Creature
             RemoveInputEvent();
         }
 
-        #endregion Mono
+#endregion Mono
 
-        #region StateCheck
+#region StateCheck
 
         private void InitializeAvatar()
         {
             _characterController = GetComponent<CharacterController>();
             _tr                  = GetComponent<Transform>();
-            
+
             _wristLeftTr  = _tr.RecursiveFind(AvatarDefine.WristLeftBone);
             _wristRightTr = _tr.RecursiveFind(AvatarDefine.WristRightBone);
         }
@@ -144,7 +133,8 @@ namespace GanShin.Content.Creature
         protected void CheckOnGround()
         {
             var rayStartPos = _tr.position + Vector3.up * _rayStartPosOffset;
-            if (Physics.SphereCast(rayStartPos, _groundCheckRadius, Vector3.down, out var hit, _groundCheckDistance, _groundLayerMask))
+            if (Physics.SphereCast(rayStartPos, _groundCheckRadius, Vector3.down, out var hit, _groundCheckDistance,
+                    _groundLayerMask))
             {
                 _isOnGround = true;
             }
@@ -154,18 +144,18 @@ namespace GanShin.Content.Creature
             }
         }
 
-        #endregion StateCheck
+#endregion StateCheck
 
         protected virtual void LoadData()
         {
             // Json 형식의 데이터를 읽어서 해당 캐릭터의 스텟을 설정
         }
-        
+
         private void AddInputEvent()
         {
             if (_input.GetActionMap(eActiomMap.PLAYER_MOVEMENT) is not ActionMapPlayerMove actionMap)
             {
-                GanDebugger.LogError(nameof(PlayerController),"actionMap is null!");
+                GanDebugger.LogError(nameof(PlayerController), "actionMap is null!");
                 return;
             }
 
@@ -192,7 +182,7 @@ namespace GanShin.Content.Creature
             actionMap.OnUltimateSkill -= OnUltimateSkill;
         }
 
-        #region Movement
+#region Movement
 
         protected override void Movement(float moveSpeed)
         {
@@ -218,18 +208,19 @@ namespace GanShin.Content.Creature
         private void PlayMovementAnimation()
         {
             if (!HasAnimator) return;
-            
-            _moveAnimValue = Mathf.Lerp(_moveAnimValue, _lastMovementValue.magnitude, rotationSmoothFactor * Time.deltaTime);
-            
+
+            _moveAnimValue = Mathf.Lerp(_moveAnimValue, _lastMovementValue.magnitude,
+                rotationSmoothFactor * Time.deltaTime);
+
             ObjAnimator.SetBool(ANIM_PRAM_HASH_ISMOVE, _lastMovementValue != Vector2.zero);
             ObjAnimator.SetFloat(ANIM_PRAM_HASH_MOVE_SPEED, _moveAnimValue);
         }
-        
+
         private void Roll()
         {
             if (!_desiredRoll) return;
             _desiredRoll = false;
-            
+
             if (!_canRoll) return;
             PlayRollAnimation();
             DelayRoll().Forget();
@@ -253,20 +244,20 @@ namespace GanShin.Content.Creature
             _characterController.Move(Vector3.up * _gravity * Time.deltaTime);
         }
 
-        #endregion Movement
+#endregion Movement
 
-        #region Attack
+#region Attack
 
         // TODO: 캐릭터별로 다르게 처리 + 별도의 공격 클래스를 만들어서 처리
         private void Attack()
         {
             if (!_desiredAttack) return;
             _desiredAttack = false;
-            
+
             if (!_canAttack) return;
             _canAttack = false;
             DelayAttack().Forget();
-            
+
             bool _isTryAttack = false;
             switch (PlayerAttack)
             {
@@ -281,6 +272,7 @@ namespace GanShin.Content.Creature
                         PlayerAttack = ePlayerAttack.RIKO_ULTI_ATTAK1;
                         ObjAnimator.SetInteger(ANIM_PRAM_HASH_ATTACK_STATE, 5);
                     }
+
                     _isTryAttack = true;
                     break;
                 case ePlayerAttack.RIKO_BASIC_ATTAK1:
@@ -331,23 +323,23 @@ namespace GanShin.Content.Creature
             await UniTask.Delay(TimeSpan.FromSeconds(_attackCooldown));
             _canAttack = true;
         }
-        
+
         private async UniTask ReturnToIdle()
         {
             _isOnAttack = true;
-            
-            await UniTask.Delay(TimeSpan.FromSeconds(_attackToIdleTime), cancellationToken:                 
+
+            await UniTask.Delay(TimeSpan.FromSeconds(_attackToIdleTime), cancellationToken:
                 _attackCancellationTokenSource.Token);
-            
+
             _canAttack   = true;
             _isOnAttack  = false;
             PlayerAttack = ePlayerAttack.NONE;
             ObjAnimator.SetTrigger(ANIM_PRAM_HASH_SET_IDLE);
             ObjAnimator.SetInteger(ANIM_PRAM_HASH_ATTACK_STATE, 0);
-            
+
             DisposeAttackCancellationTokenSource();
         }
-        
+
         private void DisposeAttackCancellationTokenSource()
         {
             if (_attackCancellationTokenSource == null) return;
@@ -356,44 +348,42 @@ namespace GanShin.Content.Creature
             _attackCancellationTokenSource = null;
         }
 
-        #endregion Attack
-        
-        #region ActionEvent
+#endregion Attack
+
+#region ActionEvent
 
         /// 이동류: 모든 캐릭터가 동일한 로직을 사용, 스텟의 차이만 있음
-         
         protected virtual void OnMovement(Vector2 value)
         {
             _lastMovementValue = value;
         }
-        
+
         protected virtual void OnDash(bool value)
         {
-            
         }
-        
+
         protected virtual void OnInteraction(bool value)
         {
         }
-        
+
         protected virtual void OnRoll()
         {
             if (_isOnGround) _desiredRoll = true;
         }
-        
+
         protected virtual void OnAttack(bool value)
-        {               
+        {
             if (_isOnGround) _desiredAttack = true;
         }
-        
+
         protected virtual void OnBaseSkill(bool value)
         {
         }
-        
+
         protected virtual void OnUltimateSkill(bool value)
         {
         }
-        
-        #endregion ActionEvent
+
+#endregion ActionEvent
     }
 }

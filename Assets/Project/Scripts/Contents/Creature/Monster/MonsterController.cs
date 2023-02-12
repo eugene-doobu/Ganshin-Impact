@@ -8,79 +8,67 @@ using UnityEngine;
 
 namespace GanShin.Content.Creature.Monster
 {
-    [RequireComponent(typeof(Rigidbody))]
     public abstract class MonsterController : CreatureController, IDisposable
     {
-        protected Rigidbody Rigidbody;
         protected Transform Target;
 
-        private CancellationTokenSource _cancellationTokenSource; 
+        [field: SerializeField, ReadOnly]
+        private eMonsterState state;
 
-        [field:SerializeField, ReadOnly]
-        public eMonsterState State { get; protected set; } = eMonsterState.CREATED;
-        
+        public virtual eMonsterState State
+        {
+            get => state;
+            protected set
+            {
+                if(state == value) return;
+                state = value;
+            }
+        }
+
         protected override void Awake()
         {
             base.Awake();
-            InitializeRigidBody();
         }
 
         protected override void Start()
         {
             base.Start();
-            
-            _cancellationTokenSource = new CancellationTokenSource();
-            StateMachine().Forget();
         }
 
         protected virtual void OnDestroy()
         {
-            DisposeCancellationToken();
         }
 
-        public void DisposeCancellationToken()
+        protected override void Update()
         {
-            _cancellationTokenSource?.Cancel();
-            _cancellationTokenSource?.Dispose();
-            _cancellationTokenSource = null;
-        }
-
-        private async UniTask StateMachine()
-        {
-            if (_cancellationTokenSource == null) return;
-            while (true)
+            switch (State)
             {
-                switch (State)
-                {
-                    case eMonsterState.CREATED:
-                        ProcessCreated();
-                        break;
-                    case eMonsterState.IDLE:
-                        ProcessIdle();
-                        break;
-                    case eMonsterState.TRACING:
-                        ProcessTracing();
-                        break;
-                    case eMonsterState.KNOCK_BACK:
-                        ProcessKnockBack();
-                        break;
-                    case eMonsterState.ATTACK:
-                        ProcessAttack();
-                        break;
-                    case eMonsterState.DEAD:
-                        ProcessDead();
-                        break;
-                }
-                await UniTask.Yield(_cancellationTokenSource.Token);
+                case eMonsterState.CREATED:
+                    ProcessCreated();
+                    break;
+                case eMonsterState.IDLE:
+                    ProcessIdle();
+                    break;
+                case eMonsterState.TRACING:
+                    ProcessTracing();
+                    break;
+                case eMonsterState.KNOCK_BACK:
+                    ProcessKnockBack();
+                    break;
+                case eMonsterState.ATTACK:
+                    ProcessAttack();
+                    break;
+                case eMonsterState.DEAD:
+                    ProcessDead();
+                    break;
             }
         }
 
         public void Dispose()
         {
-            
         }
 
-        #region ProcessState
+#region ProcessState
 
         protected abstract void ProcessCreated();
         protected abstract void ProcessIdle();
@@ -89,12 +77,6 @@ namespace GanShin.Content.Creature.Monster
         protected abstract void ProcessAttack();
         protected abstract void ProcessDead();
 
-        #endregion ProcessState
-
-        private void InitializeRigidBody()
-        {
-            Rigidbody             = GetComponent<Rigidbody>();
-            Rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
-        }
+#endregion ProcessState
     }
 }
