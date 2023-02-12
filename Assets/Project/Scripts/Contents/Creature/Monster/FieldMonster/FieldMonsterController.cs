@@ -2,6 +2,7 @@
 
 using System;
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -18,6 +19,10 @@ namespace GanShin.Content.Creature.Monster
         [SerializeField] protected float traceRange     = 12f;
         [SerializeField] protected float attackDamage   = 10f;
         [SerializeField] protected float attackDuration = 1f;
+        [SerializeField] protected float destroyDelay   = 5f;
+        [SerializeField] protected float knockDuration  = 0.5f;
+        [SerializeField] protected float knockBackPower = 5f;
+        [SerializeField] protected Ease  knockBackEase  = Ease.InOutSine;
         
         [SerializeField] protected eFieldMonsterType monsterType = eFieldMonsterType.DEFAULT;
 
@@ -26,8 +31,10 @@ namespace GanShin.Content.Creature.Monster
         private CapsuleCollider      _capsuleCollider = null!;
         private FieldMonsterAnimBase _animController  = null!;
         
-        protected float _attackTimer;
-        private bool _isAttacking;
+        private float _attackTimer;
+        private bool  _isAttacking;
+        private bool  _isKnockBack;
+        private bool  _isDead;
 
         public override eMonsterState State
         {
@@ -161,6 +168,9 @@ namespace GanShin.Content.Creature.Monster
 
         protected override void ProcessKnockBack()
         {
+            if (_isKnockBack) return;
+            _isKnockBack = true; 
+            KnockBack().Forget();
         }
 
         protected override void ProcessAttack()
@@ -179,8 +189,12 @@ namespace GanShin.Content.Creature.Monster
             DoAttack().Forget();
         }
 
+        // TODO: 고민. 풀링을 할 것인가 그냥 죽일것인가.
         protected override void ProcessDead()
         {
+            if (_isDead) return;
+            _isDead = true;
+            DestroyOnDead().Forget();
         }
 
         private bool TryChangeStateToIdle(float distance)
@@ -233,6 +247,42 @@ namespace GanShin.Content.Creature.Monster
             _isAttacking = false;
             _animController.OnIdle();
         }
+        
+        private async UniTask KnockBack()
+        {
+            var targetPosition = Target.position;
+            var distance       = Vector3.Distance(transform.position, targetPosition);
+            
+            transform.DOMove(transform.forward * -knockBackPower, knockDuration).SetEase(knockBackEase);
+            await UniTask.Delay(TimeSpan.FromSeconds(knockDuration));
+            _isKnockBack = false;
+            
+            if (TryChangeStateToAttack(distance)) return;
+            if (TryChangeStateToTracing(distance)) return;
+            State = eMonsterState.IDLE;
+        }
+        
+        private async UniTask DestroyOnDead()
+        {
+            await UniTask.Delay(TimeSpan.FromSeconds(destroyDelay));
+            Destroy(gameObject);
+        }
 #endregion Helper
+
+#region Debug
+#if UNITY_EDITOR
+        [ContextMenu("TestDead")]
+        public void TestDead()
+        {
+            State = eMonsterState.DEAD;
+        }
+
+        [ContextMenu("TestKnockBack")]
+        public void TestKnockBack()
+        {
+            State = eMonsterState.KNOCK_BACK;
+        }
+#endif
+#endregion Debug
     }
 }

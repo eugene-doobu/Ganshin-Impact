@@ -1183,9 +1183,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _moveSpeed: 4
-  <State>k__BackingField: 0
+  state: 0
   monsterSight: 10
   rotationSmoothFactor: 8
+  attackRange: 2
+  attackDelay: 2
+  traceRange: 12
+  attackDamage: 10
+  attackDuration: 1
+  monsterType: 0
 --- !u!195 &2258042981836986433
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1340,62 +1346,3 @@ PrefabInstance:
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: fe3d35f5c513a0340a13e623f29aca79, type: 3}
---- !u!1001 &8954231686739185131
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 2
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 3576099855355499437, guid: 11122277f7dd9a54e842f0d3b47a9bd9, type: 3}
-      propertyPath: m_Name
-      value: Character_BR_BigOrk_01
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582013310289269767, guid: 11122277f7dd9a54e842f0d3b47a9bd9, type: 3}
-      propertyPath: m_RootOrder
-      value: 11
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582013310289269767, guid: 11122277f7dd9a54e842f0d3b47a9bd9, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -2.0820513
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582013310289269767, guid: 11122277f7dd9a54e842f0d3b47a9bd9, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582013310289269767, guid: 11122277f7dd9a54e842f0d3b47a9bd9, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -6.267708
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582013310289269767, guid: 11122277f7dd9a54e842f0d3b47a9bd9, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582013310289269767, guid: 11122277f7dd9a54e842f0d3b47a9bd9, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582013310289269767, guid: 11122277f7dd9a54e842f0d3b47a9bd9, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582013310289269767, guid: 11122277f7dd9a54e842f0d3b47a9bd9, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582013310289269767, guid: 11122277f7dd9a54e842f0d3b47a9bd9, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582013310289269767, guid: 11122277f7dd9a54e842f0d3b47a9bd9, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3582013310289269767, guid: 11122277f7dd9a54e842f0d3b47a9bd9, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_AddedGameObjects: []
-  m_SourcePrefab: {fileID: 100100000, guid: 11122277f7dd9a54e842f0d3b47a9bd9, type: 3}
