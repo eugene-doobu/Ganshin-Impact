@@ -14,8 +14,39 @@ namespace GanShin.CameraSystem
     // Aim : Composer
     public class CharacterCamera : CameraBase
     {
-        #region Variables
+#region TableDatas
+        [Inject(Id = CharacterCameraSettingInstaller.TopClampID)] 
+        private float _topClamp;
+        
+        [Inject(Id = CharacterCameraSettingInstaller.BottomClampID)]
+        private float _bottomClamp;
 
+        [Inject(Id = CharacterCameraSettingInstaller.LookYawMagnitudeID)]
+        private float _lookYawMagnitude;
+        
+        [Inject(Id = CharacterCameraSettingInstaller.LookPitchMagnitudeID)]
+        private float _lookPitchMagnitude;
+
+        [Inject(Id = CharacterCameraSettingInstaller.TargetZoomID)]
+        private float _targetZoom;
+
+        [Inject(Id = CharacterCameraSettingInstaller.ZoomSmoothFactorID)]
+        private float _zoomSmoothFactor;
+
+        [Inject(Id = CharacterCameraSettingInstaller.ZoomMagnitudeID)]
+        private float _zoomMagnitude;
+
+        [Inject(Id = CharacterCameraSettingInstaller.ZoomThreshHoldID)]
+        private float _zoomThreshHold;
+
+        [Inject(Id = CharacterCameraSettingInstaller.ZoomMinValueID)]
+        private float _zoomMinValue;
+
+        [Inject(Id = CharacterCameraSettingInstaller.ZoomMaxValueID)]
+        private float _zoomMaxValue;
+#endregion TableDatas
+        
+#region Variables
         [Inject] private InputSystemManager? _input;
         [Inject] private ResourceManager?    _resource;
         
@@ -25,26 +56,11 @@ namespace GanShin.CameraSystem
         private Cinemachine3rdPersonFollow? _body;
         private CinemachineComposer?        _aim;
 
-        private float _topClamp = 70f;
-        private float _bottomClamp = -30f;
-
         private float _cinemachineTargetYaw;
         private float _cinemachineTargetPitch;
-        
-        private float _lookYawMagnitude = 0.2f;
-        private float _lookPitchMagnitude = 0.15f;
+#endregion Variables
 
-        private float _targetZoom       = 2f;
-        private float _zoomSmoothFactor = 4f;
-        private float _zoomMagnitude    = 0.0015f;
-        private float _zoomThreshHold   = 0.1f;
-        private float _zoomMinValue     = 1f;
-        private float _zoomMaxValue     = 4f;
-        
-        #endregion Variables
-
-        #region Initialization
-
+#region Initialization
         private void InitializeCameraBodyTarget()
         {  
             var cameraBodyTargetObj = new GameObject("@CameraBodyTarget");
@@ -92,11 +108,9 @@ namespace GanShin.CameraSystem
             
             GanDebugger.CameraLog("Virtual camera initialized");
         }
+#endregion Initialization
 
-        #endregion Initialization
-
-        #region CameraBase
-
+#region CameraBase
         public override void OnEnable()
         {
             base.OnEnable();
@@ -137,11 +151,9 @@ namespace GanShin.CameraSystem
             _virtualCamera!.Follow = cameraBodyTarget;
             _virtualCamera.LookAt  = cameraBodyTarget;
         }
-        
-        #endregion CameraBase
+#endregion CameraBase
 
-        #region CameraProcess
-
+#region CameraProcess
         private void CameraRotation()
         {
             if(ReferenceEquals(_cameraBodyTarget, null)) 
@@ -160,11 +172,9 @@ namespace GanShin.CameraSystem
             if (_zoomThreshHold < Mathf.Abs(_body.CameraDistance - _targetZoom))
                 _body.CameraDistance = Mathf.Lerp(_body.CameraDistance, _targetZoom, Time.deltaTime * _zoomSmoothFactor);
         }
-
-        #endregion CameraProcess
+#endregion CameraProcess
         
-        #region Input
-
+#region Input
         private void AddInputEvent()
         {
             if (_input!.GetActionMap(eActiomMap.PLAYER_MOVEMENT) is not ActionMapPlayerMove actionMap)
@@ -205,7 +215,6 @@ namespace GanShin.CameraSystem
             value       *= _zoomMagnitude;
             _targetZoom =  Mathf.Clamp(_targetZoom + value, _zoomMinValue, _zoomMaxValue);
         }
-
-        #endregion Input
+#endregion Input
     }
 }
