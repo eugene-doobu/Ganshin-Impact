@@ -7,6 +7,7 @@ using GanShin.SceneManagement;
 using GanShin.Sound;
 using GanShin.UI;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using Zenject;
 
 namespace Ganshin
@@ -17,14 +18,13 @@ namespace Ganshin
         {
             InstallManagers();
             InstallCameras();
+            InstallEssentialObjects();
             InstallGlobalUIs();
         }
         
         private void InstallManagers()
         {
             Container.Bind<DataManager>().AsSingle().NonLazy();
-            Container.Bind<PoolManager>().AsSingle().NonLazy();
-            Container.Bind<ResourceManager>().AsSingle().NonLazy();
             Container.Bind<InputSystemManager>().AsSingle().NonLazy();
             Container.Bind<SceneManagerEx>().AsSingle().NonLazy();
             Container.Bind<SoundManager>().AsSingle().NonLazy();
@@ -48,6 +48,14 @@ namespace Ganshin
         private void InstallCameras()
         {
             Container.Bind<CharacterCamera>().AsSingle().NonLazy();
+        }
+
+        private void InstallEssentialObjects()
+        {
+            Container.Bind<EventSystem>()
+                .FromComponentInNewPrefabResource(UIManager.EventSystemPath)
+                .AsSingle()
+                .NonLazy();
         }
 
         private void InstallGlobalUIs()

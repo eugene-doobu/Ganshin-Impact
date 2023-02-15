@@ -15,8 +15,6 @@ namespace GanShin.AssetManagement
     [UsedImplicitly]
     public class DataManager
     {
-        [Inject] private ResourceManager _resource;
-        
         //public Dictionary<int, Data.Stat> StatDict { get; private set; } = new Dictionary<int, Data.Stat>();
 
         public DataManager()
@@ -26,7 +24,7 @@ namespace GanShin.AssetManagement
 
         Loader LoadJson<Loader, Key, Value>(string path) where Loader : ILoader<Key, Value>
         {
-            TextAsset textAsset = _resource.Load<TextAsset>($"Data/{path}");
+            TextAsset textAsset = Resources.Load<TextAsset>($"Data/{path}");
             return JsonUtility.FromJson<Loader>(textAsset.text);
         }
     }

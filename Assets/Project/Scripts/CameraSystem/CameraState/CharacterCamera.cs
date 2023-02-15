@@ -48,7 +48,6 @@ namespace GanShin.CameraSystem
         
 #region Variables
         [Inject] private InputSystemManager? _input;
-        [Inject] private ResourceManager?    _resource;
         
         private CameraBodyTarget?         _cameraBodyTarget;
         private CinemachineVirtualCamera? _virtualCamera;
@@ -72,7 +71,7 @@ namespace GanShin.CameraSystem
 
         private void InitializeVirtualCamera()
         {
-            var virtualCameraPrefab = _resource!.Load<GameObject>("Camera/PlayerVirtualCamera");
+            var virtualCameraPrefab = Resources.Load<GameObject>("Camera/PlayerVirtualCamera");
             if (virtualCameraPrefab == null)
             {
                 GanDebugger.CameraLogError("Failed to load virtual camera prefab");

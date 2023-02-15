@@ -13,6 +13,8 @@ namespace GanShin.UI
     public partial class UIManager
     {
 #region Define
+        public const string EventSystemPath = "Prefabs/UI/EventSystem";
+        
         public struct GlobalUIName
         {
             private const string Root    = "Prefabs/UI/Global/";
@@ -39,18 +41,6 @@ namespace GanShin.UI
                 _globalUIs[ui].gameObject.SetActive(false);
             }
         }
-
-        private void AddEventSystem()
-        {
-            Object eventSystem = Object.FindObjectOfType(typeof(EventSystem));
-            if (ReferenceEquals(eventSystem, null))
-            {
-                eventSystem      = _resource.Instantiate("UI/EventSystem");
-                eventSystem.name = "@EventSystem";
-            }
-
-            Object.DontDestroyOnLoad(eventSystem);
-        }
 	    
         private void AddGlobalUIRoot()
         {
@@ -59,6 +49,13 @@ namespace GanShin.UI
 
             foreach (var obj in _globalUIs.Values)
                 obj.transform.SetParent(GlobalRoot.transform);
+        }
+
+        [Inject]
+        public void InjectEventSystem(EventSystem eventSystem)
+        {
+            eventSystem.name = "@EventSystem";
+            Object.DontDestroyOnLoad(eventSystem);
         }
 
         [Inject]
