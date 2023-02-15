@@ -35,7 +35,7 @@ Transform:
   - {fileID: 4316076645743219843}
   - {fileID: 4316076645743219871}
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &4316076645736037231
 Animator:
@@ -70,8 +70,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _moveSpeed: 4
-  <State>k__BackingField: 0
-  rotationSmoothFactor: 8
+  state: 0
+  _table: {fileID: 11400000, guid: 99aebd1e411223a4891d680e75ddda5a, type: 2}
 --- !u!195 &4339108148150471777
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -5198,7 +5198,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e9e932d740ced6e43a6253542a11dacf, type: 2}
+  - {fileID: 10301, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

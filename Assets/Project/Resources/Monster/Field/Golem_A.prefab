@@ -35,7 +35,7 @@ Transform:
   - {fileID: 2457544335054448566}
   - {fileID: 2457544335054448568}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &2457544335045380178
 Animator:
@@ -70,8 +70,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _moveSpeed: 4
-  <State>k__BackingField: 0
-  rotationSmoothFactor: 8
+  state: 0
+  _table: {fileID: 11400000, guid: 0cff4a60fd71d4f42a85c6a9a97c64d9, type: 2}
 --- !u!195 &2781145896608704792
 NavMeshAgent:
   m_ObjectHideFlags: 0

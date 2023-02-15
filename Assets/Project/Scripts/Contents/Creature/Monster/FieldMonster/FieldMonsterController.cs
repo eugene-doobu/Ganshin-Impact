@@ -3,6 +3,7 @@
 using System;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using GanShin.Data;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -11,20 +12,7 @@ namespace GanShin.Content.Creature.Monster
     [RequireComponent(typeof(Animator), typeof(NavMeshAgent),typeof(CapsuleCollider))]
     public class FieldMonsterController : MonsterController
     {
-        [SerializeField] private float monsterSight         = 8f;
-        [SerializeField] private float rotationSmoothFactor = 8f;
-        
-        [SerializeField] protected float attackRange    = 2f;
-        [SerializeField] protected float attackDelay    = 2f;
-        [SerializeField] protected float traceRange     = 12f;
-        [SerializeField] protected float attackDamage   = 10f;
-        [SerializeField] protected float attackDuration = 1f;
-        [SerializeField] protected float destroyDelay   = 5f;
-        [SerializeField] protected float knockDuration  = 0.5f;
-        [SerializeField] protected float knockBackPower = 5f;
-        [SerializeField] protected Ease  knockBackEase  = Ease.InOutSine;
-        
-        [SerializeField] protected eFieldMonsterType monsterType = eFieldMonsterType.DEFAULT;
+        [SerializeField] private FieldMonsterTable _table;
 
         private Animator             _animator        = null!;
         private NavMeshAgent         _navMeshAgent    = null!;
@@ -90,7 +78,7 @@ namespace GanShin.Content.Creature.Monster
             _animator        = GetComponent<Animator>();
             _navMeshAgent    = GetComponent<NavMeshAgent>();
             _capsuleCollider = GetComponent<CapsuleCollider>();
-            switch (monsterType)
+            switch (_table.monsterType)
             {
                 case eFieldMonsterType.DEFAULT:
                     _animController = new FieldMonsterAnimatorController();
@@ -131,7 +119,7 @@ namespace GanShin.Content.Creature.Monster
         {
             _capsuleCollider.center    = new Vector3(0, 0.5f, 0);
             _capsuleCollider.isTrigger = true;
-            _capsuleCollider.radius    = monsterSight;
+            _capsuleCollider.radius    = _table.sight;
         }
 #endregion Initalize
         
@@ -185,7 +173,7 @@ namespace GanShin.Content.Creature.Monster
             
             RotateToTarget(targetPosition);
             _attackTimer += Time.deltaTime;
-            if (_attackTimer < attackDelay) return;
+            if (_attackTimer < _table.attackDelay) return;
             DoAttack().Forget();
         }
 
@@ -200,7 +188,7 @@ namespace GanShin.Content.Creature.Monster
         private bool TryChangeStateToIdle(float distance)
         {
             if (_isAttacking) return false;
-            if (!(distance > traceRange)) return false;
+            if (!(distance > _table.traceRange)) return false;
             State = eMonsterState.IDLE;
             return true;
         }
@@ -209,7 +197,7 @@ namespace GanShin.Content.Creature.Monster
         {
             if (_isAttacking) return false;
             if (Target == null) return false;
-            if (!(distance <= attackRange)) return false;
+            if (!(distance <= _table.attackRange)) return false;
             State = eMonsterState.ATTACK;
             return true;
         }
@@ -218,7 +206,7 @@ namespace GanShin.Content.Creature.Monster
         {
             if (_isAttacking) return false;
             if (Target == null) return false;
-            if (!(distance > attackRange)) return false;
+            if (!(distance > _table.attackRange)) return false;
             State = eMonsterState.TRACING;
             return true;
         }
@@ -232,7 +220,7 @@ namespace GanShin.Content.Creature.Monster
             
             var targetRotation = Quaternion.LookRotation(direction);
             transform.rotation =
-                Quaternion.Slerp(transform.rotation, targetRotation, rotationSmoothFactor * Time.deltaTime);
+                Quaternion.Slerp(transform.rotation, targetRotation, _table.rotationSmoothFactor * Time.deltaTime);
         }
         
         private async UniTask DoAttack()
@@ -243,7 +231,7 @@ namespace GanShin.Content.Creature.Monster
             // TODO: 투사체 공격도 처리
             _animController.OnAttack();
             _isAttacking = true;
-            await UniTask.Delay(TimeSpan.FromSeconds(attackDuration));
+            await UniTask.Delay(TimeSpan.FromSeconds(_table.attackDuration));
             _isAttacking = false;
             _animController.OnIdle();
         }
@@ -253,8 +241,8 @@ namespace GanShin.Content.Creature.Monster
             var targetPosition = Target.position;
             var distance       = Vector3.Distance(transform.position, targetPosition);
             
-            transform.DOMove(transform.forward * -knockBackPower, knockDuration).SetEase(knockBackEase);
-            await UniTask.Delay(TimeSpan.FromSeconds(knockDuration));
+            transform.DOMove(transform.forward * -_table.knockBackPower, _table.knockDuration).SetEase(_table.knockBackEase);
+            await UniTask.Delay(TimeSpan.FromSeconds(_table.knockDuration));
             _isKnockBack = false;
             
             if (TryChangeStateToAttack(distance)) return;
@@ -264,7 +252,7 @@ namespace GanShin.Content.Creature.Monster
         
         private async UniTask DestroyOnDead()
         {
-            await UniTask.Delay(TimeSpan.FromSeconds(destroyDelay));
+            await UniTask.Delay(TimeSpan.FromSeconds(_table.destroyDelay));
             Destroy(gameObject);
         }
 #endregion Helper
