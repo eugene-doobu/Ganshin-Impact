@@ -4370,7 +4370,6 @@ GameObject:
   - component: {fileID: 575561850542587195}
   - component: {fileID: 575561850533286909}
   - component: {fileID: 575561851167875362}
-  - component: {fileID: 575561850734921097}
   - component: {fileID: 575561850542712475}
   - component: {fileID: 575561850542712485}
   m_Layer: 0
@@ -4397,7 +4396,7 @@ Transform:
   - {fileID: 575561850542587165}
   - {fileID: 575561850542587221}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &575561850533286909
 Animator:
@@ -4437,39 +4436,6 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.85, z: 0}
---- !u!114 &575561850734921097
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 575561850542678363}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 66a77a574f6354144b32ef8349aac9ed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  generateOnStart: 0
-  enableUpdatingOnStart: 1
-  immediateStartupCollision: 0
-  onlyUniqueTriangles: 0
-  convexMeshColliders: 1
-  splitCollisionMeshesByMaterial: 0
-  zeroBoneMeshAlternateTransform: 0
-  clearAllMeshColliders: 0
-  physicsMaterial: {fileID: 0}
-  maxColliderTriangles: 196
-  boneWeightThreshold: 0
-  materialAssociationList: []
-  idleCpuBudget: 0.25
-  activeCpuBudget: 0.5
-  meshUpdateThreshold: 0.015
-  excludedSkins: []
-  excludedBones: []
-  excludedMaterials: []
-  skinfos: []
-  asyncUpdating: 0
-  _serialized: 0
 --- !u!114 &575561850542712475
 MonoBehaviour:
   m_ObjectHideFlags: 0

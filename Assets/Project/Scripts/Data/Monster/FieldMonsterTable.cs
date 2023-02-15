@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace GanShin.Data
 {
-    [CreateAssetMenu(menuName = "DataTable/FieldMonsterTable")]
+    [CreateAssetMenu(menuName = "DataTable/FieldMonster")]
     public class FieldMonsterTable : MonsterTable
     {
         [Header("FieldMonster")]

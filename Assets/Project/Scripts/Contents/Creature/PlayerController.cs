@@ -64,7 +64,8 @@ namespace GanShin.Content.Creature
         [SerializeField]
         private float _attackCooldown = 0.2f;
 
-        [SerializeField] private float _attackToIdleTime = 1f;
+        [SerializeField] 
+        private float _attackToIdleTime = 1f;
 
         [field: SerializeField, ReadOnly] public ePlayerAttack PlayerAttack { get; private set; }
 
