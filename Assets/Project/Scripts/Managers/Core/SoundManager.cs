@@ -11,8 +11,6 @@ namespace GanShin.Sound
 	[UsedImplicitly]
 	public class SoundManager
 	{
-		[Inject] private ResourceManager _resource;
-		
 	    AudioSource[] _audioSources = new AudioSource[(int)Define.eSound.MaxCount];
 	    Dictionary<string, AudioClip> _audioClips = new Dictionary<string, AudioClip>();
 
@@ -90,13 +88,13 @@ namespace GanShin.Sound
 
 			if (type == Define.eSound.Bgm)
 			{
-				audioClip = _resource.Load<AudioClip>(path);
+				audioClip = Resources.Load<AudioClip>(path);
 			}
 			else
 			{
 				if (_audioClips.TryGetValue(path, out audioClip) == false)
 				{
-					audioClip = _resource.Load<AudioClip>(path);
+					audioClip = Resources.Load<AudioClip>(path);
 					_audioClips.Add(path, audioClip);
 				}
 			}
