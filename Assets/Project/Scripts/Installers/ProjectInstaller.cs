@@ -1,5 +1,4 @@
 using System;
-using GanShin.AssetManagement;
 using GanShin.CameraSystem;
 using GanShin.InputSystem;
 using GanShin.MapObject;
@@ -24,7 +23,6 @@ namespace Ganshin
         
         private void InstallManagers()
         {
-            Container.Bind<DataManager>().AsSingle().NonLazy();
             Container.Bind<InputSystemManager>().AsSingle().NonLazy();
             Container.Bind<SceneManagerEx>().AsSingle().NonLazy();
             Container.Bind<SoundManager>().AsSingle().NonLazy();

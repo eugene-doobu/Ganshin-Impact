@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using GanShin.AssetManagement;
 using JetBrains.Annotations;
 using UnityEngine;
 using Zenject;
