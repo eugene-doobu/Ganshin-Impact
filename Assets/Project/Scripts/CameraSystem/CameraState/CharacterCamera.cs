@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
-using GanShin.AssetManagement;
 using GanShin.InputSystem;
 using UnityEngine;
 using Zenject;

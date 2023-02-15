@@ -9601,7 +9601,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e9e932d740ced6e43a6253542a11dacf, type: 2}
+  - {fileID: 10301, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -10568,8 +10568,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _moveSpeed: 4
-  <State>k__BackingField: 0
-  rotationSmoothFactor: 8
+  state: 0
+  _table: {fileID: 11400000, guid: 8d09a9a96cfeb4948955959e3c899813, type: 2}
 --- !u!195 &7444803107455098026
 NavMeshAgent:
   m_ObjectHideFlags: 0
