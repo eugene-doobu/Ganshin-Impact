@@ -23,7 +23,5 @@ namespace GanShin.Data
         [Header("damaged")]
         public float knockDuration  = 0.5f;
         public float knockBackPower = 5f;
-        public Ease  knockBackEase  = Ease.InOutSine;
-        
     }
 }

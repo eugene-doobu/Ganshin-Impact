@@ -24,6 +24,8 @@ namespace GanShin.Content.Creature.Monster
         private bool  _isKnockBack;
         private bool  _isDead;
 
+        private float _currentHp;
+
         public override eMonsterState State
         {
             get => base.State;
@@ -41,6 +43,7 @@ namespace GanShin.Content.Creature.Monster
                         _navMeshAgent.isStopped = true;
                         break;
                     case eMonsterState.KNOCK_BACK:
+                        _navMeshAgent.isStopped = true;
                         break;
                     case eMonsterState.ATTACK:
                         _attackTimer = 0f;
@@ -59,6 +62,7 @@ namespace GanShin.Content.Creature.Monster
                         _animController.OnMove();
                         break;
                     case eMonsterState.KNOCK_BACK:
+                        _navMeshAgent.isStopped = false;
                         _animController.OnDamaged();
                         break;
                     case eMonsterState.ATTACK:
@@ -129,11 +133,29 @@ namespace GanShin.Content.Creature.Monster
             // 구조를 개선하며 제거 예정
         }
 
+        public override void OnDamaged(float damage)
+        {
+            if (State == eMonsterState.DEAD) return;
+            base.OnDamaged(damage);
+            
+            if (_currentHp <= 0)
+            {
+                State = eMonsterState.DEAD;
+                return;
+            }
+            _currentHp -= damage;
+            
+            GanDebugger.Log(nameof(FieldMonsterController),$"{gameObject.name} OnDamaged : {_currentHp}");
+            
+            State = eMonsterState.KNOCK_BACK;   
+        }
+
 #region ProcessState
         protected override void ProcessCreated()
         {
             Initialize();
-            State = eMonsterState.IDLE;
+            _currentHp = _table.hp;
+            State      = eMonsterState.IDLE;
         }
 
         protected override void ProcessIdle()
@@ -235,15 +257,38 @@ namespace GanShin.Content.Creature.Monster
             _isAttacking = false;
             _animController.OnIdle();
         }
+
+        private Vector3 _knockBackPosition;
         
         private async UniTask KnockBack()
         {
-            var targetPosition = Target.position;
-            var distance       = Vector3.Distance(transform.position, targetPosition);
-            
-            transform.DOMove(transform.forward * -_table.knockBackPower, _table.knockDuration).SetEase(_table.knockBackEase);
+            var tr = transform;
+            _navMeshAgent.destination = tr.position - tr.forward * _table.knockBackPower;
             await UniTask.Delay(TimeSpan.FromSeconds(_table.knockDuration));
-            _isKnockBack = false;
+            
+            if (_currentHp <= 0)
+            {
+                State = eMonsterState.DEAD;
+                return;
+            }
+            
+            if (Target == null)
+            {
+                State = eMonsterState.IDLE;
+                return;
+            }
+            
+            _navMeshAgent.destination = Target.position;
+            _isKnockBack              = false;
+
+            if (Target == null)
+            {
+                State = eMonsterState.IDLE;
+                return;
+            }
+            
+            var targetPosition = Target.position;
+            var distance       = Vector3.Distance(tr.position, targetPosition);
             
             if (TryChangeStateToAttack(distance)) return;
             if (TryChangeStateToTracing(distance)) return;

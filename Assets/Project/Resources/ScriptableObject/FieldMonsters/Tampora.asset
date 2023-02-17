@@ -23,5 +23,5 @@ MonoBehaviour:
   attackDamage: 10
   attackDuration: 1
   knockDuration: 0.5
-  knockBackPower: 5
+  knockBackPower: 2
   knockBackEase: 4

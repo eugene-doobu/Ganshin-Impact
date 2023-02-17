@@ -9,8 +9,9 @@
         
         public struct Tag
         {
-            public static string Player  = "Player";
-            public static string Monster = "Monster";
+            public static string Player       = "Player";
+            public static string PlayerWeapon = "PlayerWeapon";
+            public static string Monster      = "Monster";
         }
         
         public enum eScene
