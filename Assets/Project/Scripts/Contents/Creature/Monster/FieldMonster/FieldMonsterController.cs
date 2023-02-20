@@ -2,7 +2,7 @@
 
 using System;
 using Cysharp.Threading.Tasks;
-using DG.Tweening;
+using System.Linq;
 using GanShin.Data;
 using UnityEngine;
 using UnityEngine.AI;
@@ -254,6 +254,11 @@ namespace GanShin.Content.Creature.Monster
             _animController.OnAttack();
             _isAttacking = true;
             await UniTask.Delay(TimeSpan.FromSeconds(_table.attackDuration));
+            // TODO: SphereCast같은걸로 처리??, 연산 최적화 필요, 하드코딩 제거
+            Physics.OverlapSphere(transform.position + transform.forward * 0.3f, 0.6f, Define.GetLayerMask(Define.eLayer.CHARACTER))
+                   .Where(x => x.CompareTag(Define.Tag.Player))
+                   .ToList()
+                   .ForEach(x => x.GetComponent<PlayerController>().OnDamaged(_table.attackDamage));
             _isAttacking = false;
             _animController.OnIdle();
         }

@@ -21,6 +21,7 @@ namespace GanShin.Content.Creature
         private static int ANIM_PRAM_HASH_ROLL_START   = Animator.StringToHash("RollStart");
         private static int ANIM_PRAM_HASH_ATTACK_STATE = Animator.StringToHash("AttackState");
         private static int ANIM_PRAM_HASH_SET_IDLE     = Animator.StringToHash("SetIdle");
+        private static int ANIM_PRAM_HASH_SET_DEAD     = Animator.StringToHash("SetDead");
 #endregion Static
 
 #region Variables
@@ -87,6 +88,7 @@ namespace GanShin.Content.Creature
 
         private CancellationTokenSource _attackCancellationTokenSource;
         private bool                    _isOnAttack;
+        private float                   _currentHp;
 #endregion Variables
 
 #region Properties
@@ -108,6 +110,7 @@ namespace GanShin.Content.Creature
             base.Start();
             // TODO: 매니저격 클래스에서 셋팅할 예정
             _camera.ChangeTarget(_tr);
+            _currentHp = _stat.hp;
         }
 
         protected override void Update()
@@ -339,6 +342,8 @@ namespace GanShin.Content.Creature
             await UniTask.Delay(TimeSpan.FromSeconds(_attackToIdleTime), cancellationToken:
                 _attackCancellationTokenSource.Token);
 
+            if (_isDead) return;
+
             _canAttack   = true;
             _isOnAttack  = false;
             PlayerAttack = ePlayerAttack.NONE;
@@ -354,6 +359,20 @@ namespace GanShin.Content.Creature
             _attackCancellationTokenSource.Cancel();
             _attackCancellationTokenSource.Dispose();
             _attackCancellationTokenSource = null;
+        }
+
+        private bool _isDead = false;
+        
+        // TODO: 추상화
+        public void OnDamaged(float damage)
+        {
+            _currentHp -= damage;
+            Debug.LogError(_currentHp);
+            if (_currentHp <= 0 && !_isDead)
+            {
+                _isDead = true;
+                ObjAnimator.SetTrigger(ANIM_PRAM_HASH_SET_DEAD);
+            }
         }
 
         public void OnAttack()

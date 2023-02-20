@@ -4,7 +4,12 @@
     {
         public enum eLayer
         {
-            
+            CHARACTER = 3,
+        }
+        
+        public static int GetLayerMask(eLayer layer)
+        {
+            return 1 << (int)layer;
         }
         
         public struct Tag
