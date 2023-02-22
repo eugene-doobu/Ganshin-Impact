@@ -4,8 +4,8 @@ using Cysharp.Threading.Tasks;
 using GanShin.CameraSystem;
 using GanShin.InputSystem;
 using GanShin.Utils;
-using GanShin.Content;
 using GanShin.Content.Weapon;
+using GanShin.Data;
 using UnityEngine;
 using Zenject;
 
@@ -13,20 +13,18 @@ namespace GanShin.Content.Creature
 {
     // TODO: abstract class로 변환 후 각 캐릭터별로 클래스를 구현해서 사용예정
     [RequireComponent(typeof(CharacterController))]
-    public class PlayerController : CreatureController
+    public class PlayerController : CreatureController, IAttackAnimation
     {
 #region Static
-
         private static int ANIM_PRAM_HASH_ISMOVE       = Animator.StringToHash("IsMove");
         private static int ANIM_PRAM_HASH_MOVE_SPEED   = Animator.StringToHash("MoveSpeed");
         private static int ANIM_PRAM_HASH_ROLL_START   = Animator.StringToHash("RollStart");
         private static int ANIM_PRAM_HASH_ATTACK_STATE = Animator.StringToHash("AttackState");
         private static int ANIM_PRAM_HASH_SET_IDLE     = Animator.StringToHash("SetIdle");
-
+        private static int ANIM_PRAM_HASH_SET_DEAD     = Animator.StringToHash("SetDead");
 #endregion Static
 
 #region Variables
-
         [Inject] private InputSystemManager _input;
         [Inject] private CameraManager      _camera;
 
@@ -40,13 +38,12 @@ namespace GanShin.Content.Creature
 
         private float _moveAnimValue;
 
-        [SerializeField] private PlayerWeaponBase _weapon;
+        [SerializeField] private PlayerWeaponBase   _weapon;
+        [SerializeField] private CharacterStatTable _stat;
 
         [SerializeField] private float rotationSmoothFactor = 8f;
-
-        [SerializeField] private float rollCooldown = 0.5f;
-
-        [SerializeField] private float _gravity = -1f;
+        [SerializeField] private float rollCooldown         = 0.5f;
+        [SerializeField] private float _gravity             = -1f;
 
         private bool _canRoll = true;
         private bool _desiredRoll;
@@ -64,9 +61,23 @@ namespace GanShin.Content.Creature
         [SerializeField]
         private float _attackCooldown = 0.2f;
 
-        [SerializeField] private float _attackToIdleTime = 1f;
+        [SerializeField] 
+        private float _attackToIdleTime = 1f;
 
-        [field: SerializeField, ReadOnly] public ePlayerAttack PlayerAttack { get; private set; }
+        [SerializeField] [ReadOnly] 
+        private ePlayerAttack _playerAttack;
+
+        public ePlayerAttack PlayerAttack
+        {
+            get => _playerAttack;
+
+            private set
+            {
+                if (_playerAttack == value) return;
+                _playerAttack      = value;
+                _weapon.AttackType = value;
+            }
+        }
 
         [SerializeField] private bool _isOnUltimate;
 
@@ -77,11 +88,14 @@ namespace GanShin.Content.Creature
 
         private CancellationTokenSource _attackCancellationTokenSource;
         private bool                    _isOnAttack;
-
+        private float                   _currentHp;
 #endregion Variables
 
+#region Properties
+        public CharacterStatTable Stat => _stat;
+#endregion Properties
+        
 #region Mono
-
         protected override void Awake()
         {
             base.Awake();
@@ -96,6 +110,7 @@ namespace GanShin.Content.Creature
             base.Start();
             // TODO: 매니저격 클래스에서 셋팅할 예정
             _camera.ChangeTarget(_tr);
+            _currentHp = _stat.hp;
         }
 
         protected override void Update()
@@ -111,11 +126,9 @@ namespace GanShin.Content.Creature
         {
             RemoveInputEvent();
         }
-
 #endregion Mono
 
 #region StateCheck
-
         private void InitializeAvatar()
         {
             _characterController = GetComponent<CharacterController>();
@@ -143,7 +156,6 @@ namespace GanShin.Content.Creature
                 _isOnGround = false;
             }
         }
-
 #endregion StateCheck
 
         protected virtual void LoadData()
@@ -247,7 +259,6 @@ namespace GanShin.Content.Creature
 #endregion Movement
 
 #region Attack
-
         // TODO: 캐릭터별로 다르게 처리 + 별도의 공격 클래스를 만들어서 처리
         private void Attack()
         {
@@ -331,6 +342,8 @@ namespace GanShin.Content.Creature
             await UniTask.Delay(TimeSpan.FromSeconds(_attackToIdleTime), cancellationToken:
                 _attackCancellationTokenSource.Token);
 
+            if (_isDead) return;
+
             _canAttack   = true;
             _isOnAttack  = false;
             PlayerAttack = ePlayerAttack.NONE;
@@ -348,6 +361,24 @@ namespace GanShin.Content.Creature
             _attackCancellationTokenSource = null;
         }
 
+        private bool _isDead = false;
+        
+        // TODO: 추상화
+        public void OnDamaged(float damage)
+        {
+            _currentHp -= damage;
+            Debug.LogError(_currentHp);
+            if (_currentHp <= 0 && !_isDead)
+            {
+                _isDead = true;
+                ObjAnimator.SetTrigger(ANIM_PRAM_HASH_SET_DEAD);
+            }
+        }
+
+        public void OnAttack()
+        {
+            _weapon.OnAttack();
+        }
 #endregion Attack
 
 #region ActionEvent

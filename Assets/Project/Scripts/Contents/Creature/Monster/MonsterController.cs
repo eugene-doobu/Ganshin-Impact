@@ -20,9 +20,14 @@ namespace GanShin.Content.Creature.Monster
             get => state;
             protected set
             {
-                if(state == value) return;
+                if (state == value) return;
                 state = value;
             }
+        }
+        
+        public virtual void OnDamaged(float damage)
+        {
+            if (State == eMonsterState.DEAD) return;
         }
 
         protected override void Awake()

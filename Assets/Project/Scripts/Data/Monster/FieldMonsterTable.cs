@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace GanShin.Data
 {
-    [CreateAssetMenu(menuName = "DataTable/FieldMonsterTable")]
+    [CreateAssetMenu(menuName = "DataTable/FieldMonster")]
     public class FieldMonsterTable : MonsterTable
     {
         [Header("FieldMonster")]
@@ -23,7 +23,5 @@ namespace GanShin.Data
         [Header("damaged")]
         public float knockDuration  = 0.5f;
         public float knockBackPower = 5f;
-        public Ease  knockBackEase  = Ease.InOutSine;
-        
     }
 }
