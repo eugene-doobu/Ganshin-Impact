@@ -32,6 +32,7 @@
             LoadingScene,
             LobbyScene,
             Demo,
+            SimpleDemo,
             Login,
             Lobby,
             Game,

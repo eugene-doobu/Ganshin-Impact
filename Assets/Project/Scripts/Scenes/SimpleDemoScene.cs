@@ -1,3 +1,5 @@
+using System;
+using Cysharp.Threading.Tasks;
 using GanShin.UI;
 using Slash.Unity.DataBind.Core.Presentation;
 using UnityEngine;
@@ -9,11 +11,13 @@ namespace GanShin.SceneManagement
     {
         [Inject] 
         private PlayerManager _playerManager;
+
+        [Inject] private SceneManagerEx _sceneManager;
         
         protected override void Init()
         {
             base.Init();
-            ESceneType = Define.eScene.Demo;
+            ESceneType = Define.eScene.SimpleDemo;
         }
 
         private void Start()
@@ -23,6 +27,12 @@ namespace GanShin.SceneManagement
             
             riko.transform.position = Vector3.zero;
             riko.gameObject.SetActive(true);
+        }
+
+        private void Update()
+        {
+            if (Input.GetKeyDown("]"))
+                _sceneManager.LoadScene(ESceneType).Forget();
         }
 
         public override void Clear()
