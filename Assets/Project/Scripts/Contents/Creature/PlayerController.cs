@@ -70,18 +70,6 @@ namespace GanShin.Content.Creature
         [SerializeField] [ReadOnly] 
         private ePlayerAttack playerAttack;
 
-        public ePlayerAttack PlayerAttack
-        {
-            get => playerAttack;
-
-            private set
-            {
-                if (playerAttack == value) return;
-                playerAttack      = value;
-                weapon.AttackType = value;
-            }
-        }
-
         [SerializeField] private bool isOnUltimate;
 
         private bool _canAttack = true;
@@ -96,6 +84,18 @@ namespace GanShin.Content.Creature
 
 #region Properties
         public CharacterStatTable Stat => stat;
+        
+        public ePlayerAttack PlayerAttack
+        {
+            get => playerAttack;
+
+            private set
+            {
+                if (playerAttack == value) return;
+                playerAttack      = value;
+                weapon.AttackType = value;
+            }
+        }
         
         public float CurrentHp
         {

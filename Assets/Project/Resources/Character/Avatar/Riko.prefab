@@ -4397,7 +4397,7 @@ Transform:
   - {fileID: 575561850542587165}
   - {fileID: 575561850542587221}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &575561850533286909
 Animator:
@@ -4450,21 +4450,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _moveSpeed: 4
-  _weapon: {fileID: 7047767155266528842}
-  _stat: {fileID: 11400000, guid: 1b349abea2212904a928ac59b814cabe, type: 2}
+  weapon: {fileID: 7047767155266528842}
+  stat: {fileID: 11400000, guid: 1b349abea2212904a928ac59b814cabe, type: 2}
   rotationSmoothFactor: 8
   rollCooldown: 0.5
-  _gravity: -1
-  _rayStartPosOffset: 0.3
-  _groundCheckDistance: 0.5
-  _groundCheckRadius: 0.1
-  _groundLayerMask:
+  gravity: -1
+  rayStartPosOffset: 0.3
+  groundCheckDistance: 0.5
+  groundCheckRadius: 0.1
+  groundLayerMask:
     serializedVersion: 2
     m_Bits: 128
-  _attackCooldown: 0.4
-  _attackToIdleTime: 2
-  _playerAttack: 0
-  _isOnUltimate: 0
+  attackCooldown: 0.2
+  attackToIdleTime: 1
+  playerAttack: 0
+  isOnUltimate: 0
 --- !u!54 &616400277
 Rigidbody:
   m_ObjectHideFlags: 0
