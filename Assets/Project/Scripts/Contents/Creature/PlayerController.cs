@@ -6,6 +6,7 @@ using GanShin.InputSystem;
 using GanShin.Utils;
 using GanShin.Content.Weapon;
 using GanShin.Data;
+using GanShin.UI;
 using UnityEngine;
 using Zenject;
 
@@ -27,8 +28,10 @@ namespace GanShin.Content.Creature
 #region Variables
         [Inject] private InputSystemManager _input;
         [Inject] private CameraManager      _camera;
+        [Inject] private PlayerManager      _playerManager;
 
         private CharacterController _characterController;
+        private UIHpBarContext      _uiHpBarContext;
 
         private Transform _tr;
         private Transform _wristLeftTr;
@@ -38,48 +41,36 @@ namespace GanShin.Content.Creature
 
         private float _moveAnimValue;
 
-        [SerializeField] private PlayerWeaponBase   _weapon;
-        [SerializeField] private CharacterStatTable _stat;
+        [SerializeField] private PlayerWeaponBase   weapon;
+        [SerializeField] private CharacterStatTable stat;
 
         [SerializeField] private float rotationSmoothFactor = 8f;
         [SerializeField] private float rollCooldown         = 0.5f;
-        [SerializeField] private float _gravity             = -1f;
+        [SerializeField] private float gravity             = -1f;
 
         private bool _canRoll = true;
         private bool _desiredRoll;
 
         [Space] [Header("GroundCheck")] [SerializeField]
-        private float _rayStartPosOffset = 0.3f;
+        private float rayStartPosOffset = 0.3f;
 
-        [SerializeField] private float     _groundCheckDistance = 0.5f;
-        [SerializeField] private float     _groundCheckRadius   = 0.1f;
-        [SerializeField] private LayerMask _groundLayerMask;
+        [SerializeField] private float     groundCheckDistance = 0.5f;
+        [SerializeField] private float     groundCheckRadius   = 0.1f;
+        [SerializeField] private LayerMask groundLayerMask;
 
         [Space]
         // TODO: Attack 관련 내용 별도의 클래스를 조합하여 관리
         [Header("Attack")]
         [SerializeField]
-        private float _attackCooldown = 0.2f;
+        private float attackCooldown = 0.2f;
 
         [SerializeField] 
-        private float _attackToIdleTime = 1f;
+        private float attackToIdleTime = 1f;
 
         [SerializeField] [ReadOnly] 
-        private ePlayerAttack _playerAttack;
+        private ePlayerAttack playerAttack;
 
-        public ePlayerAttack PlayerAttack
-        {
-            get => _playerAttack;
-
-            private set
-            {
-                if (_playerAttack == value) return;
-                _playerAttack      = value;
-                _weapon.AttackType = value;
-            }
-        }
-
-        [SerializeField] private bool _isOnUltimate;
+        [SerializeField] private bool isOnUltimate;
 
         private bool _canAttack = true;
         private bool _desiredAttack;
@@ -92,7 +83,32 @@ namespace GanShin.Content.Creature
 #endregion Variables
 
 #region Properties
-        public CharacterStatTable Stat => _stat;
+        public CharacterStatTable Stat => stat;
+        
+        public ePlayerAttack PlayerAttack
+        {
+            get => playerAttack;
+
+            private set
+            {
+                if (playerAttack == value) return;
+                playerAttack      = value;
+                weapon.AttackType = value;
+            }
+        }
+        
+        public float CurrentHp
+        {
+            get => _currentHp;
+            private set
+            {
+                if (Mathf.Approximately(_currentHp, value)) return;
+                
+                _currentHp = Mathf.Clamp(value, 0, stat.hp);
+                
+                _uiHpBarContext.CurrentHp = (int)_currentHp;
+            }
+        }
 #endregion Properties
         
 #region Mono
@@ -103,6 +119,8 @@ namespace GanShin.Content.Creature
             InitializeAvatar();
             InitializeWeapon();
             AddInputEvent();
+
+            _uiHpBarContext = _playerManager.GetUIHpBarContext(Define.ePlayerAvatar.RIKO);
         }
 
         protected override void Start()
@@ -110,7 +128,9 @@ namespace GanShin.Content.Creature
             base.Start();
             // TODO: 매니저격 클래스에서 셋팅할 예정
             _camera.ChangeTarget(_tr);
-            _currentHp = _stat.hp;
+            _uiHpBarContext.MaxHp     = (int)stat.hp;
+
+            CurrentHp = stat.hp;
         }
 
         protected override void Update()
@@ -140,14 +160,14 @@ namespace GanShin.Content.Creature
 
         private void InitializeWeapon()
         {
-            _weapon.Owner = this;
+            weapon.Owner = this;
         }
 
         protected void CheckOnGround()
         {
-            var rayStartPos = _tr.position + Vector3.up * _rayStartPosOffset;
-            if (Physics.SphereCast(rayStartPos, _groundCheckRadius, Vector3.down, out var hit, _groundCheckDistance,
-                    _groundLayerMask))
+            var rayStartPos = _tr.position + Vector3.up * rayStartPosOffset;
+            if (Physics.SphereCast(rayStartPos, groundCheckRadius, Vector3.down, out var hit, groundCheckDistance,
+                    groundLayerMask))
             {
                 _isOnGround = true;
             }
@@ -253,7 +273,7 @@ namespace GanShin.Content.Creature
 
         private void ApplyGravity()
         {
-            _characterController.Move(Vector3.up * _gravity * Time.deltaTime);
+            _characterController.Move(Vector3.up * gravity * Time.deltaTime);
         }
 
 #endregion Movement
@@ -273,7 +293,7 @@ namespace GanShin.Content.Creature
             switch (PlayerAttack)
             {
                 case ePlayerAttack.NONE:
-                    if (!_isOnUltimate)
+                    if (!isOnUltimate)
                     {
                         PlayerAttack = ePlayerAttack.RIKO_BASIC_ATTAK1;
                         ObjAnimator.SetInteger(ANIM_PRAM_HASH_ATTACK_STATE, 1);
@@ -331,7 +351,7 @@ namespace GanShin.Content.Creature
 
         private async UniTask DelayAttack()
         {
-            await UniTask.Delay(TimeSpan.FromSeconds(_attackCooldown));
+            await UniTask.Delay(TimeSpan.FromSeconds(attackCooldown));
             _canAttack = true;
         }
 
@@ -339,7 +359,7 @@ namespace GanShin.Content.Creature
         {
             _isOnAttack = true;
 
-            await UniTask.Delay(TimeSpan.FromSeconds(_attackToIdleTime), cancellationToken:
+            await UniTask.Delay(TimeSpan.FromSeconds(attackToIdleTime), cancellationToken:
                 _attackCancellationTokenSource.Token);
 
             if (_isDead) return;
@@ -366,8 +386,8 @@ namespace GanShin.Content.Creature
         // TODO: 추상화
         public void OnDamaged(float damage)
         {
-            _currentHp -= damage;
-            Debug.LogError(_currentHp);
+            CurrentHp -= damage;
+            
             if (_currentHp <= 0 && !_isDead)
             {
                 _isDead = true;
@@ -377,7 +397,7 @@ namespace GanShin.Content.Creature
 
         public void OnAttack()
         {
-            _weapon.OnAttack();
+            weapon.OnAttack();
         }
 #endregion Attack
 

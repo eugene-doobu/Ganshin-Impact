@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using JetBrains.Annotations;
 using Slash.Unity.DataBind.Core.Presentation;
 using UnityEngine;
@@ -24,5 +25,19 @@ namespace GanShin.UI
         }
         
         protected abstract INotifyPropertyChanged InitializeDataContext();
+
+        public void CreateContext()
+        {
+            if (ContextHolder == null)
+            {
+                GanDebugger.LogError(nameof(UIRootBase), "ContextHolder is null");
+                return;
+            }
+
+            ContextHolder.CreateContext = true;
+
+            var newContext = Activator.CreateInstance(ContextHolder.ContextType);
+            ContextHolder.SetContext(newContext, null);
+        }
     }
 }

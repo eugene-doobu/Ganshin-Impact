@@ -18,6 +18,13 @@
             public static string PlayerWeapon = "PlayerWeapon";
             public static string Monster      = "Monster";
         }
+
+        public enum ePlayerAvatar
+        {
+            RIKO,
+            AI,
+            MUSCLE_CAT
+        }
         
         public enum eScene
         {

@@ -1,23 +1,29 @@
 #nullable enable
 
 using System;
+using System.ComponentModel;
 using Cysharp.Threading.Tasks;
 using System.Linq;
 using GanShin.Data;
+using GanShin.UI;
+using Slash.Unity.DataBind.Core.Presentation;
 using UnityEngine;
 using UnityEngine.AI;
 
 namespace GanShin.Content.Creature.Monster
 {
     [RequireComponent(typeof(Animator), typeof(NavMeshAgent),typeof(CapsuleCollider))]
-    public class FieldMonsterController : MonsterController
+    public class FieldMonsterController : MonsterController, IDataContextOwner
     {
         [SerializeField] private FieldMonsterTable _table;
+        
+        private readonly UIHpBarContext _uiHpBarContext = new UIHpBarContext();
 
         private Animator             _animator        = null!;
         private NavMeshAgent         _navMeshAgent    = null!;
         private CapsuleCollider      _capsuleCollider = null!;
         private FieldMonsterAnimBase _animController  = null!;
+        private ContextHolder        _contextHolder   = null!;
         
         private float _attackTimer;
         private bool  _isAttacking;
@@ -26,6 +32,7 @@ namespace GanShin.Content.Creature.Monster
 
         private float _currentHp;
 
+#region Properties
         public override eMonsterState State
         {
             get => base.State;
@@ -74,6 +81,22 @@ namespace GanShin.Content.Creature.Monster
                 }
             }
         }
+        
+        private float CurrentHp
+        {
+            get => _currentHp;
+            set
+            {
+                if (Mathf.Approximately(_currentHp, value)) return;
+                _currentHp = Mathf.Clamp(value, 0, _table.hp);
+
+                _currentHp                = value;
+                _uiHpBarContext.CurrentHp = (int)_currentHp;
+            }
+        }
+
+        public INotifyPropertyChanged DataContext => _uiHpBarContext;
+#endregion Properties
 
 #region MonoBehaviour
         protected override void Awake()
@@ -92,6 +115,9 @@ namespace GanShin.Content.Creature.Monster
                     break;
             }
             _animController.Initialize(_animator);
+
+            _contextHolder         = gameObject.AddComponent<ContextHolder>();
+            _contextHolder.Context = _uiHpBarContext;
         }
         
         protected override void Start()
@@ -143,7 +169,7 @@ namespace GanShin.Content.Creature.Monster
                 State = eMonsterState.DEAD;
                 return;
             }
-            _currentHp -= damage;
+            CurrentHp -= damage;
             
             GanDebugger.Log(nameof(FieldMonsterController),$"{gameObject.name} OnDamaged : {_currentHp}");
             
@@ -154,8 +180,10 @@ namespace GanShin.Content.Creature.Monster
         protected override void ProcessCreated()
         {
             Initialize();
-            _currentHp = _table.hp;
-            State      = eMonsterState.IDLE;
+            _uiHpBarContext.MaxHp      = (int)_table.hp;
+            _uiHpBarContext.TargetName = name;
+            CurrentHp                  = _table.hp;
+            State                      = eMonsterState.IDLE;
         }
 
         protected override void ProcessIdle()

@@ -1,11 +1,11 @@
-using System;
+using GanShin;
 using GanShin.CameraSystem;
+using GanShin.Content.Creature;
 using GanShin.InputSystem;
 using GanShin.MapObject;
 using GanShin.SceneManagement;
 using GanShin.Sound;
 using GanShin.UI;
-using UnityEngine;
 using UnityEngine.EventSystems;
 using Zenject;
 
@@ -16,9 +16,10 @@ namespace Ganshin
         public override void InstallBindings()
         {
             InstallManagers();
-            InstallCameras();
             InstallEssentialObjects();
+            InstallCharacterObjects();
             InstallGlobalUIs();
+            InstallCameras();
         }
         
         private void InstallManagers()
@@ -41,6 +42,12 @@ namespace Ganshin
                 .AsSingle()
                 .NonLazy();
             Container.Bind<MapObjectManager>().AsSingle().NonLazy();
+            Container.Bind(
+                typeof(PlayerManager),
+                typeof(IInitializable)
+                )
+                .To<PlayerManager>()
+                .AsSingle().NonLazy();
         }
 
         private void InstallCameras()
@@ -52,6 +59,15 @@ namespace Ganshin
         {
             Container.Bind<EventSystem>()
                 .FromComponentInNewPrefabResource(UIManager.EventSystemPath)
+                .AsSingle()
+                .NonLazy();
+        }
+
+        private void InstallCharacterObjects()
+        {
+            Container.Bind<PlayerController>()
+                .WithId(PlayerManager.AvatarBindId.Riko)
+                .FromComponentInNewPrefabResource(PlayerManager.AvatarPath.Riko)
                 .AsSingle()
                 .NonLazy();
         }
