@@ -4371,7 +4371,8 @@ GameObject:
   - component: {fileID: 575561850533286909}
   - component: {fileID: 575561851167875362}
   - component: {fileID: 575561850542712475}
-  - component: {fileID: 575561850542712485}
+  - component: {fileID: 616400277}
+  - component: {fileID: 616400278}
   m_Layer: 3
   m_Name: Riko
   m_TagString: Player
@@ -4411,7 +4412,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: c6de217f81651414795d60c464cb3b57, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_WarningMessage: 
@@ -4464,24 +4465,36 @@ MonoBehaviour:
   _attackToIdleTime: 2
   _playerAttack: 0
   _isOnUltimate: 0
---- !u!114 &575561850542712485
-MonoBehaviour:
+--- !u!54 &616400277
+Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 575561850542678363}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!136 &616400278
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 575561850542678363}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0166d8ff8d905b048b2448179e1f5d11, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _components:
-  - {fileID: 575561850542712475}
-  _identifier: 
-  _useSceneContext: 0
-  _context: {fileID: 0}
-  _bindType: 0
+  m_Radius: 0.25
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &575561850542678365
 GameObject:
   m_ObjectHideFlags: 0

@@ -10,6 +10,8 @@ namespace GanShin.Sound
 	[UsedImplicitly]
 	public class SoundManager
 	{
+		private const string SoundObjName = "@Sound";
+		
 	    AudioSource[] _audioSources = new AudioSource[(int)Define.eSound.MaxCount];
 	    Dictionary<string, AudioClip> _audioClips = new Dictionary<string, AudioClip>();
 
@@ -19,10 +21,10 @@ namespace GanShin.Sound
 
 	    public SoundManager()
 	    {
-		    GameObject root = GameObject.Find("@Sound");
+		    GameObject root = GameObject.Find(SoundObjName);
 		    if (root == null)
 		    {
-			    root = new GameObject { name = "@Sound" };
+			    root = new GameObject { name = SoundObjName };
 			    Object.DontDestroyOnLoad(root);
 
 			    string[] soundNames = System.Enum.GetNames(typeof(Define.eSound));
