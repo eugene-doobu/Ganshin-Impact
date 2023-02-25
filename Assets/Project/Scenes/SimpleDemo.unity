@@ -196,6 +196,10 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 1277393691}
     m_Modifications:
+    - target: {fileID: 412232676, guid: 68b6e0d5df2d8574cb29c8e1b08cbce7, type: 3}
+      propertyPath: createContext
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2432326648292308852, guid: 68b6e0d5df2d8574cb29c8e1b08cbce7, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -283,6 +287,10 @@ PrefabInstance:
     - target: {fileID: 2432326648292308853, guid: 68b6e0d5df2d8574cb29c8e1b08cbce7, type: 3}
       propertyPath: m_Name
       value: User_HpBar
+      objectReference: {fileID: 0}
+    - target: {fileID: 2432326648292308853, guid: 68b6e0d5df2d8574cb29c8e1b08cbce7, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2432326648838209335, guid: 68b6e0d5df2d8574cb29c8e1b08cbce7, type: 3}
       propertyPath: m_AnchorMax.y
@@ -474,6 +482,40 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1018428231 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2432326648292308853, guid: 68b6e0d5df2d8574cb29c8e1b08cbce7, type: 3}
+  m_PrefabInstance: {fileID: 412232673}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1018428232 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 412232676, guid: 68b6e0d5df2d8574cb29c8e1b08cbce7, type: 3}
+  m_PrefabInstance: {fileID: 412232673}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1018428231}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0353de6b5a9e8fa4eaded0354856aa9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1018428235
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1018428231}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0166d8ff8d905b048b2448179e1f5d11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _components:
+  - {fileID: 1018428232}
+  _identifier: 
+  _useSceneContext: 0
+  _context: {fileID: 0}
+  _bindType: 0
 --- !u!1001 &1093279406
 PrefabInstance:
   m_ObjectHideFlags: 0

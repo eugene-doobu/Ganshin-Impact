@@ -1,17 +1,34 @@
 #nullable enable
 
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using GanShin.Content.Creature;
+using GanShin.UI;
 using JetBrains.Annotations;
 using UnityEngine;
 using Zenject;
+using Object = UnityEngine.Object;
 
 namespace GanShin
 {
 	[UsedImplicitly]
     public class PlayerManager : IInitializable
     {
+#region Internal Class
+        public class PlayerAvatarContext
+        {
+            public UIHpBarContext? RikoHpBarContext      { get; }
+            public UIHpBarContext? AIHpBarContext        { get; }
+            public UIHpBarContext? MuscleCatHpBarContext { get; }
+            
+            public PlayerAvatarContext()
+            {
+                RikoHpBarContext      = Activator.CreateInstance(typeof(UIHpBarContext)) as UIHpBarContext;
+                AIHpBarContext        = Activator.CreateInstance(typeof(UIHpBarContext)) as UIHpBarContext;
+                MuscleCatHpBarContext = Activator.CreateInstance(typeof(UIHpBarContext)) as UIHpBarContext;
+            }
+        }
+#endregion Internal Class
+        
 #region Define
         private const string PlayerPoolName = "@PlayerPool";
 
@@ -28,12 +45,15 @@ namespace GanShin
 #endregion Define
         [Inject(Id = AvatarBindId.Riko)]
         private PlayerController _riko = null!;
+
+        private PlayerAvatarContext _avatarContext;
         
         private Transform _playerPool = null!;
         
         public PlayerManager()
         {
             SetPlayerPoolRoot();
+            _avatarContext = new PlayerAvatarContext();
         }
         
         public PlayerController? GetPlayer(Define.ePlayerAvatar avatar)
@@ -47,7 +67,18 @@ namespace GanShin
                     return null;
             }
         }
-        
+
+        public UIHpBarContext? GetUIHpBarContext(Define.ePlayerAvatar avatar)
+        {
+            switch (avatar)
+            {
+                case Define.ePlayerAvatar.RIKO:
+                    return _avatarContext.RikoHpBarContext;
+                default:
+                    return null;
+            }
+        }
+
         private void SetPlayerPoolRoot()
         {
             var root = GameObject.Find(PlayerPoolName);

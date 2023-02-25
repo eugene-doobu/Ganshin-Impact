@@ -6,6 +6,7 @@ using GanShin.InputSystem;
 using GanShin.Utils;
 using GanShin.Content.Weapon;
 using GanShin.Data;
+using GanShin.UI;
 using UnityEngine;
 using Zenject;
 
@@ -27,8 +28,10 @@ namespace GanShin.Content.Creature
 #region Variables
         [Inject] private InputSystemManager _input;
         [Inject] private CameraManager      _camera;
+        [Inject] private PlayerManager      _playerManager;
 
         private CharacterController _characterController;
+        private UIHpBarContext      _uiHpBarContext;
 
         private Transform _tr;
         private Transform _wristLeftTr;
@@ -93,6 +96,20 @@ namespace GanShin.Content.Creature
 
 #region Properties
         public CharacterStatTable Stat => _stat;
+        
+        public float CurrentHp
+        {
+            get => _currentHp;
+            private set
+            {
+                if (Mathf.Approximately(_currentHp, value)) return;
+                
+                _currentHp = Mathf.Clamp(value, 0, _stat.hp);
+                
+                _uiHpBarContext.CurrentHp = (int)_currentHp;
+                Debug.LogError(_currentHp);
+            }
+        }
 #endregion Properties
         
 #region Mono
@@ -103,6 +120,8 @@ namespace GanShin.Content.Creature
             InitializeAvatar();
             InitializeWeapon();
             AddInputEvent();
+
+            _uiHpBarContext = _playerManager.GetUIHpBarContext(Define.ePlayerAvatar.RIKO);
         }
 
         protected override void Start()
@@ -110,7 +129,9 @@ namespace GanShin.Content.Creature
             base.Start();
             // TODO: 매니저격 클래스에서 셋팅할 예정
             _camera.ChangeTarget(_tr);
-            _currentHp = _stat.hp;
+            _uiHpBarContext.MaxHp     = (int)_stat.hp;
+
+            CurrentHp = _stat.hp;
         }
 
         protected override void Update()
@@ -366,8 +387,8 @@ namespace GanShin.Content.Creature
         // TODO: 추상화
         public void OnDamaged(float damage)
         {
-            _currentHp -= damage;
-            Debug.LogError(_currentHp);
+            CurrentHp -= damage;
+            
             if (_currentHp <= 0 && !_isDead)
             {
                 _isDead = true;

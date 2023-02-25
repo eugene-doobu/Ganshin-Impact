@@ -1,7 +1,5 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using GanShin.SceneManagement;
+using GanShin.UI;
+using Slash.Unity.DataBind.Core.Presentation;
 using UnityEngine;
 using Zenject;
 
