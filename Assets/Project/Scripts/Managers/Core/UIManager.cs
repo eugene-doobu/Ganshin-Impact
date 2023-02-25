@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using GanShin.AssetManagement;
 using JetBrains.Annotations;
 using UnityEngine;
 using Zenject;
@@ -11,8 +10,6 @@ namespace GanShin.UI
 	[UsedImplicitly]
     public partial class UIManager : IInitializable
     {
-	    [Inject] private ResourceManager _resource;
-	    
 	    private readonly Dictionary<Type ,INotifyPropertyChanged> _dataContexts = new();
 
 	    public GameObject GlobalRoot { get; private set; } = null;
@@ -54,7 +51,6 @@ namespace GanShin.UI
 
 	    public void Initialize()
 	    {
-		    AddEventSystem();
 		    AddGlobalUIRoot();
 	    }
     }

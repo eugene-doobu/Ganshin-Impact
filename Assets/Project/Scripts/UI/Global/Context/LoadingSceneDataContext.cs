@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace GanShin.UI
 {
-    public class LoadingSceneDataContext : INotifyPropertyChanged
+    public sealed class LoadingSceneDataContext : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
         
@@ -35,7 +35,7 @@ namespace GanShin.UI
         }
         
         [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

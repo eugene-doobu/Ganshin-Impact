@@ -11,14 +11,6 @@ namespace GanShin.Content.Weapon
         public PlayerController Owner { get; set; }         
         public ePlayerAttack AttackType { get; set; }
 
-        protected void OnTriggerEnter(Collider other)
-        {
-            GanDebugger.Log($"OnTriggerEnter : {other.name}");
-        }
-
-        protected void OnTriggerExit(Collider other)
-        {
-            GanDebugger.Log($"OnTriggerExit : {other.name}");
-        }
+        public abstract void OnAttack();
     }
 }

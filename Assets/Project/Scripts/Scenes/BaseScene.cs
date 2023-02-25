@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using GanShin.AssetManagement;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Zenject;

@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using GanShin.AssetManagement;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -11,7 +10,7 @@ namespace GanShin.Sound
 	[UsedImplicitly]
 	public class SoundManager
 	{
-		[Inject] private ResourceManager _resource;
+		private const string SoundObjName = "@Sound";
 		
 	    AudioSource[] _audioSources = new AudioSource[(int)Define.eSound.MaxCount];
 	    Dictionary<string, AudioClip> _audioClips = new Dictionary<string, AudioClip>();
@@ -22,10 +21,10 @@ namespace GanShin.Sound
 
 	    public SoundManager()
 	    {
-		    GameObject root = GameObject.Find("@Sound");
+		    GameObject root = GameObject.Find(SoundObjName);
 		    if (root == null)
 		    {
-			    root = new GameObject { name = "@Sound" };
+			    root = new GameObject { name = SoundObjName };
 			    Object.DontDestroyOnLoad(root);
 
 			    string[] soundNames = System.Enum.GetNames(typeof(Define.eSound));
@@ -90,13 +89,13 @@ namespace GanShin.Sound
 
 			if (type == Define.eSound.Bgm)
 			{
-				audioClip = _resource.Load<AudioClip>(path);
+				audioClip = Resources.Load<AudioClip>(path);
 			}
 			else
 			{
 				if (_audioClips.TryGetValue(path, out audioClip) == false)
 				{
-					audioClip = _resource.Load<AudioClip>(path);
+					audioClip = Resources.Load<AudioClip>(path);
 					_audioClips.Add(path, audioClip);
 				}
 			}
