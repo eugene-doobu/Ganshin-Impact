@@ -41,15 +41,19 @@ namespace GanShin.Content.Weapon
                 {
                     case ePlayerAttack.RIKO_BASIC_ATTAK1:
                         monster.OnDamaged(stat.attack1Damage);
+                        Owner.CurrentUltimateGauge += Owner.Stat.ultimateSkillChargeOnBaseAttack;
                         break;
                     case ePlayerAttack.RIKO_BASIC_ATTAK2:
                         monster.OnDamaged(stat.attack2Damage);
+                        Owner.CurrentUltimateGauge += Owner.Stat.ultimateSkillChargeOnBaseAttack;
                         break;
                     case ePlayerAttack.RIKO_BASIC_ATTAK3:
                         monster.OnDamaged(stat.attack3Damage);
+                        Owner.CurrentUltimateGauge += Owner.Stat.ultimateSkillChargeOnBaseAttack;
                         break;
                     case ePlayerAttack.RIKO_BASIC_ATTAK4:
                         monster.OnDamaged(stat.attack4Damage);
+                        Owner.CurrentUltimateGauge += Owner.Stat.ultimateSkillChargeOnBaseAttack;
                         break;
                     case ePlayerAttack.RIKO_ULTI_ATTAK1:
                         monster.OnDamaged(stat.ultimate1Damage);

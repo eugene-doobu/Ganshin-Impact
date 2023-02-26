@@ -78,8 +78,12 @@ namespace GanShin.Content.Creature
         private float _staminaCost = 20f;
 
         private CancellationTokenSource _attackCancellationTokenSource;
-        private bool                    _isOnAttack;
-        private float                   _currentHp;
+        
+        private bool  _isOnAttack;
+        private float _currentHp;
+        
+        private float _currentUltimateGauge;
+        private bool  _isAvailableSkill = true;
 #endregion Variables
 
 #region Properties
@@ -107,6 +111,16 @@ namespace GanShin.Content.Creature
                 _currentHp = Mathf.Clamp(value, 0, stat.hp);
 
                 _uiHpBarContext.CurrentHp = (int) _currentHp;
+            }
+        }
+        
+        public float CurrentUltimateGauge
+        {
+            get => _currentUltimateGauge;
+            set
+            {
+                if (Mathf.Approximately(_currentUltimateGauge, value)) return;
+                _currentUltimateGauge = Mathf.Clamp(value, 0, stat.ultimateSkillAvailabilityGauge);
             }
         }
 #endregion Properties
@@ -389,6 +403,8 @@ namespace GanShin.Content.Creature
         {
             CurrentHp -= damage;
 
+            CurrentUltimateGauge += stat.ultimateSkillChargeOnDamaged;
+
             if (_currentHp <= 0 && !_isDead)
             {
                 _isDead = true;
@@ -399,6 +415,13 @@ namespace GanShin.Content.Creature
         public void OnAttack()
         {
             weapon.OnAttack();
+        }
+        
+        private async UniTask SkillCoolTime()
+        {
+            _isAvailableSkill = false;
+            await UniTask.Delay(TimeSpan.FromSeconds(stat.baseSkillCoolTime));
+            _isAvailableSkill = true;
         }
 #endregion Attack
 
@@ -425,15 +448,39 @@ namespace GanShin.Content.Creature
 
         protected virtual void OnAttack(bool value)
         {
+            if (!value) return;
+            
             if (_isOnGround) _desiredAttack = true;
         }
 
         protected virtual void OnBaseSkill(bool value)
         {
+            if (!value) return;
+            
+            if (!_isAvailableSkill)
+            {
+                GanDebugger.Log(nameof(PlayerController), "스킬 쿨타임입니다.");
+                return;
+            }
+
+            SkillCoolTime().Forget();
+            CurrentUltimateGauge += stat.ultimateSkillChargeOnSkill;
+            
+            Debug.Log("스킬 사용");
         }
 
         protected virtual void OnUltimateSkill(bool value)
         {
+            if (!value) return;
+            
+            if (stat.ultimateSkillAvailabilityGauge > _currentUltimateGauge)
+            {
+                GanDebugger.Log(nameof(PlayerController), "궁극기 게이지가 부족합니다.");
+                return;
+            }
+            
+            Debug.Log("궁극 스킬 사용");
+            _currentUltimateGauge = 0f;
         }
 #endregion ActionEvent
     }

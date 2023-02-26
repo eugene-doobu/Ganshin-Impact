@@ -1,7 +1,6 @@
 #nullable enable
 
 using System;
-using Cysharp.Threading.Tasks;
 using GanShin.Content.Creature;
 using GanShin.UI;
 using JetBrains.Annotations;
@@ -55,6 +54,8 @@ namespace GanShin
         private PlayerAvatarContext _avatarContext;
         
         public Transform CurrentPlayerTransform => _riko.transform;
+        
+        public PlayerController CurrentPlayer => _riko;
         
         private float _maxStamina             = 100f;
         private float _currentStamina         = 100f;

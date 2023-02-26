@@ -231,6 +231,10 @@ namespace GanShin.Content.Creature.Monster
         {
             if (_isDead) return;
             _isDead = true;
+            
+            _playerManager.CurrentPlayer.CurrentUltimateGauge 
+                += _playerManager.CurrentPlayer.Stat.ultimateSkillChargeOnKill;
+            
             DestroyOnDead().Forget();
         }
 
