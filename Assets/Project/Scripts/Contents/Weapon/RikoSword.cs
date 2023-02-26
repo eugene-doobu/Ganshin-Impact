@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using UnityEngine;
 using GanShin.Content.Creature.Monster;
 using GanShin.Data;
@@ -8,23 +6,7 @@ namespace GanShin.Content.Weapon
 {
     public class RikoSword : PlayerWeaponBase
     {
-        private List<MonsterController> _monsters = new List<MonsterController>();
-
-        protected void OnTriggerEnter(Collider other)
-        {
-            if (!other.CompareTag(Define.Tag.Monster)) return;
-            if (!other.gameObject.TryGetComponent<MonsterController>(out var monster))
-                return;
-            _monsters.Add(monster);
-        }
-
-        private void OnTriggerExit(Collider other)
-        {
-            if (!other.CompareTag(Define.Tag.Monster)) return;
-            if (!other.gameObject.TryGetComponent<MonsterController>(out var monster))
-                return;
-            _monsters.Remove(monster);
-        }
+        private readonly Collider[] _monsterCollider = new Collider[20];
 
         public override void OnAttack()
         {
@@ -35,25 +17,38 @@ namespace GanShin.Content.Weapon
                 return;
             }
 
-            foreach (var monster in _monsters)
+            var ownerTr = Owner.transform;
+            var attackPosition = ownerTr.position + ownerTr.forward * stat.rikoAttackForwardOffset;
+            var len = Physics.OverlapSphereNonAlloc(attackPosition, stat.rikoAttackRadius, _monsterCollider, Define.GetLayerMask(Define.eLayer.MONSTER));
+
+            for (var i = 0; i < len; ++i)
             {
+                var monster = _monsterCollider[i].GetComponent<MonsterController>();
+                if (ReferenceEquals(monster, null)) continue;
+
+                switch (AttackType)
+                {
+                    case ePlayerAttack.RIKO_BASIC_ATTAK1:
+                    case ePlayerAttack.RIKO_BASIC_ATTAK2:
+                    case ePlayerAttack.RIKO_BASIC_ATTAK3:
+                    case ePlayerAttack.RIKO_BASIC_ATTAK4:
+                        Owner.CurrentUltimateGauge += Owner.Stat.ultimateSkillChargeOnBaseAttack;
+                        break;
+                }
+                
                 switch (AttackType)
                 {
                     case ePlayerAttack.RIKO_BASIC_ATTAK1:
                         monster.OnDamaged(stat.attack1Damage);
-                        Owner.CurrentUltimateGauge += Owner.Stat.ultimateSkillChargeOnBaseAttack;
                         break;
                     case ePlayerAttack.RIKO_BASIC_ATTAK2:
                         monster.OnDamaged(stat.attack2Damage);
-                        Owner.CurrentUltimateGauge += Owner.Stat.ultimateSkillChargeOnBaseAttack;
                         break;
                     case ePlayerAttack.RIKO_BASIC_ATTAK3:
                         monster.OnDamaged(stat.attack3Damage);
-                        Owner.CurrentUltimateGauge += Owner.Stat.ultimateSkillChargeOnBaseAttack;
                         break;
                     case ePlayerAttack.RIKO_BASIC_ATTAK4:
                         monster.OnDamaged(stat.attack4Damage);
-                        Owner.CurrentUltimateGauge += Owner.Stat.ultimateSkillChargeOnBaseAttack;
                         break;
                     case ePlayerAttack.RIKO_ULTI_ATTAK1:
                         monster.OnDamaged(stat.ultimate1Damage);

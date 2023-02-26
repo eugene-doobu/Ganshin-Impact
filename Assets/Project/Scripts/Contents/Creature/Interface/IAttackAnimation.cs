@@ -6,6 +6,6 @@ namespace GanShin.Content.Creature
 {
     public interface IAttackAnimation
     {
-        public void OnAttack();
+        public void OnAnimAttack();
     }
 }

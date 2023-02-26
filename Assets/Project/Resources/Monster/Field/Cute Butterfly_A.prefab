@@ -142,7 +142,7 @@ GameObject:
   - component: {fileID: 2258042981836986433}
   - component: {fileID: 1099590727}
   - component: {fileID: 2115033858815057445}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cute Butterfly_A
   m_TagString: Monster
   m_Icon: {fileID: 0}
@@ -213,7 +213,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0e336e2f24b343488de0d862e751b01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveSpeed: 4
   state: 0
   table: {fileID: 11400000, guid: 5994b9ffce80a624098fb633e2165911, type: 2}
 --- !u!195 &2258042981836986433

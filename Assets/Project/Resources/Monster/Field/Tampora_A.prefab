@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4339108148150471778}
   - component: {fileID: 1159278466}
   - component: {fileID: 2205079720915559091}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Tampora_A
   m_TagString: Monster
   m_Icon: {fileID: 0}
@@ -72,7 +72,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0e336e2f24b343488de0d862e751b01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveSpeed: 4
   state: 0
   table: {fileID: 11400000, guid: 99aebd1e411223a4891d680e75ddda5a, type: 2}
 --- !u!195 &4339108148150471777

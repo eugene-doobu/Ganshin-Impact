@@ -13,7 +13,7 @@ using Zenject;
 namespace GanShin.Content.Creature
 {
     [RequireComponent(typeof(CharacterController))]
-    public abstract class PlayerController : CreatureController, IAttackAnimation
+    public abstract class PlayerController : CreatureController
     {
 #region Static
         protected static readonly int AnimPramHashIsMove      = Animator.StringToHash("IsMove");
@@ -128,6 +128,8 @@ namespace GanShin.Content.Creature
                 _currentUltimateGauge = Mathf.Clamp(value, 0, stat.ultimateSkillAvailabilityGauge);
             }
         }
+        
+        protected PlayerWeaponBase Weapon => weapon;
 #endregion Properties
 
 #region Mono
@@ -370,11 +372,6 @@ namespace GanShin.Content.Creature
                 _isDead = true;
                 ObjAnimator.SetTrigger(AnimPramHashSetDead);
             }
-        }
-
-        public void OnAttack()
-        {
-            weapon.OnAttack();
         }
         
         private async UniTask SkillCoolTime()

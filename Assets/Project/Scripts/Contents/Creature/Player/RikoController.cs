@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace GanShin.Content.Creature
 {
-    public class RikoController : PlayerController
+    public class RikoController : PlayerController, IAttackAnimation
     {
         protected override void Attack()
         {
@@ -77,5 +78,13 @@ namespace GanShin.Content.Creature
         {
             
         }
+
+#region AnimEvents
+        [UsedImplicitly]
+        public void OnAnimAttack()
+        {
+            Weapon.OnAttack();
+        }
+#endregion AnimEvents
     }
 }

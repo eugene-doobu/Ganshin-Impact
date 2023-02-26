@@ -560,7 +560,7 @@ GameObject:
   - component: {fileID: 360080206}
   - component: {fileID: 2114950168}
   - component: {fileID: 8992947971046811892}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Fire_Pig_A
   m_TagString: Monster
   m_Icon: {fileID: 0}
@@ -617,7 +617,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0e336e2f24b343488de0d862e751b01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveSpeed: 4
   state: 0
   table: {fileID: 11400000, guid: ef5327a1a4e80cc46a2000eafe3752fa, type: 2}
 --- !u!195 &360080203
