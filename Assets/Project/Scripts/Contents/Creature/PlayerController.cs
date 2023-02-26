@@ -50,7 +50,8 @@ namespace GanShin.Content.Creature
 
         private bool _canRoll = true;
         private bool _desiredRoll;
-
+        private bool _isDash = false;
+        
         [Space] [Header("GroundCheck")] [SerializeField]
         private float rayStartPosOffset = 0.3f;
 
@@ -74,8 +75,10 @@ namespace GanShin.Content.Creature
         private bool _desiredAttack;
 
         private bool _isOnGround;
+        private bool _isDashOnLastFrame;
 
-        private float _staminaCost = 20f;
+        private float _rollStaminaCost         = 20f;
+        private float _dashStaminaCostOfSecond = 10f;
 
         private CancellationTokenSource _attackCancellationTokenSource;
         
@@ -150,7 +153,7 @@ namespace GanShin.Content.Creature
         protected override void Update()
         {
             CheckOnGround();
-            base.Update();
+            Movement();
             Roll();
             ApplyGravity();
             Attack();
@@ -229,7 +232,7 @@ namespace GanShin.Content.Creature
         }
 
 #region Movement
-        protected override void Movement(float moveSpeed)
+        private void Movement()
         {
             PlayMovementAnimation();
             if (_lastMovementValue == Vector2.zero) return;
@@ -243,6 +246,20 @@ namespace GanShin.Content.Creature
                 cameraRight   = Vector3.Cross(Vector3.up, cameraForward);
             }
 
+            var moveSpeed = stat.moveSpeed;
+            var dashCost  = _dashStaminaCostOfSecond * Time.deltaTime;
+            if (_isDash && _playerManager.CurrentStamina > dashCost)
+            {
+                moveSpeed          = stat.dashSpeed;
+                _isDashOnLastFrame = true;
+                
+                _playerManager.CurrentStamina -= dashCost;
+            }
+            else
+            {
+                _isDashOnLastFrame = false;
+            }
+            
             var direction = (cameraForward * _lastMovementValue.y + cameraRight * _lastMovementValue.x).normalized;
             _characterController.Move(direction * moveSpeed * Time.deltaTime);
 
@@ -254,7 +271,8 @@ namespace GanShin.Content.Creature
         {
             if (!HasAnimator) return;
 
-            _moveAnimValue = Mathf.Lerp(_moveAnimValue, _lastMovementValue.magnitude,
+            var speed = _isDashOnLastFrame ? 1.5f : 1f;
+            _moveAnimValue = Mathf.Lerp(_moveAnimValue, _lastMovementValue.magnitude * speed,
                 rotationSmoothFactor * Time.deltaTime);
 
             ObjAnimator.SetBool(ANIM_PRAM_HASH_ISMOVE, _lastMovementValue != Vector2.zero);
@@ -268,8 +286,8 @@ namespace GanShin.Content.Creature
 
             if (!_canRoll) return;
             
-            if (_playerManager.CurrentStamina < _staminaCost) return;
-            _playerManager.CurrentStamina -= _staminaCost;
+            if (_playerManager.CurrentStamina < _rollStaminaCost) return;
+            _playerManager.CurrentStamina -= _rollStaminaCost;
             GanDebugger.LogWarning(_playerManager.CurrentStamina.ToString());
             
             PlayRollAnimation();
@@ -434,6 +452,7 @@ namespace GanShin.Content.Creature
 
         protected virtual void OnDash(bool value)
         {
+            _isDash = value;
         }
 
         protected virtual void OnInteraction(bool value)
@@ -442,7 +461,7 @@ namespace GanShin.Content.Creature
 
         protected virtual void OnRoll()
         {
-            if (_playerManager.CurrentStamina < _staminaCost) return;
+            if (_playerManager.CurrentStamina < _rollStaminaCost) return;
             if (_isOnGround) _desiredRoll = true;
         }
 

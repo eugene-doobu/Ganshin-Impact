@@ -134,7 +134,7 @@ namespace GanShin.Content.Creature.Monster
 
         private void InitializeNavMeshAgent()
         {
-            _navMeshAgent.speed = _moveSpeed;
+            _navMeshAgent.speed = table.moveSpeed;
         }
 
         private void InitializeCapsuleCollider()
@@ -143,12 +143,6 @@ namespace GanShin.Content.Creature.Monster
             _capsuleCollider.isTrigger = true;
         }
 #endregion Initalize
-
-        protected override void Movement(float moveSpeed)
-        {
-            // 구조를 개선하며 제거 예정
-        }
-
         public override void OnDamaged(float damage)
         {
             if (State == eMonsterState.DEAD) return;
@@ -270,6 +264,8 @@ namespace GanShin.Content.Creature.Monster
         {
             var direction = (targetPosition - transform.position).normalized;
             direction = Vector3.ProjectOnPlane(direction, Vector3.up);
+
+            if (direction == Vector3.zero) return;
 
             var targetRotation = Quaternion.LookRotation(direction);
             transform.rotation =

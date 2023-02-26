@@ -9,6 +9,8 @@ namespace GanShin.Data
         [Header("Common")] 
         public float hp = 100f;
         public float baseSkillCoolTime = 10f;
+        public float moveSpeed         = 4f;
+        public float dashSpeed         = 6f;
         
         [Header("Ultimate Skill")]
         public float ultimateSkillAvailabilityGauge  = 30f;
