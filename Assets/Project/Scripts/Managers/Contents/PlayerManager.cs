@@ -1,6 +1,7 @@
 #nullable enable
 
 using System;
+using GanShin.CameraSystem;
 using GanShin.Content.Creature;
 using GanShin.UI;
 using JetBrains.Annotations;
@@ -51,6 +52,9 @@ namespace GanShin
 #region Fields
         [Inject(Id = AvatarBindId.Riko)] private PlayerController _riko = null!;
 
+        [Inject]
+        CameraManager _camera = null!;
+        
         private PlayerAvatarContext _avatarContext;
         
         public Transform CurrentPlayerTransform => _riko.transform;
@@ -125,6 +129,17 @@ namespace GanShin
         }
 #endregion Stamina
 
+        public PlayerController? SetCurrentPlayer(Define.ePlayerAvatar avatar)
+        {
+            var player = GetPlayer(avatar);
+            if (player == null) return null;
+            
+            player.transform.position = Vector3.zero;
+            player.gameObject.SetActive(true);
+            _camera.ChangeTarget(player.transform);
+            return player;
+        }
+        
         public PlayerController? GetPlayer(Define.ePlayerAvatar avatar)
         {
             // TODO: 캐릭터 변경 로직으로 변경

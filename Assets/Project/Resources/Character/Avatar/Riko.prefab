@@ -4370,7 +4370,7 @@ GameObject:
   - component: {fileID: 575561850542587195}
   - component: {fileID: 575561850533286909}
   - component: {fileID: 575561851167875362}
-  - component: {fileID: 575561850542712475}
+  - component: {fileID: 5669425889962865898}
   - component: {fileID: 616400277}
   - component: {fileID: 616400278}
   m_Layer: 3
@@ -4437,7 +4437,7 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.85, z: 0}
---- !u!114 &575561850542712475
+--- !u!114 &5669425889962865898
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4446,10 +4446,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 575561850542678363}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 868dce573821dfd40b376386c7c6630c, type: 3}
+  m_Script: {fileID: 11500000, guid: da775725fa676664688b3f6a7b76c3f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveSpeed: 4
   weapon: {fileID: 7047767155266528842}
   stat: {fileID: 11400000, guid: 1b349abea2212904a928ac59b814cabe, type: 2}
   rotationSmoothFactor: 8

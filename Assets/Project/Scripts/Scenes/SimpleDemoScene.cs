@@ -21,11 +21,7 @@ namespace GanShin.SceneManagement
 
         private void Start()
         {
-            var riko = _playerManager.GetPlayer(Define.ePlayerAvatar.RIKO);
-            if (riko == null) return;
-
-            riko.transform.position = Vector3.zero;
-            riko.gameObject.SetActive(true);
+            _playerManager.SetCurrentPlayer(Define.ePlayerAvatar.RIKO);
         }
 
         private void Update()
