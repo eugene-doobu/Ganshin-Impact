@@ -12,8 +12,7 @@ namespace GanShin.Content.Creature.Monster
     {
         protected Transform Target;
 
-        [field: SerializeField, ReadOnly]
-        private eMonsterState state;
+        [field: SerializeField, ReadOnly] private eMonsterState state;
 
         public virtual eMonsterState State
         {
@@ -24,7 +23,7 @@ namespace GanShin.Content.Creature.Monster
                 state = value;
             }
         }
-        
+
         public virtual void OnDamaged(float damage)
         {
             if (State == eMonsterState.DEAD) return;

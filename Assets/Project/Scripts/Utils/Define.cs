@@ -6,12 +6,12 @@
         {
             CHARACTER = 3,
         }
-        
+
         public static int GetLayerMask(eLayer layer)
         {
-            return 1 << (int)layer;
+            return 1 << (int) layer;
         }
-        
+
         public struct Tag
         {
             public static string Player       = "Player";
@@ -25,7 +25,7 @@
             AI,
             MUSCLE_CAT
         }
-        
+
         public enum eScene
         {
             Unknown,

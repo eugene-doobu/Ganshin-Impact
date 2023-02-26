@@ -21,7 +21,7 @@ namespace Ganshin
             InstallGlobalUIs();
             InstallCameras();
         }
-        
+
         private void InstallManagers()
         {
             Container.Bind<InputSystemManager>().AsSingle().NonLazy();
@@ -30,21 +30,21 @@ namespace Ganshin
             Container.Bind(
                     typeof(UIManager),
                     typeof(IInitializable)
-                    )
-                    .To<UIManager>().AsSingle().NonLazy();
+                )
+                .To<UIManager>().AsSingle().NonLazy();
             Container.Bind(
-                typeof(CameraManager),
-                typeof(IInitializable),
-                typeof(ITickable),
-                typeof(ILateTickable)
+                    typeof(CameraManager),
+                    typeof(IInitializable),
+                    typeof(ITickable),
+                    typeof(ILateTickable)
                 )
                 .To<CameraManager>()
                 .AsSingle()
                 .NonLazy();
             Container.Bind<MapObjectManager>().AsSingle().NonLazy();
             Container.Bind(
-                typeof(PlayerManager),
-                typeof(IInitializable)
+                    typeof(PlayerManager),
+                    typeof(IInitializable)
                 )
                 .To<PlayerManager>()
                 .AsSingle().NonLazy();

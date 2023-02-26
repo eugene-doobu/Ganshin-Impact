@@ -8,12 +8,11 @@ namespace GanShin.Data
     public class RikoStatTable : CharacterStatTable
     {
         // TODO: 공격쿨타임, 애니메이션 디테일한 설정값 추가
-        
-        [Header("Damages")]
-        public float attack1Damage = 10;
-        public float attack2Damage = 20;
-        public float attack3Damage = 30;
-        public float attack4Damage = 40;
+
+        [Header("Damages")] public float attack1Damage = 10;
+        public                     float attack2Damage = 20;
+        public                     float attack3Damage = 30;
+        public                     float attack4Damage = 40;
 
         public float ultimate1Damage = 30;
         public float ultimate2Damage = 40;

@@ -6,7 +6,6 @@ namespace GanShin.Data
 {
     public class CharacterStatTable : ScriptableObject
     {
-        [Header("Common")] 
-        public float hp = 100f;
+        [Header("Common")] public float hp = 100f;
     }
 }

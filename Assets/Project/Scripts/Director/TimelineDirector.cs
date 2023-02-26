@@ -10,7 +10,7 @@ namespace GanShin.Director
     public class TimelineDirector : GanshinDirector
     {
         protected TimelineAsset? TimelineAsset { get; set; }
-        
+
         protected override void Awake()
         {
             base.Awake();
@@ -19,10 +19,8 @@ namespace GanShin.Director
                 GanDebugger.LogError(nameof(Director), "TimelineAsset is null");
         }
 
-        #region Timeline
+#region Timeline
 
-        
-
-        #endregion Timeline
+#endregion Timeline
     }
 }

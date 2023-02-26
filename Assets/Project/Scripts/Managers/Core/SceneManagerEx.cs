@@ -15,16 +15,17 @@ namespace GanShin.SceneManagement
     {
         [Inject] private UIManager          _ui;
         [Inject] private UIRootLoadingScene _loadingScene;
-        [Inject(Id = LoadingSettingInstaller.ChangeSceneDelayId)] 
+
+        [Inject(Id = LoadingSettingInstaller.ChangeSceneDelayId)]
         private float _changeSceneDelay;
-        
+
         public BaseScene CurrentScene => Object.FindObjectOfType<BaseScene>();
 
         public SceneManagerEx()
         {
             SceneManager.sceneUnloaded += OnSceneUnLoaded;
         }
-        
+
         public async UniTask LoadScene(Define.eScene type)
         {
             _ui.OnGlobalUI(eGlobalUI.LOADING, true);
@@ -50,9 +51,8 @@ namespace GanShin.SceneManagement
 
         private void OnSceneUnLoaded(Scene scene)
         {
-            if(CurrentScene != null)
+            if (CurrentScene != null)
                 CurrentScene.Clear();
         }
     }
 }
-

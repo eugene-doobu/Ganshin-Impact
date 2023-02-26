@@ -15,9 +15,9 @@ namespace GanShin.MapObject
     public abstract class MapObject : MonoBehaviour
     {
         [Inject] protected MapObjectManager _mapObjectManager;
-        
-        [field:SerializeField, ReadOnly] public long Id { get; set; }
-        
+
+        [field: SerializeField, ReadOnly] public long Id { get; set; }
+
         public void Awake()
         {
             _mapObjectManager.RegisterMapObject(this);
@@ -25,7 +25,6 @@ namespace GanShin.MapObject
 
         public virtual void OnUpdate()
         {
-            
         }
 
         public void OnDestroy()

@@ -1,7 +1,7 @@
 namespace GanShin.Director
 {
-    #nullable enable
-    
+#nullable enable
+
     /// <summary>
     /// 유니티 에셋시스템 이슈 대응을 위한 빈 디렉터
     /// Build Settings의 Scenes In Build에 포함된 씬에
@@ -9,9 +9,20 @@ namespace GanShin.Director
     /// </summary>
     public class EmptyDirector : GanshinDirector
     {
-        public override void Play(IDirectorMessage? message = null) { }
-        public override void Stop()                                 { }
-        public override void Resume()                               { }
-        public override void Pause()                                { }
+        public override void Play(IDirectorMessage? message = null)
+        {
+        }
+
+        public override void Stop()
+        {
+        }
+
+        public override void Resume()
+        {
+        }
+
+        public override void Pause()
+        {
+        }
     }
 }

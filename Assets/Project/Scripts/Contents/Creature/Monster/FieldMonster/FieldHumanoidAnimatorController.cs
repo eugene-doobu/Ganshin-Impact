@@ -7,7 +7,7 @@ namespace GanShin.Content.Creature.Monster
     public class FieldHumanoidAnimatorController : FieldMonsterAnimBase
     {
         private static readonly int AnimParam = Animator.StringToHash("animation");
-        
+
         private Animator _animator;
         private bool     _isInitialized;
 

@@ -13,11 +13,11 @@ namespace GanShin.CameraSystem
     public class VirtualCameraJig : MonoBehaviour
     {
         [Inject] private CameraManager? _camera;
-        
-        [field:SerializeField] public string Name { get; private set; } = String.Empty;
-        
+
+        [field: SerializeField] public string Name { get; private set; } = String.Empty;
+
         private CinemachineVirtualCamera? _virtualCamera;
-        
+
         private void Awake()
         {
             _virtualCamera = GetComponent<CinemachineVirtualCamera>();

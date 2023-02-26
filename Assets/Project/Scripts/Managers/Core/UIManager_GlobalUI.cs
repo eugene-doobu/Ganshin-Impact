@@ -9,30 +9,33 @@ namespace GanShin.UI
     {
         LOADING,
     }
-    
+
     public partial class UIManager
     {
 #region Define
+
         public const string EventSystemPath = "Prefabs/UI/EventSystem";
-        
+
         public struct GlobalUIName
         {
-            private const string Root    = "Prefabs/UI/Global/";
+            private const          string Root    = "Prefabs/UI/Global/";
             public static readonly string Loading = $"{Root}UI_LoadingScene";
         }
+
 #endregion Define
-        
-        private readonly Dictionary<eGlobalUI, GlobalUIRootBase> _globalUIs = new ();
-        public GlobalUIRootBase GetGlobalUI(eGlobalUI ui) => 
+
+        private readonly Dictionary<eGlobalUI, GlobalUIRootBase> _globalUIs = new();
+
+        public GlobalUIRootBase GetGlobalUI(eGlobalUI ui) =>
             _globalUIs.ContainsKey(ui) ? _globalUIs[ui] : null;
-            
+
         public void OnGlobalUI(eGlobalUI ui, bool isOn)
         {
             if (isOn)
             {
                 if (!_globalUIs.ContainsKey(ui)) return;
                 _globalUIs[ui].gameObject.SetActive(true);
-                _globalUIs[ui].InitializeContextData();    
+                _globalUIs[ui].InitializeContextData();
             }
             else
             {
@@ -41,7 +44,7 @@ namespace GanShin.UI
                 _globalUIs[ui].gameObject.SetActive(false);
             }
         }
-	    
+
         private void AddGlobalUIRoot()
         {
             GlobalRoot = new GameObject {name = "@Global_UI_Root"};
@@ -70,11 +73,11 @@ namespace GanShin.UI
             if (!ReferenceEquals(GlobalRoot, null))
                 tr.SetParent(GlobalRoot.transform);
             tr.localPosition = Vector3.zero;
-            tr.localScale = Vector3.one;
+            tr.localScale    = Vector3.one;
 
             var obj = root.gameObject;
             obj.SetActive(false);
-            
+
             _globalUIs.Add(type, root);
         }
     }
