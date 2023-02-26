@@ -4,7 +4,7 @@
 
 ### 기획
 
-[캐릭터 조작](./Docs/CharacterManipulation.md)
+[캐릭터 조작](./Docs/Character/CharacterManipulation.md)<br>
 [카메라 조작](./Docs/CameraSystem.md)
 
 ## 플레이
