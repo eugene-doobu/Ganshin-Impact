@@ -1,4 +1,4 @@
-![aiFace](./Images/face/muscleCat.jpg)
+![aiFace](./Images/face/ai.jpg)
 
 ## 공격 및 스킬
 ### 기본공격 : 마우스 좌클릭
@@ -14,4 +14,4 @@
 ..
 
 
-![aiModel](./Images/model/muscleCat.webp)
+![aiModel](./Images/model/ai.webp)
