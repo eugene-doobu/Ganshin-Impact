@@ -21,12 +21,6 @@ namespace GanShin.Content.Creature
 
 #endregion Properties
 
-#region TableData // TODO: 별도의 클래스로 분리 후 json 파일로 관리 예정
-
-        [SerializeField] protected float _moveSpeed = 4f;
-
-#endregion TableData
-
 #region Mono
 
         // TODO: MapController의 Init로 변경
@@ -43,11 +37,8 @@ namespace GanShin.Content.Creature
         // TODO: MapController의 OnUpdate로 변경
         protected virtual void Update()
         {
-            Movement(_moveSpeed);
         }
 
 #endregion Mono
-
-        protected abstract void Movement(float moveSpeed);
     }
 }

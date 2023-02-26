@@ -9,9 +9,11 @@ namespace GanShin.UI
     {
         private void Update()
         {
-            Transform parent = transform.parent;
-            // transform.position = parent.position + Vector3.up * (parent.GetComponent<Collider>().bounds.size.y);
-            transform.rotation = Camera.main.transform.rotation;
+            var tr = transform;
+            
+            var parent = tr.parent;
+            tr.position = parent.position + Vector3.up * (parent.GetComponent<Collider>().bounds.size.y);
+            tr.rotation = Camera.main.transform.rotation;
         }
     }
 }

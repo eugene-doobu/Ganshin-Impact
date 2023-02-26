@@ -17,18 +17,15 @@ namespace GanShin.Content.Creature
     public class PlayerController : CreatureController, IAttackAnimation
     {
 #region Static
-
         private static int ANIM_PRAM_HASH_ISMOVE       = Animator.StringToHash("IsMove");
         private static int ANIM_PRAM_HASH_MOVE_SPEED   = Animator.StringToHash("MoveSpeed");
         private static int ANIM_PRAM_HASH_ROLL_START   = Animator.StringToHash("RollStart");
         private static int ANIM_PRAM_HASH_ATTACK_STATE = Animator.StringToHash("AttackState");
         private static int ANIM_PRAM_HASH_SET_IDLE     = Animator.StringToHash("SetIdle");
         private static int ANIM_PRAM_HASH_SET_DEAD     = Animator.StringToHash("SetDead");
-
 #endregion Static
 
 #region Variables
-
         [Inject] private InputSystemManager _input;
         [Inject] private CameraManager      _camera;
         [Inject] private PlayerManager      _playerManager;
@@ -53,7 +50,8 @@ namespace GanShin.Content.Creature
 
         private bool _canRoll = true;
         private bool _desiredRoll;
-
+        private bool _isDash = false;
+        
         [Space] [Header("GroundCheck")] [SerializeField]
         private float rayStartPosOffset = 0.3f;
 
@@ -77,15 +75,21 @@ namespace GanShin.Content.Creature
         private bool _desiredAttack;
 
         private bool _isOnGround;
+        private bool _isDashOnLastFrame;
+
+        private float _rollStaminaCost         = 20f;
+        private float _dashStaminaCostOfSecond = 10f;
 
         private CancellationTokenSource _attackCancellationTokenSource;
-        private bool                    _isOnAttack;
-        private float                   _currentHp;
-
+        
+        private bool  _isOnAttack;
+        private float _currentHp;
+        
+        private float _currentUltimateGauge;
+        private bool  _isAvailableSkill = true;
 #endregion Variables
 
 #region Properties
-
         public CharacterStatTable Stat => stat;
 
         public ePlayerAttack PlayerAttack
@@ -112,11 +116,19 @@ namespace GanShin.Content.Creature
                 _uiHpBarContext.CurrentHp = (int) _currentHp;
             }
         }
-
+        
+        public float CurrentUltimateGauge
+        {
+            get => _currentUltimateGauge;
+            set
+            {
+                if (Mathf.Approximately(_currentUltimateGauge, value)) return;
+                _currentUltimateGauge = Mathf.Clamp(value, 0, stat.ultimateSkillAvailabilityGauge);
+            }
+        }
 #endregion Properties
 
 #region Mono
-
         protected override void Awake()
         {
             base.Awake();
@@ -141,7 +153,7 @@ namespace GanShin.Content.Creature
         protected override void Update()
         {
             CheckOnGround();
-            base.Update();
+            Movement();
             Roll();
             ApplyGravity();
             Attack();
@@ -151,11 +163,9 @@ namespace GanShin.Content.Creature
         {
             RemoveInputEvent();
         }
-
 #endregion Mono
 
 #region StateCheck
-
         private void InitializeAvatar()
         {
             _characterController = GetComponent<CharacterController>();
@@ -183,7 +193,6 @@ namespace GanShin.Content.Creature
                 _isOnGround = false;
             }
         }
-
 #endregion StateCheck
 
         protected virtual void LoadData()
@@ -223,8 +232,7 @@ namespace GanShin.Content.Creature
         }
 
 #region Movement
-
-        protected override void Movement(float moveSpeed)
+        private void Movement()
         {
             PlayMovementAnimation();
             if (_lastMovementValue == Vector2.zero) return;
@@ -238,6 +246,20 @@ namespace GanShin.Content.Creature
                 cameraRight   = Vector3.Cross(Vector3.up, cameraForward);
             }
 
+            var moveSpeed = stat.moveSpeed;
+            var dashCost  = _dashStaminaCostOfSecond * Time.deltaTime;
+            if (_isDash && _playerManager.CurrentStamina > dashCost)
+            {
+                moveSpeed          = stat.dashSpeed;
+                _isDashOnLastFrame = true;
+                
+                _playerManager.CurrentStamina -= dashCost;
+            }
+            else
+            {
+                _isDashOnLastFrame = false;
+            }
+            
             var direction = (cameraForward * _lastMovementValue.y + cameraRight * _lastMovementValue.x).normalized;
             _characterController.Move(direction * moveSpeed * Time.deltaTime);
 
@@ -249,7 +271,8 @@ namespace GanShin.Content.Creature
         {
             if (!HasAnimator) return;
 
-            _moveAnimValue = Mathf.Lerp(_moveAnimValue, _lastMovementValue.magnitude,
+            var speed = _isDashOnLastFrame ? 1.5f : 1f;
+            _moveAnimValue = Mathf.Lerp(_moveAnimValue, _lastMovementValue.magnitude * speed,
                 rotationSmoothFactor * Time.deltaTime);
 
             ObjAnimator.SetBool(ANIM_PRAM_HASH_ISMOVE, _lastMovementValue != Vector2.zero);
@@ -262,6 +285,11 @@ namespace GanShin.Content.Creature
             _desiredRoll = false;
 
             if (!_canRoll) return;
+            
+            if (_playerManager.CurrentStamina < _rollStaminaCost) return;
+            _playerManager.CurrentStamina -= _rollStaminaCost;
+            GanDebugger.LogWarning(_playerManager.CurrentStamina.ToString());
+            
             PlayRollAnimation();
             DelayRoll().Forget();
             _canRoll = false;
@@ -283,11 +311,9 @@ namespace GanShin.Content.Creature
         {
             _characterController.Move(Vector3.up * gravity * Time.deltaTime);
         }
-
 #endregion Movement
 
 #region Attack
-
         // TODO: 캐릭터별로 다르게 처리 + 별도의 공격 클래스를 만들어서 처리
         private void Attack()
         {
@@ -356,8 +382,6 @@ namespace GanShin.Content.Creature
             }
         }
 
-        private UniTask? _returnToIdleTask;
-
         private async UniTask DelayAttack()
         {
             await UniTask.Delay(TimeSpan.FromSeconds(attackCooldown));
@@ -397,6 +421,8 @@ namespace GanShin.Content.Creature
         {
             CurrentHp -= damage;
 
+            CurrentUltimateGauge += stat.ultimateSkillChargeOnDamaged;
+
             if (_currentHp <= 0 && !_isDead)
             {
                 _isDead = true;
@@ -408,11 +434,16 @@ namespace GanShin.Content.Creature
         {
             weapon.OnAttack();
         }
-
+        
+        private async UniTask SkillCoolTime()
+        {
+            _isAvailableSkill = false;
+            await UniTask.Delay(TimeSpan.FromSeconds(stat.baseSkillCoolTime));
+            _isAvailableSkill = true;
+        }
 #endregion Attack
 
 #region ActionEvent
-
         /// 이동류: 모든 캐릭터가 동일한 로직을 사용, 스텟의 차이만 있음
         protected virtual void OnMovement(Vector2 value)
         {
@@ -421,6 +452,7 @@ namespace GanShin.Content.Creature
 
         protected virtual void OnDash(bool value)
         {
+            _isDash = value;
         }
 
         protected virtual void OnInteraction(bool value)
@@ -429,22 +461,46 @@ namespace GanShin.Content.Creature
 
         protected virtual void OnRoll()
         {
+            if (_playerManager.CurrentStamina < _rollStaminaCost) return;
             if (_isOnGround) _desiredRoll = true;
         }
 
         protected virtual void OnAttack(bool value)
         {
+            if (!value) return;
+            
             if (_isOnGround) _desiredAttack = true;
         }
 
         protected virtual void OnBaseSkill(bool value)
         {
+            if (!value) return;
+            
+            if (!_isAvailableSkill)
+            {
+                GanDebugger.Log(nameof(PlayerController), "스킬 쿨타임입니다.");
+                return;
+            }
+
+            SkillCoolTime().Forget();
+            CurrentUltimateGauge += stat.ultimateSkillChargeOnSkill;
+            
+            Debug.Log("스킬 사용");
         }
 
         protected virtual void OnUltimateSkill(bool value)
         {
+            if (!value) return;
+            
+            if (stat.ultimateSkillAvailabilityGauge > _currentUltimateGauge)
+            {
+                GanDebugger.Log(nameof(PlayerController), "궁극기 게이지가 부족합니다.");
+                return;
+            }
+            
+            Debug.Log("궁극 스킬 사용");
+            _currentUltimateGauge = 0f;
         }
-
 #endregion ActionEvent
     }
 }
