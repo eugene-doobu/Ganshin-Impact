@@ -53,6 +53,8 @@ namespace GanShin
         private PlayerAvatarContext _avatarContext;
 
         private Transform _playerPool = null!;
+        
+        public Transform CurrentPlayerTransform => _riko.transform;
 
         public PlayerManager()
         {
