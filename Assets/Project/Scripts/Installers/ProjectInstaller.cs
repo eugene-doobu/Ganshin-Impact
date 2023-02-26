@@ -44,7 +44,8 @@ namespace Ganshin
             Container.Bind<MapObjectManager>().AsSingle().NonLazy();
             Container.Bind(
                     typeof(PlayerManager),
-                    typeof(IInitializable)
+                    typeof(IInitializable),
+                    typeof(ITickable)
                 )
                 .To<PlayerManager>()
                 .AsSingle().NonLazy();

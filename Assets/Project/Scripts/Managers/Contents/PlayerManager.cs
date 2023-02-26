@@ -1,6 +1,7 @@
 #nullable enable
 
 using System;
+using Cysharp.Threading.Tasks;
 using GanShin.Content.Creature;
 using GanShin.UI;
 using JetBrains.Annotations;
@@ -11,7 +12,7 @@ using Object = UnityEngine.Object;
 namespace GanShin
 {
     [UsedImplicitly]
-    public class PlayerManager : IInitializable
+    public class PlayerManager : IInitializable, ITickable
     {
 #region Internal Class
 
@@ -48,19 +49,80 @@ namespace GanShin
 
 #endregion Define
 
+#region Fields
         [Inject(Id = AvatarBindId.Riko)] private PlayerController _riko = null!;
 
         private PlayerAvatarContext _avatarContext;
-
-        private Transform _playerPool = null!;
         
         public Transform CurrentPlayerTransform => _riko.transform;
+        
+        private float _maxStamina             = 100f;
+        private float _currentStamina         = 100f;
+        private float _staminaChargePerSecond = 10f;
+        private float _staminaChargeDelay     = 1f;
+        private float _currentStaminaDelay;
+        
+        private bool _isChargingStamina = true;
+#endregion Fields
 
+#region Properties
+
+        public float CurrentStamina
+        {
+            get => _currentStamina;
+            set
+            {
+                if (value < _currentStamina) SetStaminaDelay();
+                _currentStamina = Mathf.Clamp(value, 0f, _maxStamina);
+            }
+        }
+
+        private Transform _playerPool = null!;
+#endregion Properties
+
+#region Mono
         public PlayerManager()
         {
             SetPlayerPoolRoot();
             _avatarContext = new PlayerAvatarContext();
         }
+
+        public void Initialize()
+        {
+            _riko.transform.SetParent(_playerPool);
+            _riko.gameObject.SetActive(false);
+            _riko.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
+        }
+
+        public void Tick()
+        {
+            ChargeStaminaDelay();
+            ChargeStamina();
+        }
+#endregion Mono
+
+#region Stamina
+        private void ChargeStamina()
+        {
+            if (!_isChargingStamina) return;
+            CurrentStamina += _staminaChargePerSecond * Time.deltaTime;
+        }
+
+        private void SetStaminaDelay()
+        {
+            _currentStaminaDelay = _staminaChargeDelay;
+            _isChargingStamina   = false;
+        }
+
+        private void ChargeStaminaDelay()
+        {
+            if (_isChargingStamina) return;
+            
+            _currentStaminaDelay -= Time.deltaTime;
+            if (_currentStaminaDelay > 0) return;
+            _isChargingStamina = true;
+        }
+#endregion Stamina
 
         public PlayerController? GetPlayer(Define.ePlayerAvatar avatar)
         {
@@ -93,13 +155,6 @@ namespace GanShin
             Object.DontDestroyOnLoad(root);
 
             _playerPool = root.transform;
-        }
-
-        public void Initialize()
-        {
-            _riko.transform.SetParent(_playerPool);
-            _riko.gameObject.SetActive(false);
-            _riko.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
         }
     }
 }

@@ -17,18 +17,15 @@ namespace GanShin.Content.Creature
     public class PlayerController : CreatureController, IAttackAnimation
     {
 #region Static
-
         private static int ANIM_PRAM_HASH_ISMOVE       = Animator.StringToHash("IsMove");
         private static int ANIM_PRAM_HASH_MOVE_SPEED   = Animator.StringToHash("MoveSpeed");
         private static int ANIM_PRAM_HASH_ROLL_START   = Animator.StringToHash("RollStart");
         private static int ANIM_PRAM_HASH_ATTACK_STATE = Animator.StringToHash("AttackState");
         private static int ANIM_PRAM_HASH_SET_IDLE     = Animator.StringToHash("SetIdle");
         private static int ANIM_PRAM_HASH_SET_DEAD     = Animator.StringToHash("SetDead");
-
 #endregion Static
 
 #region Variables
-
         [Inject] private InputSystemManager _input;
         [Inject] private CameraManager      _camera;
         [Inject] private PlayerManager      _playerManager;
@@ -78,14 +75,14 @@ namespace GanShin.Content.Creature
 
         private bool _isOnGround;
 
+        private float _staminaCost = 20f;
+
         private CancellationTokenSource _attackCancellationTokenSource;
         private bool                    _isOnAttack;
         private float                   _currentHp;
-
 #endregion Variables
 
 #region Properties
-
         public CharacterStatTable Stat => stat;
 
         public ePlayerAttack PlayerAttack
@@ -112,11 +109,9 @@ namespace GanShin.Content.Creature
                 _uiHpBarContext.CurrentHp = (int) _currentHp;
             }
         }
-
 #endregion Properties
 
 #region Mono
-
         protected override void Awake()
         {
             base.Awake();
@@ -151,11 +146,9 @@ namespace GanShin.Content.Creature
         {
             RemoveInputEvent();
         }
-
 #endregion Mono
 
 #region StateCheck
-
         private void InitializeAvatar()
         {
             _characterController = GetComponent<CharacterController>();
@@ -183,7 +176,6 @@ namespace GanShin.Content.Creature
                 _isOnGround = false;
             }
         }
-
 #endregion StateCheck
 
         protected virtual void LoadData()
@@ -223,7 +215,6 @@ namespace GanShin.Content.Creature
         }
 
 #region Movement
-
         protected override void Movement(float moveSpeed)
         {
             PlayMovementAnimation();
@@ -262,6 +253,11 @@ namespace GanShin.Content.Creature
             _desiredRoll = false;
 
             if (!_canRoll) return;
+            
+            if (_playerManager.CurrentStamina < _staminaCost) return;
+            _playerManager.CurrentStamina -= _staminaCost;
+            GanDebugger.LogWarning(_playerManager.CurrentStamina.ToString());
+            
             PlayRollAnimation();
             DelayRoll().Forget();
             _canRoll = false;
@@ -283,11 +279,9 @@ namespace GanShin.Content.Creature
         {
             _characterController.Move(Vector3.up * gravity * Time.deltaTime);
         }
-
 #endregion Movement
 
 #region Attack
-
         // TODO: 캐릭터별로 다르게 처리 + 별도의 공격 클래스를 만들어서 처리
         private void Attack()
         {
@@ -356,8 +350,6 @@ namespace GanShin.Content.Creature
             }
         }
 
-        private UniTask? _returnToIdleTask;
-
         private async UniTask DelayAttack()
         {
             await UniTask.Delay(TimeSpan.FromSeconds(attackCooldown));
@@ -408,11 +400,9 @@ namespace GanShin.Content.Creature
         {
             weapon.OnAttack();
         }
-
 #endregion Attack
 
 #region ActionEvent
-
         /// 이동류: 모든 캐릭터가 동일한 로직을 사용, 스텟의 차이만 있음
         protected virtual void OnMovement(Vector2 value)
         {
@@ -429,6 +419,7 @@ namespace GanShin.Content.Creature
 
         protected virtual void OnRoll()
         {
+            if (_playerManager.CurrentStamina < _staminaCost) return;
             if (_isOnGround) _desiredRoll = true;
         }
 
@@ -444,7 +435,6 @@ namespace GanShin.Content.Creature
         protected virtual void OnUltimateSkill(bool value)
         {
         }
-
 #endregion ActionEvent
     }
 }
