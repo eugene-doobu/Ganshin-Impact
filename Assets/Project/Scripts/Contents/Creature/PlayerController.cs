@@ -17,15 +17,18 @@ namespace GanShin.Content.Creature
     public class PlayerController : CreatureController, IAttackAnimation
     {
 #region Static
+
         private static int ANIM_PRAM_HASH_ISMOVE       = Animator.StringToHash("IsMove");
         private static int ANIM_PRAM_HASH_MOVE_SPEED   = Animator.StringToHash("MoveSpeed");
         private static int ANIM_PRAM_HASH_ROLL_START   = Animator.StringToHash("RollStart");
         private static int ANIM_PRAM_HASH_ATTACK_STATE = Animator.StringToHash("AttackState");
         private static int ANIM_PRAM_HASH_SET_IDLE     = Animator.StringToHash("SetIdle");
         private static int ANIM_PRAM_HASH_SET_DEAD     = Animator.StringToHash("SetDead");
+
 #endregion Static
 
 #region Variables
+
         [Inject] private InputSystemManager _input;
         [Inject] private CameraManager      _camera;
         [Inject] private PlayerManager      _playerManager;
@@ -46,7 +49,7 @@ namespace GanShin.Content.Creature
 
         [SerializeField] private float rotationSmoothFactor = 8f;
         [SerializeField] private float rollCooldown         = 0.5f;
-        [SerializeField] private float gravity             = -1f;
+        [SerializeField] private float gravity              = -1f;
 
         private bool _canRoll = true;
         private bool _desiredRoll;
@@ -64,11 +67,9 @@ namespace GanShin.Content.Creature
         [SerializeField]
         private float attackCooldown = 0.2f;
 
-        [SerializeField] 
-        private float attackToIdleTime = 1f;
+        [SerializeField] private float attackToIdleTime = 1f;
 
-        [SerializeField] [ReadOnly] 
-        private ePlayerAttack playerAttack;
+        [SerializeField] [ReadOnly] private ePlayerAttack playerAttack;
 
         [SerializeField] private bool isOnUltimate;
 
@@ -80,11 +81,13 @@ namespace GanShin.Content.Creature
         private CancellationTokenSource _attackCancellationTokenSource;
         private bool                    _isOnAttack;
         private float                   _currentHp;
+
 #endregion Variables
 
 #region Properties
+
         public CharacterStatTable Stat => stat;
-        
+
         public ePlayerAttack PlayerAttack
         {
             get => playerAttack;
@@ -96,22 +99,24 @@ namespace GanShin.Content.Creature
                 weapon.AttackType = value;
             }
         }
-        
+
         public float CurrentHp
         {
             get => _currentHp;
             private set
             {
                 if (Mathf.Approximately(_currentHp, value)) return;
-                
+
                 _currentHp = Mathf.Clamp(value, 0, stat.hp);
-                
-                _uiHpBarContext.CurrentHp = (int)_currentHp;
+
+                _uiHpBarContext.CurrentHp = (int) _currentHp;
             }
         }
+
 #endregion Properties
-        
+
 #region Mono
+
         protected override void Awake()
         {
             base.Awake();
@@ -128,7 +133,7 @@ namespace GanShin.Content.Creature
             base.Start();
             // TODO: 매니저격 클래스에서 셋팅할 예정
             _camera.ChangeTarget(_tr);
-            _uiHpBarContext.MaxHp     = (int)stat.hp;
+            _uiHpBarContext.MaxHp = (int) stat.hp;
 
             CurrentHp = stat.hp;
         }
@@ -146,9 +151,11 @@ namespace GanShin.Content.Creature
         {
             RemoveInputEvent();
         }
+
 #endregion Mono
 
 #region StateCheck
+
         private void InitializeAvatar()
         {
             _characterController = GetComponent<CharacterController>();
@@ -176,6 +183,7 @@ namespace GanShin.Content.Creature
                 _isOnGround = false;
             }
         }
+
 #endregion StateCheck
 
         protected virtual void LoadData()
@@ -279,6 +287,7 @@ namespace GanShin.Content.Creature
 #endregion Movement
 
 #region Attack
+
         // TODO: 캐릭터별로 다르게 처리 + 별도의 공격 클래스를 만들어서 처리
         private void Attack()
         {
@@ -382,12 +391,12 @@ namespace GanShin.Content.Creature
         }
 
         private bool _isDead = false;
-        
+
         // TODO: 추상화
         public void OnDamaged(float damage)
         {
             CurrentHp -= damage;
-            
+
             if (_currentHp <= 0 && !_isDead)
             {
                 _isDead = true;
@@ -399,6 +408,7 @@ namespace GanShin.Content.Creature
         {
             weapon.OnAttack();
         }
+
 #endregion Attack
 
 #region ActionEvent

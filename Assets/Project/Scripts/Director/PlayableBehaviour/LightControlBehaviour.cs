@@ -13,9 +13,9 @@ namespace GanShin.Director
         [SerializeField] private float _range           = 10f;
 
         private Light _light;
-        
+
         private bool _firstFrameHappened;
-        
+
         private Color _defaultColor;
         private float _defaultIntensity;
         private float _defaultBounceIntensity;
@@ -25,9 +25,9 @@ namespace GanShin.Director
         {
             var light = playerData as Light;
             if (light == null) return;
-            
+
             CheckFirstFrame(light);
-            
+
             int inputCount = playable.GetInputCount();
 
             Color blendedColor           = Color.clear;
@@ -39,10 +39,10 @@ namespace GanShin.Director
             for (int i = 0; i < inputCount; i++)
             {
                 float inputWeight = playable.GetInputWeight(i);
-                ScriptPlayable<LightControlBehaviour> inputPlayable = 
-                    (ScriptPlayable<LightControlBehaviour>)playable.GetInput(i);
+                ScriptPlayable<LightControlBehaviour> inputPlayable =
+                    (ScriptPlayable<LightControlBehaviour>) playable.GetInput(i);
                 LightControlBehaviour input = inputPlayable.GetBehaviour();
-            
+
                 blendedColor           += input._color * inputWeight;
                 blendedIntensity       += input._intensity * inputWeight;
                 blendedBounceIntensity += input._bounceIntensity * inputWeight;
@@ -84,7 +84,7 @@ namespace GanShin.Director
 
             if (_light == null)
                 return;
-            
+
             _light.color           = _defaultColor;
             _light.intensity       = _defaultIntensity;
             _light.bounceIntensity = _defaultBounceIntensity;

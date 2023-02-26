@@ -9,15 +9,18 @@ namespace GanShin.Director
     public class GanshinDirector : MonoBehaviour
     {
         public PlayableDirector? PlayableDirector { get; set; }
-        
+
 #region MonoBehaviour
+
         protected virtual void Awake()
         {
             PlayableDirector = GetComponent<PlayableDirector>();
         }
+
 #endregion MonoBehaviour
 
 #region PlayableDirector
+
         public virtual void Play(IDirectorMessage? message = null)
         {
             PlayableDirector!.Play();
@@ -27,16 +30,17 @@ namespace GanShin.Director
         {
             PlayableDirector!.Stop();
         }
-        
+
         public virtual void Resume()
         {
             PlayableDirector!.Resume();
         }
-        
+
         public virtual void Pause()
         {
             PlayableDirector!.Pause();
         }
+
 #endregion PlayableDirector
     }
 }

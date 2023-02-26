@@ -7,7 +7,7 @@ namespace GanShin.Content.Creature.Monster
         DEFAULT,
         HUMANOID,
     }
-    
+
     public abstract class FieldMonsterAnimBase
     {
         public abstract void Initialize(Animator animator);

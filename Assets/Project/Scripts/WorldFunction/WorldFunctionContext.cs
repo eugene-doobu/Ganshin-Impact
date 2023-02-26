@@ -7,43 +7,43 @@ namespace GanShin.UI
 {
     public class WorldFunctionContext : Context
     {
-        #region Variables
+#region Variables
 
         private readonly Property<int>   _currentHealth = new Property<int>(100);
         private readonly Property<int>   _maxHealth     = new Property<int>(200);
         private readonly Property<Color> _color         = new Property<Color>(Color.green);
 
-        #endregion Variables
+#endregion Variables
 
-        #region Properties
+#region Properties
 
         public int CurrentHealth
         {
             get => _currentHealth.Value;
             set => _currentHealth.Value = value;
         }
-        
+
         public int MaxHealth
         {
             get => _maxHealth.Value;
             set => _maxHealth.Value = value;
         }
-        
+
         public Color Color
         {
             get => _color.Value;
             set => _color.Value = value;
         }
 
-        #endregion Properties
+#endregion Properties
 
-        #region Events
+#region Events
 
         public void OnClickQuit(Context context)
         {
             Debug.Log("Quit");
         }
 
-        #endregion Events
+#endregion Events
     }
 }

@@ -13,7 +13,7 @@ namespace GanShin.UI
         private int    _currentHp;
         private int    _maxHp;
         private float  _hpPercent;
-        
+
         [UsedImplicitly]
         public string TargetName
         {
@@ -24,7 +24,7 @@ namespace GanShin.UI
                 OnPropertyChanged();
             }
         }
-        
+
         [UsedImplicitly]
         public int CurrentHp
         {
@@ -33,10 +33,10 @@ namespace GanShin.UI
             {
                 _currentHp = value;
                 OnPropertyChanged();
-                HpPercent = (float)_currentHp / _maxHp;
+                HpPercent = (float) _currentHp / _maxHp;
             }
         }
-        
+
         [UsedImplicitly]
         public int MaxHp
         {
@@ -47,7 +47,7 @@ namespace GanShin.UI
                 OnPropertyChanged();
             }
         }
-        
+
         [UsedImplicitly]
         public float HpPercent
         {
@@ -58,7 +58,7 @@ namespace GanShin.UI
                 OnPropertyChanged();
             }
         }
-        
+
         [NotifyPropertyChangedInvocator]
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {

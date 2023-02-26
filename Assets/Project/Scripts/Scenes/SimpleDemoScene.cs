@@ -9,11 +9,10 @@ namespace GanShin.SceneManagement
 {
     public class SimpleDemoScene : BaseScene
     {
-        [Inject] 
-        private PlayerManager _playerManager;
+        [Inject] private PlayerManager _playerManager;
 
         [Inject] private SceneManagerEx _sceneManager;
-        
+
         protected override void Init()
         {
             base.Init();
@@ -24,7 +23,7 @@ namespace GanShin.SceneManagement
         {
             var riko = _playerManager.GetPlayer(Define.ePlayerAvatar.RIKO);
             if (riko == null) return;
-            
+
             riko.transform.position = Vector3.zero;
             riko.gameObject.SetActive(true);
         }
@@ -37,7 +36,6 @@ namespace GanShin.SceneManagement
 
         public override void Clear()
         {
-        
         }
     }
 }

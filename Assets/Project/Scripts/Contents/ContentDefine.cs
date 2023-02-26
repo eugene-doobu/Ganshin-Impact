@@ -5,7 +5,7 @@ namespace GanShin.Content
         public static string WristRightBone = "Wrist_R";
         public static string WristLeftBone  = "Wrist_L";
     }
-    
+
     public enum ePlayerAttack
     {
         NONE,

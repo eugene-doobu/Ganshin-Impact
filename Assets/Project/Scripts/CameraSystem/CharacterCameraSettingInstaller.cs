@@ -6,14 +6,14 @@ using Zenject;
 namespace GanShin.CameraSystem
 {
     [CreateAssetMenu(menuName = "Installers/CharacterCameraSettingInstaller")]
-    public class CharacterCameraSettingInstaller :  ScriptableObjectInstaller<CharacterCameraSettingInstaller>
+    public class CharacterCameraSettingInstaller : ScriptableObjectInstaller<CharacterCameraSettingInstaller>
     {
         public const string TopClampID    = "CharacterCameraSettingInstaller.topClamp";
         public const string BottomClampID = "CharacterCameraSettingInstaller.bottomClamp";
-        
+
         public const string LookYawMagnitudeID   = "CharacterCameraSettingInstaller.lookYawMagnitude";
         public const string LookPitchMagnitudeID = "CharacterCameraSettingInstaller.lookPitchMagnitude";
-        
+
         public const string TargetZoomID       = "CharacterCameraSettingInstaller.targetZoom";
         public const string ZoomSmoothFactorID = "CharacterCameraSettingInstaller.zoomSmoothFactor";
         public const string ZoomMagnitudeID    = "CharacterCameraSettingInstaller.zoomMagnitude";
@@ -33,15 +33,15 @@ namespace GanShin.CameraSystem
         public float zoomThreshHold   = 0.1f;
         public float zoomMinValue     = 1f;
         public float zoomMaxValue     = 4f;
-        
+
         public override void InstallBindings()
         {
             Container.BindInstance(topClamp).WithId(TopClampID);
             Container.BindInstance(bottomClamp).WithId(BottomClampID);
-            
+
             Container.BindInstance(lookYawMagnitude).WithId(LookYawMagnitudeID);
             Container.BindInstance(lookPitchMagnitude).WithId(LookPitchMagnitudeID);
-            
+
             Container.BindInstance(targetZoom).WithId(TargetZoomID);
             Container.BindInstance(zoomSmoothFactor).WithId(ZoomSmoothFactorID);
             Container.BindInstance(zoomMagnitude).WithId(ZoomMagnitudeID);

@@ -10,11 +10,10 @@ namespace GanShin.UI
     [RequireComponent(typeof(ContextHolder))]
     public abstract class UIRootBase : MonoBehaviour
     {
-        [UsedImplicitly]
-        [Inject] protected UIManager UIManager { get; private set; }
-        
+        [UsedImplicitly] [Inject] protected UIManager UIManager { get; private set; }
+
         protected ContextHolder ContextHolder { get; private set; }
-        
+
         public INotifyPropertyChanged DataContext { get; protected set; }
 
         protected virtual void Awake()
@@ -23,7 +22,7 @@ namespace GanShin.UI
             DataContext           = InitializeDataContext();
             ContextHolder.Context = DataContext;
         }
-        
+
         protected abstract INotifyPropertyChanged InitializeDataContext();
 
         public void CreateContext()
