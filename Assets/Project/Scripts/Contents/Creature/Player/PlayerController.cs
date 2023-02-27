@@ -60,13 +60,7 @@ namespace GanShin.Content.Creature
         [SerializeField] private LayerMask groundLayerMask;
 
         [Space]
-        // TODO: Attack 관련 내용 별도의 클래스를 조합하여 관리
         [Header("Attack")]
-        [SerializeField]
-        private float attackCooldown = 0.2f;
-
-        [SerializeField] private float attackToIdleTime = 1f;
-
         [SerializeField] [ReadOnly] private ePlayerAttack playerAttack;
 
         [SerializeField] protected bool isOnUltimate;
@@ -130,6 +124,8 @@ namespace GanShin.Content.Creature
         }
         
         protected PlayerWeaponBase Weapon => weapon;
+
+        protected bool CanMove { get; set; } = true;
 #endregion Properties
 
 #region Mono
@@ -233,6 +229,7 @@ namespace GanShin.Content.Creature
         {
             PlayMovementAnimation();
             if (_lastMovementValue == Vector2.zero) return;
+            if (!CanMove) return;
 
             var mainCamera    = _camera.MainCamera;
             var cameraForward = Vector3.forward;
@@ -269,6 +266,7 @@ namespace GanShin.Content.Creature
             if (!HasAnimator) return;
 
             var speed = _isDashOnLastFrame ? 1.5f : 1f;
+            speed = CanMove ? speed : 0f;
             _moveAnimValue = Mathf.Lerp(_moveAnimValue, _lastMovementValue.magnitude * speed,
                 rotationSmoothFactor * Time.deltaTime);
 
@@ -285,7 +283,6 @@ namespace GanShin.Content.Creature
             
             if (_playerManager.CurrentStamina < _rollStaminaCost) return;
             _playerManager.CurrentStamina -= _rollStaminaCost;
-            GanDebugger.LogWarning(_playerManager.CurrentStamina.ToString());
             
             PlayRollAnimation();
             DelayRoll().Forget();
@@ -331,11 +328,11 @@ namespace GanShin.Content.Creature
 
         protected async UniTask DelayAttack()
         {
-            await UniTask.Delay(TimeSpan.FromSeconds(attackCooldown));
+            await UniTask.Delay(TimeSpan.FromSeconds(stat.attackCoolTime));
             _canAttack = true;
         }
 
-        protected async UniTask ReturnToIdle()
+        protected async UniTask ReturnToIdle(float attackToIdleTime = 0.5f, bool isAttackStateClearNow = true)
         {
             _isOnAttack = true;
 
@@ -344,13 +341,27 @@ namespace GanShin.Content.Creature
 
             if (_isDead) return;
 
+            CanMove      = true;
             _canAttack   = true;
             _isOnAttack  = false;
-            PlayerAttack = ePlayerAttack.NONE;
+            
+            if (isAttackStateClearNow)
+                PlayerAttack = ePlayerAttack.NONE;
+            else
+                AttackStateClearAsync(PlayerAttack).Forget();
+            
             ObjAnimator.SetTrigger(AnimPramHashSetIdle);
             ObjAnimator.SetInteger(AnimPramHashAttackState, 0);
 
             DisposeAttackCancellationTokenSource();
+        }
+
+        protected async UniTask AttackStateClearAsync(ePlayerAttack previousState)
+        {
+            await UniTask.Delay(TimeSpan.FromSeconds(stat.previousAttackStateHoldTime), cancellationToken:
+                gameObject.GetCancellationTokenOnDestroy());
+            if (previousState == PlayerAttack)
+                PlayerAttack = ePlayerAttack.NONE;
         }
 
         protected void DisposeAttackCancellationTokenSource()
@@ -369,7 +380,8 @@ namespace GanShin.Content.Creature
 
             if (_currentHp <= 0 && !_isDead)
             {
-                _isDead = true;
+                _isDead  = true;
+                CanMove = false;
                 ObjAnimator.SetTrigger(AnimPramHashSetDead);
             }
         }
