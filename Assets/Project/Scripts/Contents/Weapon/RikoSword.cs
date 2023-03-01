@@ -8,6 +8,8 @@ namespace GanShin.Content.Weapon
     {
         private readonly Collider[] _monsterCollider = new Collider[20];
 
+        [SerializeField] private ParticleSystem skillEffect;
+
         public override void OnAttack()
         {
             var stat = Owner.Stat as RikoStatTable;
@@ -63,6 +65,28 @@ namespace GanShin.Content.Weapon
                         monster.OnDamaged(stat.ultimate4Damage);
                         break;
                 }
+            }
+        }
+
+        public override void OnSkill()
+        {
+            var stat = Owner.Stat as RikoStatTable;
+            if (stat == null)
+            {
+                GanDebugger.LogError("Stat asset is not RikoStatTable");
+                return;
+            }
+
+            var ownerTr = Owner.transform;
+            var len = Physics.OverlapSphereNonAlloc(ownerTr.position, stat.rikoSkillAttackRadius, _monsterCollider, Define.GetLayerMask(Define.eLayer.MONSTER));
+            for (var i = 0; i < len; ++i)
+            {
+                var monster = _monsterCollider[i].GetComponent<MonsterController>();
+                if (ReferenceEquals(monster, null)) continue;
+                
+                skillEffect.Play();
+                
+                monster.OnDamaged(stat.skillDamage);
             }
         }
     }

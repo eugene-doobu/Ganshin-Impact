@@ -120,6 +120,12 @@ namespace GanShin.Content.Creature
         {
             Weapon.OnAttack();
         }
+
+        [UsedImplicitly]
+        public void OnAnimSkill()
+        {
+            Weapon.OnSkill();   
+        }
 #endregion AnimEvents
     }
 }

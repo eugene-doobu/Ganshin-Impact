@@ -11,6 +11,7 @@ namespace GanShin.Data
         public float rikoAttackForwardOffset  = 0.5f;
         public float rikoAttackRadius            = 1.5f;
         public float rikoUltimateAttackRadius    = 2.5f;
+        public float rikoSkillAttackRadius       = 2.5f;
         
         [Header("Damages")] 
         public float attack1Damage = 10;
@@ -22,6 +23,8 @@ namespace GanShin.Data
         public float ultimate2Damage = 40;
         public float ultimate3Damage = 50;
         public float ultimate4Damage = 60;
+
+        public float skillDamage = 70;
         
         [Header("Attack Delay")]
         public float attack1Delay = 1f;
