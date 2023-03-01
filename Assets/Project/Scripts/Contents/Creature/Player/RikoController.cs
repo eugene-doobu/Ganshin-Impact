@@ -26,8 +26,9 @@ namespace GanShin.Content.Creature
         
         protected override void Attack()
         {
-            bool  isTryAttack = false;
-            float attackDelay = 1f;
+            bool  isTryAttack  = false;
+            float attackDelay  = 1f;
+            bool  isLastAttack = false;
             
             switch (PlayerAttack)
             {
@@ -62,8 +63,9 @@ namespace GanShin.Content.Creature
                 case ePlayerAttack.RIKO_BASIC_ATTAK3:
                     PlayerAttack = ePlayerAttack.RIKO_BASIC_ATTAK4;
                     ObjAnimator.SetInteger(AnimPramHashAttackState, 4);
-                    attackDelay = _rikoStat.attack4Delay;
-                    isTryAttack = true;
+                    attackDelay  = _rikoStat.attack4Delay;
+                    isTryAttack  = true;
+                    isLastAttack = true;
                     break;
                 case ePlayerAttack.RIKO_ULTI_ATTAK1:
                     PlayerAttack = ePlayerAttack.RIKO_ULTI_ATTAK2;
@@ -80,8 +82,9 @@ namespace GanShin.Content.Creature
                 case ePlayerAttack.RIKO_ULTI_ATTAK3:
                     PlayerAttack = ePlayerAttack.RIKO_ULTI_ATTAK4;
                     ObjAnimator.SetInteger(AnimPramHashAttackState, 8);
-                    attackDelay = _rikoStat.attack4Delay;
-                    isTryAttack = true;
+                    attackDelay  = _rikoStat.attack4Delay;
+                    isTryAttack  = true;
+                    isLastAttack = true;
                     break;
             }
 
@@ -91,7 +94,7 @@ namespace GanShin.Content.Creature
                 if (_attackCancellationTokenSource != null)
                     DisposeAttackCancellationTokenSource();
                 _attackCancellationTokenSource = new CancellationTokenSource();
-                ReturnToIdle(attackDelay, false).Forget();
+                ReturnToIdle(attackDelay, isLastAttack).Forget();
             }
         }
 
