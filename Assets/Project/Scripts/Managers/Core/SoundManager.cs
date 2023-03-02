@@ -15,10 +15,6 @@ namespace GanShin.Sound
         AudioSource[]                 _audioSources = new AudioSource[(int) Define.eSound.MaxCount];
         Dictionary<string, AudioClip> _audioClips   = new Dictionary<string, AudioClip>();
 
-        // MP3 Player   -> AudioSource
-        // MP3 음원     -> AudioClip
-        // 관객(귀)     -> AudioListener
-
         public SoundManager()
         {
             GameObject root = GameObject.Find(SoundObjName);

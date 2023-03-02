@@ -4,6 +4,7 @@ using UnityEngine;
 using GanShin.Content.Creature.Monster;
 using GanShin.Data;
 using GanShin.Effect;
+using GanShin.Sound;
 using Zenject;
 
 namespace GanShin.Content.Weapon
@@ -11,6 +12,7 @@ namespace GanShin.Content.Weapon
     public class RikoSword : PlayerWeaponBase
     {
         [Inject] private EffectManager _effect;
+        [Inject] private SoundManager  _sound;
         
         private readonly Collider[] _monsterCollider = new Collider[20];
 
@@ -46,7 +48,8 @@ namespace GanShin.Content.Weapon
                 var monster = _monsterCollider[i].GetComponent<MonsterController>();
 
                 if (ReferenceEquals(monster, null)) continue;
-                
+                if (monster.State == eMonsterState.DEAD) continue;
+
                 switch (AttackType)
                 {
                     case ePlayerAttack.RIKO_BASIC_ATTACK1:
@@ -101,6 +104,7 @@ namespace GanShin.Content.Weapon
             
             skillEffect.Play();
             impulseSource.GenerateImpulseWithForce(stat.rikoSkillShakeForce);
+            _sound.Play("Riko/OnSkill");
 
             var ownerTr = Owner.transform;
             var len = Physics.OverlapSphereNonAlloc(ownerTr.position, stat.rikoSkillAttackRadius, _monsterCollider, Define.GetLayerMask(Define.eLayer.MONSTER));
@@ -129,6 +133,7 @@ namespace GanShin.Content.Weapon
             meshRenderer.material = ultimateMaterial;
             transform.localScale = stat.ultimateSwordScale;
             ultimateEffect.Play();
+            _sound.Play("Riko/OnUltimate");
 
             _isOnUltimate = true;
             
