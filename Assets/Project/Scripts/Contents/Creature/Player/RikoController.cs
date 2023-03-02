@@ -4,13 +4,17 @@ using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using GanShin.Data;
+using GanShin.UI;
 using JetBrains.Annotations;
 using UnityEngine;
+using Zenject;
 
 namespace GanShin.Content.Creature
 {
     public class RikoController : PlayerController, IAttackAnimation
     {
+        [Inject] private UIRootCharacterCutScene _characterCutScene;
+        
         private RikoStatTable _rikoStat;
         
         private bool _isOnUltimate;
@@ -119,6 +123,7 @@ namespace GanShin.Content.Creature
             Weapon.OnUltimate();
             
             PlayerAttack = ePlayerAttack.NONE;
+            _characterCutScene.OnCharacterCutScene(Define.ePlayerAvatar.RIKO);
         }
 
         private async UniTask UltimateTimer()

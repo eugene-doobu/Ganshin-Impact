@@ -81,6 +81,10 @@ namespace Ganshin
                 .FromComponentInNewPrefabResource(UIManager.GlobalUIName.Loading)
                 .AsSingle()
                 .NonLazy();
+            Container.Bind<UIRootCharacterCutScene>()
+                .FromComponentInNewPrefabResource(UIManager.GlobalUIName.CharacterCutScene)
+                .AsSingle()
+                .NonLazy();
         }
     }
 }
