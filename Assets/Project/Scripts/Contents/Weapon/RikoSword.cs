@@ -6,6 +6,7 @@ using GanShin.Data;
 using GanShin.Effect;
 using GanShin.Sound;
 using Zenject;
+using Random = UnityEngine.Random;
 
 namespace GanShin.Content.Weapon
 {
@@ -42,6 +43,10 @@ namespace GanShin.Content.Weapon
             var attackPosition = ownerTr.position + ownerTr.forward * stat.rikoAttackForwardOffset;
             var attackRadius = _isOnUltimate ? stat.rikoUltimateAttackRadius : stat.rikoAttackRadius;
             var len = Physics.OverlapSphereNonAlloc(attackPosition, attackRadius, _monsterCollider, Define.GetLayerMask(Define.eLayer.MONSTER));
+
+            _sound.Play(_isOnUltimate
+                ? $"Sword/Staff/Staff {Random.Range(1, 11)}"
+                : $"Sword/Club/Club {Random.Range(1, 11)}");
 
             for (var i = 0; i < len; ++i)
             {

@@ -134,6 +134,7 @@ namespace GanShin
             var player = GetPlayer(avatar);
             if (player == null) return null;
             
+            player.gameObject.SetActive(false);
             player.transform.position = Vector3.zero;
             player.gameObject.SetActive(true);
             _camera.ChangeTarget(player.transform);
