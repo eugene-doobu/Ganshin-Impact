@@ -1,6 +1,7 @@
 using GanShin;
 using GanShin.CameraSystem;
 using GanShin.Content.Creature;
+using GanShin.Effect;
 using GanShin.InputSystem;
 using GanShin.MapObject;
 using GanShin.SceneManagement;
@@ -49,6 +50,7 @@ namespace Ganshin
                 )
                 .To<PlayerManager>()
                 .AsSingle().NonLazy();
+            Container.Bind<EffectManager>().AsSingle().NonLazy();
         }
 
         private void InstallCameras()

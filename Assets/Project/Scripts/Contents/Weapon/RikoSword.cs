@@ -1,11 +1,15 @@
 using UnityEngine;
 using GanShin.Content.Creature.Monster;
 using GanShin.Data;
+using GanShin.Effect;
+using Zenject;
 
 namespace GanShin.Content.Weapon
 {
     public class RikoSword : PlayerWeaponBase
     {
+        [Inject] private EffectManager _effect;
+        
         private readonly Collider[] _monsterCollider = new Collider[20];
 
         [SerializeField] private  MeshRenderer meshRenderer;
@@ -36,17 +40,8 @@ namespace GanShin.Content.Weapon
             for (var i = 0; i < len; ++i)
             {
                 var monster = _monsterCollider[i].GetComponent<MonsterController>();
-                if (ReferenceEquals(monster, null)) continue;
 
-                switch (AttackType)
-                {
-                    case ePlayerAttack.RIKO_BASIC_ATTACK1:
-                    case ePlayerAttack.RIKO_BASIC_ATTACK2:
-                    case ePlayerAttack.RIKO_BASIC_ATTACK3:
-                    case ePlayerAttack.RIKO_BASIC_ATTACK4:
-                        Owner.CurrentUltimateGauge += Owner.Stat.ultimateSkillChargeOnBaseAttack;
-                        break;
-                }
+                if (ReferenceEquals(monster, null)) continue;
                 
                 switch (AttackType)
                 {
@@ -75,6 +70,17 @@ namespace GanShin.Content.Weapon
                         monster.OnDamaged(stat.ultimate4Damage);
                         break;
                 }
+
+                var closetPoint = _monsterCollider[i].ClosestPoint(transform.position);
+                if (_isOnUltimate)
+                {
+                    _effect.PlayEffect(eEffectType.RIKO_SWORD_ULTIMATE_HIT, closetPoint);
+                }
+                else
+                {
+                    _effect.PlayEffect(eEffectType.RIKO_SWORD_HIT, closetPoint);
+                    Owner.CurrentUltimateGauge += Owner.Stat.ultimateSkillChargeOnBaseAttack;
+                }
             }
         }
 
@@ -97,6 +103,9 @@ namespace GanShin.Content.Weapon
                 skillEffect.Play();
                 
                 monster.OnDamaged(stat.skillDamage);
+                
+                var closetPoint = _monsterCollider[i].ClosestPoint(transform.position);
+                _effect.PlayEffect(eEffectType.RIKO_SWORD_HIT, closetPoint);
             }
         }
 
