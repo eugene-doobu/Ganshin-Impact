@@ -1,5 +1,7 @@
 ![rikoFace](./Images/face/riko.jpg)
 
+https://youtu.be/FLvxez7zvJk
+
 ## 공격 및 스킬
 
 공격에 대한 셋팅은 Riko 테이블 문서 참고
