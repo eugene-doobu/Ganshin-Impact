@@ -13,11 +13,36 @@ MonoBehaviour:
   m_Name: RikoStat
   m_EditorClassIdentifier: 
   hp: 100
+  baseSkillCoolTime: 10
+  moveSpeed: 4
+  dashSpeed: 6
+  attackCoolTime: 0.8
+  previousAttackStateHoldTime: 4
+  ultimateSkillAvailabilityGauge: 30
+  ultimateSkillChargeOnBaseAttack: 2
+  ultimateSkillChargeOnDamaged: 3
+  ultimateSkillChargeOnKill: 5
+  ultimateSkillChargeOnSkill: 5
+  rikoAttackForwardOffset: 0.5
+  rikoAttackRadius: 1.5
+  rikoUltimateAttackRadius: 2.5
+  rikoSkillAttackRadius: 2.5
+  rikoBaseAttackShakeForce: 0.2
+  rikoUltimateAttackShakeForce: 0.3
+  rikoSkillShakeForce: 0.4
   attack1Damage: 10
   attack2Damage: 20
-  attack3Damage: 30
+  attack3Damage: 18
   attack4Damage: 40
   ultimate1Damage: 30
   ultimate2Damage: 40
   ultimate3Damage: 50
   ultimate4Damage: 60
+  skillDamage: 70
+  attack1Delay: 1
+  attack2Delay: 1.2
+  attack3Delay: 1.4
+  attack4Delay: 1.6
+  skillDelay: 1.5
+  ultimateSwordScale: {x: 1.4, y: 1.4, z: 1}
+  ultimateDuration: 20

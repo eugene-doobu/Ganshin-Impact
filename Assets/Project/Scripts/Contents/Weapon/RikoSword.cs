@@ -1,3 +1,5 @@
+using System;
+using Cinemachine;
 using UnityEngine;
 using GanShin.Content.Creature.Monster;
 using GanShin.Data;
@@ -20,7 +22,9 @@ namespace GanShin.Content.Weapon
         
         [SerializeField] private Material defaultMaterial;
         [SerializeField] private Material ultimateMaterial;
-
+        
+        [SerializeField] private CinemachineImpulseSource impulseSource;
+        
         private bool _isOnUltimate;
 
         public override void OnAttack()
@@ -75,11 +79,13 @@ namespace GanShin.Content.Weapon
                 if (_isOnUltimate)
                 {
                     _effect.PlayEffect(eEffectType.RIKO_SWORD_ULTIMATE_HIT, closetPoint);
+                    impulseSource.GenerateImpulseWithForce(stat.rikoUltimateAttackShakeForce);
                 }
                 else
                 {
                     _effect.PlayEffect(eEffectType.RIKO_SWORD_HIT, closetPoint);
                     Owner.CurrentUltimateGauge += Owner.Stat.ultimateSkillChargeOnBaseAttack;
+                    impulseSource.GenerateImpulseWithForce(stat.rikoBaseAttackShakeForce);
                 }
             }
         }
@@ -92,6 +98,9 @@ namespace GanShin.Content.Weapon
                 GanDebugger.LogError("Stat asset is not RikoStatTable");
                 return;
             }
+            
+            skillEffect.Play();
+            impulseSource.GenerateImpulseWithForce(stat.rikoSkillShakeForce);
 
             var ownerTr = Owner.transform;
             var len = Physics.OverlapSphereNonAlloc(ownerTr.position, stat.rikoSkillAttackRadius, _monsterCollider, Define.GetLayerMask(Define.eLayer.MONSTER));
@@ -99,8 +108,6 @@ namespace GanShin.Content.Weapon
             {
                 var monster = _monsterCollider[i].GetComponent<MonsterController>();
                 if (ReferenceEquals(monster, null)) continue;
-                
-                skillEffect.Play();
                 
                 monster.OnDamaged(stat.skillDamage);
                 
@@ -124,6 +131,8 @@ namespace GanShin.Content.Weapon
             ultimateEffect.Play();
 
             _isOnUltimate = true;
+            
+            impulseSource.GenerateImpulseWithForce(stat.rikoSkillShakeForce);
         }
 
         public override void OnUltimateEnd()

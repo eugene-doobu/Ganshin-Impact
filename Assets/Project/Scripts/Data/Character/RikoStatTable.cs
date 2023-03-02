@@ -9,14 +9,19 @@ namespace GanShin.Data
     {
         [Header("Attack")] 
         public float rikoAttackForwardOffset  = 0.5f;
-        public float   rikoAttackRadius         = 1.5f;
-        public float   rikoUltimateAttackRadius = 2.5f;
-        public float   rikoSkillAttackRadius    = 2.5f;
+        public float rikoAttackRadius         = 1.5f;
+        public float rikoUltimateAttackRadius = 2.5f;
+        public float rikoSkillAttackRadius    = 2.5f;
+
+        [Header("Camera Shake")] 
+        public float rikoBaseAttackShakeForce     = 0.05f;
+        public float rikoUltimateAttackShakeForce = 0.1f;
+        public float rikoSkillShakeForce          = 0.2f;
         
         [Header("Damages")] 
         public float attack1Damage = 10;
         public float attack2Damage = 20;
-        public float attack3Damage = 30;
+        public float attack3Damage = 18;
         public float attack4Damage = 40;
 
         public float ultimate1Damage = 30;
