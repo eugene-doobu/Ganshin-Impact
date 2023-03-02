@@ -46,7 +46,7 @@ public partial class @GanshinActions : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""Dash"",
+                    ""name"": ""SpecialAction"",
                     ""type"": ""Button"",
                     ""id"": ""94f95cb6-b4a7-49a0-bd99-832c39b4886b"",
                     ""expectedControlType"": ""Button"",
@@ -295,18 +295,7 @@ public partial class @GanshinActions : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Dash"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""b31fa0f5-1bba-48ed-8ab0-31e59a624483"",
-                    ""path"": ""<Mouse>/rightButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Dash"",
+                    ""action"": ""SpecialAction"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -501,7 +490,7 @@ public partial class @GanshinActions : IInputActionCollection2, IDisposable
         m_PlayerMovement = asset.FindActionMap("PlayerMovement", throwIfNotFound: true);
         m_PlayerMovement_Movement = m_PlayerMovement.FindAction("Movement", throwIfNotFound: true);
         m_PlayerMovement_Look = m_PlayerMovement.FindAction("Look", throwIfNotFound: true);
-        m_PlayerMovement_Dash = m_PlayerMovement.FindAction("Dash", throwIfNotFound: true);
+        m_PlayerMovement_SpecialAction = m_PlayerMovement.FindAction("SpecialAction", throwIfNotFound: true);
         m_PlayerMovement_Attack = m_PlayerMovement.FindAction("Attack", throwIfNotFound: true);
         m_PlayerMovement_Zoom = m_PlayerMovement.FindAction("Zoom", throwIfNotFound: true);
         m_PlayerMovement_Roll = m_PlayerMovement.FindAction("Roll", throwIfNotFound: true);
@@ -581,7 +570,7 @@ public partial class @GanshinActions : IInputActionCollection2, IDisposable
     private IPlayerMovementActions m_PlayerMovementActionsCallbackInterface;
     private readonly InputAction m_PlayerMovement_Movement;
     private readonly InputAction m_PlayerMovement_Look;
-    private readonly InputAction m_PlayerMovement_Dash;
+    private readonly InputAction m_PlayerMovement_SpecialAction;
     private readonly InputAction m_PlayerMovement_Attack;
     private readonly InputAction m_PlayerMovement_Zoom;
     private readonly InputAction m_PlayerMovement_Roll;
@@ -604,7 +593,7 @@ public partial class @GanshinActions : IInputActionCollection2, IDisposable
         public PlayerMovementActions(@GanshinActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Movement => m_Wrapper.m_PlayerMovement_Movement;
         public InputAction @Look => m_Wrapper.m_PlayerMovement_Look;
-        public InputAction @Dash => m_Wrapper.m_PlayerMovement_Dash;
+        public InputAction @SpecialAction => m_Wrapper.m_PlayerMovement_SpecialAction;
         public InputAction @Attack => m_Wrapper.m_PlayerMovement_Attack;
         public InputAction @Zoom => m_Wrapper.m_PlayerMovement_Zoom;
         public InputAction @Roll => m_Wrapper.m_PlayerMovement_Roll;
@@ -636,9 +625,9 @@ public partial class @GanshinActions : IInputActionCollection2, IDisposable
                 @Look.started -= m_Wrapper.m_PlayerMovementActionsCallbackInterface.OnLook;
                 @Look.performed -= m_Wrapper.m_PlayerMovementActionsCallbackInterface.OnLook;
                 @Look.canceled -= m_Wrapper.m_PlayerMovementActionsCallbackInterface.OnLook;
-                @Dash.started -= m_Wrapper.m_PlayerMovementActionsCallbackInterface.OnDash;
-                @Dash.performed -= m_Wrapper.m_PlayerMovementActionsCallbackInterface.OnDash;
-                @Dash.canceled -= m_Wrapper.m_PlayerMovementActionsCallbackInterface.OnDash;
+                @SpecialAction.started -= m_Wrapper.m_PlayerMovementActionsCallbackInterface.OnSpecialAction;
+                @SpecialAction.performed -= m_Wrapper.m_PlayerMovementActionsCallbackInterface.OnSpecialAction;
+                @SpecialAction.canceled -= m_Wrapper.m_PlayerMovementActionsCallbackInterface.OnSpecialAction;
                 @Attack.started -= m_Wrapper.m_PlayerMovementActionsCallbackInterface.OnAttack;
                 @Attack.performed -= m_Wrapper.m_PlayerMovementActionsCallbackInterface.OnAttack;
                 @Attack.canceled -= m_Wrapper.m_PlayerMovementActionsCallbackInterface.OnAttack;
@@ -697,9 +686,9 @@ public partial class @GanshinActions : IInputActionCollection2, IDisposable
                 @Look.started += instance.OnLook;
                 @Look.performed += instance.OnLook;
                 @Look.canceled += instance.OnLook;
-                @Dash.started += instance.OnDash;
-                @Dash.performed += instance.OnDash;
-                @Dash.canceled += instance.OnDash;
+                @SpecialAction.started += instance.OnSpecialAction;
+                @SpecialAction.performed += instance.OnSpecialAction;
+                @SpecialAction.canceled += instance.OnSpecialAction;
                 @Attack.started += instance.OnAttack;
                 @Attack.performed += instance.OnAttack;
                 @Attack.canceled += instance.OnAttack;
@@ -781,7 +770,7 @@ public partial class @GanshinActions : IInputActionCollection2, IDisposable
     {
         void OnMovement(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
-        void OnDash(InputAction.CallbackContext context);
+        void OnSpecialAction(InputAction.CallbackContext context);
         void OnAttack(InputAction.CallbackContext context);
         void OnZoom(InputAction.CallbackContext context);
         void OnRoll(InputAction.CallbackContext context);

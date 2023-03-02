@@ -8,7 +8,7 @@ namespace GanShin.InputSystem
     {
         public Action<Vector2> OnMovement;
         public Action<Vector2> OnLook;
-        public Action<bool>    OnDash;
+        public Action<bool>    OnSpecialAction;
         public Action<bool>    OnAttack;
         public Action          OnRoll;
         public Action<float>   OnZoom;
@@ -32,8 +32,8 @@ namespace GanShin.InputSystem
             actionMap.Movement.canceled         += OnMovementCanceled;
             actionMap.Look.performed            += OnLookPerformed;
             actionMap.Look.canceled             += OnLookCanceled;
-            actionMap.Dash.performed            += OnDashPerformed;
-            actionMap.Dash.canceled             += OnDashCanceled;
+            actionMap.SpecialAction.performed   += OnSpecialActionPerformed;
+            actionMap.SpecialAction.canceled    += OnSpecialActionCanceled;
             actionMap.Attack.performed          += OnAttackPerformed;
             actionMap.Attack.canceled           += OnAttackCanceled;
             actionMap.Roll.performed            += OnRollPerformed;
@@ -84,16 +84,16 @@ namespace GanShin.InputSystem
             GanDebugger.InputLog($"OnLook - value: {Vector2.zero}");
         }
 
-        private void OnDashPerformed(InputAction.CallbackContext context)
+        private void OnSpecialActionPerformed(InputAction.CallbackContext context)
         {
-            OnDash?.Invoke(true);
-            GanDebugger.InputLog($"OnDash - value: {true}");
+            OnSpecialAction?.Invoke(true);
+            GanDebugger.InputLog($"OnSpecialAction - value: {true}");
         }
 
-        private void OnDashCanceled(InputAction.CallbackContext context)
+        private void OnSpecialActionCanceled(InputAction.CallbackContext context)
         {
-            OnDash?.Invoke(false);
-            GanDebugger.InputLog($"OnDash - value: {false}");
+            OnSpecialAction?.Invoke(false);
+            GanDebugger.InputLog($"OnSpecialAction - value: {false}");
         }
 
         private void OnAttackPerformed(InputAction.CallbackContext context)

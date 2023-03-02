@@ -26,9 +26,11 @@ namespace GanShin.Content.Creature
 #endregion Static
 
 #region Variables
-        [Inject] private InputSystemManager _input;
-        [Inject] private CameraManager      _camera;
-        [Inject] private PlayerManager      _playerManager;
+        [Inject] protected UIRootCharacterCutScene CharacterCutScene;
+        
+        [Inject] private   InputSystemManager      _input;
+        [Inject] private   CameraManager           _camera;
+        [Inject] private   PlayerManager           _playerManager;
 
         private CharacterController _characterController;
         private UIHpBarContext      _uiHpBarContext;
@@ -50,7 +52,7 @@ namespace GanShin.Content.Creature
 
         private bool _canRoll = true;
         private bool _desiredRoll;
-        private bool _isDash = false;
+        private bool _isOnSpecialAction = false;
         
         [Space] [Header("GroundCheck")] [SerializeField]
         private float rayStartPosOffset = 0.3f;
@@ -200,7 +202,7 @@ namespace GanShin.Content.Creature
             }
 
             actionMap.OnAttack        += OnAttack;
-            actionMap.OnDash          += OnDash;
+            actionMap.OnSpecialAction          += OnSpecialAction;
             actionMap.OnInteraction   += OnInteraction;
             actionMap.OnRoll          += OnRoll;
             actionMap.OnMovement      += OnMovement;
@@ -214,7 +216,7 @@ namespace GanShin.Content.Creature
                 return;
 
             actionMap.OnAttack        -= OnAttack;
-            actionMap.OnDash          -= OnDash;
+            actionMap.OnSpecialAction          -= OnSpecialAction;
             actionMap.OnInteraction   -= OnInteraction;
             actionMap.OnRoll          -= OnRoll;
             actionMap.OnMovement      -= OnMovement;
@@ -240,7 +242,7 @@ namespace GanShin.Content.Creature
 
             var moveSpeed = stat.moveSpeed;
             var dashCost  = _dashStaminaCostOfSecond * Time.deltaTime;
-            if (_isDash && _playerManager.CurrentStamina > dashCost)
+            if (_isOnSpecialAction && _playerManager.CurrentStamina > dashCost)
             {
                 moveSpeed          = stat.dashSpeed;
                 _isDashOnLastFrame = true;
@@ -398,9 +400,9 @@ namespace GanShin.Content.Creature
             _lastMovementValue = value;
         }
 
-        private void OnDash(bool value)
+        private void OnSpecialAction(bool value)
         {
-            _isDash = value;
+            _isOnSpecialAction = value;
         }
 
         private void OnInteraction(bool value)
@@ -413,16 +415,13 @@ namespace GanShin.Content.Creature
             if (_isOnGround) _desiredRoll = true;
         }
 
-        private void OnAttack(bool value)
+        protected virtual void OnAttack(bool value)
         {
-            if (!value) return;
             if (_isOnGround) _desiredAttack = true;
         }
 
-        private void OnBaseSkill(bool value)
+        protected virtual void OnBaseSkill(bool value)
         {
-            if (!value) return;
-            
             if (!_isAvailableSkill)
             {
                 GanDebugger.Log(nameof(PlayerController), "스킬 쿨타임입니다.");
@@ -434,10 +433,8 @@ namespace GanShin.Content.Creature
             Skill();
         }
 
-        private void OnUltimateSkill(bool value)
+        protected virtual void OnUltimateSkill(bool value)
         {
-            if (!value) return;
-            
             if (stat.ultimateSkillAvailabilityGauge > _currentUltimateGauge)
             {
                 GanDebugger.Log(nameof(PlayerController), "궁극기 게이지가 부족합니다.");
