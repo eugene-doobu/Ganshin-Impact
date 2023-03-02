@@ -9,9 +9,9 @@ namespace GanShin.Data
     {
         [Header("Attack")] 
         public float rikoAttackForwardOffset  = 0.5f;
-        public float rikoAttackRadius            = 1.5f;
-        public float rikoUltimateAttackRadius    = 2.5f;
-        public float rikoSkillAttackRadius       = 2.5f;
+        public float   rikoAttackRadius         = 1.5f;
+        public float   rikoUltimateAttackRadius = 2.5f;
+        public float   rikoSkillAttackRadius    = 2.5f;
         
         [Header("Damages")] 
         public float attack1Damage = 10;
@@ -33,5 +33,9 @@ namespace GanShin.Data
         public float attack4Delay = 1.6f;
 
         public float skillDelay = 1.5f;
+        
+        [Header("Ultimate")]
+        public Vector3 ultimateSwordScale = new Vector3(1.4f, 1.4f, 1f);
+        public float ultimateDuration = 20f;
     }
 }

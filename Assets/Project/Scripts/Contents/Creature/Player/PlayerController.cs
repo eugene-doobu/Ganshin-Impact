@@ -62,9 +62,7 @@ namespace GanShin.Content.Creature
         [Space]
         [Header("Attack")]
         [SerializeField] [ReadOnly] private ePlayerAttack playerAttack;
-
-        [SerializeField] protected bool isOnUltimate;
-
+        
         private bool _canAttack = true;
         private bool _desiredAttack;
 
