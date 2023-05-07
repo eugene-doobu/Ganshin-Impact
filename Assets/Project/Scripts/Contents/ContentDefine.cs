@@ -31,5 +31,6 @@ namespace GanShin.Content
         KNOCK_BACK,
         ATTACK,
         DEAD,
+        CAUGHT,
     }
 }

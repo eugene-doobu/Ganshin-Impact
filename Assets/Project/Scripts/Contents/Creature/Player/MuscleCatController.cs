@@ -2,7 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using Cinemachine;
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using GanShin.Content.Creature.Monster;
 using GanShin.Data;
 using UnityEngine;
@@ -12,6 +14,8 @@ namespace GanShin.Content.Creature
     public class MuscleCatController : PlayerController
     {
         private readonly Collider[] _monsterCollider = new Collider[10];
+        
+        [SerializeField] private CinemachineImpulseSource impulseSource;
 
         private MuscleCatStatTable _statTable;
         
@@ -71,6 +75,7 @@ namespace GanShin.Content.Creature
                 _attackCancellationTokenSource = new CancellationTokenSource();
                 ReturnToIdle(attackDelay, isLastAttack).Forget();
                 OnAttack();
+                impulseSource.GenerateImpulseWithForce(_statTable.baseAttackShakeForce);
             }
         }
 
@@ -95,7 +100,32 @@ namespace GanShin.Content.Creature
 
         protected override void Skill()
         {
-            // TODO
+            ObjAnimator.SetTrigger(AnimPramHashOnSkill);
+            SkillAsync().Forget();
+        }
+        
+        private async UniTask SkillAsync()
+        {
+            var len = Physics.OverlapSphereNonAlloc(transform.position, _statTable.skillRadius, _monsterCollider, Define.GetLayerMask(Define.eLayer.MONSTER));
+            var monsters = new MonsterController[len];
+            
+            for (var i = 0; i < len; ++i)
+                monsters[i] = _monsterCollider[i].GetComponent<MonsterController>();
+
+            foreach (var monster in monsters)
+            {
+                var monsterTr               = monster.transform;
+                var playerPositionOfMonster = transform.InverseTransformPoint(monsterTr.position);
+                var knockBackPower          = Mathf.Max(-playerPositionOfMonster.z + _statTable.skillKnockBackDistance, 0f);
+                monster.SetCaught();
+                monsterTr.DOMove(monsterTr.position + transform.forward * knockBackPower, _statTable.skillKnockBackDuration)
+                    .SetEase(_statTable.skillEaseType);
+            }
+
+            await UniTask.Delay(TimeSpan.FromMilliseconds(_statTable.skillDuration));
+
+            foreach (var monster in monsters)
+                monster.OnDamaged(_statTable.skillDamage);
         }
 
         protected override void UltimateSkill()

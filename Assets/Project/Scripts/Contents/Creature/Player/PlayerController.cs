@@ -129,6 +129,8 @@ namespace GanShin.Content.Creature
         protected bool IsOnSpecialAction => _isOnSpecialAction;
 
         protected bool CanMove { get; set; } = true;
+
+        protected CharacterController CC => _characterController;
 #endregion Properties
 
 #region Mono
