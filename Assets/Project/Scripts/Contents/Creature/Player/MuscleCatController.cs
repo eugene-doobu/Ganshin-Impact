@@ -5,6 +5,7 @@ using System.Threading;
 using Cinemachine;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using GanShin.CameraSystem;
 using GanShin.Content.Creature.Monster;
 using GanShin.Data;
 using GanShin.Effect;
@@ -18,6 +19,7 @@ namespace GanShin.Content.Creature
         protected static readonly int AnimPramHashIsOnGuard  = Animator.StringToHash("IsOnGuard");
         
         [Inject] private EffectManager _effect;
+        [Inject] private CameraManager _camera;
 
         private readonly Collider[] _monsterCollider = new Collider[10];
         
@@ -102,6 +104,7 @@ namespace GanShin.Content.Creature
                 var closetPoint = _monsterCollider[i].ClosestPoint(tr.position + tr.up * _statTable.attackEffectYupPosition);
                 _effect.PlayEffect(eEffectType.MUSCLE_CAT_HIT, closetPoint);
             }
+            CurrentUltimateGauge += _statTable.ultimateSkillChargeOnBaseAttack;
         }
 
         protected override void Skill()
@@ -144,11 +147,14 @@ namespace GanShin.Content.Creature
 
             foreach (var monster in monsters)
                 monster.OnDamaged(_statTable.skillDamage);
+
+            CurrentUltimateGauge += _statTable.ultimateSkillChargeOnBaseAttack;
         }
 
         protected override void UltimateSkill()
         {
             // TODO
+            _camera.ChangeState(eCameraState.CHARACTER_ULTIMATE_CAMERA);
         }
 
         protected override void SpecialAction()
@@ -196,7 +202,8 @@ namespace GanShin.Content.Creature
 
         protected override void OnUltimateSkill(bool value)
         {
-            // TODO
+            if (!value) return;
+            base.OnUltimateSkill(true);
         }
 #endregion ActionEvent
     }

@@ -56,6 +56,7 @@ namespace Ganshin
         private void InstallCameras()
         {
             Container.Bind<CharacterCamera>().AsSingle().NonLazy();
+            Container.Bind<CharacterUltimateCamera>().AsSingle().NonLazy();
         }
 
         private void InstallEssentialObjects()

@@ -140,9 +140,18 @@ namespace GanShin.Content.Creature
 
             InitializeAvatar();
             InitializeWeapon();
-            AddInputEvent();
 
             _uiHpBarContext = _playerManager.GetUIHpBarContext(Define.ePlayerAvatar.RIKO);
+        }
+
+        private void OnEnable()
+        {
+            AddInputEvent();
+        }
+
+        private void OnDisable()
+        {
+            RemoveInputEvent();
         }
 
         protected override void Start()
@@ -160,11 +169,6 @@ namespace GanShin.Content.Creature
             Roll();
             ApplyGravity();
             TryAttack();
-        }
-
-        private void OnDestroy()
-        {
-            RemoveInputEvent();
         }
 #endregion Mono
 
@@ -208,7 +212,7 @@ namespace GanShin.Content.Creature
             }
 
             actionMap.OnAttack        += OnAttack;
-            actionMap.OnSpecialAction          += OnSpecialAction;
+            actionMap.OnSpecialAction += OnSpecialAction;
             actionMap.OnInteraction   += OnInteraction;
             actionMap.OnRoll          += OnRoll;
             actionMap.OnMovement      += OnMovement;
@@ -222,7 +226,7 @@ namespace GanShin.Content.Creature
                 return;
 
             actionMap.OnAttack        -= OnAttack;
-            actionMap.OnSpecialAction          -= OnSpecialAction;
+            actionMap.OnSpecialAction -= OnSpecialAction;
             actionMap.OnInteraction   -= OnInteraction;
             actionMap.OnRoll          -= OnRoll;
             actionMap.OnMovement      -= OnMovement;
