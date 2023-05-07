@@ -13,6 +13,7 @@ namespace GanShin.Data
 
         [Header("Camera Shake")] 
         public float baseAttackShakeForce = 0.03f;
+        public float ultimateShakeForce = 3f;
         
         [Header("Attack Damages")] 
         public float attack1Damage = 10;
@@ -33,5 +34,11 @@ namespace GanShin.Data
         public float skillKnockBackDistance = 2.5f;
         public float skillKnockBackDuration = 0.2f;
         public float skillDuration          = 0.3f;
+        
+        [Header("Ultimate")]
+        public float ultimateForwardOffset = 1.5f;
+        public float ultimateRadius      = 7f;
+        public float ultimateDamage      = 100f;
+        public float ultimateChargeDelay = 1.5f;
     }
 }

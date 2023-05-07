@@ -16,14 +16,16 @@ namespace GanShin.Content.Creature
 {
     public class MuscleCatController : PlayerController
     {   
-        protected static readonly int AnimPramHashIsOnGuard  = Animator.StringToHash("IsOnGuard");
+        private static readonly int AnimPramHashIsOnGuard = Animator.StringToHash("IsOnGuard");
+        private static readonly int AnimPramHashSetPunch  = Animator.StringToHash("SetPunch");
         
         [Inject] private EffectManager _effect;
         [Inject] private CameraManager _camera;
 
-        private readonly Collider[] _monsterCollider = new Collider[10];
+        private readonly Collider[] _monsterColliders = new Collider[30];
         
-        [SerializeField] private CinemachineImpulseSource impulseSource;
+        [SerializeField] private CinemachineImpulseSource baseAttackImpulseSource;
+        [SerializeField] private CinemachineImpulseSource ultimateImpulseSource;
 
         private MuscleCatStatTable _statTable;
         
@@ -92,14 +94,14 @@ namespace GanShin.Content.Creature
             var damage         = GetAttackDamage();
             var attackPosition = tr.position + tr.forward * _statTable.attackForwardOffset;
             var attackRadius   = _statTable.attackRadius;
-            var rst = ApplyAttackDamage(attackPosition, attackRadius, damage, _monsterColliders, OnBaseAttackEffect);
+            var rst = ApplyAttackDamage(attackPosition, attackRadius, damage, _monsterColliders, OnAttackEffect);
             if (!rst) return;
             
             CurrentUltimateGauge += _statTable.ultimateSkillChargeOnBaseAttack;
-            impulseSource.GenerateImpulseWithForce(_statTable.baseAttackShakeForce);
+            baseAttackImpulseSource.GenerateImpulseWithForce(_statTable.baseAttackShakeForce);
         }
 
-        private void OnBaseAttackEffect(Collider monsterCollider)
+        private void OnAttackEffect(Collider monsterCollider)
         {
             var tr          = transform;
             var closetPoint = monsterCollider.ClosestPoint(tr.position + tr.up * _statTable.attackEffectYupPosition);
@@ -152,8 +154,27 @@ namespace GanShin.Content.Creature
 
         protected override void UltimateSkill()
         {
-            // TODO
+            UltimateSkillAsync().Forget();
+        }
+
+        private async UniTask UltimateSkillAsync()
+        {
+            CharacterCutScene.OnCharacterCutScene(Define.ePlayerAvatar.MUSCLE_CAT);
+
             _camera.ChangeState(eCameraState.CHARACTER_ULTIMATE_CAMERA);
+            ObjAnimator.SetTrigger(AnimPramHashOnUltimate);
+
+            await UniTask.Delay(TimeSpan.FromSeconds(_statTable.ultimateChargeDelay));
+            ObjAnimator.SetTrigger(AnimPramHashSetPunch);
+            _camera.ChangeState(eCameraState.CHARACTER_CAMERA);
+
+            ultimateImpulseSource.GenerateImpulseWithForce(_statTable.ultimateShakeForce);
+            
+            var tr             = transform;
+            var attackPosition = tr.position + tr.forward * _statTable.ultimateForwardOffset;
+            ApplyAttackDamage(attackPosition, _statTable.ultimateRadius, _statTable.ultimateDamage, _monsterColliders, OnAttackEffect);
+            
+            PlayerAttack = ePlayerAttack.NONE;
         }
 
         protected override void SpecialAction()
