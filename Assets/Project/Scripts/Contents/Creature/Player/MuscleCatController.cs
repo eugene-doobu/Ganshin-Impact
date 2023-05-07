@@ -83,7 +83,6 @@ namespace GanShin.Content.Creature
                 _attackCancellationTokenSource = new CancellationTokenSource();
                 ReturnToIdle(attackDelay, isLastAttack).Forget();
                 OnAttack();
-                impulseSource.GenerateImpulseWithForce(_statTable.baseAttackShakeForce);
             }
         }
 
@@ -93,18 +92,18 @@ namespace GanShin.Content.Creature
             var damage         = GetAttackDamage();
             var attackPosition = tr.position + tr.forward * _statTable.attackForwardOffset;
             var attackRadius   = _statTable.attackRadius;
-            var len = Physics.OverlapSphereNonAlloc(attackPosition, attackRadius, _monsterCollider, Define.GetLayerMask(Define.eLayer.MONSTER));
-            for (var i = 0; i < len; ++i)
-            {
-                var monster = _monsterCollider[i].GetComponent<MonsterController>();
-                if (ReferenceEquals(monster, null)) continue;
-                
-                monster.OnDamaged(damage);
-                
-                var closetPoint = _monsterCollider[i].ClosestPoint(tr.position + tr.up * _statTable.attackEffectYupPosition);
-                _effect.PlayEffect(eEffectType.MUSCLE_CAT_HIT, closetPoint);
-            }
+            var rst = ApplyAttackDamage(attackPosition, attackRadius, damage, _monsterColliders, OnBaseAttackEffect);
+            if (!rst) return;
+            
             CurrentUltimateGauge += _statTable.ultimateSkillChargeOnBaseAttack;
+            impulseSource.GenerateImpulseWithForce(_statTable.baseAttackShakeForce);
+        }
+
+        private void OnBaseAttackEffect(Collider monsterCollider)
+        {
+            var tr          = transform;
+            var closetPoint = monsterCollider.ClosestPoint(tr.position + tr.up * _statTable.attackEffectYupPosition);
+            _effect.PlayEffect(eEffectType.MUSCLE_CAT_HIT, closetPoint);
         }
 
         protected override void Skill()
@@ -127,11 +126,11 @@ namespace GanShin.Content.Creature
 
         private async UniTask SkillAsync()
         {
-            var len = Physics.OverlapSphereNonAlloc(transform.position, _statTable.skillRadius, _monsterCollider, Define.GetLayerMask(Define.eLayer.MONSTER));
+            var len = Physics.OverlapSphereNonAlloc(transform.position, _statTable.skillRadius, _monsterColliders, Define.GetLayerMask(Define.eLayer.MONSTER));
             var monsters = new MonsterController[len];
             
             for (var i = 0; i < len; ++i)
-                monsters[i] = _monsterCollider[i].GetComponent<MonsterController>();
+                monsters[i] = _monsterColliders[i].GetComponent<MonsterController>();
 
             foreach (var monster in monsters)
             {

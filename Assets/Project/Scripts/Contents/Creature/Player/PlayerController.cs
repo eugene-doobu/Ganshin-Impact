@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using GanShin.CameraSystem;
+using GanShin.Content.Creature.Monster;
 using GanShin.InputSystem;
 using GanShin.Utils;
 using GanShin.Content.Weapon;
@@ -23,6 +24,7 @@ namespace GanShin.Content.Creature
         protected static readonly int AnimPramHashSetIdle     = Animator.StringToHash("SetIdle");
         protected static readonly int AnimPramHashSetDead     = Animator.StringToHash("SetDead");
         protected static readonly int AnimPramHashOnSkill     = Animator.StringToHash("OnSkill");
+        protected static readonly int AnimPramHashOnUltimate  = Animator.StringToHash("OnUltimate");
 #endregion Static
 
 #region Variables
@@ -337,6 +339,22 @@ namespace GanShin.Content.Creature
         protected abstract void UltimateSkill();
 
         protected abstract void SpecialAction();
+        
+        public bool ApplyAttackDamage(Vector3 attackPosition, float attackRadius, float damage, Collider[] monsterColliders, Action<Collider> monsterCollider)
+        {
+            var len = Physics.OverlapSphereNonAlloc(attackPosition, attackRadius, monsterColliders, Define.GetLayerMask(Define.eLayer.MONSTER));
+            for (var i = 0; i < len; ++i)
+            {
+                var monster = monsterColliders[i].GetComponent<MonsterController>();
+                if (ReferenceEquals(monster, null)) continue;
+                
+                monster.OnDamaged(damage);
+                
+                monsterCollider?.Invoke(monsterColliders[i]);
+            }
+
+            return len > 0;
+        }
 
         protected async UniTask DelayAttack()
         {
