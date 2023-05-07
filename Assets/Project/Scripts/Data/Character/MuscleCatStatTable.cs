@@ -8,7 +8,8 @@ namespace GanShin.Data
     {
         [Header("Attack")] 
         public float attackForwardOffset = 0.3f;
-        public float attackRadius = 1.0f;
+        public float attackRadius            = 1.0f;
+        public float attackEffectYupPosition = 1.2f;
 
         [Header("Camera Shake")] 
         public float baseAttackShakeForce = 0.03f;

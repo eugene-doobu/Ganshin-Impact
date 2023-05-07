@@ -1293,8 +1293,8 @@ ParticleSystem:
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
-        key1: {r: 0.69803923, g: 1, b: 0, a: 0}
-        key2: {r: 0, g: 1, b: 0, a: 0}
+        key1: {r: 1, g: 0.81666666, b: 0, a: 0}
+        key2: {r: 1, g: 0.56666666, b: 0, a: 0}
         key3: {r: 0, g: 0, b: 0, a: 0}
         key4: {r: 0, g: 0, b: 0, a: 0}
         key5: {r: 0, g: 0, b: 0, a: 0}
@@ -6141,8 +6141,8 @@ ParticleSystem:
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
-        key1: {r: 0.69803923, g: 1, b: 0, a: 1}
-        key2: {r: 0, g: 1, b: 0, a: 1}
+        key1: {r: 1, g: 0.81666666, b: 0, a: 1}
+        key2: {r: 1, g: 0.43333334, b: 0, a: 1}
         key3: {r: 0, g: 0, b: 0, a: 0}
         key4: {r: 0, g: 0, b: 0, a: 0}
         key5: {r: 0, g: 0, b: 0, a: 0}
@@ -10953,8 +10953,8 @@ ParticleSystem:
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
-        key1: {r: 0.69803923, g: 1, b: 0, a: 1}
-        key2: {r: 0, g: 1, b: 0, a: 0}
+        key1: {r: 1, g: 0.81666666, b: 0, a: 1}
+        key2: {r: 1, g: 0.43333334, b: 0, a: 0}
         key3: {r: 0, g: 0, b: 0, a: 0}
         key4: {r: 0, g: 0, b: 0, a: 0}
         key5: {r: 0, g: 0, b: 0, a: 0}
@@ -15764,8 +15764,8 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 0.56078434, g: 1, b: 0, a: 1}
-        key1: {r: 0, g: 1, b: 0, a: 0}
+        key0: {r: 1, g: 0.81666666, b: 0, a: 1}
+        key1: {r: 1, g: 0.56666666, b: 0, a: 0}
         key2: {r: 0, g: 0.09803922, b: 1, a: 0}
         key3: {r: 0, g: 0, b: 0, a: 0}
         key4: {r: 0, g: 0, b: 0, a: 0}
@@ -19296,7 +19296,7 @@ GameObject:
   - component: {fileID: 19898108}
   - component: {fileID: 19924672}
   m_Layer: 0
-  m_Name: RIKO_SWORD_HIT
+  m_Name: MUSCLE_CAT_HIT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -20599,8 +20599,8 @@ ParticleSystem:
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
-        key1: {r: 0.69803923, g: 1, b: 0, a: 1}
-        key2: {r: 0, g: 1, b: 0, a: 0}
+        key1: {r: 1, g: 0.81666666, b: 0, a: 1}
+        key2: {r: 1, g: 0.81666666, b: 0, a: 0}
         key3: {r: 0, g: 0, b: 0, a: 0}
         key4: {r: 0, g: 0, b: 0, a: 0}
         key5: {r: 0, g: 0, b: 0, a: 0}

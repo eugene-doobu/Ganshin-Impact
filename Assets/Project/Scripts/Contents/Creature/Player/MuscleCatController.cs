@@ -7,12 +7,16 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using GanShin.Content.Creature.Monster;
 using GanShin.Data;
+using GanShin.Effect;
 using UnityEngine;
+using Zenject;
 
 namespace GanShin.Content.Creature
 {
     public class MuscleCatController : PlayerController
-    {
+    {        
+        [Inject] private EffectManager _effect;
+
         private readonly Collider[] _monsterCollider = new Collider[10];
         
         [SerializeField] private CinemachineImpulseSource impulseSource;
@@ -93,8 +97,8 @@ namespace GanShin.Content.Creature
                 
                 monster.OnDamaged(damage);
                 
-                var closetPoint = _monsterCollider[i].ClosestPoint(transform.position);
-                // _effect.PlayEffect(eEffectType.RIKO_SWORD_HIT, closetPoint);
+                var closetPoint = _monsterCollider[i].ClosestPoint(tr.position + tr.up * _statTable.attackEffectYupPosition);
+                _effect.PlayEffect(eEffectType.MUSCLE_CAT_HIT, closetPoint);
             }
         }
 

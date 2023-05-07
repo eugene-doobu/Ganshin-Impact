@@ -25,6 +25,7 @@ MonoBehaviour:
   ultimateSkillChargeOnSkill: 5
   attackForwardOffset: 0.3
   attackRadius: 1.5
+  attackEffectYupPosition: 1.2
   baseAttackShakeForce: 0.01
   attack1Damage: 10
   attack2Damage: 15
@@ -34,8 +35,9 @@ MonoBehaviour:
   attack2Delay: 0.3
   attack3Delay: 0.3
   attack4Delay: 0.3
+  skillEaseType: 3
   skillRadius: 4
   skillDamage: 20
-  skillKnockBackDistance: 6
+  skillKnockBackDistance: 6.5
   skillKnockBackDuration: 1.2
   skillDuration: 1.5

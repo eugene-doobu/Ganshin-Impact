@@ -11,7 +11,8 @@ namespace GanShin.Effect
     public enum eEffectType
     {
         RIKO_SWORD_HIT,
-        RIKO_SWORD_ULTIMATE_HIT
+        RIKO_SWORD_ULTIMATE_HIT,
+        MUSCLE_CAT_HIT,
     }
     
     [UsedImplicitly]
@@ -30,10 +31,17 @@ namespace GanShin.Effect
 
         private async UniTask RemoveParticle(ParticleSystem particleSystem)
         {
-            // TODO: 계산 방식 변경
-            var duration = particleSystem.main.duration;
+            var duration = GetParticleDuration(particleSystem);
             await UniTask.Delay(TimeSpan.FromSeconds(duration));
             Object.Destroy(particleSystem.gameObject);
+        }
+
+        private float GetParticleDuration(ParticleSystem particleSystem)
+        {
+            float duration = particleSystem.main.duration + particleSystem.main.startLifetime.constantMax;
+            foreach (var subParticles in particleSystem.GetComponentsInChildren<ParticleSystem>())
+                duration = Mathf.Max(subParticles.main.duration + subParticles.main.startLifetime.constantMax);
+            return duration;
         }
     }
 }
