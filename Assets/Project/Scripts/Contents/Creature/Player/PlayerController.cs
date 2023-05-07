@@ -96,7 +96,8 @@ namespace GanShin.Content.Creature
             {
                 if (playerAttack == value) return;
                 playerAttack      = value;
-                weapon.AttackType = value;
+                if (weapon != null)
+                    weapon.AttackType = value;
             }
         }
 

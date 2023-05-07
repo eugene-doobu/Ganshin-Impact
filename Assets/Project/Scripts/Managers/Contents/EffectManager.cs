@@ -30,7 +30,8 @@ namespace GanShin.Effect
 
         private async UniTask RemoveParticle(ParticleSystem particleSystem)
         {
-            float duration = particleSystem.main.duration;
+            // TODO: 계산 방식 변경
+            var duration = particleSystem.main.duration;
             await UniTask.Delay(TimeSpan.FromSeconds(duration));
             Object.Destroy(particleSystem.gameObject);
         }

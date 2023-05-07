@@ -8,7 +8,7 @@ namespace GanShin.Content.Creature
 {
     public class RikoController : PlayerController, IAttackAnimation
     {
-        private RikoStatTable _rikoStat;
+        private RikoStatTable _statTable;
         
         private bool _isOnUltimate;
         
@@ -16,8 +16,8 @@ namespace GanShin.Content.Creature
         {
             base.Awake();
             
-            _rikoStat = Stat as RikoStatTable;
-            if (_rikoStat == null)
+            _statTable = Stat as RikoStatTable;
+            if (_statTable == null)
             {
                 GanDebugger.LogError("Stat asset is not RikoStatTable");
                 return;
@@ -38,13 +38,13 @@ namespace GanShin.Content.Creature
                     {
                         PlayerAttack = ePlayerAttack.RIKO_BASIC_ATTACK1;
                         ObjAnimator.SetInteger(AnimPramHashAttackState, 1);
-                        attackDelay = _rikoStat.attack1Delay;
+                        attackDelay = _statTable.attack1Delay;
                     }
                     else
                     {
                         PlayerAttack = ePlayerAttack.RIKO_ULTIMATE_ATTACK1;
                         ObjAnimator.SetInteger(AnimPramHashAttackState, 5);
-                        attackDelay = _rikoStat.attack1Delay;
+                        attackDelay = _statTable.attack1Delay;
                     }
 
                     isTryAttack = true;
@@ -52,38 +52,38 @@ namespace GanShin.Content.Creature
                 case ePlayerAttack.RIKO_BASIC_ATTACK1:
                     PlayerAttack = ePlayerAttack.RIKO_BASIC_ATTACK2;
                     ObjAnimator.SetInteger(AnimPramHashAttackState, 2);
-                    attackDelay = _rikoStat.attack2Delay;
+                    attackDelay = _statTable.attack2Delay;
                     isTryAttack = true;
                     break;
                 case ePlayerAttack.RIKO_BASIC_ATTACK2:
                     PlayerAttack = ePlayerAttack.RIKO_BASIC_ATTACK3;
                     ObjAnimator.SetInteger(AnimPramHashAttackState, 3);
-                    attackDelay = _rikoStat.attack3Delay;
+                    attackDelay = _statTable.attack3Delay;
                     isTryAttack = true;
                     break;
                 case ePlayerAttack.RIKO_BASIC_ATTACK3:
                     PlayerAttack = ePlayerAttack.RIKO_BASIC_ATTACK4;
                     ObjAnimator.SetInteger(AnimPramHashAttackState, 4);
-                    attackDelay  = _rikoStat.attack4Delay;
+                    attackDelay  = _statTable.attack4Delay;
                     isTryAttack  = true;
                     isLastAttack = true;
                     break;
                 case ePlayerAttack.RIKO_ULTIMATE_ATTACK1:
                     PlayerAttack = ePlayerAttack.RIKO_ULTIMATE_ATTACK2;
                     ObjAnimator.SetInteger(AnimPramHashAttackState, 6);
-                    attackDelay = _rikoStat.attack2Delay;
+                    attackDelay = _statTable.attack2Delay;
                     isTryAttack = true;
                     break;
                 case ePlayerAttack.RIKO_ULTIMATE_ATTACK2:
                     PlayerAttack = ePlayerAttack.RIKO_ULTIMATE_ATTACK3;
                     ObjAnimator.SetInteger(AnimPramHashAttackState, 7);
-                    attackDelay = _rikoStat.attack3Delay;
+                    attackDelay = _statTable.attack3Delay;
                     isTryAttack = true;
                     break;
                 case ePlayerAttack.RIKO_ULTIMATE_ATTACK3:
                     PlayerAttack = ePlayerAttack.RIKO_ULTIMATE_ATTACK4;
                     ObjAnimator.SetInteger(AnimPramHashAttackState, 8);
-                    attackDelay  = _rikoStat.attack4Delay;
+                    attackDelay  = _statTable.attack4Delay;
                     isTryAttack  = true;
                     isLastAttack = true;
                     break;
@@ -107,7 +107,7 @@ namespace GanShin.Content.Creature
             if (_attackCancellationTokenSource != null)
                 DisposeAttackCancellationTokenSource();
             _attackCancellationTokenSource = new CancellationTokenSource();
-            ReturnToIdle(_rikoStat.skillDelay).Forget();
+            ReturnToIdle(_statTable.skillDelay).Forget();
         }
 
         protected override void UltimateSkill()
@@ -122,7 +122,7 @@ namespace GanShin.Content.Creature
 
         private async UniTask UltimateTimer()
         {
-            await UniTask.Delay(TimeSpan.FromSeconds(_rikoStat.ultimateDuration));
+            await UniTask.Delay(TimeSpan.FromSeconds(_statTable.ultimateDuration));
             _isOnUltimate = false;
             Weapon.OnUltimateEnd();
             

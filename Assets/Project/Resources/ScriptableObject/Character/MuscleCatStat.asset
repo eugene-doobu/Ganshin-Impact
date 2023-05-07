@@ -16,10 +16,21 @@ MonoBehaviour:
   baseSkillCoolTime: 10
   moveSpeed: 4
   dashSpeed: 6
-  attackCoolTime: 0.8
-  previousAttackStateHoldTime: 4
+  attackCoolTime: 0.3
+  previousAttackStateHoldTime: 2
   ultimateSkillAvailabilityGauge: 30
   ultimateSkillChargeOnBaseAttack: 2
   ultimateSkillChargeOnDamaged: 3
   ultimateSkillChargeOnKill: 5
   ultimateSkillChargeOnSkill: 5
+  attackForwardOffset: 0.3
+  attackRadius: 1
+  baseAttackShakeForce: 0.03
+  attack1Damage: 10
+  attack2Damage: 15
+  attack3Damage: 20
+  attack4Damage: 25
+  attack1Delay: 0.15
+  attack2Delay: 0.15
+  attack3Delay: 0.15
+  attack4Delay: 0.24
