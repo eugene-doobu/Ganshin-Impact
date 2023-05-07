@@ -21,7 +21,7 @@ namespace GanShin.SceneManagement
 
         private void Start()
         {
-            _playerManager.SetCurrentPlayer(Define.ePlayerAvatar.AI);
+            _playerManager.SetCurrentPlayer(Define.ePlayerAvatar.MUSCLE_CAT);
         }
 
         private void Update()

@@ -78,6 +78,11 @@ namespace Ganshin
                 .FromComponentInNewPrefabResource(PlayerManager.AvatarPath.Ai)
                 .AsSingle()
                 .NonLazy();
+            Container.Bind<MuscleCatController>()
+                .WithId(PlayerManager.AvatarBindId.MuscleCat)
+                .FromComponentInNewPrefabResource(PlayerManager.AvatarPath.MuscleCat)
+                .AsSingle()
+                .NonLazy();
         }
 
         private void InstallGlobalUIs()
