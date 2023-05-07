@@ -164,6 +164,9 @@ namespace GanShin.Content.Creature
             _camera.ChangeState(eCameraState.CHARACTER_ULTIMATE_CAMERA);
             ObjAnimator.SetTrigger(AnimPramHashOnUltimate);
 
+            var rightHandTr = ObjAnimator.GetBoneTransform(HumanBodyBones.RightHand);
+            _effect.PlayEffect(eEffectType.MUSCLE_CAT_ULTIMATE, rightHandTr.position);
+
             await UniTask.Delay(TimeSpan.FromSeconds(_statTable.ultimateChargeDelay));
             ObjAnimator.SetTrigger(AnimPramHashSetPunch);
             _camera.ChangeState(eCameraState.CHARACTER_CAMERA);

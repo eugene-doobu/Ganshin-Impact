@@ -13,6 +13,7 @@ namespace GanShin.Effect
         RIKO_SWORD_HIT,
         RIKO_SWORD_ULTIMATE_HIT,
         MUSCLE_CAT_HIT,
+        MUSCLE_CAT_ULTIMATE,
     }
     
     [UsedImplicitly]
