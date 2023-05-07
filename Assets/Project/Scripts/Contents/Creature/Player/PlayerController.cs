@@ -332,6 +332,8 @@ namespace GanShin.Content.Creature
         
         protected abstract void UltimateSkill();
 
+        protected abstract void SpecialAction();
+
         protected async UniTask DelayAttack()
         {
             await UniTask.Delay(TimeSpan.FromSeconds(stat.attackCoolTime));
@@ -378,7 +380,7 @@ namespace GanShin.Content.Creature
             _attackCancellationTokenSource = null;
         }
 
-        public void OnDamaged(float damage)
+        public virtual void OnDamaged(float damage)
         {
             CurrentHp -= damage;
 
@@ -409,6 +411,7 @@ namespace GanShin.Content.Creature
         private void OnSpecialAction(bool value)
         {
             _isOnSpecialAction = value;
+            SpecialAction();
         }
 
         private void OnInteraction(bool value)

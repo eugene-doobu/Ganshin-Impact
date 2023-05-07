@@ -63,6 +63,10 @@ namespace GanShin.Content.Creature
         {
             
         }
+        protected override void SpecialAction()
+        {
+            //TODO: 조준
+        }
 #endregion ActionEvent
     }
 }

@@ -14,7 +14,9 @@ using Zenject;
 namespace GanShin.Content.Creature
 {
     public class MuscleCatController : PlayerController
-    {        
+    {   
+        protected static readonly int AnimPramHashIsOnGuard  = Animator.StringToHash("IsOnGuard");
+        
         [Inject] private EffectManager _effect;
 
         private readonly Collider[] _monsterCollider = new Collider[10];
@@ -107,7 +109,19 @@ namespace GanShin.Content.Creature
             ObjAnimator.SetTrigger(AnimPramHashOnSkill);
             SkillAsync().Forget();
         }
-        
+
+        public override void OnDamaged(float damage)
+        {
+            if (IsOnSpecialAction)
+            {
+                var tr = transform;
+                _effect.PlayEffect(eEffectType.MUSCLE_CAT_HIT, tr.position + tr.up * _statTable.attackEffectYupPosition);
+                base.OnDamaged(0);
+                return;
+            }
+            base.OnDamaged(damage);
+        }
+
         private async UniTask SkillAsync()
         {
             var len = Physics.OverlapSphereNonAlloc(transform.position, _statTable.skillRadius, _monsterCollider, Define.GetLayerMask(Define.eLayer.MONSTER));
@@ -135,6 +149,11 @@ namespace GanShin.Content.Creature
         protected override void UltimateSkill()
         {
             // TODO
+        }
+
+        protected override void SpecialAction()
+        {
+            ObjAnimator.SetBool(AnimPramHashIsOnGuard, IsOnSpecialAction);
         }
 #endregion Attack
 

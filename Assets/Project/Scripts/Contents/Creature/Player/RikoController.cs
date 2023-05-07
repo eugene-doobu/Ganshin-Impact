@@ -128,6 +128,11 @@ namespace GanShin.Content.Creature
             
             PlayerAttack = ePlayerAttack.NONE;
         }
+
+        protected override void SpecialAction()
+        {
+            //TODO: dash
+        }
 #endregion Attack
 
 #region ActionEvent
