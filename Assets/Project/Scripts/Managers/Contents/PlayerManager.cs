@@ -40,17 +40,20 @@ namespace GanShin
         {
             private const          string Root = "Character/Avatar";
             public static readonly string Riko = $"{Root}/Riko";
+            public static readonly string Ai   = $"{Root}/Ai";
         }
 
         public struct AvatarBindId
         {
             public const string Riko = "PlayerManager.Riko";
+            public const string Ai   = "PlayerManager.Ai";
         }
 
 #endregion Define
 
 #region Fields
-        [Inject(Id = AvatarBindId.Riko)] private PlayerController _riko = null!;
+        [Inject(Id = AvatarBindId.Riko)] private RikoController _riko = null!;
+        [Inject(Id = AvatarBindId.Ai)]   private AiController   _ai   = null!;
 
         [Inject]
         CameraManager _camera = null!;
@@ -148,6 +151,8 @@ namespace GanShin
             {
                 case Define.ePlayerAvatar.RIKO:
                     return _riko;
+                case Define.ePlayerAvatar.AI:
+                    return _ai;
                 default:
                     return null;
             }

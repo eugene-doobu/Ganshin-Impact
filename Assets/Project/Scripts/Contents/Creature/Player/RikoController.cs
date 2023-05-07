@@ -23,7 +23,8 @@ namespace GanShin.Content.Creature
                 return;
             }
         }
-        
+
+#region Attack
         protected override void Attack()
         {
             bool  isTryAttack  = false;
@@ -127,6 +128,7 @@ namespace GanShin.Content.Creature
             
             PlayerAttack = ePlayerAttack.NONE;
         }
+#endregion Attack
 
 #region ActionEvent
         protected override void OnAttack(bool value)

@@ -52,7 +52,7 @@ namespace GanShin.Content.Creature
 
         private bool _canRoll = true;
         private bool _desiredRoll;
-        private bool _isOnSpecialAction = false;
+        private bool _isOnSpecialAction;
         
         [Space] [Header("GroundCheck")] [SerializeField]
         private float rayStartPosOffset = 0.3f;
@@ -124,6 +124,8 @@ namespace GanShin.Content.Creature
         }
         
         protected PlayerWeaponBase Weapon => weapon;
+        
+        protected bool IsOnSpecialAction => _isOnSpecialAction;
 
         protected bool CanMove { get; set; } = true;
 #endregion Properties
@@ -175,6 +177,7 @@ namespace GanShin.Content.Creature
 
         private void InitializeWeapon()
         {
+            if (weapon == null) return;
             weapon.Owner = this;
         }
 

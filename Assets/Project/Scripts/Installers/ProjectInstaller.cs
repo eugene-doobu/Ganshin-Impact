@@ -68,9 +68,14 @@ namespace Ganshin
 
         private void InstallCharacterObjects()
         {
-            Container.Bind<PlayerController>()
+            Container.Bind<RikoController>()
                 .WithId(PlayerManager.AvatarBindId.Riko)
                 .FromComponentInNewPrefabResource(PlayerManager.AvatarPath.Riko)
+                .AsSingle()
+                .NonLazy();
+            Container.Bind<AiController>()
+                .WithId(PlayerManager.AvatarBindId.Ai)
+                .FromComponentInNewPrefabResource(PlayerManager.AvatarPath.Ai)
                 .AsSingle()
                 .NonLazy();
         }

@@ -21,7 +21,7 @@ namespace GanShin.SceneManagement
 
         private void Start()
         {
-            _playerManager.SetCurrentPlayer(Define.ePlayerAvatar.RIKO);
+            _playerManager.SetCurrentPlayer(Define.ePlayerAvatar.AI);
         }
 
         private void Update()

@@ -10,6 +10,7 @@ namespace GanShin.Content.Creature
     {
         private AiStatTable _statTable;
 
+#region Attack
         protected override void Awake()
         {
             base.Awake();
@@ -36,5 +37,32 @@ namespace GanShin.Content.Creature
         {
             
         }
+#endregion Attack
+
+#region ActionEvent
+        protected override void OnAttack(bool value)
+        {
+            if (IsOnSpecialAction)
+            {
+                if (value) return; // 조준
+                base.OnAttack(false); // 발사
+            }
+            else
+            {
+                if (!value) return;
+                base.OnAttack(true); // 발사
+            }
+        }
+
+        protected override void OnBaseSkill(bool value)
+        {
+            
+        }
+
+        protected override void OnUltimateSkill(bool value)
+        {
+            
+        }
+#endregion ActionEvent
     }
 }
