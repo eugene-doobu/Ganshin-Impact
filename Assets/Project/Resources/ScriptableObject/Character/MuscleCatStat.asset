@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3aafdb734ee4900a7f75df3f2a35864, type: 3}
+  m_Name: MuscleCatStat
+  m_EditorClassIdentifier: 
+  hp: 100
+  baseSkillCoolTime: 5
+  moveSpeed: 4
+  dashSpeed: 6
+  attackCoolTime: 0.3
+  previousAttackStateHoldTime: 2
+  ultimateSkillAvailabilityGauge: 20
+  ultimateSkillChargeOnBaseAttack: 1
+  ultimateSkillChargeOnDamaged: 3
+  ultimateSkillChargeOnKill: 5
+  ultimateSkillChargeOnSkill: 5
+  attackForwardOffset: 0.3
+  attackRadius: 1.5
+  attackEffectYupPosition: 1.2
+  baseAttackShakeForce: 0.01
+  ultimateShakeForce: 0.5
+  attack1Damage: 10
+  attack2Damage: 15
+  attack3Damage: 20
+  attack4Damage: 25
+  attack1Delay: 0.3
+  attack2Delay: 0.3
+  attack3Delay: 0.3
+  attack4Delay: 0.3
+  skillEaseType: 3
+  skillRadius: 4
+  skillDamage: 20
+  skillKnockBackDistance: 6.5
+  skillKnockBackDuration: 1.2
+  skillDuration: 1.5
+  ultimateForwardOffset: 1.5
+  ultimateRadius: 7
+  ultimateDamage: 100
+  ultimateChargeDelay: 1.5

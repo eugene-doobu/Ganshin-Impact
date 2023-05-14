@@ -12,6 +12,8 @@ namespace GanShin.SceneManagement
         [Inject] private PlayerManager _playerManager;
 
         [Inject] private SceneManagerEx _sceneManager;
+        
+        [SerializeField] private Define.ePlayerAvatar playerAvatar;
 
         protected override void Init()
         {
@@ -21,11 +23,7 @@ namespace GanShin.SceneManagement
 
         private void Start()
         {
-            var riko = _playerManager.GetPlayer(Define.ePlayerAvatar.RIKO);
-            if (riko == null) return;
-
-            riko.transform.position = Vector3.zero;
-            riko.gameObject.SetActive(true);
+            _playerManager.SetCurrentPlayer(playerAvatar);
         }
 
         private void Update()

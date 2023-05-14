@@ -33,6 +33,8 @@ namespace GanShin.Content.Creature.Monster
         private bool  _isKnockBack;
         private bool  _isDead;
 
+        private float _additionalKnockBack;
+        
         private float _currentHp;
 
 #region Properties
@@ -42,6 +44,10 @@ namespace GanShin.Content.Creature.Monster
             protected set
             {
                 var prevValue = base.State;
+
+                if (prevValue == eMonsterState.CAUGHT && value != eMonsterState.KNOCK_BACK)
+                    return;
+                
                 if (base.State == value) return;
                 base.State = value;
 
@@ -80,6 +86,9 @@ namespace GanShin.Content.Creature.Monster
                         break;
                     case eMonsterState.DEAD:
                         _animController.OnDie();
+                        break;
+                    case eMonsterState.CAUGHT:
+                        _navMeshAgent.isStopped = true;
                         break;
                 }
             }
@@ -143,10 +152,11 @@ namespace GanShin.Content.Creature.Monster
             _capsuleCollider.isTrigger = true;
         }
 #endregion Initalize
-        public override void OnDamaged(float damage)
+        public override void OnDamaged(float damage, float additionalKnockBack = 0)
         {
             if (State == eMonsterState.DEAD) return;
-            base.OnDamaged(damage);
+            base.OnDamaged(damage, additionalKnockBack);
+            _additionalKnockBack = additionalKnockBack;
 
             if (_currentHp <= 0)
             {
@@ -296,7 +306,8 @@ namespace GanShin.Content.Creature.Monster
         private async UniTask KnockBack()
         {
             var tr = transform;
-            _navMeshAgent.destination = tr.position - tr.forward * table.knockBackPower;
+            _navMeshAgent.destination = tr.position - tr.forward * (table.knockBackPower + _additionalKnockBack);
+            _additionalKnockBack      = 0f;
             await UniTask.Delay(TimeSpan.FromSeconds(table.knockDuration));
 
             if (_currentHp <= 0)

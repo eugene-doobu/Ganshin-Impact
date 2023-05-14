@@ -24,7 +24,7 @@ namespace GanShin.Content.Creature.Monster
             }
         }
 
-        public virtual void OnDamaged(float damage)
+        public virtual void OnDamaged(float damage, float additionalKnockBack = 0)
         {
             if (State == eMonsterState.DEAD) return;
         }
@@ -72,6 +72,10 @@ namespace GanShin.Content.Creature.Monster
         {
         }
 
+        public void SetCaught()
+        {
+            State = eMonsterState.CAUGHT;
+        }
 #region ProcessState
 
         protected abstract void ProcessCreated();

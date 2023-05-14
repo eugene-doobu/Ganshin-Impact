@@ -12,5 +12,18 @@ namespace GanShin.Content.Weapon
         public ePlayerAttack    AttackType { get; set; }
 
         public abstract void OnAttack();
+
+        public abstract void OnSkill();
+        
+        public abstract void OnUltimate();
+
+        public virtual void OnSkillEnd()
+        {
+        }
+
+        public virtual void OnUltimateEnd()
+        {
+            
+        }
     }
 }

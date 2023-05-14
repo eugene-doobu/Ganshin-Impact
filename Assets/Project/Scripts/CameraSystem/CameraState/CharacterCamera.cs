@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
 using GanShin.InputSystem;
+using JetBrains.Annotations;
 using UnityEngine;
 using Zenject;
 
@@ -11,10 +12,10 @@ namespace GanShin.CameraSystem
 {
     // Body : 3rd Person Follow
     // Aim : Composer
+    [UsedImplicitly]
     public class CharacterCamera : CameraBase
     {
 #region TableDatas
-
         [Inject(Id = CharacterCameraSettingInstaller.TopClampID)]
         private float _topClamp;
 
@@ -44,26 +45,20 @@ namespace GanShin.CameraSystem
 
         [Inject(Id = CharacterCameraSettingInstaller.ZoomMaxValueID)]
         private float _zoomMaxValue;
-
 #endregion TableDatas
 
 #region Variables
-
         [Inject] private InputSystemManager? _input;
 
-        private CameraBodyTarget?         _cameraBodyTarget;
-        private CinemachineVirtualCamera? _virtualCamera;
-
+        private CameraBodyTarget?           _cameraBodyTarget;
         private Cinemachine3rdPersonFollow? _body;
         private CinemachineComposer?        _aim;
 
         private float _cinemachineTargetYaw;
         private float _cinemachineTargetPitch;
-
 #endregion Variables
 
 #region Initialization
-
         private void InitializeCameraBodyTarget()
         {
             var cameraBodyTargetObj = new GameObject("@CameraBodyTarget");
@@ -85,14 +80,14 @@ namespace GanShin.CameraSystem
             var virtualCameraObj = Object.Instantiate(virtualCameraPrefab);
             virtualCameraObj.name = "@PlayerVirtualCamera";
 
-            _virtualCamera = virtualCameraObj.GetComponent<CinemachineVirtualCamera>();
-            if (_virtualCamera == null)
+            VirtualCamera = virtualCameraObj.GetComponent<CinemachineVirtualCamera>();
+            if (VirtualCamera == null)
             {
                 GanDebugger.CameraLogError("Failed to get virtual camera component");
                 return;
             }
 
-            _body = _virtualCamera.GetCinemachineComponent<Cinemachine3rdPersonFollow>();
+            _body = VirtualCamera.GetCinemachineComponent<Cinemachine3rdPersonFollow>();
             if (_body == null)
             {
                 GanDebugger.CameraLogError("Failed to get body component");
@@ -101,7 +96,7 @@ namespace GanShin.CameraSystem
 
             _targetZoom = _body.CameraDistance;
 
-            _aim = _virtualCamera.GetCinemachineComponent<CinemachineComposer>();
+            _aim = VirtualCamera.GetCinemachineComponent<CinemachineComposer>();
             if (_aim == null)
             {
                 GanDebugger.CameraLogError("Failed to get aim component");
@@ -112,15 +107,16 @@ namespace GanShin.CameraSystem
 
             GanDebugger.CameraLog("Virtual camera initialized");
         }
-
 #endregion Initialization
 
 #region CameraBase
-
         public override void OnEnable()
         {
             base.OnEnable();
             AddInputEvent();
+            
+            if (ReferenceEquals(VirtualCamera, null))
+                InitializeVirtualCamera();
         }
 
         public override void OnUpdate()
@@ -150,18 +146,16 @@ namespace GanShin.CameraSystem
 
             _cameraBodyTarget!.SetTarget(target);
 
-            if (ReferenceEquals(_virtualCamera, null))
+            if (ReferenceEquals(VirtualCamera, null))
                 InitializeVirtualCamera();
 
             var cameraBodyTarget = _cameraBodyTarget.transform;
-            _virtualCamera!.Follow = cameraBodyTarget;
-            _virtualCamera.LookAt  = cameraBodyTarget;
+            VirtualCamera!.Follow = cameraBodyTarget;
+            VirtualCamera.LookAt  = cameraBodyTarget;
         }
-
 #endregion CameraBase
 
 #region CameraProcess
-
         private void CameraRotation()
         {
             if (ReferenceEquals(_cameraBodyTarget, null))
@@ -181,7 +175,6 @@ namespace GanShin.CameraSystem
                 _body.CameraDistance =
                     Mathf.Lerp(_body.CameraDistance, _targetZoom, Time.deltaTime * _zoomSmoothFactor);
         }
-
 #endregion CameraProcess
 
 #region Input

@@ -1,6 +1,7 @@
 using GanShin;
 using GanShin.CameraSystem;
 using GanShin.Content.Creature;
+using GanShin.Effect;
 using GanShin.InputSystem;
 using GanShin.MapObject;
 using GanShin.SceneManagement;
@@ -49,11 +50,13 @@ namespace Ganshin
                 )
                 .To<PlayerManager>()
                 .AsSingle().NonLazy();
+            Container.Bind<EffectManager>().AsSingle().NonLazy();
         }
 
         private void InstallCameras()
         {
             Container.Bind<CharacterCamera>().AsSingle().NonLazy();
+            Container.Bind<CharacterUltimateCamera>().AsSingle().NonLazy();
         }
 
         private void InstallEssentialObjects()
@@ -66,9 +69,19 @@ namespace Ganshin
 
         private void InstallCharacterObjects()
         {
-            Container.Bind<PlayerController>()
+            Container.Bind<RikoController>()
                 .WithId(PlayerManager.AvatarBindId.Riko)
                 .FromComponentInNewPrefabResource(PlayerManager.AvatarPath.Riko)
+                .AsSingle()
+                .NonLazy();
+            Container.Bind<AiController>()
+                .WithId(PlayerManager.AvatarBindId.Ai)
+                .FromComponentInNewPrefabResource(PlayerManager.AvatarPath.Ai)
+                .AsSingle()
+                .NonLazy();
+            Container.Bind<MuscleCatController>()
+                .WithId(PlayerManager.AvatarBindId.MuscleCat)
+                .FromComponentInNewPrefabResource(PlayerManager.AvatarPath.MuscleCat)
                 .AsSingle()
                 .NonLazy();
         }
@@ -77,6 +90,10 @@ namespace Ganshin
         {
             Container.Bind<UIRootLoadingScene>()
                 .FromComponentInNewPrefabResource(UIManager.GlobalUIName.Loading)
+                .AsSingle()
+                .NonLazy();
+            Container.Bind<UIRootCharacterCutScene>()
+                .FromComponentInNewPrefabResource(UIManager.GlobalUIName.CharacterCutScene)
                 .AsSingle()
                 .NonLazy();
         }

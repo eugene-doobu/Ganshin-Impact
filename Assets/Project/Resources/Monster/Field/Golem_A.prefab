@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 2781145896608704793}
   - component: {fileID: 1301541000}
   - component: {fileID: 2216794758614886278}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Golem_A
   m_TagString: Monster
   m_Icon: {fileID: 0}
@@ -72,7 +72,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0e336e2f24b343488de0d862e751b01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveSpeed: 4
   state: 0
   table: {fileID: 11400000, guid: 0cff4a60fd71d4f42a85c6a9a97c64d9, type: 2}
 --- !u!195 &2781145896608704792

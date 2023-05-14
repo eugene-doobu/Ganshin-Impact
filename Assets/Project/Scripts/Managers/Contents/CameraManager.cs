@@ -13,12 +13,14 @@ namespace GanShin.CameraSystem
     {
         DEFAULT,
         CHARACTER_CAMERA,
+        CHARACTER_ULTIMATE_CAMERA,
     }
 
     [UsedImplicitly]
     public class CameraManager : IInitializable, ITickable, ILateTickable
     {
-        [Inject] private CharacterCamera? _characterCamera;
+        [Inject] private CharacterCamera         _characterCamera         = null!;
+        [Inject] private CharacterUltimateCamera _characterUltimateCamera = null!;
 
         private Dictionary<string, VirtualCameraJig> _virtualCameraDict = new();
         private Dictionary<eCameraState, CameraBase> _cameraStates      = new();
@@ -53,6 +55,8 @@ namespace GanShin.CameraSystem
                 return _mainCamera;
             }
         }
+        
+        public Transform? Target { get; set; }
 
         [UsedImplicitly]
         public CameraManager()
@@ -96,6 +100,7 @@ namespace GanShin.CameraSystem
         private void CameraStateDictionaryInit()
         {
             _cameraStates.Add(eCameraState.CHARACTER_CAMERA, _characterCamera);
+            _cameraStates.Add(eCameraState.CHARACTER_ULTIMATE_CAMERA, _characterUltimateCamera);
             // TODO: InteractionCamera, CinematicCamera 등 추가
         }
 

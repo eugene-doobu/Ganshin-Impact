@@ -8,6 +8,7 @@ namespace GanShin.UI
     public enum eGlobalUI
     {
         LOADING,
+        CHARACTER_CUT_SCENE,
     }
 
     public partial class UIManager
@@ -18,8 +19,9 @@ namespace GanShin.UI
 
         public struct GlobalUIName
         {
-            private const          string Root    = "Prefabs/UI/Global/";
-            public static readonly string Loading = $"{Root}UI_LoadingScene";
+            private const          string Root              = "Prefabs/UI/Global/";
+            public static readonly string Loading           = $"{Root}UI_LoadingScene";
+            public static readonly string CharacterCutScene = $"{Root}UI_CharacterCutScene";
         }
 
 #endregion Define
@@ -62,9 +64,13 @@ namespace GanShin.UI
         }
 
         [Inject]
-        public void InjectGlobalUI(UIRootLoadingScene uiRootLoadingScene)
+        public void InjectGlobalUI(
+            UIRootLoadingScene uiRootLoadingScene,
+            UIRootCharacterCutScene uiRootCharacterCutScene
+            )
         {
             AddGlobalUI(uiRootLoadingScene, eGlobalUI.LOADING);
+            AddGlobalUI(uiRootCharacterCutScene, eGlobalUI.CHARACTER_CUT_SCENE);
         }
 
         private void AddGlobalUI(GlobalUIRootBase root, eGlobalUI type)

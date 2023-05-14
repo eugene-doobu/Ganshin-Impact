@@ -5,6 +5,7 @@
         public enum eLayer
         {
             CHARACTER = 3,
+            MONSTER = 8
         }
 
         public static int GetLayerMask(eLayer layer)
