@@ -177,8 +177,8 @@ namespace GanShin.Content.Creature.Monster
             Initialize();
             _playerAvatarContext.MaxHp      = (int) table.hp;
             _playerAvatarContext.TargetName = name;
-            CurrentHp                  = table.hp;
-            State                      = eMonsterState.IDLE;
+            CurrentHp                       = table.hp;
+            State                           = eMonsterState.IDLE;
         }
 
         protected override void ProcessIdle()
