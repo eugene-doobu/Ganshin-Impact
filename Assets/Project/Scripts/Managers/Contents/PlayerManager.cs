@@ -167,8 +167,26 @@ namespace GanShin
             player.gameObject.SetActive(true);
             _camera.ChangeTarget(player.transform);
 
+            ActivePlayerContext(avatar);
+            
             _currentAvatar = avatar;
             return player;
+        }
+
+        private void ActivePlayerContext(Define.ePlayerAvatar avatar)
+        {
+            switch (avatar)
+            {
+                case Define.ePlayerAvatar.RIKO:
+                    _playerContext.IsRikoActive      = true;
+                    break;
+                case Define.ePlayerAvatar.AI:
+                    _playerContext.IsAiActive        = true;
+                    break;
+                case Define.ePlayerAvatar.MUSCLE_CAT:
+                    _playerContext.IsMuscleCatActive = true;
+                    break;
+            }
         }
         
         public PlayerController? GetPlayer(Define.ePlayerAvatar avatar)
@@ -187,7 +205,7 @@ namespace GanShin
             }
         }
 
-        public PlayerAvatarContext? GetUIHpBarContext(Define.ePlayerAvatar avatar)
+        public PlayerAvatarContext? GetAvatarContext(Define.ePlayerAvatar avatar)
         {
             switch (avatar)
             {

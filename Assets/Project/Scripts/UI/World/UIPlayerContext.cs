@@ -1,12 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel;
-using UnityEngine;
 using Zenject;
 
 namespace GanShin.UI
 {
-    public class UIStaminaBar : UIRootBase
+    public class UIPlayerContext : UIRootBase
     {
         [Inject] private PlayerManager _playerManager;
         

@@ -133,6 +133,10 @@ namespace GanShin.Content.Creature
         protected bool CanMove { get; set; } = true;
 
         protected CharacterController CC => _characterController;
+        
+        protected PlayerManager Player => _playerManager;
+
+        public abstract PlayerAvatarContext GetPlayerContext { get; }
 #endregion Properties
 
 #region Mono
@@ -143,7 +147,7 @@ namespace GanShin.Content.Creature
             InitializeAvatar();
             InitializeWeapon();
 
-            _playerAvatarContext = _playerManager.GetUIHpBarContext(Define.ePlayerAvatar.RIKO);
+            _playerAvatarContext = GetPlayerContext;
         }
 
         private void OnEnable()

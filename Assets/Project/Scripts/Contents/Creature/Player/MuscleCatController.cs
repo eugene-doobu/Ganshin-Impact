@@ -9,6 +9,7 @@ using GanShin.CameraSystem;
 using GanShin.Content.Creature.Monster;
 using GanShin.Data;
 using GanShin.Effect;
+using GanShin.UI;
 using UnityEngine;
 using Zenject;
 
@@ -28,6 +29,9 @@ namespace GanShin.Content.Creature
         [SerializeField] private CinemachineImpulseSource ultimateImpulseSource;
 
         private MuscleCatStatTable _statTable;
+
+        public override PlayerAvatarContext GetPlayerContext =>
+            Player.GetAvatarContext(Define.ePlayerAvatar.MUSCLE_CAT);
         
         protected override void Awake()
         {

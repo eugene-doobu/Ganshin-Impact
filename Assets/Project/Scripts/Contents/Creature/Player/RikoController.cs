@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using GanShin.Data;
+using GanShin.UI;
 using JetBrains.Annotations;
 
 namespace GanShin.Content.Creature
@@ -23,6 +24,9 @@ namespace GanShin.Content.Creature
                 return;
             }
         }
+
+        public override PlayerAvatarContext GetPlayerContext =>
+            Player.GetAvatarContext(Define.ePlayerAvatar.RIKO);
 
 #region Attack
         protected override void Attack()

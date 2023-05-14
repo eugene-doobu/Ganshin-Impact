@@ -13,10 +13,58 @@ namespace GanShin.UI
         public event PropertyChangedEventHandler PropertyChanged;
         
 #region Fields
+        private bool _isRikoActive;
+        private bool _isAiActive;
+        private bool _isMuscleCatActive;
+        
         private float _currentCurrentStamina;
         private float _maxStamina;
         private float _staminaPercent;
 #endregion Fields
+        [UsedImplicitly]
+        public bool IsRikoActive
+        {
+            get => _isRikoActive;
+            set
+            {
+                _isRikoActive = value;
+                OnPropertyChanged();
+                
+                if (!value) return;
+                IsAiActive        = false;
+                IsMuscleCatActive = false;
+            }
+        }
+        
+        [UsedImplicitly]
+        public bool IsAiActive
+        {
+            get => _isAiActive;
+            set
+            {
+                _isAiActive = value;
+                OnPropertyChanged();
+                
+                if (!value) return;
+                IsRikoActive      = false;
+                IsMuscleCatActive = false;
+            }
+        }
+        
+        [UsedImplicitly]
+        public bool IsMuscleCatActive
+        {
+            get => _isMuscleCatActive;
+            set
+            {
+                _isMuscleCatActive = value;
+                OnPropertyChanged();
+                
+                if (!value) return;
+                IsRikoActive = false;
+                IsAiActive   = false;
+            }
+        }
 
         [UsedImplicitly]
         public float CurrentStamina
