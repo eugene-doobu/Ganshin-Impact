@@ -20,7 +20,7 @@ namespace GanShin.Content.Creature.Monster
         
         [SerializeField] private FieldMonsterTable table;
 
-        private readonly UIHpBarContext _uiHpBarContext = new UIHpBarContext();
+        private readonly PlayerAvatarContext _playerAvatarContext = new PlayerAvatarContext();
 
         private Animator             _animator        = null!;
         private NavMeshAgent         _navMeshAgent    = null!;
@@ -103,11 +103,11 @@ namespace GanShin.Content.Creature.Monster
                 _currentHp = Mathf.Clamp(value, 0, table.hp);
 
                 _currentHp                = value;
-                _uiHpBarContext.CurrentHp = (int) _currentHp;
+                _playerAvatarContext.CurrentHp = (int) _currentHp;
             }
         }
 
-        public INotifyPropertyChanged DataContext => _uiHpBarContext;
+        public INotifyPropertyChanged DataContext => _playerAvatarContext;
 #endregion Properties
 
 #region MonoBehaviour
@@ -130,7 +130,7 @@ namespace GanShin.Content.Creature.Monster
             _animController.Initialize(_animator);
 
             _contextHolder         = gameObject.AddComponent<ContextHolder>();
-            _contextHolder.Context = _uiHpBarContext;
+            _contextHolder.Context = _playerAvatarContext;
         }
 #endregion MonoBehaviour
 
@@ -175,8 +175,8 @@ namespace GanShin.Content.Creature.Monster
         protected override void ProcessCreated()
         {
             Initialize();
-            _uiHpBarContext.MaxHp      = (int) table.hp;
-            _uiHpBarContext.TargetName = name;
+            _playerAvatarContext.MaxHp      = (int) table.hp;
+            _playerAvatarContext.TargetName = name;
             CurrentHp                  = table.hp;
             State                      = eMonsterState.IDLE;
         }

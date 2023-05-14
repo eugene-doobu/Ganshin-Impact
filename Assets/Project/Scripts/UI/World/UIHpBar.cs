@@ -51,8 +51,8 @@ namespace GanShin.UI
             }
         }
 
-        private UIHpBarContext _context;
+        private PlayerAvatarContext _context;
 
-        public UIHpBarContext Context => _context ?? DataContext as UIHpBarContext;
+        public PlayerAvatarContext Context => _context ?? DataContext as PlayerAvatarContext;
     }
 }

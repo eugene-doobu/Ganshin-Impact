@@ -35,7 +35,7 @@ namespace GanShin.Content.Creature
         [Inject] private   PlayerManager           _playerManager;
 
         private CharacterController _characterController;
-        private UIHpBarContext      _uiHpBarContext;
+        private PlayerAvatarContext      _playerAvatarContext;
 
         private Transform _tr;
         private Transform _wristLeftTr;
@@ -112,7 +112,7 @@ namespace GanShin.Content.Creature
 
                 _currentHp = Mathf.Clamp(value, 0, stat.hp);
 
-                _uiHpBarContext.CurrentHp = (int) _currentHp;
+                _playerAvatarContext.CurrentHp = (int) _currentHp;
             }
         }
         
@@ -143,7 +143,7 @@ namespace GanShin.Content.Creature
             InitializeAvatar();
             InitializeWeapon();
 
-            _uiHpBarContext = _playerManager.GetUIHpBarContext(Define.ePlayerAvatar.RIKO);
+            _playerAvatarContext = _playerManager.GetUIHpBarContext(Define.ePlayerAvatar.RIKO);
         }
 
         private void OnEnable()
@@ -159,7 +159,7 @@ namespace GanShin.Content.Creature
         protected override void Start()
         {
             base.Start();
-            _uiHpBarContext.MaxHp = (int) stat.hp;
+            _playerAvatarContext.MaxHp = (int) stat.hp;
                 
             CurrentHp = stat.hp;
         }

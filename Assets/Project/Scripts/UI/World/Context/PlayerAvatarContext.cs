@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace GanShin.UI
 {
-    public sealed class UIHpBarContext : INotifyPropertyChanged
+    public sealed class PlayerAvatarContext : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 

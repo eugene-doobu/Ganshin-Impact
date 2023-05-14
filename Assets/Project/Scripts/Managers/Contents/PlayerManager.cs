@@ -15,17 +15,17 @@ namespace GanShin
     public class PlayerManager : IInitializable, ITickable
     {
 #region Internal Class
-        public class PlayerAvatarContext
+        private class PlayerAvatarContextBundle
         {
-            public UIHpBarContext? RikoHpBarContext      { get; }
-            public UIHpBarContext? AIHpBarContext        { get; }
-            public UIHpBarContext? MuscleCatHpBarContext { get; }
+            public PlayerAvatarContext? RikoHpBarContext      { get; }
+            public PlayerAvatarContext? AIHpBarContext        { get; }
+            public PlayerAvatarContext? MuscleCatHpBarContext { get; }
 
-            public PlayerAvatarContext()
+            public PlayerAvatarContextBundle()
             {
-                RikoHpBarContext      = Activator.CreateInstance(typeof(UIHpBarContext)) as UIHpBarContext;
-                AIHpBarContext        = Activator.CreateInstance(typeof(UIHpBarContext)) as UIHpBarContext;
-                MuscleCatHpBarContext = Activator.CreateInstance(typeof(UIHpBarContext)) as UIHpBarContext;
+                RikoHpBarContext      = Activator.CreateInstance(typeof(PlayerAvatarContext)) as PlayerAvatarContext;
+                AIHpBarContext        = Activator.CreateInstance(typeof(PlayerAvatarContext)) as PlayerAvatarContext;
+                MuscleCatHpBarContext = Activator.CreateInstance(typeof(PlayerAvatarContext)) as PlayerAvatarContext;
             }
         }
 #endregion Internal Class
@@ -57,7 +57,7 @@ namespace GanShin
         [Inject]
         CameraManager _camera = null!;
         
-        private PlayerAvatarContext _avatarContext;
+        private PlayerAvatarContextBundle _avatarContextBundle;
 
         public Transform CurrentPlayerTransform => CurrentPlayer.transform;
         
@@ -105,7 +105,7 @@ namespace GanShin
         public PlayerManager()
         {
             SetPlayerPoolRoot();
-            _avatarContext = new PlayerAvatarContext();
+            _avatarContextBundle = new PlayerAvatarContextBundle();
         }
 
         public void Initialize()
@@ -182,16 +182,16 @@ namespace GanShin
             }
         }
 
-        public UIHpBarContext? GetUIHpBarContext(Define.ePlayerAvatar avatar)
+        public PlayerAvatarContext? GetUIHpBarContext(Define.ePlayerAvatar avatar)
         {
             switch (avatar)
             {
                 case Define.ePlayerAvatar.RIKO:
-                    return _avatarContext.RikoHpBarContext;
+                    return _avatarContextBundle.RikoHpBarContext;
                 case Define.ePlayerAvatar.AI:
-                    return _avatarContext.AIHpBarContext;
+                    return _avatarContextBundle.AIHpBarContext;
                 case Define.ePlayerAvatar.MUSCLE_CAT:
-                    return _avatarContext.MuscleCatHpBarContext;
+                    return _avatarContextBundle.MuscleCatHpBarContext;
                 default:
                     return null;
             }
