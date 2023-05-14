@@ -12,6 +12,8 @@ namespace GanShin.SceneManagement
         [Inject] private PlayerManager _playerManager;
 
         [Inject] private SceneManagerEx _sceneManager;
+        
+        [SerializeField] private Define.ePlayerAvatar playerAvatar;
 
         protected override void Init()
         {
@@ -21,7 +23,7 @@ namespace GanShin.SceneManagement
 
         private void Start()
         {
-            _playerManager.SetCurrentPlayer(Define.ePlayerAvatar.MUSCLE_CAT);
+            _playerManager.SetCurrentPlayer(playerAvatar);
         }
 
         private void Update()

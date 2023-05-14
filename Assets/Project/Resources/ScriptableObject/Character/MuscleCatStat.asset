@@ -18,7 +18,7 @@ MonoBehaviour:
   dashSpeed: 6
   attackCoolTime: 0.3
   previousAttackStateHoldTime: 2
-  ultimateSkillAvailabilityGauge: 0
+  ultimateSkillAvailabilityGauge: 20
   ultimateSkillChargeOnBaseAttack: 1
   ultimateSkillChargeOnDamaged: 3
   ultimateSkillChargeOnKill: 5
