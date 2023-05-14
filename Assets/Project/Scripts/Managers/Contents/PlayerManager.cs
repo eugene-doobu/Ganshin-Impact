@@ -57,7 +57,9 @@ namespace GanShin
         [Inject]
         CameraManager _camera = null!;
         
-        private PlayerAvatarContextBundle _avatarContextBundle;
+        private readonly PlayerAvatarContextBundle _avatarContextBundle = new PlayerAvatarContextBundle();
+        
+        private readonly PlayerContext? _playerContext = Activator.CreateInstance(typeof(PlayerContext)) as PlayerContext;
 
         public Transform CurrentPlayerTransform => CurrentPlayer.transform;
         
@@ -74,6 +76,8 @@ namespace GanShin
                 };
             }
         }
+        
+        public PlayerContext PlayerContext => _playerContext!;
         
         private float _maxStamina             = 100f;
         private float _currentStamina         = 100f;
@@ -95,6 +99,7 @@ namespace GanShin
             {
                 if (value < _currentStamina) SetStaminaDelay();
                 _currentStamina = Mathf.Clamp(value, 0f, _maxStamina);
+                _playerContext.CurrentStamina = _currentStamina;
             }
         }
 
@@ -105,7 +110,7 @@ namespace GanShin
         public PlayerManager()
         {
             SetPlayerPoolRoot();
-            _avatarContextBundle = new PlayerAvatarContextBundle();
+            _playerContext.MaxStamina = _maxStamina;
         }
 
         public void Initialize()
