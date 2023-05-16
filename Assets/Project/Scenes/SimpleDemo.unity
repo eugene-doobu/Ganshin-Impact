@@ -1047,7 +1047,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 333bf344b2fdb6d40add3574e7e30323, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerAvatar: 0
+  playerAvatar: 2
 --- !u!1001 &1802686831
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1548,7 +1548,8 @@ PrefabInstance:
       propertyPath: createContext
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 790568465006461089, guid: 8a27a93056a1e0b4c8c9e3738d8b848e, type: 3}
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 8a27a93056a1e0b4c8c9e3738d8b848e, type: 3}
 --- !u!1001 &324944136255049381

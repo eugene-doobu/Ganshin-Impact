@@ -123,6 +123,7 @@ namespace GanShin.Content.Creature
             {
                 if (Mathf.Approximately(_currentUltimateGauge, value)) return;
                 _currentUltimateGauge = Mathf.Clamp(value, 0, stat.ultimateSkillAvailabilityGauge);
+                RefreshUltimateGauge();
             }
         }
         
@@ -153,6 +154,7 @@ namespace GanShin.Content.Creature
         private void OnEnable()
         {
             AddInputEvent();
+            RefreshUltimateGauge();
         }
 
         private void OnDisable()
@@ -423,8 +425,21 @@ namespace GanShin.Content.Creature
         private async UniTask SkillCoolTime()
         {
             _isAvailableSkill = false;
-            await UniTask.Delay(TimeSpan.FromSeconds(stat.baseSkillCoolTime));
+            float value = 0, coolTime = stat.baseSkillCoolTime;
+            while (value < coolTime)
+            {
+                GetPlayerContext.BaseSkillCoolTimePercent =  1 - value / coolTime;
+                value                                     += Time.deltaTime;
+                await UniTask.Yield();
+            }
+
+            GetPlayerContext.BaseSkillCoolTimePercent = 0f;
             _isAvailableSkill = true;
+        }
+
+        private void RefreshUltimateGauge()
+        {
+            GetPlayerContext.UltimateGaugePercent = 1 - _currentUltimateGauge / stat.ultimateSkillAvailabilityGauge;
         }
 #endregion Attack
 
