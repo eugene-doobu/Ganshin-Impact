@@ -22,6 +22,8 @@ namespace GanShin.Content.Creature.Monster
 
         private readonly PlayerAvatarContext _playerAvatarContext = new PlayerAvatarContext();
 
+        private Transform _playerTarget = null!;
+        
         private Animator             _animator        = null!;
         private NavMeshAgent         _navMeshAgent    = null!;
         private CapsuleCollider      _capsuleCollider = null!;
@@ -38,6 +40,17 @@ namespace GanShin.Content.Creature.Monster
         private float _currentHp;
 
 #region Properties
+        protected override Transform Target
+        {
+            get => _playerTarget;
+            set
+            {
+                _playerTarget = value;
+                if (value != null) _playerManager.OnPlayerChanged += OnPlayerChanged;
+                else _playerManager.OnPlayerChanged               -= OnPlayerChanged;
+            }
+        }
+
         public override eMonsterState State
         {
             get => base.State;
@@ -169,6 +182,11 @@ namespace GanShin.Content.Creature.Monster
             GanDebugger.Log(nameof(FieldMonsterController), $"{gameObject.name} OnDamaged : {_currentHp}");
 
             State = eMonsterState.KNOCK_BACK;
+        }
+        
+        private void OnPlayerChanged(PlayerController player)
+        {
+            Target = player.transform;
         }
 
 #region ProcessState

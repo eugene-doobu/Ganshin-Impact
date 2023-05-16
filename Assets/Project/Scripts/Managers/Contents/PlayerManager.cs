@@ -90,6 +90,19 @@ namespace GanShin
         private Define.ePlayerAvatar _currentAvatar = Define.ePlayerAvatar.RIKO;
 #endregion Fields
 
+#region Event
+        private Action<PlayerController>? _onPlayerChanged;
+        public event Action<PlayerController>? OnPlayerChanged
+        {
+            add
+            {
+                _onPlayerChanged -= value;
+                _onPlayerChanged += value;
+            }
+            remove => _onPlayerChanged -= value;
+        }
+#endregion Event
+
 #region Properties
 
         public float CurrentStamina
@@ -173,6 +186,8 @@ namespace GanShin
             player.gameObject.SetActive(false);
             player.transform.SetPositionAndRotation(prevTr.position, prevTr.rotation);
             player.gameObject.SetActive(true);
+
+            _onPlayerChanged?.Invoke(player);
             
             _currentAvatar = avatar;
             return player;
