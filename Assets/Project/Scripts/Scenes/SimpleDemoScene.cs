@@ -15,6 +15,8 @@ namespace GanShin.SceneManagement
         
         [SerializeField] private Define.ePlayerAvatar playerAvatar;
 
+        [SerializeField] private Vector3 startPosition;
+        
         protected override void Init()
         {
             base.Init();
@@ -23,13 +25,23 @@ namespace GanShin.SceneManagement
 
         private void Start()
         {
-            _playerManager.SetCurrentPlayer(playerAvatar);
+            var player = _playerManager.SetCurrentPlayer(playerAvatar);
+            player.transform.position = startPosition;
         }
 
         private void Update()
         {
             if (Input.GetKeyDown("]"))
                 _sceneManager.LoadScene(ESceneType).Forget();
+            
+            if (Input.GetKeyDown("1"))
+                _playerManager.SetCurrentPlayer(Define.ePlayerAvatar.RIKO);
+            
+            if (Input.GetKeyDown("2"))
+                _playerManager.SetCurrentPlayer(Define.ePlayerAvatar.AI);
+            
+            if (Input.GetKeyDown("3"))
+                _playerManager.SetCurrentPlayer(Define.ePlayerAvatar.MUSCLE_CAT);
         }
 
         public override void Clear()

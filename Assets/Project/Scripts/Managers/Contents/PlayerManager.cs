@@ -159,34 +159,47 @@ namespace GanShin
 
         public PlayerController? SetCurrentPlayer(Define.ePlayerAvatar avatar)
         {
-            var player = GetPlayer(avatar);
+            if (_currentAvatar == avatar) 
+                return GetPlayer(avatar);
+            
+            var player = ActivePlayerContext(avatar);
             if (player == null) return null;
             
-            player.gameObject.SetActive(false);
-            player.transform.position = Vector3.zero;
-            player.gameObject.SetActive(true);
             _camera.ChangeTarget(player.transform);
-
-            ActivePlayerContext(avatar);
+            var prevPlayer = ActivePlayerContext(_currentAvatar, false);
+            var prevTr = prevPlayer.transform;
+            
+            // 포지션 변경의 문제가 있어서 변경될 오브젝트를 비활성화 후 활성화
+            player.gameObject.SetActive(false);
+            player.transform.SetPositionAndRotation(prevTr.position, prevTr.rotation);
+            player.gameObject.SetActive(true);
             
             _currentAvatar = avatar;
             return player;
         }
 
-        private void ActivePlayerContext(Define.ePlayerAvatar avatar)
+        private PlayerController? ActivePlayerContext(Define.ePlayerAvatar avatar, bool value = true)
         {
+            var player = GetPlayer(avatar);
+            if (player == null) return null;
+
             switch (avatar)
             {
                 case Define.ePlayerAvatar.RIKO:
-                    _playerContext.IsRikoActive      = true;
+                    _playerContext.IsRikoActive = value;
+                    player.gameObject.SetActive(value);
                     break;
                 case Define.ePlayerAvatar.AI:
-                    _playerContext.IsAiActive        = true;
+                    _playerContext.IsAiActive = value;
+                    player.gameObject.SetActive(value);
                     break;
                 case Define.ePlayerAvatar.MUSCLE_CAT:
-                    _playerContext.IsMuscleCatActive = true;
+                    _playerContext.IsMuscleCatActive = value;
+                    player.gameObject.SetActive(value);
                     break;
             }
+
+            return player;
         }
         
         public PlayerController? GetPlayer(Define.ePlayerAvatar avatar)
