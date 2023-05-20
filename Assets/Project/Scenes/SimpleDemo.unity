@@ -1289,17 +1289,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 228275525019907660, guid: b189465624eeed744b685e35954becd3, type: 3}
-      propertyPath: m_Name
-      value: UI_Charcter_Info_Riko
-      objectReference: {fileID: 0}
-    - target: {fileID: 4621676461363595686, guid: b189465624eeed744b685e35954becd3, type: 3}
-      propertyPath: m_Name
-      value: UI_Charcter_Info_MuscleCat
-      objectReference: {fileID: 0}
-    - target: {fileID: 4621676462062292945, guid: b189465624eeed744b685e35954becd3, type: 3}
-      propertyPath: m_Name
-      value: UI_Charcter_Info_Ai
+    - target: {fileID: 228275524573983407, guid: b189465624eeed744b685e35954becd3, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 4.897293
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []

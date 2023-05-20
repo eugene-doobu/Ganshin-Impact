@@ -197,16 +197,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4830534050261552495, guid: 61b646584f22e544fa5245d84c00f81c, type: 3}
       propertyPath: m_Name
-      value: UI_Charcter_Info (2)
+      value: UI_Charcter_Info_MuscleCat
       objectReference: {fileID: 0}
     - target: {fileID: 4830534050439170444, guid: 61b646584f22e544fa5245d84c00f81c, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 4.897293
       objectReference: {fileID: 0}
+    - target: {fileID: 4830534050439170451, guid: 61b646584f22e544fa5245d84c00f81c, type: 3}
+      propertyPath: m_text
+      value: MuscleCat
+      objectReference: {fileID: 0}
     - target: {fileID: 4830534051472065392, guid: 61b646584f22e544fa5245d84c00f81c, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5506464723604782259, guid: 61b646584f22e544fa5245d84c00f81c, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 3e79b653accacc94d87aa29ba9c6c5ef, type: 3}
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 61b646584f22e544fa5245d84c00f81c, type: 3}
@@ -309,16 +317,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4830534050261552495, guid: 61b646584f22e544fa5245d84c00f81c, type: 3}
       propertyPath: m_Name
-      value: UI_Charcter_Info (1)
+      value: UI_Charcter_Info_Ai
       objectReference: {fileID: 0}
     - target: {fileID: 4830534050439170444, guid: 61b646584f22e544fa5245d84c00f81c, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 4.897293
       objectReference: {fileID: 0}
+    - target: {fileID: 4830534050439170451, guid: 61b646584f22e544fa5245d84c00f81c, type: 3}
+      propertyPath: m_text
+      value: Ai
+      objectReference: {fileID: 0}
     - target: {fileID: 4830534051472065392, guid: 61b646584f22e544fa5245d84c00f81c, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5506464723604782259, guid: 61b646584f22e544fa5245d84c00f81c, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 31844f74afa81ce49832731a3dcade4e, type: 3}
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 61b646584f22e544fa5245d84c00f81c, type: 3}
@@ -429,15 +445,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4830534050261552495, guid: 61b646584f22e544fa5245d84c00f81c, type: 3}
       propertyPath: m_Name
-      value: UI_Charcter_Info
-      objectReference: {fileID: 0}
-    - target: {fileID: 4830534050439170444, guid: 61b646584f22e544fa5245d84c00f81c, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 4.897293
-      objectReference: {fileID: 0}
-    - target: {fileID: 4830534051472065392, guid: 61b646584f22e544fa5245d84c00f81c, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -0.000061035156
+      value: UI_Charcter_Info_Riko
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
