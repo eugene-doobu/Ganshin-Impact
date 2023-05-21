@@ -7,13 +7,33 @@ namespace GanShin.UI
     /// </summary>
     public class UIHpBarWorld : UIHpBar
     {
+        [SerializeField] private float scaleFactor = 350.0f;
+        
         private void Update()
         {
-            var tr = transform;
+            var tr         = transform;
+            var mainCamera = Camera.main;
             
             var parent = tr.parent;
             tr.position = parent.position + Vector3.up * (parent.GetComponent<Collider>().bounds.size.y);
-            tr.rotation = Camera.main.transform.rotation;
+
+            if (mainCamera == null)
+                return;
+            
+            tr.rotation = mainCamera.transform.rotation;
+            
+            float camHeight;
+            if (mainCamera.orthographic)
+            {
+                camHeight = mainCamera.orthographicSize * 2;
+            }
+            else
+            {
+                var distanceToCamera = Vector3.Distance(mainCamera.transform.position, transform.position);
+                camHeight = 2.0f * distanceToCamera * Mathf.Tan(Mathf.Deg2Rad * (mainCamera.fieldOfView * 0.5f));
+            }
+            var scale = (camHeight / Screen.width) * scaleFactor;
+            transform.localScale = new Vector3(scale, scale, scale);
         }
     }
 }
