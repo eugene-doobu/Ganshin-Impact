@@ -20,6 +20,9 @@ namespace GanShin.Content.Creature.Monster
         
         [SerializeField] private FieldMonsterTable table;
 
+        [SerializeField] private float attackForwardDistance = 0.1f;
+        [SerializeField] private float attackRadius          = 1.2f;
+
         private readonly PlayerAvatarContext _playerAvatarContext = new PlayerAvatarContext();
 
         private Transform _playerTarget = null!;
@@ -310,7 +313,7 @@ namespace GanShin.Content.Creature.Monster
             _isAttacking = true;
             await UniTask.Delay(TimeSpan.FromSeconds(table.attackDuration));
             // TODO: SphereCast같은걸로 처리??, 연산 최적화 필요, 하드코딩 제거
-            Physics.OverlapSphere(transform.position + transform.forward * 0.3f, 0.6f,
+            Physics.OverlapSphere(transform.position + transform.forward * attackForwardDistance, attackRadius,
                     Define.GetLayerMask(Define.eLayer.CHARACTER))
                 .Where(x => x.CompareTag(Define.Tag.Player))
                 .ToList()

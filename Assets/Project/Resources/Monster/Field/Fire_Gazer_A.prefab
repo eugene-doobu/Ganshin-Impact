@@ -106,6 +106,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   table: {fileID: 11400000, guid: b667e719b55fa7c40b37276808e8fea1, type: 2}
+  attackForwardDistance: 0.3
+  attackRadius: 1.25
 --- !u!195 &6691946199039227957
 NavMeshAgent:
   m_ObjectHideFlags: 0

@@ -24,7 +24,8 @@
         {
             RIKO,
             AI,
-            MUSCLE_CAT
+            MUSCLE_CAT,
+            NONE,
         }
 
         public enum eScene

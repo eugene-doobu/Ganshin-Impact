@@ -61,9 +61,9 @@ namespace GanShin
         
         private readonly PlayerContext? _playerContext = Activator.CreateInstance(typeof(PlayerContext)) as PlayerContext;
 
-        public Transform CurrentPlayerTransform => CurrentPlayer.transform;
+        public Transform? CurrentPlayerTransform => _currentAvatar == Define.ePlayerAvatar.NONE ? null : CurrentPlayer!.transform;
         
-        public PlayerController CurrentPlayer
+        public PlayerController? CurrentPlayer
         {
             get
             {
@@ -72,7 +72,7 @@ namespace GanShin
                     Define.ePlayerAvatar.RIKO       => _riko,
                     Define.ePlayerAvatar.AI         => _ai,
                     Define.ePlayerAvatar.MUSCLE_CAT => _muscleCat,
-                    _                               => throw new ArgumentOutOfRangeException()
+                    _                               => null
                 };
             }
         }
@@ -87,7 +87,7 @@ namespace GanShin
         
         private bool _isChargingStamina = true;
         
-        private Define.ePlayerAvatar _currentAvatar = Define.ePlayerAvatar.RIKO;
+        private Define.ePlayerAvatar _currentAvatar = Define.ePlayerAvatar.NONE;
 #endregion Fields
 
 #region Event
@@ -177,15 +177,19 @@ namespace GanShin
             
             var player = ActivePlayerContext(avatar);
             if (player == null) return null;
+            if (player.CurrentHp <= 0) return null;
             
             _camera.ChangeTarget(player.transform);
             var prevPlayer = ActivePlayerContext(_currentAvatar, false);
-            var prevTr = prevPlayer.transform;
+            if (prevPlayer != null)
+            {
+                var prevTr = prevPlayer.transform;
             
-            // 포지션 변경의 문제가 있어서 변경될 오브젝트를 비활성화 후 활성화
-            player.gameObject.SetActive(false);
-            player.transform.SetPositionAndRotation(prevTr.position, prevTr.rotation);
-            player.gameObject.SetActive(true);
+                // 포지션 변경의 문제가 있어서 변경될 오브젝트를 비활성화 후 활성화
+                player.gameObject.SetActive(false);
+                player.transform.SetPositionAndRotation(prevTr.position, prevTr.rotation);
+                player.gameObject.SetActive(true);
+            }
 
             _onPlayerChanged?.Invoke(player);
             
@@ -197,22 +201,22 @@ namespace GanShin
         {
             var player = GetPlayer(avatar);
             if (player == null) return null;
+            
+            var isDead = player.CurrentHp <= 0;
+            player.gameObject.SetActive(value);
 
             switch (avatar)
             {
                 case Define.ePlayerAvatar.RIKO:
-                    _playerContext.IsRikoActive = value;
+                    _playerContext.IsRikoActive                    = !isDead && value;
                     _avatarContextBundle.RikoHpBarContext.IsActive = value;
-                    player.gameObject.SetActive(value);
                     break;
                 case Define.ePlayerAvatar.AI:
-                    _playerContext.IsAiActive = value;
-                    player.gameObject.SetActive(value);
+                    _playerContext.IsAiActive                    = !isDead && value;
                     _avatarContextBundle.AIHpBarContext.IsActive = value;
                     break;
                 case Define.ePlayerAvatar.MUSCLE_CAT:
-                    _playerContext.IsMuscleCatActive = value;
-                    player.gameObject.SetActive(value);
+                    _playerContext.IsMuscleCatActive                    = !isDead && value;
                     _avatarContextBundle.MuscleCatHpBarContext.IsActive = value;
                     break;
             }
