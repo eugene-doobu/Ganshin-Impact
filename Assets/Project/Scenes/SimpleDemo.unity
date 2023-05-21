@@ -844,6 +844,10 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 360080202, guid: 38bad32df65f519448a5026694d1ceec, type: 3}
+      propertyPath: attackRadius
+      value: 1.25
+      objectReference: {fileID: 0}
     - target: {fileID: 2728653094869758307, guid: 38bad32df65f519448a5026694d1ceec, type: 3}
       propertyPath: m_RootOrder
       value: 8
@@ -1571,6 +1575,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Golem_A
       objectReference: {fileID: 0}
+    - target: {fileID: 2781145896608704790, guid: 7956b21d52b63494ca9a2b3351d80f4e, type: 3}
+      propertyPath: attackRadius
+      value: 1.25
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 7956b21d52b63494ca9a2b3351d80f4e, type: 3}
@@ -1630,6 +1638,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tampora_A
       objectReference: {fileID: 0}
+    - target: {fileID: 4339108148150471776, guid: 5a5e883b8fa87dc47a622e16a155cf01, type: 3}
+      propertyPath: attackRadius
+      value: 1.25
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 5a5e883b8fa87dc47a622e16a155cf01, type: 3}
@@ -1646,6 +1658,10 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7444803107455098024, guid: 84d796ed783699a44a08190c31a1adcb, type: 3}
+      propertyPath: attackRadius
+      value: 1.25
+      objectReference: {fileID: 0}
     - target: {fileID: 8102162017809999767, guid: 84d796ed783699a44a08190c31a1adcb, type: 3}
       propertyPath: m_RootOrder
       value: 6
@@ -1705,6 +1721,10 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2258042981836986432, guid: 5aa85bbee6065d647bbacc371f3e9001, type: 3}
+      propertyPath: attackRadius
+      value: 1.25
+      objectReference: {fileID: 0}
     - target: {fileID: 3681245562712306376, guid: 5aa85bbee6065d647bbacc371f3e9001, type: 3}
       propertyPath: m_RootOrder
       value: 9
@@ -2079,6 +2099,10 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6691946199039227956, guid: fe3d35f5c513a0340a13e623f29aca79, type: 3}
+      propertyPath: attackRadius
+      value: 1.25
+      objectReference: {fileID: 0}
     - target: {fileID: 7646823565000968739, guid: fe3d35f5c513a0340a13e623f29aca79, type: 3}
       propertyPath: m_RootOrder
       value: 4
