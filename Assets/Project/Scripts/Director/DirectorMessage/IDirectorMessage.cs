@@ -1,4 +1,6 @@
 namespace GanShin.Director
 {
-    public interface IDirectorMessage {}
+    public interface IDirectorMessage
+    {
+    }
 }

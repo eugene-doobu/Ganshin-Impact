@@ -18,9 +18,9 @@ namespace GanShin.Content.Creature.Monster
             DAMAGED,
             DIE,
         }
-        
+
         private static readonly int AnimParam = Animator.StringToHash("animation");
-        
+
         private float    _attackAnimLength;
         private Animator _animator;
         private bool     _isInitialized;

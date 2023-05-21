@@ -12,7 +12,7 @@ namespace GanShin.UI
         }
 
         public abstract void InitializeContextData();
-        
+
         public abstract void ClearContextData();
     }
 }

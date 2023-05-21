@@ -10,10 +10,9 @@ namespace GanShin.Content.Creature.Monster
 {
     public abstract class MonsterController : CreatureController, IDisposable
     {
-        protected Transform Target;
+        protected virtual Transform Target { get; set; }
 
-        [field: SerializeField, ReadOnly]
-        private eMonsterState state;
+        [field: SerializeField, ReadOnly] private eMonsterState state;
 
         public virtual eMonsterState State
         {
@@ -24,8 +23,8 @@ namespace GanShin.Content.Creature.Monster
                 state = value;
             }
         }
-        
-        public virtual void OnDamaged(float damage)
+
+        public virtual void OnDamaged(float damage, float additionalKnockBack = 0)
         {
             if (State == eMonsterState.DEAD) return;
         }
@@ -73,6 +72,10 @@ namespace GanShin.Content.Creature.Monster
         {
         }
 
+        public void SetCaught()
+        {
+            State = eMonsterState.CAUGHT;
+        }
 #region ProcessState
 
         protected abstract void ProcessCreated();

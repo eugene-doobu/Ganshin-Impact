@@ -8,31 +8,36 @@ namespace GanShin.UI
     public enum eGlobalUI
     {
         LOADING,
+        CHARACTER_CUT_SCENE,
     }
-    
+
     public partial class UIManager
     {
 #region Define
+
         public const string EventSystemPath = "Prefabs/UI/EventSystem";
-        
+
         public struct GlobalUIName
         {
-            private const string Root    = "Prefabs/UI/Global/";
-            public static readonly string Loading = $"{Root}UI_LoadingScene";
+            private const          string Root              = "Prefabs/UI/Global/";
+            public static readonly string Loading           = $"{Root}UI_LoadingScene";
+            public static readonly string CharacterCutScene = $"{Root}UI_CharacterCutScene";
         }
+
 #endregion Define
-        
-        private readonly Dictionary<eGlobalUI, GlobalUIRootBase> _globalUIs = new ();
-        public GlobalUIRootBase GetGlobalUI(eGlobalUI ui) => 
+
+        private readonly Dictionary<eGlobalUI, GlobalUIRootBase> _globalUIs = new();
+
+        public GlobalUIRootBase GetGlobalUI(eGlobalUI ui) =>
             _globalUIs.ContainsKey(ui) ? _globalUIs[ui] : null;
-            
+
         public void OnGlobalUI(eGlobalUI ui, bool isOn)
         {
             if (isOn)
             {
                 if (!_globalUIs.ContainsKey(ui)) return;
                 _globalUIs[ui].gameObject.SetActive(true);
-                _globalUIs[ui].InitializeContextData();    
+                _globalUIs[ui].InitializeContextData();
             }
             else
             {
@@ -41,7 +46,7 @@ namespace GanShin.UI
                 _globalUIs[ui].gameObject.SetActive(false);
             }
         }
-	    
+
         private void AddGlobalUIRoot()
         {
             GlobalRoot = new GameObject {name = "@Global_UI_Root"};
@@ -59,9 +64,13 @@ namespace GanShin.UI
         }
 
         [Inject]
-        public void InjectGlobalUI(UIRootLoadingScene uiRootLoadingScene)
+        public void InjectGlobalUI(
+            UIRootLoadingScene uiRootLoadingScene,
+            UIRootCharacterCutScene uiRootCharacterCutScene
+            )
         {
             AddGlobalUI(uiRootLoadingScene, eGlobalUI.LOADING);
+            AddGlobalUI(uiRootCharacterCutScene, eGlobalUI.CHARACTER_CUT_SCENE);
         }
 
         private void AddGlobalUI(GlobalUIRootBase root, eGlobalUI type)
@@ -70,11 +79,11 @@ namespace GanShin.UI
             if (!ReferenceEquals(GlobalRoot, null))
                 tr.SetParent(GlobalRoot.transform);
             tr.localPosition = Vector3.zero;
-            tr.localScale = Vector3.one;
+            tr.localScale    = Vector3.one;
 
             var obj = root.gameObject;
             obj.SetActive(false);
-            
+
             _globalUIs.Add(type, root);
         }
     }

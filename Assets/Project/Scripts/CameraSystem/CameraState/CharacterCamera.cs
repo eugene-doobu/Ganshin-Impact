@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
 using GanShin.InputSystem;
+using JetBrains.Annotations;
 using UnityEngine;
 using Zenject;
 
@@ -11,18 +12,19 @@ namespace GanShin.CameraSystem
 {
     // Body : 3rd Person Follow
     // Aim : Composer
+    [UsedImplicitly]
     public class CharacterCamera : CameraBase
     {
 #region TableDatas
-        [Inject(Id = CharacterCameraSettingInstaller.TopClampID)] 
+        [Inject(Id = CharacterCameraSettingInstaller.TopClampID)]
         private float _topClamp;
-        
+
         [Inject(Id = CharacterCameraSettingInstaller.BottomClampID)]
         private float _bottomClamp;
 
         [Inject(Id = CharacterCameraSettingInstaller.LookYawMagnitudeID)]
         private float _lookYawMagnitude;
-        
+
         [Inject(Id = CharacterCameraSettingInstaller.LookPitchMagnitudeID)]
         private float _lookPitchMagnitude;
 
@@ -44,13 +46,11 @@ namespace GanShin.CameraSystem
         [Inject(Id = CharacterCameraSettingInstaller.ZoomMaxValueID)]
         private float _zoomMaxValue;
 #endregion TableDatas
-        
+
 #region Variables
         [Inject] private InputSystemManager? _input;
-        
-        private CameraBodyTarget?         _cameraBodyTarget;
-        private CinemachineVirtualCamera? _virtualCamera;
 
+        private CameraBodyTarget?           _cameraBodyTarget;
         private Cinemachine3rdPersonFollow? _body;
         private CinemachineComposer?        _aim;
 
@@ -60,11 +60,11 @@ namespace GanShin.CameraSystem
 
 #region Initialization
         private void InitializeCameraBodyTarget()
-        {  
+        {
             var cameraBodyTargetObj = new GameObject("@CameraBodyTarget");
             Object.DontDestroyOnLoad(cameraBodyTargetObj);
             _cameraBodyTarget = cameraBodyTargetObj.GetOrAddComponent<CameraBodyTarget>();
-            
+
             GanDebugger.CameraLog("CameraBody initialized");
         }
 
@@ -76,34 +76,35 @@ namespace GanShin.CameraSystem
                 GanDebugger.CameraLogError("Failed to load virtual camera prefab");
                 return;
             }
-            
+
             var virtualCameraObj = Object.Instantiate(virtualCameraPrefab);
             virtualCameraObj.name = "@PlayerVirtualCamera";
 
-            _virtualCamera = virtualCameraObj.GetComponent<CinemachineVirtualCamera>();
-            if (_virtualCamera == null)
+            VirtualCamera = virtualCameraObj.GetComponent<CinemachineVirtualCamera>();
+            if (VirtualCamera == null)
             {
                 GanDebugger.CameraLogError("Failed to get virtual camera component");
                 return;
             }
-            
-            _body = _virtualCamera.GetCinemachineComponent<Cinemachine3rdPersonFollow>();
+
+            _body = VirtualCamera.GetCinemachineComponent<Cinemachine3rdPersonFollow>();
             if (_body == null)
             {
                 GanDebugger.CameraLogError("Failed to get body component");
                 return;
             }
+
             _targetZoom = _body.CameraDistance;
 
-            _aim = _virtualCamera.GetCinemachineComponent<CinemachineComposer>();
+            _aim = VirtualCamera.GetCinemachineComponent<CinemachineComposer>();
             if (_aim == null)
             {
                 GanDebugger.CameraLogError("Failed to get aim component");
                 return;
             }
-            
+
             Object.DontDestroyOnLoad(virtualCameraObj);
-            
+
             GanDebugger.CameraLog("Virtual camera initialized");
         }
 #endregion Initialization
@@ -113,20 +114,23 @@ namespace GanShin.CameraSystem
         {
             base.OnEnable();
             AddInputEvent();
+            
+            if (ReferenceEquals(VirtualCamera, null))
+                InitializeVirtualCamera();
         }
 
         public override void OnUpdate()
         {
             base.OnUpdate();
         }
-        
+
         public override void OnLateUpdate()
         {
             base.OnLateUpdate();
             CameraRotation();
             CameraZoom();
         }
-        
+
         public override void OnDisable()
         {
             RemoveInputEvent();
@@ -136,30 +140,30 @@ namespace GanShin.CameraSystem
         public override void ChangeTarget(Transform? target)
         {
             base.ChangeTarget(target);
-            
-            if(ReferenceEquals(_cameraBodyTarget, null)) 
+
+            if (ReferenceEquals(_cameraBodyTarget, null))
                 InitializeCameraBodyTarget();
-            
+
             _cameraBodyTarget!.SetTarget(target);
-            
-            if (ReferenceEquals(_virtualCamera, null)) 
+
+            if (ReferenceEquals(VirtualCamera, null))
                 InitializeVirtualCamera();
 
             var cameraBodyTarget = _cameraBodyTarget.transform;
-            _virtualCamera!.Follow = cameraBodyTarget;
-            _virtualCamera.LookAt  = cameraBodyTarget;
+            VirtualCamera!.Follow = cameraBodyTarget;
+            VirtualCamera.LookAt  = cameraBodyTarget;
         }
 #endregion CameraBase
 
 #region CameraProcess
         private void CameraRotation()
         {
-            if(ReferenceEquals(_cameraBodyTarget, null)) 
+            if (ReferenceEquals(_cameraBodyTarget, null))
                 InitializeCameraBodyTarget();
-            
+
             _cinemachineTargetYaw   = MathUtils.ClampAngle(_cinemachineTargetYaw, float.MinValue, float.MaxValue);
             _cinemachineTargetPitch = MathUtils.ClampAngle(_cinemachineTargetPitch, _bottomClamp, _topClamp);
-            
+
             var targetRotate = Quaternion.Euler(_cinemachineTargetPitch, _cinemachineTargetYaw, 0.0f);
             _cameraBodyTarget!.SetRotation(targetRotate);
         }
@@ -168,11 +172,13 @@ namespace GanShin.CameraSystem
         {
             if (_body == null) return;
             if (_zoomThreshHold < Mathf.Abs(_body.CameraDistance - _targetZoom))
-                _body.CameraDistance = Mathf.Lerp(_body.CameraDistance, _targetZoom, Time.deltaTime * _zoomSmoothFactor);
+                _body.CameraDistance =
+                    Mathf.Lerp(_body.CameraDistance, _targetZoom, Time.deltaTime * _zoomSmoothFactor);
         }
 #endregion CameraProcess
-        
+
 #region Input
+
         private void AddInputEvent()
         {
             if (_input!.GetActionMap(eActiomMap.PLAYER_MOVEMENT) is not ActionMapPlayerMove actionMap)
@@ -188,22 +194,22 @@ namespace GanShin.CameraSystem
         private void RemoveInputEvent()
         {
             if (_input == null) return;
-            
+
             if (_input.GetActionMap(eActiomMap.PLAYER_MOVEMENT) is not ActionMapPlayerMove actionMap)
                 return;
 
             actionMap.OnLook -= OnLook;
             actionMap.OnZoom -= OnZoom;
         }
-        
+
         private void OnLook(Vector2 value)
         {
             if (value == Vector2.zero)
                 return;
-            
-            if(ReferenceEquals(_cameraBodyTarget, null)) 
+
+            if (ReferenceEquals(_cameraBodyTarget, null))
                 InitializeCameraBodyTarget();
-            
+
             _cinemachineTargetYaw   += value.x * _lookYawMagnitude;
             _cinemachineTargetPitch += value.y * _lookPitchMagnitude;
         }
@@ -213,6 +219,7 @@ namespace GanShin.CameraSystem
             value       *= _zoomMagnitude;
             _targetZoom =  Mathf.Clamp(_targetZoom + value, _zoomMinValue, _zoomMaxValue);
         }
+
 #endregion Input
     }
 }

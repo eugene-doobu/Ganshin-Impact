@@ -8,7 +8,7 @@ namespace GanShin
     public static partial class GanDebugger
     {
         private static string HEADER_CAMERA = "CameraSystem";
-        
+
         public static bool IsDebuggingCamera = true;
 
         public static void CameraLog(string message)
@@ -16,13 +16,13 @@ namespace GanShin
             if (!IsDebuggingCamera) return;
             Log(HEADER_CAMERA, message);
         }
-        
+
         public static void CameraLogWarning(string message)
         {
             if (!IsDebuggingCamera) return;
             LogWarning(HEADER_CAMERA, message);
         }
-        
+
         public static void CameraLogError(string message)
         {
             if (!IsDebuggingCamera) return;

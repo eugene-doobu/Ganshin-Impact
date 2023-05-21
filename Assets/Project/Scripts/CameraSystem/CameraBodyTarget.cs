@@ -11,14 +11,14 @@ namespace GanShin.CameraSystem
     public class CameraBodyTarget : MonoBehaviour
     {
         [ReadOnly] [SerializeField] private Transform? _target;
-        
+
         [SerializeField] private float _tracingTargetSmoothFactor = 6f;
-        [SerializeField] private float _rotationSmoothFactor = 6f;
+        [SerializeField] private float _rotationSmoothFactor      = 6f;
 
         [SerializeField] private float _moveImmdiateSqrDistance = 70f;
-        
+
         private Transform? _tr;
-        
+
         private void Awake()
         {
             _tr = GetComponent<Transform>();
@@ -32,6 +32,7 @@ namespace GanShin.CameraSystem
                 SetPositionImmediate();
                 return;
             }
+
             _tr!.position = Vector3.Lerp(_tr.position, _target.position, _tracingTargetSmoothFactor * Time.deltaTime);
         }
 
@@ -40,7 +41,7 @@ namespace GanShin.CameraSystem
             if (_target == null) return;
             SetPositionImmediate(_target.position);
         }
-        
+
         public void SetPositionImmediate(Vector3 position)
         {
             _tr!.position = position;
@@ -59,9 +60,8 @@ namespace GanShin.CameraSystem
 
         public void SetTarget(Transform? target)
         {
-            if(ReferenceEquals(target, _target)) return;
+            if (ReferenceEquals(target, _target)) return;
             _target = target;
         }
     }
 }
-    

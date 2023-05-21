@@ -6,20 +6,19 @@ using Zenject;
 
 namespace GanShin.SceneManagement
 {
-	public abstract class BaseScene : MonoBehaviour
-	{
-		public Define.eScene ESceneType { get; protected set; } = Define.eScene.Unknown;
+    public abstract class BaseScene : MonoBehaviour
+    {
+        public Define.eScene ESceneType { get; protected set; } = Define.eScene.Unknown;
 
-		void Awake()
-		{
-			Init();
-		}
+        void Awake()
+        {
+            Init();
+        }
 
-		protected virtual void Init()
-		{
-		}
+        protected virtual void Init()
+        {
+        }
 
-		public abstract void Clear();
-	}
-
+        public abstract void Clear();
+    }
 }

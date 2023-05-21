@@ -15,7 +15,7 @@ namespace GanShin
         public List<string> tips;
         public float        progressSmoothFactor;
         public float        changeSceneDelay;
-    
+
         public override void InstallBindings()
         {
             Container.BindInstance(tips).WithId(TipsId);

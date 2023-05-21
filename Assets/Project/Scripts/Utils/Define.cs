@@ -5,13 +5,14 @@
         public enum eLayer
         {
             CHARACTER = 3,
+            MONSTER = 8
         }
-        
+
         public static int GetLayerMask(eLayer layer)
         {
-            return 1 << (int)layer;
+            return 1 << (int) layer;
         }
-        
+
         public struct Tag
         {
             public static string Player       = "Player";
@@ -23,15 +24,17 @@
         {
             RIKO,
             AI,
-            MUSCLE_CAT
+            MUSCLE_CAT,
+            NONE,
         }
-        
+
         public enum eScene
         {
             Unknown,
             LoadingScene,
             LobbyScene,
             Demo,
+            SimpleDemo,
             Login,
             Lobby,
             Game,

@@ -7,103 +7,100 @@ using Zenject;
 
 namespace GanShin.Sound
 {
-	[UsedImplicitly]
-	public class SoundManager
-	{
-		private const string SoundObjName = "@Sound";
-		
-	    AudioSource[] _audioSources = new AudioSource[(int)Define.eSound.MaxCount];
-	    Dictionary<string, AudioClip> _audioClips = new Dictionary<string, AudioClip>();
+    [UsedImplicitly]
+    public class SoundManager
+    {
+        private const string SoundObjName = "@Sound";
 
-	    // MP3 Player   -> AudioSource
-	    // MP3 음원     -> AudioClip
-	    // 관객(귀)     -> AudioListener
+        AudioSource[]                 _audioSources = new AudioSource[(int) Define.eSound.MaxCount];
+        Dictionary<string, AudioClip> _audioClips   = new Dictionary<string, AudioClip>();
 
-	    public SoundManager()
-	    {
-		    GameObject root = GameObject.Find(SoundObjName);
-		    if (root == null)
-		    {
-			    root = new GameObject { name = SoundObjName };
-			    Object.DontDestroyOnLoad(root);
+        public SoundManager()
+        {
+            GameObject root = GameObject.Find(SoundObjName);
+            if (root == null)
+            {
+                root = new GameObject {name = SoundObjName};
+                Object.DontDestroyOnLoad(root);
 
-			    string[] soundNames = System.Enum.GetNames(typeof(Define.eSound));
-			    for (int i = 0; i < soundNames.Length - 1; i++)
-			    {
-				    GameObject go = new GameObject { name = soundNames[i] };
-				    _audioSources[i]    = go.AddComponent<AudioSource>();
-				    go.transform.parent = root.transform;
-			    }
+                string[] soundNames = System.Enum.GetNames(typeof(Define.eSound));
+                for (int i = 0; i < soundNames.Length - 1; i++)
+                {
+                    GameObject go = new GameObject {name = soundNames[i]};
+                    _audioSources[i]    = go.AddComponent<AudioSource>();
+                    go.transform.parent = root.transform;
+                }
 
-			    _audioSources[(int)Define.eSound.Bgm].loop = true;
-		    }
+                _audioSources[(int) Define.eSound.Bgm].loop = true;
+            }
 
-		    SceneManager.sceneUnloaded += OnSceneUnLoaded;
-	    }
+            SceneManager.sceneUnloaded += OnSceneUnLoaded;
+        }
 
-	    private void OnSceneUnLoaded(Scene scene)
-	    {
-	        foreach (AudioSource audioSource in _audioSources)
-	        {
-	            audioSource.clip = null;
-	            audioSource.Stop();
-	        }
-	        _audioClips.Clear();
-	    }
+        private void OnSceneUnLoaded(Scene scene)
+        {
+            foreach (AudioSource audioSource in _audioSources)
+            {
+                audioSource.clip = null;
+                audioSource.Stop();
+            }
 
-	    public void Play(string path, Define.eSound type = Define.eSound.Effect, float pitch = 1.0f)
-	    {
-	        AudioClip audioClip = GetOrAddAudioClip(path, type);
-	        Play(audioClip, type, pitch);
-	    }
+            _audioClips.Clear();
+        }
 
-		public void Play(AudioClip audioClip, Define.eSound type = Define.eSound.Effect, float pitch = 1.0f)
-		{
-	        if (audioClip == null)
-	            return;
+        public void Play(string path, Define.eSound type = Define.eSound.Effect, float pitch = 1.0f)
+        {
+            AudioClip audioClip = GetOrAddAudioClip(path, type);
+            Play(audioClip, type, pitch);
+        }
 
-			if (type == Define.eSound.Bgm)
-			{
-				AudioSource audioSource = _audioSources[(int)Define.eSound.Bgm];
-				if (audioSource.isPlaying)
-					audioSource.Stop();
+        public void Play(AudioClip audioClip, Define.eSound type = Define.eSound.Effect, float pitch = 1.0f)
+        {
+            if (audioClip == null)
+                return;
 
-				audioSource.pitch = pitch;
-				audioSource.clip = audioClip;
-				audioSource.Play();
-			}
-			else
-			{
-				AudioSource audioSource = _audioSources[(int)Define.eSound.Effect];
-				audioSource.pitch = pitch;
-				audioSource.PlayOneShot(audioClip);
-			}
-		}
+            if (type == Define.eSound.Bgm)
+            {
+                AudioSource audioSource = _audioSources[(int) Define.eSound.Bgm];
+                if (audioSource.isPlaying)
+                    audioSource.Stop();
 
-		AudioClip GetOrAddAudioClip(string path, Define.eSound type = Define.eSound.Effect)
-	    {
-			if (path.Contains("Sounds/") == false)
-				path = $"Sounds/{path}";
+                audioSource.pitch = pitch;
+                audioSource.clip  = audioClip;
+                audioSource.Play();
+            }
+            else
+            {
+                AudioSource audioSource = _audioSources[(int) Define.eSound.Effect];
+                audioSource.pitch = pitch;
+                audioSource.PlayOneShot(audioClip);
+            }
+        }
 
-			AudioClip audioClip = null;
+        AudioClip GetOrAddAudioClip(string path, Define.eSound type = Define.eSound.Effect)
+        {
+            if (path.Contains("Sounds/") == false)
+                path = $"Sounds/{path}";
 
-			if (type == Define.eSound.Bgm)
-			{
-				audioClip = Resources.Load<AudioClip>(path);
-			}
-			else
-			{
-				if (_audioClips.TryGetValue(path, out audioClip) == false)
-				{
-					audioClip = Resources.Load<AudioClip>(path);
-					_audioClips.Add(path, audioClip);
-				}
-			}
+            AudioClip audioClip = null;
 
-			if (audioClip == null)
-				GanDebugger.Log($"AudioClip Missing ! {path}");
+            if (type == Define.eSound.Bgm)
+            {
+                audioClip = Resources.Load<AudioClip>(path);
+            }
+            else
+            {
+                if (_audioClips.TryGetValue(path, out audioClip) == false)
+                {
+                    audioClip = Resources.Load<AudioClip>(path);
+                    _audioClips.Add(path, audioClip);
+                }
+            }
 
-			return audioClip;
-	    }
-	}
+            if (audioClip == null)
+                GanDebugger.Log($"AudioClip Missing ! {path}");
+
+            return audioClip;
+        }
+    }
 }

@@ -11,22 +11,22 @@ namespace GanShin.InputSystem
         NONE,
         PLAYER_MOVEMENT,
     }
-    
+
     [UsedImplicitly]
     public class InputSystemManager
     {
-        private readonly Dictionary<eActiomMap, ActionMapBase> _actionMapDict = new ();
+        private readonly Dictionary<eActiomMap, ActionMapBase> _actionMapDict = new();
 
         private Action<InputControl> _onAnyKeyInput;
-        
+
         private GanshinActions _playerActions;
         private InputActionMap _inputActionMap;
-        
+
         public ActionMapBase GetActionMap(eActiomMap type) => _actionMapDict[type];
-        
+
         public event Action<InputControl> OnAnyKeyInput
         {
-            add 
+            add
             {
                 _onAnyKeyInput -= value;
                 _onAnyKeyInput += value;
@@ -39,11 +39,10 @@ namespace GanShin.InputSystem
             _playerActions = new GanshinActions();
             InitActionMapDict();
             ChangeActionMap(eActiomMap.PLAYER_MOVEMENT);
-            
-            UnityEngine.InputSystem.InputSystem.onAnyButtonPress.
-                Call(anyKey => _onAnyKeyInput?.Invoke(anyKey));
+
+            UnityEngine.InputSystem.InputSystem.onAnyButtonPress.Call(anyKey => _onAnyKeyInput?.Invoke(anyKey));
         }
-        
+
         public void ChangeActionMap(eActiomMap actionMap)
         {
             _inputActionMap?.Disable();
