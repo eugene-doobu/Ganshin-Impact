@@ -176,7 +176,7 @@ namespace GanShin
                 return GetPlayer(avatar);
             
             var player = ActivePlayerContext(avatar);
-            if (player == null) return null;
+            if (player == null || !player.gameObject.activeSelf) return null;
             
             _camera.ChangeTarget(player.transform);
             var prevPlayer = ActivePlayerContext(_currentAvatar, false);
@@ -200,6 +200,9 @@ namespace GanShin
         {
             var player = GetPlayer(avatar);
             if (player == null) return null;
+            
+            if (player.CurrentHp <= 0)
+                return player;
 
             switch (avatar)
             {
