@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel;
 using UnityEngine;
 using Zenject;
@@ -32,11 +29,11 @@ namespace GanShin.UI
             switch (target)
             {
                 case eHpTarget.RIKO:
-                    return _playerManager?.GetUIHpBarContext(Define.ePlayerAvatar.RIKO);
+                    return _playerManager?.GetAvatarContext(Define.ePlayerAvatar.RIKO);
                 case eHpTarget.AI:
-                    return _playerManager?.GetUIHpBarContext(Define.ePlayerAvatar.AI);
+                    return _playerManager?.GetAvatarContext(Define.ePlayerAvatar.AI);
                 case eHpTarget.MUSCLE_CAT:
-                    return _playerManager?.GetUIHpBarContext(Define.ePlayerAvatar.MUSCLE_CAT);
+                    return _playerManager?.GetAvatarContext(Define.ePlayerAvatar.MUSCLE_CAT);
                 case eHpTarget.OBJECT:
                     if (owner == null)
                     {
@@ -51,8 +48,8 @@ namespace GanShin.UI
             }
         }
 
-        private UIHpBarContext _context;
+        private CreatureObjectContext _context;
 
-        public UIHpBarContext Context => _context ?? DataContext as UIHpBarContext;
+        public CreatureObjectContext Context => _context ?? DataContext as CreatureObjectContext;
     }
 }

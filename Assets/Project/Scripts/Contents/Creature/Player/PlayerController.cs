@@ -30,12 +30,12 @@ namespace GanShin.Content.Creature
 #region Variables
         [Inject] protected UIRootCharacterCutScene CharacterCutScene;
         
-        [Inject] private   InputSystemManager      _input;
-        [Inject] private   CameraManager           _camera;
-        [Inject] private   PlayerManager           _playerManager;
+        [Inject] private InputSystemManager _input;
+        [Inject] private CameraManager      _camera;
+        [Inject] private PlayerManager      _playerManager;
 
         private CharacterController _characterController;
-        private UIHpBarContext      _uiHpBarContext;
+        private PlayerAvatarContext      _playerAvatarContext;
 
         private Transform _tr;
         private Transform _wristLeftTr;
@@ -112,7 +112,7 @@ namespace GanShin.Content.Creature
 
                 _currentHp = Mathf.Clamp(value, 0, stat.hp);
 
-                _uiHpBarContext.CurrentHp = (int) _currentHp;
+                _playerAvatarContext.CurrentHp = (int) _currentHp;
             }
         }
         
@@ -123,6 +123,7 @@ namespace GanShin.Content.Creature
             {
                 if (Mathf.Approximately(_currentUltimateGauge, value)) return;
                 _currentUltimateGauge = Mathf.Clamp(value, 0, stat.ultimateSkillAvailabilityGauge);
+                RefreshUltimateGauge();
             }
         }
         
@@ -133,6 +134,10 @@ namespace GanShin.Content.Creature
         protected bool CanMove { get; set; } = true;
 
         protected CharacterController CC => _characterController;
+        
+        protected PlayerManager Player => _playerManager;
+
+        public abstract PlayerAvatarContext GetPlayerContext { get; }
 #endregion Properties
 
 #region Mono
@@ -143,25 +148,21 @@ namespace GanShin.Content.Creature
             InitializeAvatar();
             InitializeWeapon();
 
-            _uiHpBarContext = _playerManager.GetUIHpBarContext(Define.ePlayerAvatar.RIKO);
+            _playerAvatarContext = GetPlayerContext;
+            
+            _playerAvatarContext.MaxHp = (int)stat.hp;
+            CurrentHp                  = stat.hp;
         }
 
         private void OnEnable()
         {
             AddInputEvent();
+            RefreshUltimateGauge();
         }
 
         private void OnDisable()
         {
             RemoveInputEvent();
-        }
-
-        protected override void Start()
-        {
-            base.Start();
-            _uiHpBarContext.MaxHp = (int) stat.hp;
-                
-            CurrentHp = stat.hp;
         }
 
         protected override void Update()
@@ -419,8 +420,21 @@ namespace GanShin.Content.Creature
         private async UniTask SkillCoolTime()
         {
             _isAvailableSkill = false;
-            await UniTask.Delay(TimeSpan.FromSeconds(stat.baseSkillCoolTime));
+            float value = 0, coolTime = stat.baseSkillCoolTime;
+            while (value < coolTime)
+            {
+                GetPlayerContext.BaseSkillCoolTimePercent =  1 - value / coolTime;
+                value                                     += Time.deltaTime;
+                await UniTask.Yield();
+            }
+
+            GetPlayerContext.BaseSkillCoolTimePercent = 0f;
             _isAvailableSkill = true;
+        }
+
+        private void RefreshUltimateGauge()
+        {
+            GetPlayerContext.UltimateGaugePercent = 1 - _currentUltimateGauge / stat.ultimateSkillAvailabilityGauge;
         }
 #endregion Attack
 

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 412232676}
   - component: {fileID: 412232677}
   m_Layer: 5
-  m_Name: User_HpBar
+  m_Name: UI_User_HpBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -92,8 +92,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0353de6b5a9e8fa4eaded0354856aa9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  contextType: GanShin.UI.UIHpBarContext, GanShinAssembly, Version=0.0.0.0, Culture=neutral,
-    PublicKeyToken=null
+  contextType: GanShin.UI.PlayerAvatarContext, GanShinAssembly, Version=0.0.0.0,
+    Culture=neutral, PublicKeyToken=null
   createContext: 1
 --- !u!114 &412232677
 MonoBehaviour:
@@ -107,6 +107,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a80a18c307f584693fee7442f255eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  target: 4
+  owner: {fileID: 0}
 --- !u!1 &2432326648838209336
 GameObject:
   m_ObjectHideFlags: 0

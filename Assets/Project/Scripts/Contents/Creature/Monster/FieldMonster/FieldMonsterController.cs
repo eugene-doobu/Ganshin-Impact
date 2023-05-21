@@ -20,8 +20,10 @@ namespace GanShin.Content.Creature.Monster
         
         [SerializeField] private FieldMonsterTable table;
 
-        private readonly UIHpBarContext _uiHpBarContext = new UIHpBarContext();
+        private readonly PlayerAvatarContext _playerAvatarContext = new PlayerAvatarContext();
 
+        private Transform _playerTarget = null!;
+        
         private Animator             _animator        = null!;
         private NavMeshAgent         _navMeshAgent    = null!;
         private CapsuleCollider      _capsuleCollider = null!;
@@ -38,6 +40,17 @@ namespace GanShin.Content.Creature.Monster
         private float _currentHp;
 
 #region Properties
+        protected override Transform Target
+        {
+            get => _playerTarget;
+            set
+            {
+                _playerTarget = value;
+                if (value != null) _playerManager.OnPlayerChanged += OnPlayerChanged;
+                else _playerManager.OnPlayerChanged               -= OnPlayerChanged;
+            }
+        }
+
         public override eMonsterState State
         {
             get => base.State;
@@ -103,11 +116,11 @@ namespace GanShin.Content.Creature.Monster
                 _currentHp = Mathf.Clamp(value, 0, table.hp);
 
                 _currentHp                = value;
-                _uiHpBarContext.CurrentHp = (int) _currentHp;
+                _playerAvatarContext.CurrentHp = (int) _currentHp;
             }
         }
 
-        public INotifyPropertyChanged DataContext => _uiHpBarContext;
+        public INotifyPropertyChanged DataContext => _playerAvatarContext;
 #endregion Properties
 
 #region MonoBehaviour
@@ -130,7 +143,7 @@ namespace GanShin.Content.Creature.Monster
             _animController.Initialize(_animator);
 
             _contextHolder         = gameObject.AddComponent<ContextHolder>();
-            _contextHolder.Context = _uiHpBarContext;
+            _contextHolder.Context = _playerAvatarContext;
         }
 #endregion MonoBehaviour
 
@@ -170,15 +183,20 @@ namespace GanShin.Content.Creature.Monster
 
             State = eMonsterState.KNOCK_BACK;
         }
+        
+        private void OnPlayerChanged(PlayerController player)
+        {
+            Target = player.transform;
+        }
 
 #region ProcessState
         protected override void ProcessCreated()
         {
             Initialize();
-            _uiHpBarContext.MaxHp      = (int) table.hp;
-            _uiHpBarContext.TargetName = name;
-            CurrentHp                  = table.hp;
-            State                      = eMonsterState.IDLE;
+            _playerAvatarContext.MaxHp      = (int) table.hp;
+            _playerAvatarContext.TargetName = name;
+            CurrentHp                       = table.hp;
+            State                           = eMonsterState.IDLE;
         }
 
         protected override void ProcessIdle()

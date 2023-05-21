@@ -10,7 +10,7 @@ namespace GanShin.Content.Creature.Monster
 {
     public abstract class MonsterController : CreatureController, IDisposable
     {
-        protected Transform Target;
+        protected virtual Transform Target { get; set; }
 
         [field: SerializeField, ReadOnly] private eMonsterState state;
 

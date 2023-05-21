@@ -3,17 +3,21 @@ using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
 using UnityEngine;
 
-namespace GanShin.UI
+
+namespace GanShin
 {
-    public sealed class UIHpBarContext : INotifyPropertyChanged
+    public abstract class CreatureObjectContext : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
+#region Fields
         private string _targetName;
         private int    _currentHp;
         private int    _maxHp;
         private float  _hpPercent;
+#endregion Fields
 
+#region Field Properties
         [UsedImplicitly]
         public string TargetName
         {
@@ -58,9 +62,10 @@ namespace GanShin.UI
                 OnPropertyChanged();
             }
         }
+#endregion Field Properties
 
         [NotifyPropertyChangedInvocator]
-        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

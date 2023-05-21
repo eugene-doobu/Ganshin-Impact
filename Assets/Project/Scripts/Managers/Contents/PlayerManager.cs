@@ -15,17 +15,17 @@ namespace GanShin
     public class PlayerManager : IInitializable, ITickable
     {
 #region Internal Class
-        public class PlayerAvatarContext
+        private class PlayerAvatarContextBundle
         {
-            public UIHpBarContext? RikoHpBarContext      { get; }
-            public UIHpBarContext? AIHpBarContext        { get; }
-            public UIHpBarContext? MuscleCatHpBarContext { get; }
+            public PlayerAvatarContext? RikoHpBarContext      { get; }
+            public PlayerAvatarContext? AIHpBarContext        { get; }
+            public PlayerAvatarContext? MuscleCatHpBarContext { get; }
 
-            public PlayerAvatarContext()
+            public PlayerAvatarContextBundle()
             {
-                RikoHpBarContext      = Activator.CreateInstance(typeof(UIHpBarContext)) as UIHpBarContext;
-                AIHpBarContext        = Activator.CreateInstance(typeof(UIHpBarContext)) as UIHpBarContext;
-                MuscleCatHpBarContext = Activator.CreateInstance(typeof(UIHpBarContext)) as UIHpBarContext;
+                RikoHpBarContext      = Activator.CreateInstance(typeof(PlayerAvatarContext)) as PlayerAvatarContext;
+                AIHpBarContext        = Activator.CreateInstance(typeof(PlayerAvatarContext)) as PlayerAvatarContext;
+                MuscleCatHpBarContext = Activator.CreateInstance(typeof(PlayerAvatarContext)) as PlayerAvatarContext;
             }
         }
 #endregion Internal Class
@@ -57,7 +57,9 @@ namespace GanShin
         [Inject]
         CameraManager _camera = null!;
         
-        private PlayerAvatarContext _avatarContext;
+        private readonly PlayerAvatarContextBundle _avatarContextBundle = new PlayerAvatarContextBundle();
+        
+        private readonly PlayerContext? _playerContext = Activator.CreateInstance(typeof(PlayerContext)) as PlayerContext;
 
         public Transform CurrentPlayerTransform => CurrentPlayer.transform;
         
@@ -75,6 +77,8 @@ namespace GanShin
             }
         }
         
+        public PlayerContext PlayerContext => _playerContext!;
+        
         private float _maxStamina             = 100f;
         private float _currentStamina         = 100f;
         private float _staminaChargePerSecond = 10f;
@@ -86,6 +90,19 @@ namespace GanShin
         private Define.ePlayerAvatar _currentAvatar = Define.ePlayerAvatar.RIKO;
 #endregion Fields
 
+#region Event
+        private Action<PlayerController>? _onPlayerChanged;
+        public event Action<PlayerController>? OnPlayerChanged
+        {
+            add
+            {
+                _onPlayerChanged -= value;
+                _onPlayerChanged += value;
+            }
+            remove => _onPlayerChanged -= value;
+        }
+#endregion Event
+
 #region Properties
 
         public float CurrentStamina
@@ -95,6 +112,7 @@ namespace GanShin
             {
                 if (value < _currentStamina) SetStaminaDelay();
                 _currentStamina = Mathf.Clamp(value, 0f, _maxStamina);
+                _playerContext.CurrentStamina = _currentStamina;
             }
         }
 
@@ -105,7 +123,7 @@ namespace GanShin
         public PlayerManager()
         {
             SetPlayerPoolRoot();
-            _avatarContext = new PlayerAvatarContext();
+            _playerContext.MaxStamina = _maxStamina;
         }
 
         public void Initialize()
@@ -154,15 +172,51 @@ namespace GanShin
 
         public PlayerController? SetCurrentPlayer(Define.ePlayerAvatar avatar)
         {
-            var player = GetPlayer(avatar);
+            if (_currentAvatar == avatar) 
+                return GetPlayer(avatar);
+            
+            var player = ActivePlayerContext(avatar);
             if (player == null) return null;
             
-            player.gameObject.SetActive(false);
-            player.transform.position = Vector3.zero;
-            player.gameObject.SetActive(true);
             _camera.ChangeTarget(player.transform);
+            var prevPlayer = ActivePlayerContext(_currentAvatar, false);
+            var prevTr = prevPlayer.transform;
+            
+            // 포지션 변경의 문제가 있어서 변경될 오브젝트를 비활성화 후 활성화
+            player.gameObject.SetActive(false);
+            player.transform.SetPositionAndRotation(prevTr.position, prevTr.rotation);
+            player.gameObject.SetActive(true);
 
+            _onPlayerChanged?.Invoke(player);
+            
             _currentAvatar = avatar;
+            return player;
+        }
+
+        private PlayerController? ActivePlayerContext(Define.ePlayerAvatar avatar, bool value = true)
+        {
+            var player = GetPlayer(avatar);
+            if (player == null) return null;
+
+            switch (avatar)
+            {
+                case Define.ePlayerAvatar.RIKO:
+                    _playerContext.IsRikoActive = value;
+                    _avatarContextBundle.RikoHpBarContext.IsActive = value;
+                    player.gameObject.SetActive(value);
+                    break;
+                case Define.ePlayerAvatar.AI:
+                    _playerContext.IsAiActive = value;
+                    player.gameObject.SetActive(value);
+                    _avatarContextBundle.AIHpBarContext.IsActive = value;
+                    break;
+                case Define.ePlayerAvatar.MUSCLE_CAT:
+                    _playerContext.IsMuscleCatActive = value;
+                    player.gameObject.SetActive(value);
+                    _avatarContextBundle.MuscleCatHpBarContext.IsActive = value;
+                    break;
+            }
+
             return player;
         }
         
@@ -182,16 +236,16 @@ namespace GanShin
             }
         }
 
-        public UIHpBarContext? GetUIHpBarContext(Define.ePlayerAvatar avatar)
+        public PlayerAvatarContext? GetAvatarContext(Define.ePlayerAvatar avatar)
         {
             switch (avatar)
             {
                 case Define.ePlayerAvatar.RIKO:
-                    return _avatarContext.RikoHpBarContext;
+                    return _avatarContextBundle.RikoHpBarContext;
                 case Define.ePlayerAvatar.AI:
-                    return _avatarContext.AIHpBarContext;
+                    return _avatarContextBundle.AIHpBarContext;
                 case Define.ePlayerAvatar.MUSCLE_CAT:
-                    return _avatarContext.MuscleCatHpBarContext;
+                    return _avatarContextBundle.MuscleCatHpBarContext;
                 default:
                     return null;
             }
