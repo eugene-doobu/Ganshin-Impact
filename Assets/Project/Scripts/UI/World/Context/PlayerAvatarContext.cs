@@ -1,3 +1,4 @@
+using DG.Tweening;
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -15,6 +16,9 @@ namespace GanShin.UI
         private float _currentUltimateGauge;
         private float _ultimateGauge;
         private float _ultimateGaugePercent;
+
+        private bool  _isActive;
+        private Vector3 _uiScale = new(1, 1, 1);
 #endregion Fields
 
 #region Field Properties
@@ -96,6 +100,38 @@ namespace GanShin.UI
                 OnPropertyChanged();
             }
         }
+        
+        [UsedImplicitly]
+        public bool IsActive
+        {
+            get => _isActive;
+            set
+            {
+                _isActive = value;
+                OnPropertyChanged();
+                if (value)
+                    ChangedUiScaleTween(1f, 1.2f, 0.5f);
+                else
+                    ChangedUiScaleTween(1.2f, 1f, 0.5f);
+            }
+        }
+        
+        [UsedImplicitly]
+        public Vector3 UiScale
+        {
+            get => _uiScale;
+            set
+            {
+                _uiScale = value;
+                OnPropertyChanged();
+            }
+        }
 #endregion Field Properties
+
+        private void ChangedUiScaleTween(float curr, float end, float duration)
+        {
+            DOTween.To(() => curr, x => curr = x, end, duration)
+                .OnUpdate(() => { UiScale = new Vector3(curr, curr, 1); }).SetEase(Ease.InSine);
+        }
     }
 }

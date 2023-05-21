@@ -202,15 +202,18 @@ namespace GanShin
             {
                 case Define.ePlayerAvatar.RIKO:
                     _playerContext.IsRikoActive = value;
+                    _avatarContextBundle.RikoHpBarContext.IsActive = value;
                     player.gameObject.SetActive(value);
                     break;
                 case Define.ePlayerAvatar.AI:
                     _playerContext.IsAiActive = value;
                     player.gameObject.SetActive(value);
+                    _avatarContextBundle.AIHpBarContext.IsActive = value;
                     break;
                 case Define.ePlayerAvatar.MUSCLE_CAT:
                     _playerContext.IsMuscleCatActive = value;
                     player.gameObject.SetActive(value);
+                    _avatarContextBundle.MuscleCatHpBarContext.IsActive = value;
                     break;
             }
 
