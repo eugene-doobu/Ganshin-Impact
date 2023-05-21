@@ -414,6 +414,8 @@ namespace GanShin.Content.Creature
                 _isDead  = true;
                 CanMove = false;
                 ObjAnimator.SetTrigger(AnimPramHashSetDead);
+                _playerAvatarContext.IsDead = true;
+                RemoveInputEvent();
             }
         }
         

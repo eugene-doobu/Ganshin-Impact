@@ -107,9 +107,9 @@ namespace GanShin.UI
             get => _isActive;
             set
             {
-                _isActive = value;
+                _isActive = !IsDead && value;
                 OnPropertyChanged();
-                if (value)
+                if (_isActive)
                     ChangedUiScaleTween(1f, 1.2f, 0.5f);
                 else
                     ChangedUiScaleTween(1.2f, 1f, 0.5f);

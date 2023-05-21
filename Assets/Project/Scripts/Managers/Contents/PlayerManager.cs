@@ -176,7 +176,8 @@ namespace GanShin
                 return GetPlayer(avatar);
             
             var player = ActivePlayerContext(avatar);
-            if (player == null || !player.gameObject.activeSelf) return null;
+            if (player == null) return null;
+            if (player.CurrentHp <= 0) return null;
             
             _camera.ChangeTarget(player.transform);
             var prevPlayer = ActivePlayerContext(_currentAvatar, false);
@@ -201,24 +202,21 @@ namespace GanShin
             var player = GetPlayer(avatar);
             if (player == null) return null;
             
-            if (player.CurrentHp <= 0)
-                return player;
+            var isDead = player.CurrentHp <= 0;
+            player.gameObject.SetActive(value);
 
             switch (avatar)
             {
                 case Define.ePlayerAvatar.RIKO:
-                    _playerContext.IsRikoActive = value;
+                    _playerContext.IsRikoActive                    = !isDead && value;
                     _avatarContextBundle.RikoHpBarContext.IsActive = value;
-                    player.gameObject.SetActive(value);
                     break;
                 case Define.ePlayerAvatar.AI:
-                    _playerContext.IsAiActive = value;
-                    player.gameObject.SetActive(value);
+                    _playerContext.IsAiActive                    = !isDead && value;
                     _avatarContextBundle.AIHpBarContext.IsActive = value;
                     break;
                 case Define.ePlayerAvatar.MUSCLE_CAT:
-                    _playerContext.IsMuscleCatActive = value;
-                    player.gameObject.SetActive(value);
+                    _playerContext.IsMuscleCatActive                    = !isDead && value;
                     _avatarContextBundle.MuscleCatHpBarContext.IsActive = value;
                     break;
             }
