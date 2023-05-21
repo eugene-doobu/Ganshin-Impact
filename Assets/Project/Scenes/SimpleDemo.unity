@@ -818,7 +818,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 333bf344b2fdb6d40add3574e7e30323, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerAvatar: 2
+  playerAvatar: 0
   startPosition: {x: 0, y: 0, z: 0}
 --- !u!114 &1304778785 stripped
 MonoBehaviour:

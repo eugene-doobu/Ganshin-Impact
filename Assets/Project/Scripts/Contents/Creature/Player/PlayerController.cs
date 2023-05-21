@@ -30,9 +30,9 @@ namespace GanShin.Content.Creature
 #region Variables
         [Inject] protected UIRootCharacterCutScene CharacterCutScene;
         
-        [Inject] private   InputSystemManager      _input;
-        [Inject] private   CameraManager           _camera;
-        [Inject] private   PlayerManager           _playerManager;
+        [Inject] private InputSystemManager _input;
+        [Inject] private CameraManager      _camera;
+        [Inject] private PlayerManager      _playerManager;
 
         private CharacterController _characterController;
         private PlayerAvatarContext      _playerAvatarContext;
@@ -149,6 +149,9 @@ namespace GanShin.Content.Creature
             InitializeWeapon();
 
             _playerAvatarContext = GetPlayerContext;
+            
+            _playerAvatarContext.MaxHp = (int)stat.hp;
+            CurrentHp                  = stat.hp;
         }
 
         private void OnEnable()
@@ -160,14 +163,6 @@ namespace GanShin.Content.Creature
         private void OnDisable()
         {
             RemoveInputEvent();
-        }
-
-        protected override void Start()
-        {
-            base.Start();
-            _playerAvatarContext.MaxHp = (int) stat.hp;
-                
-            CurrentHp = stat.hp;
         }
 
         protected override void Update()
