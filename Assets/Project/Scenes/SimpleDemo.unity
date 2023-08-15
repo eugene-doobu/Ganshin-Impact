@@ -838,6 +838,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerAvatar: 0
   startPosition: {x: 0, y: 0, z: 0}
+  debugInputGroup: 1
 --- !u!114 &1304778785 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4621676461596180173, guid: b189465624eeed744b685e35954becd3, type: 3}
