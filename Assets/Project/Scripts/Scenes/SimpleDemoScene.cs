@@ -81,6 +81,18 @@ namespace GanShin.SceneManagement
             
             if (Input.GetKeyDown("2"))
                 _uiManager.SetPopupOkCancel("타이틀", "메시지인데 짱김. 메시지인데 짱김. 메시지인데 짱김. 메시지인데 짱김. 메시지인데 짱김. 메시지인데 짱김. 메시지인데 짱김. 메시지인데 짱김. 메시지인데 짱김. 메시지인데 짱김. 메시지인데 짱김. ", () => { Debug.Log("OK"); }, () => { Debug.Log("Cancel"); });
+            
+            if (Input.GetKeyDown("3"))
+                _uiManager.SetToast("테스트1", "퀸카 암핫", EToastType.DEFAULT);
+
+            if (Input.GetKeyDown("4"))
+                _uiManager.SetToast("테스트2", "그냥 살다 보니 어느새 난 여기 사실 별거 없지 잘은 해 밥벌이", EToastType.NOTIFICATION);
+            
+            if (Input.GetKeyDown("5"))                
+                _uiManager.SetToast("테스트3", "Don't ever say it's over if I'm breathin, Racin' to the moonlight and I'm speedin, I'm headed to the stars, ready to go far, I'm star walkin'", EToastType.WARNING);
+            
+            if (Input.GetKeyDown("6"))
+                _uiManager.SetToast("테스트4", "꺼억", EToastType.ERROR);
         }
 
         public override void Clear()
