@@ -7,6 +7,12 @@ namespace GanShin.SceneManagement
 {
     public class SimpleDemoScene : BaseScene
     {
+        private enum EDebugInputGroup
+        {
+            CHARACTER_CHANGE,
+            GLOBAL_UI,
+        }
+        
         [Inject] private PlayerManager _playerManager;
 
         [Inject] private SceneManagerEx _sceneManager;
@@ -16,6 +22,8 @@ namespace GanShin.SceneManagement
         [SerializeField] private Define.ePlayerAvatar playerAvatar;
 
         [SerializeField] private Vector3 startPosition;
+
+        [SerializeField] private EDebugInputGroup debugInputGroup = EDebugInputGroup.GLOBAL_UI;
         
         protected override void Init()
         {
@@ -31,9 +39,31 @@ namespace GanShin.SceneManagement
 
         private void Update()
         {
+            ProcessDebugInput();
+        }
+        
+        private void ProcessDebugInput()
+        {
+            ProcessCommonDebugInput();
+            switch (debugInputGroup)
+            {
+                case EDebugInputGroup.CHARACTER_CHANGE:
+                    ProcessCharacterChangeDebugInput();
+                    break;
+                case EDebugInputGroup.GLOBAL_UI:
+                    ProcessGlobalUIDebugInput();
+                    break;
+            }
+        }
+        
+        private void ProcessCommonDebugInput()
+        {
             if (Input.GetKeyDown("]"))
                 _sceneManager.LoadScene(ESceneType).Forget();
-            
+        }
+
+        private void ProcessCharacterChangeDebugInput()
+        {
             if (Input.GetKeyDown("1"))
                 _playerManager.SetCurrentPlayer(Define.ePlayerAvatar.RIKO);
             
@@ -42,11 +72,14 @@ namespace GanShin.SceneManagement
             
             if (Input.GetKeyDown("3"))
                 _playerManager.SetCurrentPlayer(Define.ePlayerAvatar.MUSCLE_CAT);
-            
-            if (Input.GetKeyDown("4"))
+        }
+
+        private void ProcessGlobalUIDebugInput()
+        {
+            if (Input.GetKeyDown("1"))
                 _uiManager.SetPopupOk("타이틀", "메시지", () => { Debug.Log("OK"); });
             
-            if (Input.GetKeyDown("5"))
+            if (Input.GetKeyDown("2"))
                 _uiManager.SetPopupOkCancel("타이틀", "메시지인데 짱김. 메시지인데 짱김. 메시지인데 짱김. 메시지인데 짱김. 메시지인데 짱김. 메시지인데 짱김. 메시지인데 짱김. 메시지인데 짱김. 메시지인데 짱김. 메시지인데 짱김. 메시지인데 짱김. ", () => { Debug.Log("OK"); }, () => { Debug.Log("Cancel"); });
         }
 
