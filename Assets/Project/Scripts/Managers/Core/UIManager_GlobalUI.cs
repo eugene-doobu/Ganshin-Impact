@@ -18,6 +18,14 @@ namespace GanShin.UI
         TOAST,
         LOADING,
     }
+    
+    public enum EToastType
+    {
+        DEFAULT,
+        NOTIFICATION,
+        WARNING,
+        ERROR
+    }
 
     public partial class UIManager
     {
@@ -32,6 +40,7 @@ namespace GanShin.UI
             public static readonly string CharacterCutScene = $"{Root}UI_CharacterCutScene";
             public static readonly string Dimmed            = $"{Root}UI_Dimmed";
             public static readonly string Popup             = $"{Root}UI_Popup";
+            public static readonly string Toast             = $"{Root}UI_ToastPopup";
         }
 
 #endregion Define
@@ -76,13 +85,15 @@ namespace GanShin.UI
             UIRootLoadingScene uiRootLoadingScene,
             UIRootCharacterCutScene uiRootCharacterCutScene,
             UIRootDimmed uiRootDimmed,
-            UIRootPopup uiRootPopup
+            UIRootPopup uiRootPopup,
+            UIRootToastPopup uiRootToast
             )
         {
             AddGlobalUI(uiRootLoadingScene, EGlobalUI.LOADING_SCENE);
             AddGlobalUI(uiRootCharacterCutScene, EGlobalUI.CHARACTER_CUT_SCENE);
             AddGlobalUI(uiRootDimmed, EGlobalUI.DIMMED);
             AddGlobalUI(uiRootPopup, EGlobalUI.POPUP);
+            AddGlobalUI(uiRootToast, EGlobalUI.TOAST);
         }
 
         private void AddGlobalUI(GlobalUIRootBase root, EGlobalUI type)
@@ -128,5 +139,17 @@ namespace GanShin.UI
             popup.SetContext(title, content, true, okAction, cancelAction);
         }
 #endregion Popup
+
+#region Toast
+        public void SetToast(string title, string content, EToastType type)
+        {
+            var toast = GetGlobalUI(EGlobalUI.TOAST) as UIRootToastPopup;
+            if (toast == null)
+                return;
+
+            OnGlobalUI(EGlobalUI.TOAST, true);
+            toast.SetContext(title, content, type);
+        }
+#endregion Toast
     }
 }

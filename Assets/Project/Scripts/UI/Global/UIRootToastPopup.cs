@@ -9,16 +9,8 @@ using UnityEngine.UI;
 
 namespace GanShin.UI
 {
-    public class UIToastPopup : GlobalUIRootBase
+    public class UIRootToastPopup : GlobalUIRootBase
     {
-        public enum EToastType
-        {
-            DEFAULT,
-            NOTIFICATION,
-            WARNING,
-            ERROR
-        }
-        
         private readonly int _animationParamHashIn   = Animator.StringToHash("In");
         private readonly int _animationParamHashOut  = Animator.StringToHash("Out");
         private readonly int _animationParamHashWait = Animator.StringToHash("Wait");
@@ -46,7 +38,7 @@ namespace GanShin.UI
         
         private CancellationTokenSource? _cancellationTokenSource;
 
-        public void SetContext(EToastType toastType, string title, string content)
+        public void SetContext(string title, string content, EToastType toastType)
         {
             var context = ToastPopupDataContext;
             if (context == null)
