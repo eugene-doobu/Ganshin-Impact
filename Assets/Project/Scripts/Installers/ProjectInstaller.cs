@@ -89,11 +89,19 @@ namespace Ganshin
         private void InstallGlobalUIs()
         {
             Container.Bind<UIRootLoadingScene>()
-                .FromComponentInNewPrefabResource(UIManager.GlobalUIName.Loading)
+                .FromComponentInNewPrefabResource(UIManager.GlobalUIName.LoadingScene)
                 .AsSingle()
                 .NonLazy();
             Container.Bind<UIRootCharacterCutScene>()
                 .FromComponentInNewPrefabResource(UIManager.GlobalUIName.CharacterCutScene)
+                .AsSingle()
+                .NonLazy();
+            Container.Bind<UIRootDimmed>()
+                .FromComponentInNewPrefabResource(UIManager.GlobalUIName.Dimmed)
+                .AsSingle()
+                .NonLazy();
+            Container.Bind<UIRootPopup>()
+                .FromComponentInNewPrefabResource(UIManager.GlobalUIName.Popup)
                 .AsSingle()
                 .NonLazy();
         }

@@ -1,7 +1,5 @@
-using System;
 using Cysharp.Threading.Tasks;
 using GanShin.UI;
-using Slash.Unity.DataBind.Core.Presentation;
 using UnityEngine;
 using Zenject;
 
@@ -12,6 +10,8 @@ namespace GanShin.SceneManagement
         [Inject] private PlayerManager _playerManager;
 
         [Inject] private SceneManagerEx _sceneManager;
+        
+        [Inject] private UIManager _uiManager;
         
         [SerializeField] private Define.ePlayerAvatar playerAvatar;
 
@@ -42,6 +42,12 @@ namespace GanShin.SceneManagement
             
             if (Input.GetKeyDown("3"))
                 _playerManager.SetCurrentPlayer(Define.ePlayerAvatar.MUSCLE_CAT);
+            
+            if (Input.GetKeyDown("4"))
+                _uiManager.SetPopupOk("타이틀", "메시지", () => { Debug.Log("OK"); });
+            
+            if (Input.GetKeyDown("5"))
+                _uiManager.SetPopupOkCancel("타이틀", "메시지인데 짱김. 메시지인데 짱김. 메시지인데 짱김. 메시지인데 짱김. 메시지인데 짱김. 메시지인데 짱김. 메시지인데 짱김. 메시지인데 짱김. 메시지인데 짱김. 메시지인데 짱김. 메시지인데 짱김. ", () => { Debug.Log("OK"); }, () => { Debug.Log("Cancel"); });
         }
 
         public override void Clear()

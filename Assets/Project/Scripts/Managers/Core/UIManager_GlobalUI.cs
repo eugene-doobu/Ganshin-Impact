@@ -1,14 +1,22 @@
+#nullable enable
+
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Zenject;
+using Object = UnityEngine.Object;
 
 namespace GanShin.UI
 {
-    public enum eGlobalUI
+    public enum EGlobalUI
     {
-        LOADING,
+        LOADING_SCENE,
         CHARACTER_CUT_SCENE,
+        DIMMED,
+        POPUP,
+        TOAST,
+        LOADING,
     }
 
     public partial class UIManager
@@ -20,30 +28,30 @@ namespace GanShin.UI
         public struct GlobalUIName
         {
             private const          string Root              = "Prefabs/UI/Global/";
-            public static readonly string Loading           = $"{Root}UI_LoadingScene";
+            public static readonly string LoadingScene      = $"{Root}UI_LoadingScene";
             public static readonly string CharacterCutScene = $"{Root}UI_CharacterCutScene";
+            public static readonly string Dimmed            = $"{Root}UI_Dimmed";
+            public static readonly string Popup             = $"{Root}UI_Popup";
         }
 
 #endregion Define
 
-        private readonly Dictionary<eGlobalUI, GlobalUIRootBase> _globalUIs = new();
+        private readonly Dictionary<EGlobalUI, GlobalUIRootBase> _globalUIs = new();
 
-        public GlobalUIRootBase GetGlobalUI(eGlobalUI ui) =>
+        public GlobalUIRootBase? GetGlobalUI(EGlobalUI ui) =>
             _globalUIs.ContainsKey(ui) ? _globalUIs[ui] : null;
 
-        public void OnGlobalUI(eGlobalUI ui, bool isOn)
+        private void OnGlobalUI(EGlobalUI ui, bool isOn)
         {
             if (isOn)
             {
                 if (!_globalUIs.ContainsKey(ui)) return;
-                _globalUIs[ui].gameObject.SetActive(true);
-                _globalUIs[ui].InitializeContextData();
+                _globalUIs[ui].Enable();
             }
             else
             {
                 if (!_globalUIs.ContainsKey(ui)) return;
-                _globalUIs[ui].ClearContextData();
-                _globalUIs[ui].gameObject.SetActive(false);
+                _globalUIs[ui].Disable();
             }
         }
 
@@ -66,14 +74,18 @@ namespace GanShin.UI
         [Inject]
         public void InjectGlobalUI(
             UIRootLoadingScene uiRootLoadingScene,
-            UIRootCharacterCutScene uiRootCharacterCutScene
+            UIRootCharacterCutScene uiRootCharacterCutScene,
+            UIRootDimmed uiRootDimmed,
+            UIRootPopup uiRootPopup
             )
         {
-            AddGlobalUI(uiRootLoadingScene, eGlobalUI.LOADING);
-            AddGlobalUI(uiRootCharacterCutScene, eGlobalUI.CHARACTER_CUT_SCENE);
+            AddGlobalUI(uiRootLoadingScene, EGlobalUI.LOADING_SCENE);
+            AddGlobalUI(uiRootCharacterCutScene, EGlobalUI.CHARACTER_CUT_SCENE);
+            AddGlobalUI(uiRootDimmed, EGlobalUI.DIMMED);
+            AddGlobalUI(uiRootPopup, EGlobalUI.POPUP);
         }
 
-        private void AddGlobalUI(GlobalUIRootBase root, eGlobalUI type)
+        private void AddGlobalUI(GlobalUIRootBase root, EGlobalUI type)
         {
             var tr = root.transform;
             if (!ReferenceEquals(GlobalRoot, null))
@@ -86,5 +98,35 @@ namespace GanShin.UI
 
             _globalUIs.Add(type, root);
         }
+
+#region LOADING_SCENE
+        public void SetLoadingSceneUiActive(bool isActive) => OnGlobalUI(EGlobalUI.LOADING_SCENE, isActive);
+#endregion LOADING_SCENE
+
+#region DIMMED
+        public void SetDimmedUiActive(bool isActive) => OnGlobalUI(EGlobalUI.DIMMED, isActive);
+#endregion DIMMED
+
+#region Popup
+        public void SetPopupOk(string title, string content, Action? okAction = null)
+        {
+            var popup = GetGlobalUI(EGlobalUI.POPUP) as UIRootPopup;
+            if (popup == null)
+                return;
+
+            OnGlobalUI(EGlobalUI.POPUP, true);
+            popup.SetContext(title, content, false, okAction);
+        }
+
+        public void SetPopupOkCancel(string title, string content, Action? okAction = null, Action? cancelAction = null)
+        {
+            var popup = GetGlobalUI(EGlobalUI.POPUP) as UIRootPopup;
+            if (popup == null)
+                return;
+
+            OnGlobalUI(EGlobalUI.POPUP, true);
+            popup.SetContext(title, content, true, okAction, cancelAction);
+        }
+#endregion Popup
     }
 }
