@@ -1,7 +1,11 @@
+#nullable enable
+
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Zenject;
+using Object = UnityEngine.Object;
 
 namespace GanShin.UI
 {
@@ -34,7 +38,7 @@ namespace GanShin.UI
 
         private readonly Dictionary<EGlobalUI, GlobalUIRootBase> _globalUIs = new();
 
-        public GlobalUIRootBase GetGlobalUI(EGlobalUI ui) =>
+        public GlobalUIRootBase? GetGlobalUI(EGlobalUI ui) =>
             _globalUIs.ContainsKey(ui) ? _globalUIs[ui] : null;
 
         private void OnGlobalUI(EGlobalUI ui, bool isOn)
@@ -102,5 +106,27 @@ namespace GanShin.UI
 #region DIMMED
         public void SetDimmedUiActive(bool isActive) => OnGlobalUI(EGlobalUI.DIMMED, isActive);
 #endregion DIMMED
+
+#region Popup
+        public void SetPopupOk(string title, string content, Action? okAction = null)
+        {
+            var popup = GetGlobalUI(EGlobalUI.POPUP) as UIRootPopup;
+            if (popup == null)
+                return;
+
+            OnGlobalUI(EGlobalUI.DIMMED, true);
+            popup.SetContext(title, content, false, okAction);
+        }
+
+        public void SetPopupOkCancel(string title, string content, Action? okAction = null, Action? cancelAction = null)
+        {
+            var popup = GetGlobalUI(EGlobalUI.POPUP) as UIRootPopup;
+            if (popup == null)
+                return;
+
+            OnGlobalUI(EGlobalUI.DIMMED, true);
+            popup.SetContext(title, content, true, okAction, cancelAction);
+        }
+#endregion Popup
     }
 }

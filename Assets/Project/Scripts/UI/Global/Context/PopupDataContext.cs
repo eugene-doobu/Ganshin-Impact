@@ -10,6 +10,7 @@ namespace GanShin.UI
 
         private string _titleText;
         private string _contentText;
+        private bool   _isOkCancel;
 
         [UsedImplicitly]
         public string TitleText
@@ -29,6 +30,17 @@ namespace GanShin.UI
             set
             {
                 _contentText = value;
+                OnPropertyChanged();
+            }
+        }
+        
+        [UsedImplicitly]
+        public bool IsOkCancel
+        {
+            get => _isOkCancel;
+            set
+            {
+                _isOkCancel = value;
                 OnPropertyChanged();
             }
         }
