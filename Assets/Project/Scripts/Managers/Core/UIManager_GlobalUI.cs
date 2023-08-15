@@ -10,8 +10,7 @@ namespace GanShin.UI
         LOADING_SCENE,
         CHARACTER_CUT_SCENE,
         DIMMED,
-        POPUP_OK,
-        POPUP_OK_CANCEL,
+        POPUP,
         TOAST,
         LOADING,
     }
@@ -28,6 +27,7 @@ namespace GanShin.UI
             public static readonly string LoadingScene      = $"{Root}UI_LoadingScene";
             public static readonly string CharacterCutScene = $"{Root}UI_CharacterCutScene";
             public static readonly string Dimmed            = $"{Root}UI_Dimmed";
+            public static readonly string Popup             = $"{Root}UI_Popup";
         }
 
 #endregion Define
@@ -42,14 +42,12 @@ namespace GanShin.UI
             if (isOn)
             {
                 if (!_globalUIs.ContainsKey(ui)) return;
-                _globalUIs[ui].gameObject.SetActive(true);
-                _globalUIs[ui].InitializeContextData();
+                _globalUIs[ui].Enable();
             }
             else
             {
                 if (!_globalUIs.ContainsKey(ui)) return;
-                _globalUIs[ui].ClearContextData();
-                _globalUIs[ui].gameObject.SetActive(false);
+                _globalUIs[ui].Disable();
             }
         }
 
@@ -73,12 +71,14 @@ namespace GanShin.UI
         public void InjectGlobalUI(
             UIRootLoadingScene uiRootLoadingScene,
             UIRootCharacterCutScene uiRootCharacterCutScene,
-            UIRootDimmed uiRootDimmed
+            UIRootDimmed uiRootDimmed,
+            UIRootPopup uiRootPopup
             )
         {
             AddGlobalUI(uiRootLoadingScene, EGlobalUI.LOADING_SCENE);
             AddGlobalUI(uiRootCharacterCutScene, EGlobalUI.CHARACTER_CUT_SCENE);
             AddGlobalUI(uiRootDimmed, EGlobalUI.DIMMED);
+            AddGlobalUI(uiRootPopup, EGlobalUI.POPUP);
         }
 
         private void AddGlobalUI(GlobalUIRootBase root, EGlobalUI type)

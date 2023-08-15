@@ -100,6 +100,10 @@ namespace Ganshin
                 .FromComponentInNewPrefabResource(UIManager.GlobalUIName.Dimmed)
                 .AsSingle()
                 .NonLazy();
+            Container.Bind<UIRootPopup>()
+                .FromComponentInNewPrefabResource(UIManager.GlobalUIName.Popup)
+                .AsSingle()
+                .NonLazy();
         }
     }
 }
