@@ -25,8 +25,9 @@ namespace GanShin.UI
         public struct GlobalUIName
         {
             private const          string Root              = "Prefabs/UI/Global/";
-            public static readonly string Loading           = $"{Root}UI_LoadingScene";
+            public static readonly string LoadingScene      = $"{Root}UI_LoadingScene";
             public static readonly string CharacterCutScene = $"{Root}UI_CharacterCutScene";
+            public static readonly string Dimmed            = $"{Root}UI_Dimmed";
         }
 
 #endregion Define
@@ -71,11 +72,13 @@ namespace GanShin.UI
         [Inject]
         public void InjectGlobalUI(
             UIRootLoadingScene uiRootLoadingScene,
-            UIRootCharacterCutScene uiRootCharacterCutScene
+            UIRootCharacterCutScene uiRootCharacterCutScene,
+            UIRootDimmed uiRootDimmed
             )
         {
             AddGlobalUI(uiRootLoadingScene, EGlobalUI.LOADING_SCENE);
             AddGlobalUI(uiRootCharacterCutScene, EGlobalUI.CHARACTER_CUT_SCENE);
+            AddGlobalUI(uiRootDimmed, EGlobalUI.DIMMED);
         }
 
         private void AddGlobalUI(GlobalUIRootBase root, EGlobalUI type)
@@ -95,6 +98,9 @@ namespace GanShin.UI
 #region LOADING_SCENE
         public void SetLoadingSceneUiActive(bool isActive) => OnGlobalUI(EGlobalUI.LOADING_SCENE, isActive);
 #endregion LOADING_SCENE
-        
+
+#region DIMMED
+        public void SetDimmedUiActive(bool isActive) => OnGlobalUI(EGlobalUI.DIMMED, isActive);
+#endregion DIMMED
     }
 }
