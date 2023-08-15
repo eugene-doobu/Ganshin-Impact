@@ -114,7 +114,7 @@ namespace GanShin.UI
             if (popup == null)
                 return;
 
-            OnGlobalUI(EGlobalUI.DIMMED, true);
+            OnGlobalUI(EGlobalUI.POPUP, true);
             popup.SetContext(title, content, false, okAction);
         }
 
@@ -124,7 +124,7 @@ namespace GanShin.UI
             if (popup == null)
                 return;
 
-            OnGlobalUI(EGlobalUI.DIMMED, true);
+            OnGlobalUI(EGlobalUI.POPUP, true);
             popup.SetContext(title, content, true, okAction, cancelAction);
         }
 #endregion Popup

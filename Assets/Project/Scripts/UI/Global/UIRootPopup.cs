@@ -3,6 +3,8 @@
 using System;
 using System.ComponentModel;
 using JetBrains.Annotations;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace GanShin.UI
 {
@@ -13,6 +15,9 @@ namespace GanShin.UI
 
         protected override INotifyPropertyChanged InitializeDataContext() =>
             new PopupDataContext();
+
+        [SerializeField] private GameObject      cancelButtonRoot = null!;
+        [SerializeField] private RectTransform[] layoutRoots      = null!;
         
         public event Action? ClickOkEvent;
         public event Action? ClickCancelEvent;
@@ -21,7 +26,7 @@ namespace GanShin.UI
         public void ClickOk() => ClickOkEvent?.Invoke();
         [UsedImplicitly]
         public void ClickCancel() => ClickCancelEvent?.Invoke();
-        
+
         public void SetContext(string title, string content, bool isOkCancel, Action? clickOkEvent, Action? clickCancelEvent = null)
         {
             var context = PopupDataContext;
@@ -42,16 +47,20 @@ namespace GanShin.UI
             if (clickCancelEvent != null)
                 ClickCancelEvent += clickCancelEvent;
 
-            if (isOkCancel) return;
+            cancelButtonRoot.SetActive(isOkCancel);
+
+            foreach (var layoutRoot in layoutRoots)
+                LayoutRebuilder.ForceRebuildLayoutImmediate(layoutRoot);
             
             // Disable 이벤트는 가장 나중에 추가해야 한다.
-            ClickOkEvent -= Disable;
-            ClickOkEvent += Disable;
+            ClickOkEvent     -= Disable;
+            ClickOkEvent     += Disable;
+            ClickCancelEvent -= Disable;
+            ClickCancelEvent += Disable;
         }
 
         public override void InitializeContextData()
         {
-            ClickCancelEvent += Disable;
         }
 
         public override void ClearContextData()
