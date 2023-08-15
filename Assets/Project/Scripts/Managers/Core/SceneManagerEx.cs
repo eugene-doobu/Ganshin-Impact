@@ -28,13 +28,13 @@ namespace GanShin.SceneManagement
 
         public async UniTask LoadScene(Define.eScene type)
         {
-            _ui.OnGlobalUI(EGlobalUI.LOADING_SCENE, true);
+            _ui.SetLoadingSceneUiActive(true);
             await SceneManager.LoadSceneAsync(GetSceneName(Define.eScene.LoadingScene)).ToUniTask();
             await UniTask.Delay(TimeSpan.FromMilliseconds(_changeSceneDelay));
             await SceneManager.LoadSceneAsync(GetSceneName(type))
                 .ToUniTask(Progress.Create<float>(ApplyProgressToLoadingBar));
             await UniTask.NextFrame();
-            _ui.OnGlobalUI(EGlobalUI.LOADING_SCENE, false);
+            _ui.SetLoadingSceneUiActive(false);
         }
 
         private void ApplyProgressToLoadingBar(float x)

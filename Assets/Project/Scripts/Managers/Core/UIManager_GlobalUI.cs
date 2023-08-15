@@ -9,6 +9,11 @@ namespace GanShin.UI
     {
         LOADING_SCENE,
         CHARACTER_CUT_SCENE,
+        DIMMED,
+        POPUP_OK,
+        POPUP_OK_CANCEL,
+        TOAST,
+        LOADING,
     }
 
     public partial class UIManager
@@ -31,7 +36,7 @@ namespace GanShin.UI
         public GlobalUIRootBase GetGlobalUI(EGlobalUI ui) =>
             _globalUIs.ContainsKey(ui) ? _globalUIs[ui] : null;
 
-        public void OnGlobalUI(EGlobalUI ui, bool isOn)
+        private void OnGlobalUI(EGlobalUI ui, bool isOn)
         {
             if (isOn)
             {
@@ -86,5 +91,10 @@ namespace GanShin.UI
 
             _globalUIs.Add(type, root);
         }
+
+#region LOADING_SCENE
+        public void SetLoadingSceneUiActive(bool isActive) => OnGlobalUI(EGlobalUI.LOADING_SCENE, isActive);
+#endregion LOADING_SCENE
+        
     }
 }
