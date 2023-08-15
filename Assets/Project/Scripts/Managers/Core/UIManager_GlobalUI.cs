@@ -5,9 +5,9 @@ using Zenject;
 
 namespace GanShin.UI
 {
-    public enum eGlobalUI
+    public enum EGlobalUI
     {
-        LOADING,
+        LOADING_SCENE,
         CHARACTER_CUT_SCENE,
     }
 
@@ -26,12 +26,12 @@ namespace GanShin.UI
 
 #endregion Define
 
-        private readonly Dictionary<eGlobalUI, GlobalUIRootBase> _globalUIs = new();
+        private readonly Dictionary<EGlobalUI, GlobalUIRootBase> _globalUIs = new();
 
-        public GlobalUIRootBase GetGlobalUI(eGlobalUI ui) =>
+        public GlobalUIRootBase GetGlobalUI(EGlobalUI ui) =>
             _globalUIs.ContainsKey(ui) ? _globalUIs[ui] : null;
 
-        public void OnGlobalUI(eGlobalUI ui, bool isOn)
+        public void OnGlobalUI(EGlobalUI ui, bool isOn)
         {
             if (isOn)
             {
@@ -69,11 +69,11 @@ namespace GanShin.UI
             UIRootCharacterCutScene uiRootCharacterCutScene
             )
         {
-            AddGlobalUI(uiRootLoadingScene, eGlobalUI.LOADING);
-            AddGlobalUI(uiRootCharacterCutScene, eGlobalUI.CHARACTER_CUT_SCENE);
+            AddGlobalUI(uiRootLoadingScene, EGlobalUI.LOADING_SCENE);
+            AddGlobalUI(uiRootCharacterCutScene, EGlobalUI.CHARACTER_CUT_SCENE);
         }
 
-        private void AddGlobalUI(GlobalUIRootBase root, eGlobalUI type)
+        private void AddGlobalUI(GlobalUIRootBase root, EGlobalUI type)
         {
             var tr = root.transform;
             if (!ReferenceEquals(GlobalRoot, null))
