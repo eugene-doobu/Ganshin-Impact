@@ -33,7 +33,7 @@ namespace GanShin.UI
         [SerializeField] private Color warningColor;
         [SerializeField] private Color errorColor;
         
-        [SerializeField] private float defaultDuration = 3f;
+        [SerializeField] private float defaultDuration = 2.5f;
         [SerializeField] private float outDuration     = 0.2f;
         
         private CancellationTokenSource? _cancellationTokenSource;
@@ -84,16 +84,11 @@ namespace GanShin.UI
             
             animator.Play(_animationParamHashIn);
             _cancellationTokenSource = new CancellationTokenSource();
-            var isCancelled = await UniTask.Delay(TimeSpan.FromSeconds(defaultDuration), cancellationToken: _cancellationTokenSource.Token).SuppressCancellationThrow();
-            if (isCancelled)
-            {
-                CancelToken();
-            }
-            else
-            {
-                 await UniTask.Delay(TimeSpan.FromSeconds(outDuration), cancellationToken: _cancellationTokenSource.Token).SuppressCancellationThrow();
-                animator.Play(_animationParamHashOut);
-            }
+            await UniTask.Delay(TimeSpan.FromSeconds(defaultDuration), cancellationToken: _cancellationTokenSource.Token);
+            
+            animator.Play(_animationParamHashOut);
+            await UniTask.Delay(TimeSpan.FromSeconds(outDuration), cancellationToken: _cancellationTokenSource.Token);
+            Disable();
         } 
 
         public override void InitializeContextData()
