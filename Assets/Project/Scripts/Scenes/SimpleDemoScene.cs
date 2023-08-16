@@ -93,6 +93,12 @@ namespace GanShin.SceneManagement
             
             if (Input.GetKeyDown("6"))
                 _uiManager.SetToast("테스트4", "꺼억", EToastType.ERROR);
+            
+            if (Input.GetKeyDown("7"))
+                _uiManager.ShowLoadingUI(GetHashCode());
+            
+            if (Input.GetKeyDown("8"))
+                _uiManager.HideLoadingUI(GetHashCode());
         }
 
         public override void Clear()
