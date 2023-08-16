@@ -41,6 +41,7 @@ namespace GanShin.UI
             public static readonly string Dimmed            = $"{Root}UI_Dimmed";
             public static readonly string Popup             = $"{Root}UI_Popup";
             public static readonly string Toast             = $"{Root}UI_ToastPopup";
+            public static readonly string Loading           = $"{Root}UI_Loading";
         }
 
 #endregion Define
@@ -86,7 +87,8 @@ namespace GanShin.UI
             UIRootCharacterCutScene uiRootCharacterCutScene,
             UIRootDimmed uiRootDimmed,
             UIRootPopup uiRootPopup,
-            UIRootToastPopup uiRootToast
+            UIRootToastPopup uiRootToast,
+            UIRootLoadingPopup uiRootLoading
             )
         {
             AddGlobalUI(uiRootLoadingScene, EGlobalUI.LOADING_SCENE);
@@ -94,6 +96,7 @@ namespace GanShin.UI
             AddGlobalUI(uiRootDimmed, EGlobalUI.DIMMED);
             AddGlobalUI(uiRootPopup, EGlobalUI.POPUP);
             AddGlobalUI(uiRootToast, EGlobalUI.TOAST);
+            AddGlobalUI(uiRootLoading, EGlobalUI.LOADING);
         }
 
         private void AddGlobalUI(GlobalUIRootBase root, EGlobalUI type)
@@ -151,5 +154,28 @@ namespace GanShin.UI
             toast.SetContext(title, content, type);
         }
 #endregion Toast
+
+#region Loading
+        public void ShowLoadingUI(int hash)
+        {
+            var loading = GetGlobalUI(EGlobalUI.LOADING) as UIRootLoadingPopup;
+            if (loading == null)
+                return;
+
+            OnGlobalUI(EGlobalUI.LOADING, true);
+            loading.AddHash(hash);
+        }
+        
+        public void HideLoadingUI(int hash)
+        {
+            var loading = GetGlobalUI(EGlobalUI.LOADING) as UIRootLoadingPopup;
+            if (loading == null)
+                return;
+
+            loading.RemoveHash(hash);
+            if (loading.IsEmpty())
+                OnGlobalUI(EGlobalUI.LOADING, false);
+        }
+#endregion Loading
     }
 }
