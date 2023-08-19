@@ -28,7 +28,7 @@ namespace GanShin.SceneManagement
         protected override void Init()
         {
             base.Init();
-            ESceneType = Define.eScene.SimpleDemo;
+            ESceneType = Define.eScene.SIMPLE_DEMO;
         }
 
         private void Start()

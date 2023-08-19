@@ -27,7 +27,7 @@ namespace GanShin.SceneManagement
         public async UniTask LoadScene(Define.eScene type)
         {
             _ui.SetLoadingSceneUiActive(true);
-            await SceneManager.LoadSceneAsync(GetSceneName(Define.eScene.LoadingScene)).ToUniTask();
+            await SceneManager.LoadSceneAsync(GetSceneName(Define.eScene.LOADING_SCENE)).ToUniTask();
             await UniTask.Delay(TimeSpan.FromMilliseconds(_changeSceneDelay));
             await SceneManager.LoadSceneAsync(GetSceneName(type))
                 .ToUniTask(Progress.Create<float>(ApplyProgressToLoadingBar));
