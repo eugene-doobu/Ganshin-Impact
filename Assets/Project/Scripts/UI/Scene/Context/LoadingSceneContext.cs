@@ -1,7 +1,9 @@
+using JetBrains.Annotations;
 using Slash.Unity.DataBind.Core.Data;
 
 namespace GanShin.UI
 {
+    [UsedImplicitly]
     public class LoadingSceneContext : Context
     {
         private readonly Property<string> _loadingText = new Property<string>();
