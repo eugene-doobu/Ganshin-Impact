@@ -2,7 +2,6 @@
 
 using System;
 using System.ComponentModel;
-using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,14 +17,6 @@ namespace GanShin.UI
 
         [SerializeField] private GameObject      cancelButtonRoot = null!;
         [SerializeField] private RectTransform[] layoutRoots      = null!;
-        
-        public event Action? ClickOkEvent;
-        public event Action? ClickCancelEvent;
-
-        [UsedImplicitly]
-        public void ClickOk() => ClickOkEvent?.Invoke();
-        [UsedImplicitly]
-        public void ClickCancel() => ClickCancelEvent?.Invoke();
 
         public void SetContext(string title, string content, bool isOkCancel, Action? clickOkEvent, Action? clickCancelEvent = null)
         {
@@ -42,10 +33,10 @@ namespace GanShin.UI
             context.IsOkCancel  = isOkCancel;
 
             if (clickOkEvent != null)
-                ClickOkEvent += clickOkEvent;
+                context.ClickOkEvent += clickOkEvent;
             
             if (clickCancelEvent != null)
-                ClickCancelEvent += clickCancelEvent;
+                context.ClickCancelEvent += clickCancelEvent;
 
             cancelButtonRoot.SetActive(isOkCancel);
 
@@ -53,10 +44,10 @@ namespace GanShin.UI
                 LayoutRebuilder.ForceRebuildLayoutImmediate(layoutRoot);
             
             // Disable 이벤트는 가장 나중에 추가해야 한다.
-            ClickOkEvent     -= Disable;
-            ClickOkEvent     += Disable;
-            ClickCancelEvent -= Disable;
-            ClickCancelEvent += Disable;
+            context.ClickOkEvent     -= Disable;
+            context.ClickOkEvent     += Disable;
+            context.ClickCancelEvent -= Disable;
+            context.ClickCancelEvent += Disable;
         }
 
         public override void InitializeContextData()
@@ -66,14 +57,12 @@ namespace GanShin.UI
         public override void ClearContextData()
         {
             var context = PopupDataContext;
-            if (context != null)
-            {
-                context.ContentText = string.Empty;
-                context.TitleText   = string.Empty;   
-            }
+            if (context == null)
+                return;
 
-            ClickOkEvent = null;
-            ClickCancelEvent = null;
+            context.ContentText = string.Empty;
+            context.TitleText   = string.Empty;
+            context.ClearEvent();
         }
     }
 }
