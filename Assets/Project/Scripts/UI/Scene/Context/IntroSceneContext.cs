@@ -1,6 +1,4 @@
 using JetBrains.Annotations;
-using UnityEngine;
-using Zenject;
 using Context = Slash.Unity.DataBind.Core.Data.Context;
 
 namespace GanShin.UI
@@ -8,7 +6,7 @@ namespace GanShin.UI
     [UsedImplicitly]
     public class IntroSceneContext : Context
     {
-        [Inject] private UIManager _uiManager;
+        public UIManager UIManager { get; set; }
         
         [UsedImplicitly]
         public void OnClickStart()
@@ -31,11 +29,11 @@ namespace GanShin.UI
         [UsedImplicitly]
         public void OnClickExit()
         {
-            _uiManager.SetPopupOkCancel("종료하기", "게임을 종료하시겠습니까?",
+            UIManager?.SetPopupOkCancel("종료하기", "게임을 종료하시겠습니까?",
                 () =>
 #if UNITY_EDITOR
                 {
-                    Application.Quit();
+                    UnityEditor.EditorApplication.isPlaying = false;
                 }
 #else
             {
