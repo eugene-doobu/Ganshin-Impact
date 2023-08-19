@@ -1,10 +1,11 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
+using Slash.Unity.DataBind.Core.Data;
 
 namespace GanShin.UI
 {
-    public class ToastPopupDataContext : INotifyPropertyChanged
+    public class ToastPopupDataContext : Context, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 

@@ -1,7 +1,7 @@
 #nullable enable
 
 using System.Collections.Generic;
-using System.ComponentModel;
+using Slash.Unity.DataBind.Core.Data;
 
 namespace GanShin.UI
 {
@@ -17,7 +17,7 @@ namespace GanShin.UI
         
         public bool IsEmpty() => _set.Count == 0;
         
-        protected override INotifyPropertyChanged? InitializeDataContext() => null;
+        protected override Context? InitializeDataContext() => null;
 
         public override void InitializeContextData() { }
 

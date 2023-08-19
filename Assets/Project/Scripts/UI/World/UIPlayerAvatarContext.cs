@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using UnityEngine;
 using Zenject;
+using Context = Slash.Unity.DataBind.Core.Data.Context;
 
 namespace GanShin.UI
 {
@@ -10,7 +11,7 @@ namespace GanShin.UI
         
         [SerializeField] private Define.ePlayerAvatar target;
         
-        protected override INotifyPropertyChanged InitializeDataContext()
+        protected override Context InitializeDataContext()
         {
             return target switch
             {

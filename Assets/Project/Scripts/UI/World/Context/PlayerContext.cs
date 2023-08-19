@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
+using Slash.Unity.DataBind.Core.Data;
 using UnityEngine;
 
 namespace GanShin.UI
@@ -8,7 +9,7 @@ namespace GanShin.UI
     /// <summary>
     /// 플레이어의 아바타 상관없이 적용되는 수치에 대한 viewmodel context
     /// </summary>
-    public class PlayerContext : INotifyPropertyChanged
+    public class PlayerContext : Context, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
         

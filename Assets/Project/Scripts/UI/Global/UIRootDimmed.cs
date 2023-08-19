@@ -1,10 +1,10 @@
-using System.ComponentModel;
+using Slash.Unity.DataBind.Core.Data;
 
 namespace GanShin.UI
 {
     public class UIRootDimmed : GlobalUIRootBase
     {
-        protected override INotifyPropertyChanged InitializeDataContext() => null;
+        protected override Context InitializeDataContext() => null;
 
         public override void InitializeContextData() { }
 

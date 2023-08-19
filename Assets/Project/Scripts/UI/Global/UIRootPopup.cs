@@ -1,7 +1,7 @@
 #nullable enable
 
 using System;
-using System.ComponentModel;
+using Slash.Unity.DataBind.Core.Data;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,7 +12,7 @@ namespace GanShin.UI
         public PopupDataContext? PopupDataContext =>
             DataContext as PopupDataContext;
 
-        protected override INotifyPropertyChanged InitializeDataContext() =>
+        protected override Context InitializeDataContext() =>
             new PopupDataContext();
 
         [SerializeField] private GameObject      cancelButtonRoot = null!;

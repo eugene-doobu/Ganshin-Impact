@@ -8,7 +8,7 @@ using Slash.Unity.DataBind.Core.Data;
 
 namespace GanShin.UI
 {
-    public sealed class PopupDataContext : INotifyPropertyChanged
+    public sealed class PopupDataContext : Context, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
 
