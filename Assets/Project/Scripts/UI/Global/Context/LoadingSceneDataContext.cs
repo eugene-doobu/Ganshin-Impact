@@ -1,11 +1,12 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
+using Slash.Unity.DataBind.Core.Data;
 using UnityEngine;
 
 namespace GanShin.UI
 {
-    public sealed class LoadingSceneDataContext : INotifyPropertyChanged
+    public sealed class LoadingSceneDataContext : Context, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 

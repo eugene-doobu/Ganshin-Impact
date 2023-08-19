@@ -4,6 +4,7 @@ using System;
 using System.ComponentModel;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using Slash.Unity.DataBind.Core.Data;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,7 +19,7 @@ namespace GanShin.UI
         public ToastPopupDataContext? ToastPopupDataContext =>
             DataContext as ToastPopupDataContext;
 
-        protected override INotifyPropertyChanged InitializeDataContext() =>
+        protected override Context InitializeDataContext() =>
             new ToastPopupDataContext();
         
         [Header("UI Object")]

@@ -11,7 +11,7 @@ namespace GanShin.SceneManagement
         protected override void Init()
         {
             base.Init();
-            ESceneType = Define.eScene.Demo;
+            ESceneType = Define.eScene.DEMO;
         }
 
         public override void Clear()

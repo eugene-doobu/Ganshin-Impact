@@ -1,9 +1,9 @@
-using System.ComponentModel;
+using Slash.Unity.DataBind.Core.Data;
 
 namespace GanShin.UI
 {
     public interface IDataContextOwner
     {
-        public INotifyPropertyChanged DataContext { get; }
+        public Context DataContext { get; }
     }
 }

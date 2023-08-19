@@ -1,6 +1,6 @@
-using System.ComponentModel;
 using UnityEngine;
 using Zenject;
+using Context = Slash.Unity.DataBind.Core.Data.Context;
 
 namespace GanShin.UI
 {
@@ -24,7 +24,7 @@ namespace GanShin.UI
         /// </summary>
         [SerializeField] private GameObject owner;
 
-        protected override INotifyPropertyChanged InitializeDataContext()
+        protected override Context InitializeDataContext()
         {
             switch (target)
             {

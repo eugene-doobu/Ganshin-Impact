@@ -1,9 +1,9 @@
 ﻿using System;
-using System.ComponentModel;
 using JetBrains.Annotations;
 using Slash.Unity.DataBind.Core.Presentation;
 using UnityEngine;
 using Zenject;
+using Context = Slash.Unity.DataBind.Core.Data.Context;
 
 namespace GanShin.UI
 {
@@ -14,7 +14,7 @@ namespace GanShin.UI
 
         protected ContextHolder ContextHolder { get; private set; }
 
-        public INotifyPropertyChanged DataContext { get; protected set; }
+        public Context DataContext { get; protected set; }
 
         protected virtual void Awake()
         {
@@ -23,7 +23,7 @@ namespace GanShin.UI
             ContextHolder.Context = DataContext;
         }
 
-        protected abstract INotifyPropertyChanged InitializeDataContext();
+        protected abstract Context InitializeDataContext();
 
         public void CreateContext()
         {

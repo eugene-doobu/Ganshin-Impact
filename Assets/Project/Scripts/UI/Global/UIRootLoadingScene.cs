@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using UnityEngine;
 using Zenject;
+using Context = Slash.Unity.DataBind.Core.Data.Context;
 using Random = UnityEngine.Random;
 
 namespace GanShin.UI
@@ -17,7 +18,7 @@ namespace GanShin.UI
         public LoadingSceneDataContext LoadingSceneDataContext =>
             DataContext as LoadingSceneDataContext;
 
-        protected override INotifyPropertyChanged InitializeDataContext() =>
+        protected override Context InitializeDataContext() =>
             new LoadingSceneDataContext();
 
         private bool  _isInitialized;
