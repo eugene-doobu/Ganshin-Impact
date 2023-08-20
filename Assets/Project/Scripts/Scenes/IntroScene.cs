@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using Zenject;
 
 namespace GanShin.SceneManagement
@@ -12,7 +9,8 @@ namespace GanShin.SceneManagement
         protected override void Init()
         {
             base.Init();
-            ESceneType = Define.eScene.INTRO;
+            if (_scene.ESceneType != Define.eScene.INTRO)
+                GanDebugger.LogWarning("Current logical scene is not IntroScene");
         }
 
         public override void Clear()

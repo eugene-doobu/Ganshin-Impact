@@ -5,7 +5,7 @@ using Zenject;
 
 namespace GanShin.SceneManagement
 {
-    public class SimpleDemoScene : BaseScene
+    public class SimpleDemoScene : SpaceScene
     {
         private enum EDebugInputGroup
         {
@@ -24,12 +24,6 @@ namespace GanShin.SceneManagement
         [SerializeField] private Vector3 startPosition;
 
         [SerializeField] private EDebugInputGroup debugInputGroup = EDebugInputGroup.GLOBAL_UI;
-        
-        protected override void Init()
-        {
-            base.Init();
-            ESceneType = Define.eScene.SIMPLE_DEMO;
-        }
 
         private void Start()
         {
@@ -59,7 +53,7 @@ namespace GanShin.SceneManagement
         private void ProcessCommonDebugInput()
         {
             if (Input.GetKeyDown("]"))
-                _sceneManager.LoadScene(ESceneType).Forget();
+                _sceneManager.LoadScene(Define.eScene.SIMPLE_DEMO).Forget();
         }
 
         private void ProcessCharacterChangeDebugInput()

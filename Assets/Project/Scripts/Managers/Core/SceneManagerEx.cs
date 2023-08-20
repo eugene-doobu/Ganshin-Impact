@@ -17,6 +17,8 @@ namespace GanShin.SceneManagement
         [Inject(Id = LoadingSettingInstaller.ChangeSceneDelayId)]
         private float _changeSceneDelay;
 
+        public Define.eScene ESceneType { get; private set; } = Define.eScene.INTRO;
+
         public BaseScene CurrentScene => Object.FindObjectOfType<BaseScene>();
 
         public SceneManagerEx()
@@ -27,6 +29,7 @@ namespace GanShin.SceneManagement
         public async UniTask LoadScene(Define.eScene type)
         {
             _ui.SetLoadingSceneUiActive(true);
+            ESceneType = type;
             await SceneManager.LoadSceneAsync(GetSceneName(Define.eScene.LOADING_SCENE)).ToUniTask();
             await UniTask.Delay(TimeSpan.FromMilliseconds(_changeSceneDelay));
             await SceneManager.LoadSceneAsync(GetSceneName(type))
@@ -43,7 +46,7 @@ namespace GanShin.SceneManagement
 
         string GetSceneName(Define.eScene type)
         {
-            string name = System.Enum.GetName(typeof(Define.eScene), type);
+            string name = Enum.GetName(typeof(Define.eScene), type);
             return name;
         }
 
