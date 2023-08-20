@@ -1,4 +1,3 @@
-using GanShin.UI;
 using UnityEngine;
 using Zenject;
 
