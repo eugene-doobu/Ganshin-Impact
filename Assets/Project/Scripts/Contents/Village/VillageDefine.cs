@@ -7,9 +7,11 @@ namespace GanShin.Village.Base
     public enum ENpcType
     {
         NONE,
-        SHOP,
+        CHUN_BAE,
+        YEONG_CHUL,
     }
 
+    [Flags]
     public enum ENpcMenuType
     {
         TALK,
