@@ -6,10 +6,9 @@ using Zenject;
 
 namespace GanShin.SceneManagement
 {
+    // TODO: Zenject Installer를 통한 BaseScene 객체 생성?
     public abstract class BaseScene : MonoBehaviour
     {
-        public Define.eScene ESceneType { get; protected set; } = Define.eScene.Unknown;
-
         void Awake()
         {
             Init();

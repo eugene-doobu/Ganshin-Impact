@@ -11,6 +11,18 @@ namespace GanShin.UI
             base.Awake();
         }
 
+        public void Enable()
+        {
+            gameObject.SetActive(true);
+            InitializeContextData();
+        }
+        
+        public void Disable()
+        {
+            ClearContextData();
+            gameObject.SetActive(false);
+        }
+
         public abstract void InitializeContextData();
 
         public abstract void ClearContextData();

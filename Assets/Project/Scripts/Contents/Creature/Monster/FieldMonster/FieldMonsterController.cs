@@ -10,6 +10,7 @@ using Slash.Unity.DataBind.Core.Presentation;
 using UnityEngine;
 using UnityEngine.AI;
 using Zenject;
+using Context = Slash.Unity.DataBind.Core.Data.Context;
 
 namespace GanShin.Content.Creature.Monster
 {
@@ -123,7 +124,7 @@ namespace GanShin.Content.Creature.Monster
             }
         }
 
-        public INotifyPropertyChanged DataContext => _playerAvatarContext;
+        public Context DataContext => _playerAvatarContext;
 #endregion Properties
 
 #region MonoBehaviour

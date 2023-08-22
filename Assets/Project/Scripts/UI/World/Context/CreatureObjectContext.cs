@@ -2,11 +2,11 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
 using UnityEngine;
-
+using Context = Slash.Unity.DataBind.Core.Data.Context;
 
 namespace GanShin
 {
-    public abstract class CreatureObjectContext : INotifyPropertyChanged
+    public abstract class CreatureObjectContext : Context, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 

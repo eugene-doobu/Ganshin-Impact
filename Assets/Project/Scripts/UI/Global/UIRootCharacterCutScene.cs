@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel;
 using DG.Tweening;
+using Slash.Unity.DataBind.Core.Data;
 using UnityEngine;
 
 namespace GanShin.UI
@@ -45,7 +46,7 @@ namespace GanShin.UI
         }
 
 #region GlobalUIRootBase
-        protected override INotifyPropertyChanged InitializeDataContext() => 
+        protected override Context InitializeDataContext() => 
             null;
 
         public override void InitializeContextData() { }

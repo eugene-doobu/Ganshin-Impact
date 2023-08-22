@@ -162,7 +162,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5294569265978591585}
   - component: {fileID: 5294569265978591586}
-  - component: {fileID: 5294569265978591587}
+  - component: {fileID: 986367753595631937}
   m_Layer: 5
   m_Name: UI_CharacterCutScene
   m_TagString: Untagged
@@ -200,7 +200,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   contextType: 
   createContext: 0
---- !u!114 &5294569265978591587
+--- !u!114 &986367753595631937
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -282,7 +282,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1999
   m_TargetDisplay: 0
 --- !u!114 &5294569266432897946
 MonoBehaviour:

@@ -30,14 +30,12 @@
 
         public enum eScene
         {
-            Unknown,
-            LoadingScene,
-            LobbyScene,
-            Demo,
-            SimpleDemo,
-            Login,
-            Lobby,
-            Game,
+            UNKNOWN,
+            LOADING_SCENE,
+            INTRO,
+            DEMO,
+            SIMPLE_DEMO,
+            GAME,
         }
 
         public enum eSound
