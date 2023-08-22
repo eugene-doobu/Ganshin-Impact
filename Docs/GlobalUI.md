@@ -5,7 +5,7 @@
 
 ## 1. 로딩신 UI
 
-![image](/Images/GlobalUI.LoadingScene.jpg)
+![image](./Images/GlobalUI_LoadingScene.jpg)
 
 로딩씬에서 사용하는 UI입니다.
 
@@ -22,7 +22,7 @@
 
 ## 4. 팝업 UI
 
-![image](/Images/GlobalUI.Popup.jpg)
+![image](./Images/GlobalUI_Popup.jpg)
 
 유저의 확인이 필요한 중요한 정보를 전송하기 위한 UI를 출력할 때 사용합니다.
 
@@ -32,7 +32,7 @@
 
 ## 5. 토스트 메시지
 
-![image](/Images/GlobalUI.Toast.jpg)
+![image](./Images/GlobalUI_Toast.jpg)
 
 토스트 메시지의 특정 텍스트를 유저에게 가볍게 보여주는 경우 사용합니다. 유저와의 상호작용이 없고, 유저가 메시지를 무시하더라도 큰 문제가 없는 경우 사용됩니다.
 
@@ -45,6 +45,6 @@
 
 ## 6. 로딩 UI
 
-![image](/Images/GlobalUI.Loading.jpg)
+![image](./Images/GlobalUI_Loading.jpg)
 
-로딩씬 UI와 달리, 씬 이동 없이 일시적으로 무언가를 기달려야 하고, 대기 시간동안 유저의 입력을 막아야 하는 경우 사용하는 UI입니다.
+로딩씬 UI와 달리, 씬 이동 없이 일시적으로 무언가를 대기하며, 대기 시간동안 유저의 입력을 막아야 하는 경우 사용하는 UI입니다.
