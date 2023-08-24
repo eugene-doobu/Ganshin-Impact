@@ -17,16 +17,9 @@ namespace GanShin
 #region Internal Class
         private class PlayerAvatarContextBundle
         {
-            public PlayerAvatarContext? RikoHpBarContext      { get; }
-            public PlayerAvatarContext? AIHpBarContext        { get; }
-            public PlayerAvatarContext? MuscleCatHpBarContext { get; }
-
-            public PlayerAvatarContextBundle()
-            {
-                RikoHpBarContext      = Activator.CreateInstance(typeof(PlayerAvatarContext)) as PlayerAvatarContext;
-                AIHpBarContext        = Activator.CreateInstance(typeof(PlayerAvatarContext)) as PlayerAvatarContext;
-                MuscleCatHpBarContext = Activator.CreateInstance(typeof(PlayerAvatarContext)) as PlayerAvatarContext;
-            }
+            public PlayerAvatarContext? RikoHpBarContext      { get; } = Activator.CreateInstance(typeof(PlayerAvatarContext)) as PlayerAvatarContext;
+            public PlayerAvatarContext? AIHpBarContext        { get; } = Activator.CreateInstance(typeof(PlayerAvatarContext)) as PlayerAvatarContext;
+            public PlayerAvatarContext? MuscleCatHpBarContext { get; } = Activator.CreateInstance(typeof(PlayerAvatarContext)) as PlayerAvatarContext;
         }
 #endregion Internal Class
 
