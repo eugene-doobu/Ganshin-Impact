@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3252362919080294}
   - component: {fileID: 3252362919080288}
   - component: {fileID: 2434989663988428278}
-  - component: {fileID: 2434989664905863478}
+  - component: {fileID: 5129152566809470687}
   m_Layer: 5
   m_Name: UI_MiniMap
   m_TagString: Untagged
@@ -61,10 +61,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0353de6b5a9e8fa4eaded0354856aa9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  contextType: GanShin.UI.PlayerContext, GanShinAssembly, Version=0.0.0.0, Culture=neutral,
-    PublicKeyToken=null
+  contextType: GanShin.Space.UI.MinimapContext, GanShinAssembly, Version=0.0.0.0,
+    Culture=neutral, PublicKeyToken=null
   createContext: 1
---- !u!114 &2434989664905863478
+--- !u!114 &5129152566809470687
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -73,7 +73,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3252362919080295}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 91e10145a1de68b46a86a9ec5b675edb, type: 3}
+  m_Script: {fileID: 11500000, guid: 9519fa1d97c5cd640ab29e5fcc9cc362, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &5129152567000397739
@@ -239,6 +239,8 @@ GameObject:
   m_Component:
   - component: {fileID: 5129152567977570566}
   - component: {fileID: 5129152567977570561}
+  - component: {fileID: 1371002161077042505}
+  - component: {fileID: 1241752258}
   m_Layer: 5
   m_Name: Toggle_OnOff
   m_TagString: Untagged
@@ -315,6 +317,54 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_IsOn: 1
+--- !u!114 &1371002161077042505
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5129152567977570567}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab7c1455d75aad04bbbe5502d4ed1160, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ActiveWhenFalse:
+    Constant: 
+    Path: IsEnable
+    Provider: {fileID: 0}
+    Reference: {fileID: 5129152568292191915}
+    Type: 3
+  ActiveWhenTrue:
+    Constant: 
+    Path: IsEnable
+    Provider: {fileID: 0}
+    Reference: {fileID: 5129152568292191915}
+    Type: 3
+  Switch:
+    Constant: 
+    Path: IsEnable
+    Provider: {fileID: 1241752258}
+    Reference: {fileID: 0}
+    Type: 1
+--- !u!114 &1241752258
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5129152567977570567}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7c64028b53fdae4a90603aadc5b418e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TargetBinding:
+    Constant: 
+    Path: 
+    Provider: {fileID: 0}
+    Reference: {fileID: 5129152567977570561}
+    Type: 3
 --- !u!1 &5129152568292191915
 GameObject:
   m_ObjectHideFlags: 0
@@ -417,6 +467,7 @@ GameObject:
   - component: {fileID: 5129152568568986234}
   - component: {fileID: 5129152568568986228}
   - component: {fileID: 5129152568568986229}
+  - component: {fileID: 5129152566809470690}
   m_Layer: 5
   m_Name: RawImage_Minimap
   m_TagString: Untagged
@@ -479,3 +530,28 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
+--- !u!114 &5129152566809470690
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5129152568568986235}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c4a9b34388b627419f54d227ae3d23b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Data:
+    Constant: 
+    Path: Texture
+    Provider: {fileID: 0}
+    Reference: {fileID: 0}
+    Type: 0
+  TargetBinding:
+    Constant: 
+    Path: 
+    Provider: {fileID: 0}
+    Reference: {fileID: 5129152568568986229}
+    Type: 3
+  constantTarget: {fileID: 0}
