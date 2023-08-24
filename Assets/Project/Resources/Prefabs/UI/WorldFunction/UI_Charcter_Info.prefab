@@ -64,7 +64,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0353de6b5a9e8fa4eaded0354856aa9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  contextType: GanShin.UI.PlayerAvatarContext, GanShinAssembly, Version=0.0.0.0,
+  contextType: GanShin.Space.UI.PlayerAvatarContext, GanShinAssembly, Version=0.0.0.0,
     Culture=neutral, PublicKeyToken=null
   createContext: 0
 --- !u!114 &462976500718941587
@@ -79,7 +79,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 030a1ca1d1d928749910da18a1a4eec4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: 1
+  target: 0
 --- !u!114 &5207491908926036997
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -652,7 +652,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 31844f74afa81ce49832731a3dcade4e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4d9be09367bd966439da96f5cd2338a5, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

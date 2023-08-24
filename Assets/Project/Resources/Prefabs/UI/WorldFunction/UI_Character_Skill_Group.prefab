@@ -65,8 +65,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0353de6b5a9e8fa4eaded0354856aa9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  contextType: GanShin.UI.PlayerContext, GanShinAssembly, Version=0.0.0.0, Culture=neutral,
-    PublicKeyToken=null
+  contextType: GanShin.Space.UI.PlayerContext, GanShinAssembly, Version=0.0.0.0,
+    Culture=neutral, PublicKeyToken=null
   createContext: 1
 --- !u!114 &313654514957840383
 MonoBehaviour:
@@ -145,7 +145,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 313654514957840352}
     m_Modifications:
     - target: {fileID: 8345501031857905064, guid: 9edeab5ae548a884e8508fd86ca6645b, type: 3}
@@ -237,7 +237,9 @@ PrefabInstance:
       value: UI_Character_Skill_Item_Riko
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9edeab5ae548a884e8508fd86ca6645b, type: 3}
 --- !u!224 &8485284856774537214 stripped
 RectTransform:
@@ -254,7 +256,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 313654514957840352}
     m_Modifications:
     - target: {fileID: 8345501031857905064, guid: 9edeab5ae548a884e8508fd86ca6645b, type: 3}
@@ -345,12 +347,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI_Character_Skill_Item_MuscleCat
       objectReference: {fileID: 0}
+    - target: {fileID: 8345501031857905076, guid: 9edeab5ae548a884e8508fd86ca6645b, type: 3}
+      propertyPath: createContext
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8345501031857905077, guid: 9edeab5ae548a884e8508fd86ca6645b, type: 3}
       propertyPath: target
       value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9edeab5ae548a884e8508fd86ca6645b, type: 3}
 --- !u!1 &4581655066990023154 stripped
 GameObject:
@@ -367,7 +375,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 313654514957840352}
     m_Modifications:
     - target: {fileID: 8345501031857905064, guid: 9edeab5ae548a884e8508fd86ca6645b, type: 3}
@@ -458,12 +466,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI_Character_Skill_Item_Ai
       objectReference: {fileID: 0}
+    - target: {fileID: 8345501031857905076, guid: 9edeab5ae548a884e8508fd86ca6645b, type: 3}
+      propertyPath: createContext
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8345501031857905077, guid: 9edeab5ae548a884e8508fd86ca6645b, type: 3}
       propertyPath: target
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9edeab5ae548a884e8508fd86ca6645b, type: 3}
 --- !u!1 &3173722330477679584 stripped
 GameObject:
