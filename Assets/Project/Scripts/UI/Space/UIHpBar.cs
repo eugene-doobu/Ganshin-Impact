@@ -1,8 +1,9 @@
 using UnityEngine;
 using Zenject;
+using GanShin.UI;
 using Context = Slash.Unity.DataBind.Core.Data.Context;
 
-namespace GanShin.UI
+namespace GanShin.Space.UI
 {
     public enum eHpTarget
     {

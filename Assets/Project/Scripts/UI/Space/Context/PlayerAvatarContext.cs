@@ -2,7 +2,7 @@ using DG.Tweening;
 using JetBrains.Annotations;
 using UnityEngine;
 
-namespace GanShin.UI
+namespace GanShin.Space.UI
 {
     public sealed class PlayerAvatarContext : CreatureObjectContext
     {

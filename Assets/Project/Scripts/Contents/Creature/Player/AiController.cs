@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using GanShin.Data;
-using GanShin.UI;
-using UnityEngine;
+using GanShin.Space.UI;
 
 namespace GanShin.Content.Creature
 {

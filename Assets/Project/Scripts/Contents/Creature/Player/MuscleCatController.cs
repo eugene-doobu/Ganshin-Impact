@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Threading;
 using Cinemachine;
 using Cysharp.Threading.Tasks;
@@ -9,7 +7,7 @@ using GanShin.CameraSystem;
 using GanShin.Content.Creature.Monster;
 using GanShin.Data;
 using GanShin.Effect;
-using GanShin.UI;
+using GanShin.Space.UI;
 using UnityEngine;
 using Zenject;
 

@@ -3,7 +3,7 @@
 using System;
 using GanShin.CameraSystem;
 using GanShin.Content.Creature;
-using GanShin.UI;
+using GanShin.Space.UI;
 using JetBrains.Annotations;
 using UnityEngine;
 using Zenject;

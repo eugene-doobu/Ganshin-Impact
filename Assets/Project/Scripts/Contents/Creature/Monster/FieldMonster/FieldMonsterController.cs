@@ -1,7 +1,7 @@
 #nullable enable
 
 using System;
-using System.ComponentModel;
+using GanShin.Space.UI;
 using Cysharp.Threading.Tasks;
 using System.Linq;
 using GanShin.Data;
