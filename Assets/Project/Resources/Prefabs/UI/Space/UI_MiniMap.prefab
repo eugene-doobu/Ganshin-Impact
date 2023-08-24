@@ -76,6 +76,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9519fa1d97c5cd640ab29e5fcc9cc362, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultTexture: {fileID: 0}
 --- !u!1 &5129152567000397739
 GameObject:
   m_ObjectHideFlags: 0

@@ -11,6 +11,7 @@ namespace GanShin.Space.UI
         public event PropertyChangedEventHandler PropertyChanged;
         
         private Texture _texture;
+        private Texture _defaultTexture;
         
         [UsedImplicitly]
         public Texture Texture
@@ -18,8 +19,19 @@ namespace GanShin.Space.UI
             get => _texture;
             set
             {
-                _texture = value;
+                _texture = value == null ? DefaultTexture : value;
                 OnPropertyChanged();
+            }
+        }
+
+        public Texture DefaultTexture
+        {
+            get => _defaultTexture;
+            set
+            {
+                _defaultTexture = value;
+                if (Texture == null)
+                    Texture = value;
             }
         }
 
