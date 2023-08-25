@@ -2,7 +2,7 @@ using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using GanShin.Data;
-using GanShin.UI;
+using GanShin.Space.UI;
 using JetBrains.Annotations;
 
 namespace GanShin.Content.Creature

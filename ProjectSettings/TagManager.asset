@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Monster
+  - PlayerWeapon
   layers:
   - Default
   - TransparentFX
@@ -15,8 +16,8 @@ TagManager:
   - Wall
   - Ground
   - Monster
-  - 
-  - 
+  - Environment
+  - Minimap
   - 
   - 
   - 

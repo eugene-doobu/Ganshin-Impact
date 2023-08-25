@@ -108,7 +108,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 228275524892349364}
     m_Modifications:
     - target: {fileID: 462976500718941587, guid: 61b646584f22e544fa5245d84c00f81c, type: 3}
@@ -220,7 +220,9 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: 3e79b653accacc94d87aa29ba9c6c5ef, type: 3}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 61b646584f22e544fa5245d84c00f81c, type: 3}
 --- !u!224 &4621676461363595687 stripped
 RectTransform:
@@ -232,9 +234,13 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 228275524892349364}
     m_Modifications:
+    - target: {fileID: 462976500718941587, guid: 61b646584f22e544fa5245d84c00f81c, type: 3}
+      propertyPath: target
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4830534050261552494, guid: 61b646584f22e544fa5245d84c00f81c, type: 3}
       propertyPath: m_Pivot.x
       value: 1
@@ -323,8 +329,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI_Charcter_Info_Ai
       objectReference: {fileID: 0}
+    - target: {fileID: 5506464723604782259, guid: 61b646584f22e544fa5245d84c00f81c, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 31844f74afa81ce49832731a3dcade4e, type: 3}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 61b646584f22e544fa5245d84c00f81c, type: 3}
 --- !u!224 &4621676462062292944 stripped
 RectTransform:
@@ -336,13 +348,9 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 228275524892349364}
     m_Modifications:
-    - target: {fileID: 462976500718941587, guid: 61b646584f22e544fa5245d84c00f81c, type: 3}
-      propertyPath: target
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4830534050261552494, guid: 61b646584f22e544fa5245d84c00f81c, type: 3}
       propertyPath: m_Pivot.x
       value: 1
@@ -378,14 +386,6 @@ PrefabInstance:
     - target: {fileID: 4830534050261552494, guid: 61b646584f22e544fa5245d84c00f81c, type: 3}
       propertyPath: m_SizeDelta.y
       value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 4830534050261552494, guid: 61b646584f22e544fa5245d84c00f81c, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4830534050261552494, guid: 61b646584f22e544fa5245d84c00f81c, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4830534050261552494, guid: 61b646584f22e544fa5245d84c00f81c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -439,12 +439,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI_Charcter_Info_Riko
       objectReference: {fileID: 0}
-    - target: {fileID: 5506464723604782259, guid: 61b646584f22e544fa5245d84c00f81c, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 4d9be09367bd966439da96f5cd2338a5, type: 3}
+    - target: {fileID: 4830534050439170451, guid: 61b646584f22e544fa5245d84c00f81c, type: 3}
+      propertyPath: m_text
+      value: Riko
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 61b646584f22e544fa5245d84c00f81c, type: 3}
 --- !u!224 &228275525019907661 stripped
 RectTransform:

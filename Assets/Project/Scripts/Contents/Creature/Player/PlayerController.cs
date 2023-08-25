@@ -8,6 +8,7 @@ using GanShin.Utils;
 using GanShin.Content.Weapon;
 using GanShin.Data;
 using GanShin.UI;
+using GanShin.Space.UI;
 using UnityEngine;
 using Zenject;
 
