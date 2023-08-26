@@ -420,6 +420,11 @@ namespace GanShin.Content.Creature
             }
         }
         
+        public void OnHealed(float heal)
+        {
+            CurrentHp += heal;
+        }
+        
         private async UniTask SkillCoolTime()
         {
             _isAvailableSkill = false;
