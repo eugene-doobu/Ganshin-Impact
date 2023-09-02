@@ -1,24 +1,21 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using GanShin.Space.Content;
-using GanShin.UI;
 using JetBrains.Annotations;
 using Slash.Unity.DataBind.Core.Data;
 
 namespace GanShin.Space.UI
 {
     [UsedImplicitly]
-    public class InventoryContext : Context, INotifyPropertyChanged
+    public class InventoryContext : Context
     {
-        private readonly Dictionary<ConsumableItemType, Context> _items = new();
+        private readonly Dictionary<ConsumableItemType, InventoryItemContext> _items = new();
 
-        public event PropertyChangedEventHandler  PropertyChanged;
-        
-        public void AddContext(ConsumableItemType type)
+        public Context AddContext(ConsumableItemType type)
         {
-            _items.Add(type, new InventoryItemContext());
+            var context = new InventoryItemContext();
+            _items.Add(type, context);
+            return context;
         }
         
         public void RemoveContext(ConsumableItemType type)
@@ -29,10 +26,11 @@ namespace GanShin.Space.UI
             _items.Remove(type);
         }
 
-        [NotifyPropertyChangedInvocator]
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        public void SetItem(ConsumableItemType type, int value)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            if (!_items.TryGetValue(type, out var context)) return;
+            
+            context.Amount = value;
         }
     }
 }

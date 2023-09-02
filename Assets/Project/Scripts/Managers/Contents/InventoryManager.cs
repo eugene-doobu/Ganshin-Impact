@@ -23,27 +23,24 @@ namespace GanShin.Space.Content
         
         private readonly Dictionary<ConsumableItemType, int> _items = new();
         
+        public Dictionary<ConsumableItemType, int> Items => _items;
         public bool IsInitialized { get; private set; }
         
-        public event Action<Dictionary<ConsumableItemType, int>>? OnItemUpdated;
+        public event Action<ConsumableItemType, int>? OnItemUpdated;
         
         public void Initialize()
         {
             LoadItems();
-            BindItemToUI();
             IsInitialized = false;
         }
 
         private void LoadItems()
         {
             // TODO: Load items from save file
-            foreach (ConsumableItemType consumableItemType in System.Enum.GetValues(typeof(ConsumableItemType)))
+            foreach (ConsumableItemType consumableItemType in Enum.GetValues(typeof(ConsumableItemType)))
                 _items.Add(consumableItemType, 10);
-            OnItemUpdated?.Invoke(_items);
-        }
-
-        private void BindItemToUI()
-        {
+            foreach (var kvp in _items)
+                OnItemUpdated?.Invoke(kvp.Key, kvp.Value);
         }
     }
 }

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2086383184515390618}
   - component: {fileID: 2086383184515390596}
   - component: {fileID: 2086383184515390619}
+  - component: {fileID: 9139964519405438468}
   m_Layer: 5
   m_Name: Text_Amount
   m_TagString: Untagged
@@ -135,6 +136,31 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &9139964519405438468
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2086383184515390617}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c26e4a44e9491654a945d71b81a23552, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Data:
+    Constant: 
+    Path: Amount
+    Provider: {fileID: 0}
+    Reference: {fileID: 0}
+    Type: 0
+  TargetBinding:
+    Constant: 
+    Path: 
+    Provider: {fileID: 0}
+    Reference: {fileID: 2086383184515390619}
+    Type: 3
+  constantTarget: {fileID: 0}
 --- !u!1 &2086383184899387950
 GameObject:
   m_ObjectHideFlags: 0
@@ -146,6 +172,7 @@ GameObject:
   - component: {fileID: 2086383184899387951}
   - component: {fileID: 2086383184899387945}
   - component: {fileID: 2086383184899387944}
+  - component: {fileID: 2898609058635628730}
   m_Layer: 5
   m_Name: UI_ConsumableItem
   m_TagString: Untagged
@@ -213,6 +240,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &2898609058635628730
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2086383184899387950}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0353de6b5a9e8fa4eaded0354856aa9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  contextType: GanShin.Space.UI.InventoryItemContext, GanShinAssembly, Version=0.0.0.0,
+    Culture=neutral, PublicKeyToken=null
+  createContext: 0
 --- !u!1 &2086383185315876398
 GameObject:
   m_ObjectHideFlags: 0
