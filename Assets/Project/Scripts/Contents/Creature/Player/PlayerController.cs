@@ -139,6 +139,8 @@ namespace GanShin.Content.Creature
         protected PlayerManager Player => _playerManager;
 
         public abstract PlayerAvatarContext GetPlayerContext { get; }
+        
+        public bool IsDead => _isDead;
 #endregion Properties
 
 #region Mono

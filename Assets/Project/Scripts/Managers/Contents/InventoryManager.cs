@@ -75,11 +75,20 @@ namespace GanShin.Space.Content
         private void UseItem(ConsumableItemType type)
         {
             if (!_itemAmount.ContainsKey(type)) return;
+
+            var currentPlayer = PlayerManager?.CurrentPlayer;
+            if (currentPlayer == null || currentPlayer.IsDead)
+            {
+                UIManager?.SetToast("아이템 사용불가", "플레이어가 사망하였습니다.", EToastType.ERROR);
+                return;
+            }
+            
             if (_itemAmount[type] <= 0)
             {
                 UIManager?.SetToast("아이템 사용불가", "아이템을 부족합니다", EToastType.WARNING);
                 return;
             }
+
             ItemAmountUpdated(type, _itemAmount[type] - 1);
             OnItemAmountUpdated?.Invoke(type, _itemAmount[type]);
             
