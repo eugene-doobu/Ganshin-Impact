@@ -30,6 +30,5 @@ namespace GanShin.Content
         TRACING,
         ATTACK,
         DEAD,
-        CAUGHT,
     }
 }

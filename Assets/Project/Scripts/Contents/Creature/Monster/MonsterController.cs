@@ -69,11 +69,6 @@ namespace GanShin.Content.Creature.Monster
         {
         }
 
-        public void SetCaught()
-        {
-            State = eMonsterState.CAUGHT;
-        }
-
 #region ProcessState
         protected abstract void ProcessCreated();
         protected abstract void ProcessIdle();

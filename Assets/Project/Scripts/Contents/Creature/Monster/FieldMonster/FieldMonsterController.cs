@@ -58,9 +58,6 @@ namespace GanShin.Content.Creature.Monster
             protected set
             {
                 var prevValue = base.State;
-
-                if (value != eMonsterState.DEAD && prevValue == eMonsterState.CAUGHT)
-                    return;
                 
                 if (base.State == value) return;
                 base.State = value;
@@ -93,9 +90,6 @@ namespace GanShin.Content.Creature.Monster
                         break;
                     case eMonsterState.DEAD:
                         _animController.OnDie();
-                        break;
-                    case eMonsterState.CAUGHT:
-                        _navMeshAgent.isStopped = true;
                         break;
                 }
             }
