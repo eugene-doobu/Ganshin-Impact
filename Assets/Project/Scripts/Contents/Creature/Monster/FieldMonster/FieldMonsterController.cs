@@ -3,7 +3,6 @@
 using System;
 using GanShin.Space.UI;
 using Cysharp.Threading.Tasks;
-using System.Linq;
 using GanShin.Data;
 using GanShin.UI;
 using Slash.Unity.DataBind.Core.Presentation;
