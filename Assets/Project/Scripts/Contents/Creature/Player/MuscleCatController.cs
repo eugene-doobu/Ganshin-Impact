@@ -132,25 +132,9 @@ namespace GanShin.Content.Creature
         {
             var len = Physics.OverlapSphereNonAlloc(transform.position, _statTable.skillRadius, _monsterColliders, Define.GetLayerMask(Define.eLayer.MONSTER));
             var monsters = new MonsterController[len];
-            
-            for (var i = 0; i < len; ++i)
-                monsters[i] = _monsterColliders[i].GetComponent<MonsterController>();
-
-            foreach (var monster in monsters)
-            {
-                var monsterTr               = monster.transform;
-                var playerPositionOfMonster = transform.InverseTransformPoint(monsterTr.position);
-                var knockBackPower          = Mathf.Max(-playerPositionOfMonster.z + _statTable.skillKnockBackDistance, 0f);
-                monster.SetCaught();
-                monsterTr.DOMove(monsterTr.position + transform.forward * knockBackPower, _statTable.skillKnockBackDuration)
-                    .SetEase(_statTable.skillEaseType);
-            }
-
             await UniTask.Delay(TimeSpan.FromMilliseconds(_statTable.skillDuration));
-
             foreach (var monster in monsters)
                 monster.OnDamaged(_statTable.skillDamage);
-
             CurrentUltimateGauge += _statTable.ultimateSkillChargeOnBaseAttack;
         }
 

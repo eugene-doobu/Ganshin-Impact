@@ -1,8 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
-using Cysharp.Threading.Tasks;
 using GanShin.Utils;
 using UnityEngine;
 
@@ -24,7 +20,7 @@ namespace GanShin.Content.Creature.Monster
             }
         }
 
-        public virtual void OnDamaged(float damage, float additionalKnockBack = 0)
+        public virtual void OnDamaged(float damage)
         {
             if (State == eMonsterState.DEAD) return;
         }
@@ -56,9 +52,6 @@ namespace GanShin.Content.Creature.Monster
                 case eMonsterState.TRACING:
                     ProcessTracing();
                     break;
-                case eMonsterState.KNOCK_BACK:
-                    ProcessKnockBack();
-                    break;
                 case eMonsterState.ATTACK:
                     ProcessAttack();
                     break;
@@ -72,19 +65,12 @@ namespace GanShin.Content.Creature.Monster
         {
         }
 
-        public void SetCaught()
-        {
-            State = eMonsterState.CAUGHT;
-        }
 #region ProcessState
-
         protected abstract void ProcessCreated();
         protected abstract void ProcessIdle();
         protected abstract void ProcessTracing();
-        protected abstract void ProcessKnockBack();
         protected abstract void ProcessAttack();
         protected abstract void ProcessDead();
-
 #endregion ProcessState
     }
 }
