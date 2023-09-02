@@ -149,6 +149,11 @@ PrefabInstance:
     m_TransformParent: {fileID: 4329812412386271729}
     m_Modifications:
     - target: {fileID: 412232676, guid: 68b6e0d5df2d8574cb29c8e1b08cbce7, type: 3}
+      propertyPath: contextType
+      value: GanShin.Space.UI.PlayerAvatarContext, GanShinAssembly, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      objectReference: {fileID: 0}
+    - target: {fileID: 412232676, guid: 68b6e0d5df2d8574cb29c8e1b08cbce7, type: 3}
       propertyPath: createContext
       value: 0
       objectReference: {fileID: 0}
@@ -384,6 +389,11 @@ PrefabInstance:
     m_TransformParent: {fileID: 4329812412386271729}
     m_Modifications:
     - target: {fileID: 412232676, guid: 68b6e0d5df2d8574cb29c8e1b08cbce7, type: 3}
+      propertyPath: contextType
+      value: GanShin.Space.UI.PlayerAvatarContext, GanShinAssembly, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      objectReference: {fileID: 0}
+    - target: {fileID: 412232676, guid: 68b6e0d5df2d8574cb29c8e1b08cbce7, type: 3}
       propertyPath: createContext
       value: 0
       objectReference: {fileID: 0}
@@ -618,6 +628,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4329812412386271729}
     m_Modifications:
+    - target: {fileID: 412232676, guid: 68b6e0d5df2d8574cb29c8e1b08cbce7, type: 3}
+      propertyPath: contextType
+      value: GanShin.Space.UI.PlayerAvatarContext, GanShinAssembly, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      objectReference: {fileID: 0}
     - target: {fileID: 412232676, guid: 68b6e0d5df2d8574cb29c8e1b08cbce7, type: 3}
       propertyPath: createContext
       value: 0

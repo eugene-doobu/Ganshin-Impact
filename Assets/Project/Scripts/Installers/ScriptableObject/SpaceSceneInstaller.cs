@@ -31,6 +31,15 @@ namespace GanShin
                 .To<MinimapManager>()
                 .AsSingle()
                 .NonLazy();
+
+            Container.Bind(
+                    typeof(InventoryManager),
+                    typeof(IInitializable),
+                    typeof(ITickable)
+                )
+                .To<InventoryManager>()
+                .AsSingle()
+                .NonLazy();
         }
     }
 }

@@ -41,10 +41,14 @@ namespace GanShin.Space.Content
 
         public void LateTick()
         {
+            var playerTransform = _playerManager.CurrentPlayerTransform;
+            if (playerTransform == null)
+                return;
+            
             var tr       = _minimapCamera.transform;
             var position = tr.position;
             var height   = position.y;
-            position    = _playerManager.CurrentPlayerTransform!.position;
+            position    = playerTransform.position;
             position    = new Vector3(position.x, height, position.z);
             tr.position = position;
         }

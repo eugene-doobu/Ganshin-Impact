@@ -9,6 +9,7 @@ namespace GanShin.SceneManagement
     {
         private enum EDebugInputGroup
         {
+            NONE,
             CHARACTER_CHANGE,
             GLOBAL_UI,
         }
@@ -41,6 +42,8 @@ namespace GanShin.SceneManagement
             ProcessCommonDebugInput();
             switch (debugInputGroup)
             {
+                case EDebugInputGroup.NONE:
+                    break;
                 case EDebugInputGroup.CHARACTER_CHANGE:
                     ProcessCharacterChangeDebugInput();
                     break;
