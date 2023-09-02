@@ -17,6 +17,8 @@ namespace GanShin.Content.Creature.Monster
     [RequireComponent(typeof(Animator), typeof(NavMeshAgent), typeof(CapsuleCollider))]
     public class FieldMonsterController : MonsterController, IDataContextOwner
     {
+        protected static readonly Collider[] CharacterCollider = new Collider[2];
+        
         [Inject] private PlayerManager _playerManager = null!;
         
         [SerializeField] private FieldMonsterTable table = null!;
@@ -24,7 +26,7 @@ namespace GanShin.Content.Creature.Monster
         [SerializeField] private float attackForwardDistance = 0.1f;
         [SerializeField] private float attackRadius          = 1.2f;
 
-        private readonly PlayerAvatarContext _playerAvatarContext = new PlayerAvatarContext();
+        private readonly PlayerAvatarContext _playerAvatarContext = new();
 
         private Transform? _playerTarget;
         
@@ -311,13 +313,18 @@ namespace GanShin.Content.Creature.Monster
             _animController.OnAttack();
             _isAttacking = true;
             await UniTask.Delay(TimeSpan.FromSeconds(table.attackDuration));
-            // TODO: SphereCast같은걸로 처리??, 연산 최적화 필요, 하드코딩 제거
             var tr = transform;
-            Physics.OverlapSphere(tr.position + tr.forward * attackForwardDistance, attackRadius,
-                    Define.GetLayerMask(Define.eLayer.CHARACTER))
-                .Where(x => x.CompareTag(Define.Tag.Player))
-                .ToList()
-                .ForEach(x => x.GetComponent<PlayerController>().OnDamaged(table.attackDamage));
+            var position = tr.position + tr.forward * attackForwardDistance;
+            var len = Physics.OverlapSphereNonAlloc(position, attackRadius, CharacterCollider,
+                    Define.GetLayerMask(Define.eLayer.CHARACTER));
+            for (var i = 0; i < len; ++i)
+            {
+                var player = CharacterCollider[i].GetComponent<PlayerController>();
+                if (ReferenceEquals(player, null)) continue;
+                if (!player.CompareTag(Define.Tag.Player)) continue;
+                
+                player.OnDamaged(table.attackDamage);
+            }
             _isAttacking = false;
             _animController.OnIdle();
         }
