@@ -11,7 +11,6 @@ namespace GanShin.Space.UI
         public event PropertyChangedEventHandler PropertyChanged;
 
         private int _amount;
-        private float _coolTime;
         
         [UsedImplicitly]
         public int Amount
@@ -23,22 +22,10 @@ namespace GanShin.Space.UI
                 OnPropertyChanged();
             }
         }
-        
-        [UsedImplicitly]
-        public float CoolTime
-        {
-            get => _coolTime;
-            set
-            {
-                _coolTime = value;
-                OnPropertyChanged();
-            }
-        }
 
         public void Dispose()
         {
             Amount          = 0;
-            CoolTime        = 1f;
             PropertyChanged = null;
         }
 
