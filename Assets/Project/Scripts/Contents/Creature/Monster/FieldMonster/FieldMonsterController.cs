@@ -19,14 +19,14 @@ namespace GanShin.Content.Creature.Monster
     {
         [Inject] private PlayerManager _playerManager = null!;
         
-        [SerializeField] private FieldMonsterTable table;
+        [SerializeField] private FieldMonsterTable table = null!;
 
         [SerializeField] private float attackForwardDistance = 0.1f;
         [SerializeField] private float attackRadius          = 1.2f;
 
         private readonly PlayerAvatarContext _playerAvatarContext = new PlayerAvatarContext();
 
-        private Transform _playerTarget = null!;
+        private Transform? _playerTarget;
         
         private Animator             _animator        = null!;
         private NavMeshAgent         _navMeshAgent    = null!;
@@ -36,15 +36,12 @@ namespace GanShin.Content.Creature.Monster
 
         private float _attackTimer;
         private bool  _isAttacking;
-        private bool  _isKnockBack;
         private bool  _isDead;
-
-        private float _additionalKnockBack;
         
         private float _currentHp;
 
 #region Properties
-        protected override Transform Target
+        protected override Transform? Target
         {
             get => _playerTarget;
             set
@@ -62,10 +59,10 @@ namespace GanShin.Content.Creature.Monster
             {
                 var prevValue = base.State;
 
-                if (prevValue == eMonsterState.CAUGHT && value != eMonsterState.KNOCK_BACK)
+                if (prevValue == eMonsterState.CAUGHT)
                     return;
                 
-                if (base.State == value) return;
+                if (value != eMonsterState.DEAD && base.State == value) return;
                 base.State = value;
 
                 switch (prevValue)
@@ -73,9 +70,6 @@ namespace GanShin.Content.Creature.Monster
                     case eMonsterState.IDLE:
                         break;
                     case eMonsterState.TRACING:
-                        _navMeshAgent.isStopped = true;
-                        break;
-                    case eMonsterState.KNOCK_BACK:
                         _navMeshAgent.isStopped = true;
                         break;
                     case eMonsterState.ATTACK:
@@ -93,10 +87,6 @@ namespace GanShin.Content.Creature.Monster
                     case eMonsterState.TRACING:
                         _navMeshAgent.isStopped = false;
                         _animController.OnMove();
-                        break;
-                    case eMonsterState.KNOCK_BACK:
-                        _navMeshAgent.isStopped = false;
-                        _animController.OnDamaged();
                         break;
                     case eMonsterState.ATTACK:
                         _animController.OnIdle();
@@ -134,6 +124,7 @@ namespace GanShin.Content.Creature.Monster
             _animator        = GetComponent<Animator>();
             _navMeshAgent    = GetComponent<NavMeshAgent>();
             _capsuleCollider = GetComponent<CapsuleCollider>();
+            
             switch (table.monsterType)
             {
                 case eFieldMonsterType.DEFAULT:
@@ -169,11 +160,10 @@ namespace GanShin.Content.Creature.Monster
             _capsuleCollider.isTrigger = true;
         }
 #endregion Initalize
-        public override void OnDamaged(float damage, float additionalKnockBack = 0)
+        public override void OnDamaged(float damage)
         {
             if (State == eMonsterState.DEAD) return;
-            base.OnDamaged(damage, additionalKnockBack);
-            _additionalKnockBack = additionalKnockBack;
+            base.OnDamaged(damage);
 
             if (_currentHp <= 0)
             {
@@ -184,8 +174,6 @@ namespace GanShin.Content.Creature.Monster
             CurrentHp -= damage;
 
             GanDebugger.Log(nameof(FieldMonsterController), $"{gameObject.name} OnDamaged : {_currentHp}");
-
-            State = eMonsterState.KNOCK_BACK;
         }
         
         private void OnPlayerChanged(PlayerController player)
@@ -197,7 +185,7 @@ namespace GanShin.Content.Creature.Monster
         protected override void ProcessCreated()
         {
             Initialize();
-            _playerAvatarContext.MaxHp      = (int) table.hp;
+            _playerAvatarContext.MaxHp      = (int)table.hp;
             _playerAvatarContext.TargetName = name;
             CurrentHp                       = table.hp;
             State                           = eMonsterState.IDLE;
@@ -206,6 +194,7 @@ namespace GanShin.Content.Creature.Monster
         protected override void ProcessIdle()
         {
             var playerTr = _playerManager.CurrentPlayerTransform;
+
             if (playerTr == null) return;
 
             var diff = playerTr.position - transform.position;
@@ -229,15 +218,14 @@ namespace GanShin.Content.Creature.Monster
             RotateToTarget(targetPosition);
         }
 
-        protected override void ProcessKnockBack()
-        {
-            if (_isKnockBack) return;
-            _isKnockBack = true;
-            KnockBack().Forget();
-        }
-
         protected override void ProcessAttack()
         {
+            if (Target == null)
+            {
+                State = eMonsterState.IDLE;
+                return;
+            }
+            
             var targetPosition = Target.position;
             var distance       = Vector3.Distance(transform.position, targetPosition);
 
@@ -257,6 +245,8 @@ namespace GanShin.Content.Creature.Monster
         {
             if (_isDead) return;
             _isDead = true;
+            
+            if (_playerManager.CurrentPlayer == null) return;
             
             _playerManager.CurrentPlayer.CurrentUltimateGauge 
                 += _playerManager.CurrentPlayer.Stat.ultimateSkillChargeOnKill;
@@ -314,51 +304,14 @@ namespace GanShin.Content.Creature.Monster
             _isAttacking = true;
             await UniTask.Delay(TimeSpan.FromSeconds(table.attackDuration));
             // TODO: SphereCast같은걸로 처리??, 연산 최적화 필요, 하드코딩 제거
-            Physics.OverlapSphere(transform.position + transform.forward * attackForwardDistance, attackRadius,
+            var tr = transform;
+            Physics.OverlapSphere(tr.position + tr.forward * attackForwardDistance, attackRadius,
                     Define.GetLayerMask(Define.eLayer.CHARACTER))
                 .Where(x => x.CompareTag(Define.Tag.Player))
                 .ToList()
                 .ForEach(x => x.GetComponent<PlayerController>().OnDamaged(table.attackDamage));
             _isAttacking = false;
             _animController.OnIdle();
-        }
-
-        private Vector3 _knockBackPosition;
-
-        private async UniTask KnockBack()
-        {
-            var tr = transform;
-            _navMeshAgent.destination = tr.position - tr.forward * (table.knockBackPower + _additionalKnockBack);
-            _additionalKnockBack      = 0f;
-            await UniTask.Delay(TimeSpan.FromSeconds(table.knockDuration));
-
-            if (_currentHp <= 0)
-            {
-                State = eMonsterState.DEAD;
-                return;
-            }
-
-            if (Target == null)
-            {
-                State = eMonsterState.IDLE;
-                return;
-            }
-
-            _navMeshAgent.destination = Target.position;
-            _isKnockBack              = false;
-
-            if (Target == null)
-            {
-                State = eMonsterState.IDLE;
-                return;
-            }
-
-            var targetPosition = Target.position;
-            var distance       = Vector3.Distance(tr.position, targetPosition);
-
-            if (TryChangeStateToAttack(distance)) return;
-            if (TryChangeStateToTracing(distance)) return;
-            State = eMonsterState.IDLE;
         }
 
         private async UniTask DestroyOnDead()
@@ -375,13 +328,7 @@ namespace GanShin.Content.Creature.Monster
         {
             State = eMonsterState.DEAD;
         }
-
-        [ContextMenu("TestKnockBack")]
-        public void TestKnockBack()
-        {
-            State = eMonsterState.KNOCK_BACK;
-        }
-#endif
+#endif // UNITY_EDITOR
 #endregion Debug
     }
 }

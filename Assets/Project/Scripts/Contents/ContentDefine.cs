@@ -28,7 +28,6 @@ namespace GanShin.Content
         CREATED,
         IDLE,
         TRACING,
-        KNOCK_BACK,
         ATTACK,
         DEAD,
         CAUGHT,
