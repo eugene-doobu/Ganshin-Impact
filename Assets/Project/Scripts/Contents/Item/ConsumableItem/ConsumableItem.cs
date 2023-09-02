@@ -4,12 +4,14 @@ namespace GanShin.Space.Content
     {
         public    ConsumableItemType Type  { get; protected set; }
         protected InventoryManager   Owner { get; private set; }
-
-        public abstract void Use();
-
-        public virtual void Initialize(InventoryManager owner)
+        
+        public ConsumableItem(InventoryManager owner)
         {
-            Owner = owner;    
+            Owner = owner;
+        }
+
+        public virtual void Use()
+        {
         }
     }
 }

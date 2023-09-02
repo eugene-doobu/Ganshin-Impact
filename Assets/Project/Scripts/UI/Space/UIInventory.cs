@@ -37,23 +37,23 @@ namespace GanShin.Space.UI
                 }
             }
             
-            var items = _inventoryManager.Items;
+            var items = _inventoryManager.ItemAmount;
             foreach (var kvp in items)
                 _context.SetItem(kvp.Key, kvp.Value);
             
-            _inventoryManager.OnItemUpdated += OnItemUpdated;
+            _inventoryManager.OnItemAmountUpdated += OnItemAmountUpdated;
 
             return _context;
         }
 
-        private void OnItemUpdated(ConsumableItemType type, int avmout)
+        private void OnItemAmountUpdated(ConsumableItemType type, int avmout)
         {
             _context.SetItem(type, avmout);
         }
 
         private void OnDestroy()
         {
-            _inventoryManager.OnItemUpdated -= OnItemUpdated;
+            _inventoryManager.OnItemAmountUpdated -= OnItemAmountUpdated;
         }
     }
 }

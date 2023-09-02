@@ -4,6 +4,11 @@ namespace GanShin.Space.Content
     {
         private float _healAmount = 25;
         
+        public StaminaPotionItem(InventoryManager owner) : base(owner)
+        {
+            Type = ConsumableItemType.STAMINA_POTION;
+        }
+        
         public override void Use()
         {
             var playerManager = Owner.PlayerManager;
@@ -11,12 +16,6 @@ namespace GanShin.Space.Content
                 return;
             
             playerManager.CurrentStamina += _healAmount;
-        }
-        
-        public override void Initialize(InventoryManager owner)
-        {
-            base.Initialize(owner);
-            Type = ConsumableItemType.STAMINA_POTION;
         }
     }
 }

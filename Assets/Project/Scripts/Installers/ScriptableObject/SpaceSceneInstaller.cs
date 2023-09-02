@@ -34,7 +34,8 @@ namespace GanShin
 
             Container.Bind(
                     typeof(InventoryManager),
-                    typeof(IInitializable)
+                    typeof(IInitializable),
+                    typeof(ITickable)
                 )
                 .To<InventoryManager>()
                 .AsSingle()

@@ -2,6 +2,11 @@ namespace GanShin.Space.Content
 {
     public class HpPotionItem : ConsumableItem
     {
+        public HpPotionItem(InventoryManager owner) : base(owner)
+        {
+            Type = ConsumableItemType.HP_POTION;
+        }
+
         private float _healAmount = 25;
         
         public override void Use()
@@ -11,12 +16,6 @@ namespace GanShin.Space.Content
                 return;
             
             currentPlayer.OnHealed(_healAmount);
-        }
-        
-        public override void Initialize(InventoryManager owner)
-        {
-            base.Initialize(owner);
-            Type = ConsumableItemType.HP_POTION;
         }
     }
 }
