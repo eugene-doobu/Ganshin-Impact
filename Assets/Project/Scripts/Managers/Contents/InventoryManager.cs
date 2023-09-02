@@ -24,19 +24,38 @@ namespace GanShin.Space.Content
         
         private readonly Dictionary<ConsumableItemType, int> _itemAmount = new();
         private readonly Dictionary<ConsumableItemType, ConsumableItem> _items = new();
+
+        private int _gold;
         
         public IReadOnlyDictionary<ConsumableItemType, int> ItemAmount => _itemAmount;
-        public bool IsInitialized { get; private set; }
         
+        public int Gold
+        {
+            get => _gold;
+            set
+            {
+                _gold = value;
+                OnGoldUpdated?.Invoke(_gold);
+            }
+        }
+        
+        public event Action<int>? OnGoldUpdated;
+
         public event Action<ConsumableItemType, int>? OnItemAmountUpdated;
         
         public void Initialize()
         {
+            InitializeGold();
             InitializeItems();
             LoadItems();
-            IsInitialized = false;
         }
-        
+
+        private void InitializeGold()
+        {
+            // TODO: Load items from save file
+            Gold = 1000;
+        }
+
         private void InitializeItems()
         {
             // 어셈블리를 읽어 자동 셋팅해줄 수 있으나, 굳이 그렇게 구현하진 않겠습니다

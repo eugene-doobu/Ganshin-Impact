@@ -41,9 +41,17 @@ namespace GanShin.Space.UI
             foreach (var kvp in items)
                 _context.SetItem(kvp.Key, kvp.Value);
             
+            _context.Gold = _inventoryManager.Gold;
+            
+            _inventoryManager.OnGoldUpdated       += OnGoldUpdated;
             _inventoryManager.OnItemAmountUpdated += OnItemAmountUpdated;
 
             return _context;
+        }
+        
+        private void OnGoldUpdated(int gold)
+        {
+            _context.Gold = gold;
         }
 
         private void OnItemAmountUpdated(ConsumableItemType type, int avmout)
@@ -53,6 +61,7 @@ namespace GanShin.Space.UI
 
         private void OnDestroy()
         {
+            _inventoryManager.OnGoldUpdated       -= OnGoldUpdated;
             _inventoryManager.OnItemAmountUpdated -= OnItemAmountUpdated;
         }
     }
