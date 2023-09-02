@@ -59,10 +59,10 @@ namespace GanShin.Content.Creature.Monster
             {
                 var prevValue = base.State;
 
-                if (prevValue == eMonsterState.CAUGHT)
+                if (value != eMonsterState.DEAD && prevValue == eMonsterState.CAUGHT)
                     return;
                 
-                if (value != eMonsterState.DEAD && base.State == value) return;
+                if (base.State == value) return;
                 base.State = value;
 
                 switch (prevValue)
@@ -164,16 +164,30 @@ namespace GanShin.Content.Creature.Monster
         {
             if (State == eMonsterState.DEAD) return;
             base.OnDamaged(damage);
-
+            
+            CurrentHp -= damage;
+            GanDebugger.Log(nameof(FieldMonsterController), $"{gameObject.name} OnDamaged : {_currentHp}");
+            
             if (_currentHp <= 0)
             {
                 State = eMonsterState.DEAD;
                 return;
             }
+            
+            _animController.OnDamaged();
 
-            CurrentHp -= damage;
+            if (Target == null)
+            {
+                State = eMonsterState.IDLE;
+                return;
+            }
 
-            GanDebugger.Log(nameof(FieldMonsterController), $"{gameObject.name} OnDamaged : {_currentHp}");
+            var targetPosition = Target.position;
+            var distance       = Vector3.Distance(transform.position, targetPosition);
+
+            if (TryChangeStateToAttack(distance)) return;
+            if (TryChangeStateToTracing(distance)) return;
+            State = eMonsterState.IDLE;
         }
         
         private void OnPlayerChanged(PlayerController player)
