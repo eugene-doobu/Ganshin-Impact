@@ -217,7 +217,7 @@ namespace GanShin.CameraSystem
         private void OnZoom(float value)
         {
             value       *= _zoomMagnitude;
-            _targetZoom =  Mathf.Clamp(_targetZoom + value, _zoomMinValue, _zoomMaxValue);
+            _targetZoom =  Mathf.Clamp(_targetZoom - value, _zoomMinValue, _zoomMaxValue);
         }
 
 #endregion Input
