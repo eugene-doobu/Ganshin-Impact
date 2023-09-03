@@ -13,7 +13,7 @@ namespace GanShin.CameraSystem
         [ReadOnly] [SerializeField] private Transform? _target;
 
         [SerializeField] private float _tracingTargetSmoothFactor = 6f;
-        [SerializeField] private float _rotationSmoothFactor      = 6f;
+        [SerializeField] private float _rotationSmoothFactor      = 11f;
 
         [SerializeField] private float _moveImmdiateSqrDistance = 70f;
 
