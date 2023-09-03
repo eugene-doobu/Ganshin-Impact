@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using GanShin.Utils;
 using UnityEngine;
 
@@ -12,7 +13,8 @@ namespace GanShin.CameraSystem
         [SerializeField] private float _tracingTargetSmoothFactor = 12f;
         [SerializeField] private float _rotationSmoothFactor      = 11f;
 
-        [SerializeField] private float _moveImmdiateSqrDistance = 70f;
+        [SerializeField] private float _yOffset = 1.32f;
+        [SerializeField] private float _moveImmdiateSqrDistance = 5f;
 
         private Transform? _tr;
 
@@ -30,8 +32,12 @@ namespace GanShin.CameraSystem
                 return;
             }
 
-            _tr!.position = Vector3.Lerp(_tr.position, _target.position, _tracingTargetSmoothFactor * Time.deltaTime);
+            _tr!.position = Vector3.Lerp(_tr.position, GetTargetPosition(_target.position), _tracingTargetSmoothFactor * Time.deltaTime);
         }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private Vector3 GetTargetPosition(Vector3 targetPosition) =>
+             new(targetPosition.x, targetPosition.y + _yOffset, targetPosition.z);
 
         public void SetPositionImmediate()
         {
@@ -41,7 +47,7 @@ namespace GanShin.CameraSystem
 
         public void SetPositionImmediate(Vector3 position)
         {
-            _tr!.position = position;
+            _tr!.position = GetTargetPosition(position);
         }
 
         public void SetRotation(float angle)
