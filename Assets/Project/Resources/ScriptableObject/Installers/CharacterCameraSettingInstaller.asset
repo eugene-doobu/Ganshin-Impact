@@ -16,9 +16,9 @@ MonoBehaviour:
   bottomClamp: -50
   lookYawMagnitude: 0.13
   lookPitchMagnitude: 0.15
-  targetZoom: 2
+  targetZoom: 4.45
   zoomSmoothFactor: 4
   zoomMagnitude: 0.0022
   zoomThreshHold: 0.1
-  zoomMinValue: 1.4
+  zoomMinValue: 1.2
   zoomMaxValue: 7
