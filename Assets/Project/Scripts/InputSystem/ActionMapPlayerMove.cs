@@ -13,6 +13,7 @@ namespace GanShin.InputSystem
         public Action          OnRoll;
         public Action<float>   OnZoom;
         public Action<bool>    OnBaseSkill;
+        public Action<bool>    OnBaseSkill2;
         public Action<bool>    OnUltimateSkill;
         public Action<bool>    OnInteraction;
         public Action          OnShortcutNumber1;
@@ -41,6 +42,8 @@ namespace GanShin.InputSystem
             actionMap.Zoom.canceled             += OnZoomCanceled;
             actionMap.BaseSkill.performed       += OnBaseSkillPerformed;
             actionMap.BaseSkill.canceled        += OnBaseSkillCanceled;
+            actionMap.BaseSkill2.performed      += OnBaseSkill2Performed;
+            actionMap.BaseSkill2.canceled       += OnBaseSkill2Canceled;
             actionMap.UltimateSkill.performed   += OnUltimateSkillPerformed;
             actionMap.UltimateSkill.canceled    += OnUltimateSkillCanceled;
             actionMap.Interaction.performed     += OnInteractionPerformed;
@@ -137,6 +140,18 @@ namespace GanShin.InputSystem
         {
             OnBaseSkill?.Invoke(false);
             GanDebugger.InputLog($"OnBaseSkill - value: {false}");
+        }
+
+        private void OnBaseSkill2Performed(InputAction.CallbackContext context)
+        {
+            OnBaseSkill2?.Invoke(true);
+            GanDebugger.InputLog($"OnBaseSkill2 - value: {true}");
+        }
+
+        private void OnBaseSkill2Canceled(InputAction.CallbackContext context)
+        {
+            OnBaseSkill2?.Invoke(false);
+            GanDebugger.InputLog($"OnBaseSkill2 - value: {false}");
         }
 
         private void OnUltimateSkillPerformed(InputAction.CallbackContext context)

@@ -25,6 +25,7 @@ namespace GanShin.Content.Creature
         protected static readonly int AnimPramHashSetIdle     = Animator.StringToHash("SetIdle");
         protected static readonly int AnimPramHashSetDead     = Animator.StringToHash("SetDead");
         protected static readonly int AnimPramHashOnSkill     = Animator.StringToHash("OnSkill");
+        protected static readonly int AnimPramHashOnSkill2     = Animator.StringToHash("OnSkill2");
         protected static readonly int AnimPramHashOnUltimate  = Animator.StringToHash("OnUltimate");
 #endregion Static
 
@@ -85,7 +86,8 @@ namespace GanShin.Content.Creature
         private float _currentHp;
         
         private float _currentUltimateGauge;
-        private bool  _isAvailableSkill = true;
+        private bool  _isAvailableSkill  = true;
+        private bool  _isAvailableSkill2 = true;
 #endregion Variables
 
 #region Properties
@@ -223,6 +225,7 @@ namespace GanShin.Content.Creature
             actionMap.OnRoll          += OnRoll;
             actionMap.OnMovement      += OnMovement;
             actionMap.OnBaseSkill     += OnBaseSkill;
+            actionMap.OnBaseSkill2    += OnBaseSkill2;
             actionMap.OnUltimateSkill += OnUltimateSkill;
         }
 
@@ -237,6 +240,7 @@ namespace GanShin.Content.Creature
             actionMap.OnRoll          -= OnRoll;
             actionMap.OnMovement      -= OnMovement;
             actionMap.OnBaseSkill     -= OnBaseSkill;
+            actionMap.OnBaseSkill2    -= OnBaseSkill2;
             actionMap.OnUltimateSkill -= OnUltimateSkill;
         }
 
@@ -339,6 +343,8 @@ namespace GanShin.Content.Creature
         protected abstract void Attack();
 
         protected abstract void Skill();
+
+        protected abstract void Skill2();
         
         protected abstract void UltimateSkill();
 
@@ -439,7 +445,22 @@ namespace GanShin.Content.Creature
             }
 
             GetPlayerContext.BaseSkillCoolTimePercent = 0f;
-            _isAvailableSkill = true;
+            _isAvailableSkill                         = true;
+        }
+        
+        private async UniTask Skill2CoolTime()
+        {
+            _isAvailableSkill2 = false;
+            float value = 0, coolTime = stat.baseSkill2CoolTime;
+            while (value < coolTime)
+            {
+                GetPlayerContext.BaseSkill2CoolTimePercent =  1 - value / coolTime;
+                value                                     += Time.deltaTime;
+                await UniTask.Yield();
+            }
+
+            GetPlayerContext.BaseSkill2CoolTimePercent = 0f;
+            _isAvailableSkill2                         = true;
         }
 
         private void RefreshUltimateGauge()
@@ -488,6 +509,19 @@ namespace GanShin.Content.Creature
             Skill();
         }
 
+        protected virtual void OnBaseSkill2(bool value)
+        {
+            if (!_isAvailableSkill2)
+            {
+                GanDebugger.Log(nameof(PlayerController), "스킬 쿨타임입니다.");
+                return;
+            }
+
+            Skill2CoolTime().Forget();
+            CurrentUltimateGauge += stat.ultimateSkillChargeOnSkill2;
+            Skill2();
+        }
+
         protected virtual void OnUltimateSkill(bool value)
         {
             if (stat.ultimateSkillAvailabilityGauge > _currentUltimateGauge)
@@ -498,6 +532,7 @@ namespace GanShin.Content.Creature
             
             _currentUltimateGauge = 0f;
             UltimateSkill();
+            RefreshUltimateGauge();
         }
 #endregion ActionEvent
     }

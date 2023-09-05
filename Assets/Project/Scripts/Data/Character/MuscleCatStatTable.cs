@@ -28,12 +28,14 @@ namespace GanShin.Data
         public float attack4Delay = 0.24f;
 
         [Header("Skill")] 
-        public Ease  skillEaseType          = Ease.OutSine;
-        public float skillRadius            = 3.0f;
-        public float skillDamage            = 40;
-        public float skillKnockBackDistance = 2.5f;
-        public float skillKnockBackDuration = 0.2f;
-        public float skillDuration          = 0.3f;
+        public float skillRadius   = 3.0f;
+        public float skillDamage   = 40;
+        public float skillDuration = 0.3f;
+        
+        [Header("Skill2")]
+        public float skill2Radius = 2.0f;
+        public float skill2Damage   = 5;
+        public float skill2Duration = 3f;
         
         [Header("Ultimate")]
         public float ultimateForwardOffset = 1.5f;

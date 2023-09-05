@@ -116,6 +116,11 @@ namespace GanShin.Content.Creature
             SkillAsync().Forget();
         }
 
+        protected override void Skill2()
+        {
+            Skill2Async().Forget();
+        }
+
         public override void OnDamaged(float damage)
         {
             if (IsOnSpecialAction)
@@ -130,12 +135,30 @@ namespace GanShin.Content.Creature
 
         private async UniTask SkillAsync()
         {
-            var len = Physics.OverlapSphereNonAlloc(transform.position, _statTable.skillRadius, _monsterColliders, Define.GetLayerMask(Define.eLayer.MONSTER));
-            var monsters = new MonsterController[len];
             await UniTask.Delay(TimeSpan.FromMilliseconds(_statTable.skillDuration));
-            foreach (var monster in monsters)
-                monster.OnDamaged(_statTable.skillDamage);
+            var tr            = transform;
+            var attackPosition = tr.position + tr.forward * _statTable.attackForwardOffset;
+            var attackRadius   = _statTable.skillRadius;
+            ApplyAttackDamage(attackPosition, attackRadius, _statTable.skillDamage, _monsterColliders, OnAttackEffect);
+
             CurrentUltimateGauge += _statTable.ultimateSkillChargeOnBaseAttack;
+        }
+
+        private async UniTask Skill2Async()
+        {
+            ObjAnimator.SetTrigger(AnimPramHashOnSkill2);
+            var timer = 0f;
+            while (timer < _statTable.skill2Duration)
+            {
+                var tr             = transform;
+                var attackPosition = tr.position + tr.forward * _statTable.attackForwardOffset;
+                var attackRadius   = _statTable.skill2Radius;
+                ApplyAttackDamage(attackPosition, attackRadius, _statTable.skill2Damage, _monsterColliders, OnAttackEffect);
+
+                timer += Time.deltaTime;
+                await UniTask.Yield();
+            }
+            ObjAnimator.SetTrigger(AnimPramHashSetIdle);
         }
 
         protected override void UltimateSkill()

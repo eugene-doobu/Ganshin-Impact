@@ -114,6 +114,10 @@ namespace GanShin.Content.Creature
             ReturnToIdle(_statTable.skillDelay).Forget();
         }
 
+        protected override void Skill2()
+        {
+        }
+
         protected override void UltimateSkill()
         {
             _isOnUltimate = true;

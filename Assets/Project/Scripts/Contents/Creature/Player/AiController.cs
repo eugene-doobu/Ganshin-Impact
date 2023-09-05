@@ -33,6 +33,10 @@ namespace GanShin.Content.Creature
             
         }
 
+        protected override void Skill2()
+        {
+        }
+
         protected override void UltimateSkill()
         {
             
