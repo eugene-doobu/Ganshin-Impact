@@ -10,6 +10,7 @@ namespace GanShin.Data
         public float attackForwardOffset = 0.3f;
         public float attackRadius            = 1.0f;
         public float attackEffectYupPosition = 1.2f;
+        public float effectNoiseMaxValue     = 0.2f;
 
         [Header("Camera Shake")] 
         public float baseAttackShakeForce = 0.03f;
@@ -34,8 +35,9 @@ namespace GanShin.Data
         
         [Header("Skill2")]
         public float skill2Radius = 2.0f;
-        public float skill2Damage   = 5;
-        public float skill2Duration = 3f;
+        public float skill2AttackDelay = 0.15f;
+        public float skill2Damage   = 8f;
+        public float skill2Duration = 2f;
         
         [Header("Ultimate")]
         public float ultimateForwardOffset = 1.5f;

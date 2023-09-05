@@ -10,6 +10,7 @@ using GanShin.Effect;
 using GanShin.Space.UI;
 using UnityEngine;
 using Zenject;
+using Random = UnityEngine.Random;
 
 namespace GanShin.Content.Creature
 {
@@ -105,8 +106,12 @@ namespace GanShin.Content.Creature
 
         private void OnAttackEffect(Collider monsterCollider)
         {
-            var tr          = transform;
-            var closetPoint = monsterCollider.ClosestPoint(tr.position + tr.up * _statTable.attackEffectYupPosition);
+            var tr             = transform;
+            var basePosition   = tr.position + tr.up * _statTable.attackEffectYupPosition;
+            var noiseMaxValue  = _statTable.effectNoiseMaxValue;
+            var effectPosition = basePosition + new Vector3(Random.Range(-noiseMaxValue, noiseMaxValue),
+                Random.Range(-noiseMaxValue, noiseMaxValue), Random.Range(-noiseMaxValue, noiseMaxValue));
+            var closetPoint    = monsterCollider.ClosestPoint(effectPosition);
             _effect.PlayEffect(eEffectType.MUSCLE_CAT_HIT, closetPoint);
         }
 
@@ -155,8 +160,8 @@ namespace GanShin.Content.Creature
                 var attackRadius   = _statTable.skill2Radius;
                 ApplyAttackDamage(attackPosition, attackRadius, _statTable.skill2Damage, _monsterColliders, OnAttackEffect);
 
-                timer += Time.deltaTime;
-                await UniTask.Yield();
+                await UniTask.Delay(TimeSpan.FromSeconds(_statTable.skill2AttackDelay));
+                timer += _statTable.skill2AttackDelay;
             }
             ObjAnimator.SetTrigger(AnimPramHashSetIdle);
         }
