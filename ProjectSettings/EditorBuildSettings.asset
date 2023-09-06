@@ -8,9 +8,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Project/Scenes/SimpleDemo.unity
     guid: 6ce8e561a6aca1544a20397f0b294515
-  - enabled: 1
-    path: Assets/Project/Scenes/IntroScene.unity
-    guid: 9e24a5c9e4d59f9488f9ff751b205fbc
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 1
     path: Assets/Project/Scenes/LoadingScene.unity
     guid: a5704a75490fd90409e1df7e402c366e
