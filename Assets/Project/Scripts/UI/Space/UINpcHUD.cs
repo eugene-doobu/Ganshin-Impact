@@ -12,7 +12,7 @@ namespace GanShin.Village.UI
     {
         [SerializeField] private NpcObject owner;
 
-        [Inject(Id = VillageSceneInstaller.NpcInfoId)]
+        [Inject(Id = VillageSceneInstaller.NpcInfoListId)]
         private List<NpcInfo> _npcInfoDic;
 
         protected override Context InitializeDataContext()
