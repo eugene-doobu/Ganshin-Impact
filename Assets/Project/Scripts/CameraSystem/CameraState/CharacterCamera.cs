@@ -52,7 +52,6 @@ namespace GanShin.CameraSystem
 
         private CameraBodyTarget?           _cameraBodyTarget;
         private Cinemachine3rdPersonFollow? _body;
-        private CinemachineComposer?        _aim;
 
         private float _cinemachineTargetYaw;
         private float _cinemachineTargetPitch;
@@ -95,13 +94,6 @@ namespace GanShin.CameraSystem
             }
 
             _targetZoom = _body.CameraDistance;
-
-            _aim = VirtualCamera.GetCinemachineComponent<CinemachineComposer>();
-            if (_aim == null)
-            {
-                GanDebugger.CameraLogError("Failed to get aim component");
-                return;
-            }
 
             Object.DontDestroyOnLoad(virtualCameraObj);
 
@@ -217,7 +209,7 @@ namespace GanShin.CameraSystem
         private void OnZoom(float value)
         {
             value       *= _zoomMagnitude;
-            _targetZoom =  Mathf.Clamp(_targetZoom + value, _zoomMinValue, _zoomMaxValue);
+            _targetZoom =  Mathf.Clamp(_targetZoom - value, _zoomMinValue, _zoomMaxValue);
         }
 
 #endregion Input

@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 using Slash.Unity.DataBind.Core.Data;
 using UnityEngine;
 
-namespace GanShin.UI
+namespace GanShin.Space.UI
 {
     /// <summary>
     /// 플레이어의 아바타 상관없이 적용되는 수치에 대한 viewmodel context

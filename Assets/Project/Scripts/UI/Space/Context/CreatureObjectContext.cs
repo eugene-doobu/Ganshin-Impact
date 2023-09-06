@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 using UnityEngine;
 using Context = Slash.Unity.DataBind.Core.Data.Context;
 
-namespace GanShin
+namespace GanShin.Space.UI
 {
     public abstract class CreatureObjectContext : Context, INotifyPropertyChanged
     {

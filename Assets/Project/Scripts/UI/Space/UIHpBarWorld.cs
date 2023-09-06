@@ -1,6 +1,7 @@
 using UnityEngine;
+using GanShin.UI;
 
-namespace GanShin.UI
+namespace GanShin.Space.UI
 {
     /// <summary>
     /// 해당 오브젝트는 Canvas에 부착하고, 부모는 오브젝트의 콜라이더를 가지고 있다고 가정합니다.

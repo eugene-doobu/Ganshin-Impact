@@ -1,9 +1,9 @@
-using System.ComponentModel;
+using GanShin.UI;
 using UnityEngine;
 using Zenject;
 using Context = Slash.Unity.DataBind.Core.Data.Context;
 
-namespace GanShin.UI
+namespace GanShin.Space.UI
 {
     public class UIPlayerAvatarContext : UIRootBase
     {

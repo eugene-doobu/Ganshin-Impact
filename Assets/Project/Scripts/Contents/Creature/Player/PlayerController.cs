@@ -8,6 +8,7 @@ using GanShin.Utils;
 using GanShin.Content.Weapon;
 using GanShin.Data;
 using GanShin.UI;
+using GanShin.Space.UI;
 using UnityEngine;
 using Zenject;
 
@@ -138,6 +139,8 @@ namespace GanShin.Content.Creature
         protected PlayerManager Player => _playerManager;
 
         public abstract PlayerAvatarContext GetPlayerContext { get; }
+        
+        public bool IsDead => _isDead;
 #endregion Properties
 
 #region Mono
@@ -417,6 +420,11 @@ namespace GanShin.Content.Creature
                 _playerAvatarContext.IsDead = true;
                 RemoveInputEvent();
             }
+        }
+        
+        public void OnHealed(float heal)
+        {
+            CurrentHp += heal;
         }
         
         private async UniTask SkillCoolTime()
