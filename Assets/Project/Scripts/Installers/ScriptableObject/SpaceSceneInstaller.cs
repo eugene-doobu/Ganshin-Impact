@@ -40,6 +40,14 @@ namespace GanShin
                 .To<InventoryManager>()
                 .AsSingle()
                 .NonLazy();
+
+            Container.Bind(
+                    typeof(DialogueManager),
+                    typeof(IInitializable)
+                )
+                .To<DialogueManager>()
+                .AsSingle()
+                .NonLazy();
         }
     }
 }
