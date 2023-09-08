@@ -18,7 +18,9 @@ namespace GanShin.UI
         protected ContextHolder? ContextHolder { get; private set; }
 
         public Context? DataContext { get; protected set; }
-        
+
+        protected CanvasRoot? CanvasRoot { get; private set; }
+
         private CanvasGroup _canvasGroup = null!;
         
         [Header("UI Root Base")]
@@ -47,6 +49,8 @@ namespace GanShin.UI
             var newContext = Activator.CreateInstance(ContextHolder.ContextType);
             ContextHolder.SetContext(newContext, null);
         }
+        
+        public void InjectCanvasRoot(CanvasRoot root) => CanvasRoot = root;
 
         public void Show()
         {

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using GanShin.Space.UI;
 using GanShin.Utils;
 using UnityEngine;
 
@@ -15,7 +14,10 @@ namespace GanShin.UI
         {
             var uiRoots = GetComponentsInChildren<UIRootBase>();
             foreach (var uiRoot in uiRoots)
+            {
                 currentUIRoots.Add(uiRoot);
+                uiRoot.InjectCanvasRoot(this);
+            }
         }
         
         public void ActiveAllUIRoots(bool value, params Type[] ignoreTypes)
