@@ -17,15 +17,6 @@ namespace GanShin.UI
             foreach (var uiRoot in uiRoots)
                 currentUIRoots.Add(uiRoot);
         }
-
-        public void Update()
-        {
-            if (Input.GetKeyDown("["))
-                ActiveAllUIRoots(false, typeof(UIInventory));
-            
-            if (Input.GetKeyDown("p"))
-                ActiveAllUIRoots(true, typeof(UIInventory));
-        }
         
         public void ActiveAllUIRoots(bool value, params Type[] ignoreTypes)
         {
