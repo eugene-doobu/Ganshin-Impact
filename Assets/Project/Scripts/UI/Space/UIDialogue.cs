@@ -45,6 +45,9 @@ namespace GanShin.Space.UI
 
         public void Enable()
         {
+            if (CanvasRoot != null)
+                CanvasRoot.ActiveAllUIRoots(false, typeof(UIDialogue));
+
             _dialogueString = string.Empty;
             _currentViewString = string.Empty;
             gameObject.SetActive(true);
@@ -52,6 +55,9 @@ namespace GanShin.Space.UI
 
         public void Disable()
         {
+            if (CanvasRoot != null)
+                CanvasRoot.ActiveAllUIRoots(true, typeof(UIDialogue));
+
             gameObject.SetActive(false);
             SkipDialogue();
         }

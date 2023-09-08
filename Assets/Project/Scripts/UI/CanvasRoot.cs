@@ -12,7 +12,7 @@ namespace GanShin.UI
         
         private void Awake()
         {
-            var uiRoots = GetComponentsInChildren<UIRootBase>();
+            var uiRoots = GetComponentsInChildren<UIRootBase>(true);
             foreach (var uiRoot in uiRoots)
             {
                 currentUIRoots.Add(uiRoot);

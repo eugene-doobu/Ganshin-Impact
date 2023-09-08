@@ -34,7 +34,7 @@ namespace GanShin.UI
             ContextHolder.Context = DataContext;
         }
 
-        protected abstract Context InitializeDataContext();
+        protected abstract Context? InitializeDataContext();
 
         public void CreateContext()
         {
