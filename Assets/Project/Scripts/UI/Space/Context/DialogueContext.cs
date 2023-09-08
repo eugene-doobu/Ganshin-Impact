@@ -13,12 +13,9 @@ namespace GanShin.Space.UI
 
         private string _name;
         private string _content;
-
-        private bool _isOnNpcTexture;
-        private bool _isOnPlayerTexture;
         
-        private Texture _npcTexture;
-        private Texture _playerTexture;
+        private Color _speakerColor;
+        private Texture _texture;
 
 #region Properties
         [UsedImplicitly]
@@ -44,45 +41,25 @@ namespace GanShin.Space.UI
         }
         
         [UsedImplicitly]
-        public bool IsOnNpcTexture
+        public Texture Texture
         {
-            get => _isOnNpcTexture;
+            get => _texture;
             set
             {
-                _isOnNpcTexture = value;
+                _texture = value;
                 OnPropertyChanged();
+                
+                SpeakerColor = value == null ? Color.clear : Color.white;
             }
         }
-        
+
         [UsedImplicitly]
-        public bool IsOnPlayerTexture
+        public Color SpeakerColor
         {
-            get => _isOnPlayerTexture;
+            get => _speakerColor;
             set
             {
-                _isOnPlayerTexture = value;
-                OnPropertyChanged();
-            }
-        }
-        
-        [UsedImplicitly]
-        public Texture NpcTexture
-        {
-            get => _npcTexture;
-            set
-            {
-                _npcTexture = value;
-                OnPropertyChanged();
-            }
-        }
-        
-        [UsedImplicitly]
-        public Texture PlayerTexture
-        {
-            get => _playerTexture;
-            set
-            {
-                _playerTexture = value;
+                _speakerColor = value;
                 OnPropertyChanged();
             }
         }
