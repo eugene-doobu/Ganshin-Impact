@@ -1,4 +1,7 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
+using DG.Tweening;
 using JetBrains.Annotations;
 using Slash.Unity.DataBind.Core.Presentation;
 using UnityEngine;
@@ -7,17 +10,23 @@ using Context = Slash.Unity.DataBind.Core.Data.Context;
 
 namespace GanShin.UI
 {
-    [RequireComponent(typeof(ContextHolder))]
+    [RequireComponent(typeof(ContextHolder), typeof(CanvasGroup))]
     public abstract class UIRootBase : MonoBehaviour
     {
-        [UsedImplicitly] [Inject] protected UIManager UIManager { get; private set; }
+        [UsedImplicitly] [Inject] protected UIManager UIManager { get; private set; } = null!;
 
-        protected ContextHolder ContextHolder { get; private set; }
+        protected ContextHolder? ContextHolder { get; private set; }
 
-        public Context DataContext { get; protected set; }
+        public Context? DataContext { get; protected set; }
+        
+        private CanvasGroup _canvasGroup = null!;
+        
+        [Header("UI Root Base")]
+        [SerializeField] private float fadeDuration = 0.2f;
 
         protected virtual void Awake()
         {
+            _canvasGroup = GetComponent<CanvasGroup>();
             ContextHolder         = GetComponent<ContextHolder>();
             DataContext           = InitializeDataContext();
             ContextHolder.Context = DataContext;
@@ -37,6 +46,16 @@ namespace GanShin.UI
 
             var newContext = Activator.CreateInstance(ContextHolder.ContextType);
             ContextHolder.SetContext(newContext, null);
+        }
+
+        public void Show()
+        {
+            _canvasGroup.DOFade(1, fadeDuration);
+        }
+
+        public void Hide()
+        {
+            _canvasGroup.DOFade(0, fadeDuration);
         }
     }
 }

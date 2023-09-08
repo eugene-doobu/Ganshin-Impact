@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3252362919080288}
   - component: {fileID: 2434989663988428278}
   - component: {fileID: 5129152566809470687}
+  - component: {fileID: 7347100921327929188}
   m_Layer: 5
   m_Name: UI_MiniMap
   m_TagString: Untagged
@@ -77,6 +78,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   defaultTexture: {fileID: 0}
+  rawImage: {fileID: 0}
+--- !u!225 &7347100921327929188
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3252362919080295}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &5129152567000397739
 GameObject:
   m_ObjectHideFlags: 0

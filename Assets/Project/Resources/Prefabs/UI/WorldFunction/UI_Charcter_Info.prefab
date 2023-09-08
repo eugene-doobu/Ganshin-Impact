@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 568733258709942664}
   - component: {fileID: 462976500718941587}
   - component: {fileID: 5207491908926036997}
+  - component: {fileID: 8426229009140567167}
   m_Layer: 5
   m_Name: UI_Charcter_Info
   m_TagString: Untagged
@@ -105,6 +106,18 @@ MonoBehaviour:
     Reference: {fileID: 4830534050261552494}
     Type: 3
   constantTarget: {fileID: 0}
+--- !u!225 &8426229009140567167
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4830534050261552495}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &4830534050332310637
 GameObject:
   m_ObjectHideFlags: 0
@@ -273,7 +286,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Ai
+  m_text: Riko
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4fb75cef2ba8d0343be8265d40b7a6db, type: 2}
   m_sharedMaterial: {fileID: -463290089681385589, guid: 4fb75cef2ba8d0343be8265d40b7a6db, type: 2}

@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 2432326648292308851}
   - component: {fileID: 412232676}
   - component: {fileID: 412232677}
+  - component: {fileID: 3353306323332799602}
+  - component: {fileID: 247197128118011962}
   m_Layer: 5
   m_Name: UI_User_HpBar
   m_TagString: Untagged
@@ -92,9 +94,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0353de6b5a9e8fa4eaded0354856aa9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  contextType: GanShin.UI.PlayerAvatarContext, GanShinAssembly, Version=0.0.0.0,
+  contextType: GanShin.Space.UI.PlayerAvatarContext, GanShinAssembly, Version=0.0.0.0,
     Culture=neutral, PublicKeyToken=null
-  createContext: 1
+  createContext: 0
 --- !u!114 &412232677
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -107,8 +109,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a80a18c307f584693fee7442f255eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: 4
+  target: 0
   owner: {fileID: 0}
+--- !u!114 &3353306323332799602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2432326648292308853}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0166d8ff8d905b048b2448179e1f5d11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _components:
+  - {fileID: 412232676}
+  _identifier: 
+  _useSceneContext: 0
+  _context: {fileID: 0}
+  _bindType: 0
+--- !u!225 &247197128118011962
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2432326648292308853}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &2432326648838209336
 GameObject:
   m_ObjectHideFlags: 0
@@ -699,7 +731,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 103ba97838400454ab58fa34c508cbbb, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8ff4a56eb1f6d0448a003537ae940e69, type: 3}
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
