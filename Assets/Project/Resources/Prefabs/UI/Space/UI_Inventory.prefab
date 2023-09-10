@@ -330,6 +330,7 @@ GameObject:
   - component: {fileID: 6277145393551315412}
   - component: {fileID: 4779710978713067960}
   - component: {fileID: 2787099078972120054}
+  - component: {fileID: 5382815489125332776}
   m_Layer: 5
   m_Name: UI_Inventory
   m_TagString: Untagged
@@ -393,6 +394,18 @@ MonoBehaviour:
     contextHolder: {fileID: 9161742137118824570}
   - type: 2
     contextHolder: {fileID: 9161742137938500086}
+--- !u!225 &5382815489125332776
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6277145393551315419}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &6697781235853972287
 GameObject:
   m_ObjectHideFlags: 0
