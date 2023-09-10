@@ -93,7 +93,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Data:
     Constant: 
-    Path: Texture
+    Path: Sprite
     Provider: {fileID: 0}
     Reference: {fileID: 0}
     Type: 0
@@ -734,7 +734,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fadeDuration: 0.2
-  delayTime: 0.1
+  delayTime: 0.4
 --- !u!225 &3110961860485454122
 CanvasGroup:
   m_ObjectHideFlags: 0

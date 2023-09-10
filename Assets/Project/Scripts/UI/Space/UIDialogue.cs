@@ -1,8 +1,11 @@
 #nullable enable
 
 using System;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using GanShin.Dialogue.Base;
 using GanShin.Space.Content;
 using GanShin.UI;
 using UnityEngine;
@@ -14,7 +17,10 @@ namespace GanShin.Space.UI
     public class UIDialogue : UIRootBase
     {
         [Inject] private DialogueManager? _manager;
+        [Inject(Id = SpaceSceneInstaller.DialogueImageInfoId)]
+        private Dictionary<ENpcDialogueImage, Sprite>? _npcDialogueImages;
         
+        [Header("UIDialogue")]
         [SerializeField] private float delayTime = 0.1f;
 
         private string _dialogueString    = string.Empty;
@@ -76,7 +82,20 @@ namespace GanShin.Space.UI
 #endregion Initialize
 
 #region ContextControll
-        public void SetString(string dialogueString)
+        public void SetDialogue(DialogueInfo info)
+        {
+            if (_dialogueContext == null)
+            {
+                GanDebugger.LogError(GetType().Name, "DialogueContext is null");
+                return;
+            }
+
+            SetString(info.content);
+            _dialogueContext.Name    = info.name;
+            _dialogueContext.Sprite = GetDialogueImage(info.npcDialogueImage);
+        }
+        
+        private void SetString(string dialogueString)
         {
             SkipDialogue();
             _dialogueMessageCts = new CancellationTokenSource();
@@ -100,6 +119,7 @@ namespace GanShin.Space.UI
                 
                 var isCancelled = await UniTask.Delay(TimeSpan.FromSeconds(delayTime), cancellationToken: cts.Token).SuppressCancellationThrow();
                 if (!isCancelled) continue;
+                if (cts != _dialogueMessageCts) return;
 
                 CurrentViewString = _dialogueString;
                 return;
@@ -113,5 +133,14 @@ namespace GanShin.Space.UI
             _dialogueMessageCts = null;
         }
 #endregion ContextControll
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private Sprite? GetDialogueImage(ENpcDialogueImage type)
+        {
+            if (_npcDialogueImages == null || !_npcDialogueImages.ContainsKey(type))
+                return null;
+            
+            return _npcDialogueImages[type];
+        }
     }
 }

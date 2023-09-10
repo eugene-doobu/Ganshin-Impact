@@ -1,5 +1,6 @@
 #nullable enable
 
+using GanShin.Dialogue.Base;
 using GanShin.Space.UI;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -66,11 +67,10 @@ namespace GanShin.Space.Content
             // else: 다음 대화로 넘어가기
         }
 
-        // TODO: DialogueInfo 버전 만들기
-        public void SetString(string dialogueString)
+        public void SetString(DialogueInfo info)
         {
             if (!HasUIObject()) return;
-            _currentUI!.SetString(dialogueString);
+            _currentUI!.SetDialogue(info);
         }
 
         private bool HasUIObject()

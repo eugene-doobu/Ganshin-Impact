@@ -15,7 +15,7 @@ namespace GanShin.Space.UI
         private string _content;
         
         private Color _speakerColor;
-        private Texture _texture;
+        private Sprite _sprite;
 
 #region Properties
         [UsedImplicitly]
@@ -41,12 +41,12 @@ namespace GanShin.Space.UI
         }
         
         [UsedImplicitly]
-        public Texture Texture
+        public Sprite Sprite
         {
-            get => _texture;
+            get => _sprite;
             set
             {
-                _texture = value;
+                _sprite = value;
                 OnPropertyChanged();
                 
                 SpeakerColor = value == null ? Color.clear : Color.white;
