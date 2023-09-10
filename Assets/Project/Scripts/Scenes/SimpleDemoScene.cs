@@ -134,9 +134,20 @@ namespace GanShin.SceneManagement
             {
                 var dialogueInfo = new DialogueInfo
                 {
-                    name             = "나는 누굴까",
+                    name             = "AI",
                     content          = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,",
-                    npcDialogueImage = ENpcDialogueImage.NONE,
+                    npcDialogueImage = ENpcDialogueImage.AI,
+                };
+                _dialogueManager.SetString(dialogueInfo);
+            }
+            
+            if (Input.GetKeyDown("5"))
+            {
+                var dialogueInfo = new DialogueInfo
+                {
+                    name             = "Muscle Cat",
+                    content          = "규루룩 꾹 냥",
+                    npcDialogueImage = ENpcDialogueImage.MUSCLE_CAT,
                 };
                 _dialogueManager.SetString(dialogueInfo);
             }
