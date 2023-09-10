@@ -734,7 +734,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fadeDuration: 0.2
-  delayTime: 0.4
+  delayTime: 0.04
 --- !u!225 &3110961860485454122
 CanvasGroup:
   m_ObjectHideFlags: 0

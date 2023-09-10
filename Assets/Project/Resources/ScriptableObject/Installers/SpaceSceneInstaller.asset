@@ -14,4 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogueImageInfos:
   - type: 1
-    sprite: {fileID: 21300000, guid: 67d7eca01e562cc499cc5e915ed962d7, type: 3}
+    sprite: {fileID: 21300000, guid: 8c88a1b16209e154ebcf10135abb8a69, type: 3}
+  - type: 2
+    sprite: {fileID: 21300000, guid: 115d4ad2974418d49ab7ead3f07c9354, type: 3}
+  - type: 3
+    sprite: {fileID: 21300000, guid: 61e97c9668722544082cc8c8ba53258c, type: 3}
