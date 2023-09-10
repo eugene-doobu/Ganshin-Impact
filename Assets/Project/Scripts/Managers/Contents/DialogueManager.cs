@@ -70,6 +70,7 @@ namespace GanShin.Space.Content
         public void SetString(DialogueInfo info)
         {
             if (!HasUIObject()) return;
+            if (!_isEnable) StartDialogue();
             _currentUI!.SetDialogue(info);
         }
 

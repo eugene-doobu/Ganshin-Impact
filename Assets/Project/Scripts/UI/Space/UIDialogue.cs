@@ -119,7 +119,7 @@ namespace GanShin.Space.UI
                 
                 var isCancelled = await UniTask.Delay(TimeSpan.FromSeconds(delayTime), cancellationToken: cts.Token).SuppressCancellationThrow();
                 if (!isCancelled) continue;
-                if (cts != _dialogueMessageCts) return;
+                if (_dialogueMessageCts != null && cts != _dialogueMessageCts) return;
 
                 CurrentViewString = _dialogueString;
                 return;
