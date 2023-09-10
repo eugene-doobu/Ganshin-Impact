@@ -2,20 +2,31 @@
 
 using GanShin.Space.UI;
 using JetBrains.Annotations;
+using UnityEngine;
 using Zenject;
 
 namespace GanShin.Space.Content
 {
     [UsedImplicitly]
-    public class DialogueManager : IInitializable
+    public class DialogueManager : IInitializable, ITickable
     {
         public DialogueContext Context { get; private set; } = new();
 
         private UIDialogue? _currentUI;
         
+        private bool _isEnable;
+        
         public void Initialize()
         {
-            _currentUI = null;
+        }
+
+        public void Tick()
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+                OnSpacePressed();
+
+            if (Input.GetKeyDown(KeyCode.Escape))
+                EndDialogue();
         }
         
         public void SetUI(UIDialogue ui)
@@ -25,14 +36,34 @@ namespace GanShin.Space.Content
         
         public void DestroyUI(UIDialogue ui)
         {
-            if (_currentUI == ui)
-                _currentUI = null;
+            if (_currentUI != ui) return;
+            _currentUI = null;
+            _isEnable  = false;
         }
         
         public void StartDialogue()
         {
             if (!HasUIObject()) return;
             _currentUI!.Enable();
+            _isEnable = true;
+        }
+        
+        private void EndDialogue()
+        {
+            if (!_isEnable) return;
+            if (!HasUIObject()) return;
+            _currentUI!.Disable();
+            _isEnable = false;
+        }
+        
+        private void OnSpacePressed()
+        {
+            if (!_isEnable) return;
+            if (!HasUIObject()) return;
+
+            if (_currentUI!.IsOnTyping)
+                _currentUI!.SkipDialogue();
+            // else: 다음 대화로 넘어가기
         }
 
         // TODO: DialogueInfo 버전 만들기

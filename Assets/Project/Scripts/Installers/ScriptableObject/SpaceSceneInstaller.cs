@@ -43,7 +43,8 @@ namespace GanShin
 
             Container.Bind(
                     typeof(DialogueManager),
-                    typeof(IInitializable)
+                    typeof(IInitializable),
+                    typeof(ITickable)
                 )
                 .To<DialogueManager>()
                 .AsSingle()

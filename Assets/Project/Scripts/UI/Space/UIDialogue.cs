@@ -23,6 +23,18 @@ namespace GanShin.Space.UI
         private CancellationTokenSource? _dialogueMessageCts;
         
         private DialogueContext? _dialogueContext;
+        
+        private string CurrentViewString
+        {
+            get => _currentViewString;
+            set
+            {
+                _currentViewString = value;
+                _dialogueContext!.Content = _currentViewString;
+            }
+        }
+        
+        public bool IsOnTyping => _dialogueMessageCts != null;
 
 #region Initialize
         protected override Context? InitializeDataContext()
@@ -50,7 +62,7 @@ namespace GanShin.Space.UI
 
             _dialogueString = string.Empty;
             _currentViewString = string.Empty;
-            gameObject.SetActive(true);
+            Show();
         }
 
         public void Disable()
@@ -58,7 +70,7 @@ namespace GanShin.Space.UI
             if (CanvasRoot != null)
                 CanvasRoot.ActiveAllUIRoots(true, typeof(UIDialogue));
 
-            gameObject.SetActive(false);
+            Hide();
             SkipDialogue();
         }
 #endregion Initialize
@@ -73,28 +85,28 @@ namespace GanShin.Space.UI
         
         private async UniTask SetStringAsync(string dialogueString, CancellationTokenSource cts)
         {
-            _currentViewString = string.Empty;
-            _dialogueString = dialogueString;
+            CurrentViewString = string.Empty;
+            _dialogueString   = dialogueString;
             
-            while (_currentViewString.Length < _dialogueString.Length)
+            while (CurrentViewString.Length < _dialogueString.Length)
             {
                 var currentViewNum = Mathf.Max(1, Time.deltaTime / delayTime);
 
                 for (var i = 0; i < currentViewNum; i++)
                 {
-                    if (_currentViewString.Length >= _dialogueString.Length) break;
-                    _currentViewString += _dialogueString[i];
+                    if (CurrentViewString.Length >= _dialogueString.Length) break;
+                    CurrentViewString         += _dialogueString[CurrentViewString.Length];
                 }
                 
                 var isCancelled = await UniTask.Delay(TimeSpan.FromSeconds(delayTime), cancellationToken: cts.Token).SuppressCancellationThrow();
                 if (!isCancelled) continue;
 
-                _currentViewString = _dialogueString;
+                CurrentViewString = _dialogueString;
                 return;
             }
         }
         
-        private void SkipDialogue()
+        public void SkipDialogue()
         {
             _dialogueMessageCts?.Cancel();
             _dialogueMessageCts?.Dispose();
