@@ -144,7 +144,7 @@ namespace GanShin.UI
 #endregion Popup
 
 #region Toast
-        public void SetToast(string title, string content, EToastType type)
+        public void SetToast(string title, string content, EToastType type = EToastType.DEFAULT)
         {
             var toast = GetGlobalUI(EGlobalUI.TOAST) as UIRootToastPopup;
             if (toast == null)
