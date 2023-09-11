@@ -613,7 +613,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerAvatar: 0
   startPosition: {x: 0, y: 0, z: 0}
-  debugInputGroup: 3
+  debugInputGroup: 0
 --- !u!1001 &1802686831
 PrefabInstance:
   m_ObjectHideFlags: 0
