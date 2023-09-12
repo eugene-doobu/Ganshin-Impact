@@ -1,6 +1,6 @@
 namespace GanShin.Space.Content
 {
-    public abstract class ConsumableItem
+    public abstract class ConsumableItem : IUILoggable
     {
         public    ConsumableItemType Type  { get; protected set; }
         protected InventoryManager   Owner { get; private set; }
