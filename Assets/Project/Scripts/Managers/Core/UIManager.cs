@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using GanShin.SceneManagement;
 using JetBrains.Annotations;
 using UnityEngine;
 using Zenject;

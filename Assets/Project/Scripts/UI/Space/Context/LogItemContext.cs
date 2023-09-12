@@ -22,6 +22,13 @@ namespace GanShin.Space.UI
             }
         }
 
+        public LogItemContext() {}
+
+        public LogItemContext(string content)
+        {
+            Content = content;
+        }
+
         [NotifyPropertyChangedInvocator]
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {

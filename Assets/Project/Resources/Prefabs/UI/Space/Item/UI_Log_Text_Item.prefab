@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 6721808564947939248}
   - component: {fileID: 6721808564947939263}
   - component: {fileID: 6721808564947939249}
+  - component: {fileID: 8589152584420104707}
+  - component: {fileID: 3650393774692729847}
   m_Layer: 5
   m_Name: UI_Log_Text_Item
   m_TagString: Untagged
@@ -37,7 +39,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 205.585, y: -17.485}
-  m_SizeDelta: {x: 411.17, y: 28.97}
+  m_SizeDelta: {x: 411.17, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6721808564947939248
 CanvasRenderer:
@@ -150,3 +152,43 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 0
   m_VerticalFit: 2
+--- !u!114 &8589152584420104707
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6721808564947939261}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c26e4a44e9491654a945d71b81a23552, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Data:
+    Constant: 
+    Path: Content
+    Provider: {fileID: 0}
+    Reference: {fileID: 0}
+    Type: 0
+  TargetBinding:
+    Constant: 
+    Path: 
+    Provider: {fileID: 0}
+    Reference: {fileID: 6721808564947939263}
+    Type: 3
+  constantTarget: {fileID: 0}
+--- !u!114 &3650393774692729847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6721808564947939261}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0353de6b5a9e8fa4eaded0354856aa9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  contextType: GanShin.Space.UI.LogItemContext, GanShinAssembly, Version=0.0.0.0,
+    Culture=neutral, PublicKeyToken=null
+  createContext: 0

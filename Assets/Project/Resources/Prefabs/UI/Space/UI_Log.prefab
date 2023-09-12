@@ -64,7 +64,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0353de6b5a9e8fa4eaded0354856aa9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  contextType: 
+  contextType: GanShin.Space.UI.LogContext, GanShinAssembly, Version=0.0.0.0, Culture=neutral,
+    PublicKeyToken=null
   createContext: 0
 --- !u!114 &334760963997448504
 MonoBehaviour:
@@ -79,6 +80,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fadeDuration: 0.2
+  layoutRoots:
+  - {fileID: 6081125919551346195}
 --- !u!1 &6081125917779254950
 GameObject:
   m_ObjectHideFlags: 0
@@ -612,7 +615,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Data:
     Constant: 
-    Path: 
+    Path: Items
     Provider: {fileID: 0}
     Reference: {fileID: 0}
     Type: 0
