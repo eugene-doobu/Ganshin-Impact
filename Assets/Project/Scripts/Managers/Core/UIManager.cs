@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using GanShin.SceneManagement;
 using JetBrains.Annotations;
 using UnityEngine;
 using Zenject;
@@ -11,16 +12,34 @@ namespace GanShin.UI
     public partial class UIManager : IInitializable
     {
         private readonly Dictionary<Type, Context> _dataContexts = new();
+        private readonly List<Type> _willRemoveContexts = new();
 
-        public GameObject GlobalRoot { get; private set; } = null;
+        public GameObject GlobalRoot { get; private set; }
 
         [UsedImplicitly]
-        public UIManager()
+        private UIManager() {}
+        
+        public void Initialize()
         {
+            AddGlobalUIRoot();
+        }
+        
+        public void ClearContexts()
+        {
+            _willRemoveContexts.AddRange(_dataContexts.Keys);
+            foreach (var key in _willRemoveContexts)
+            {
+                var context = _dataContexts[key];
+                if (context is IDonDestroyContext)
+                    continue;
+                
+                (context as IDisposable)?.Dispose();
+                _dataContexts.Remove(key);
+            }
+            _willRemoveContexts.Clear();
         }
 
 #region Context Management Interface
-
         public T GetContext<T>() where T : Context
         {
             if (_dataContexts.ContainsKey(typeof(T)))
@@ -48,12 +67,7 @@ namespace GanShin.UI
         {
             _dataContexts.Remove(typeof(T));
         }
-
 #endregion Context Management Interface
 
-        public void Initialize()
-        {
-            AddGlobalUIRoot();
-        }
     }
 }

@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using GanShin.UI;
 using JetBrains.Annotations;
 using Slash.Unity.DataBind.Core.Data;
 
