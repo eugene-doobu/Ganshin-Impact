@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using JetBrains.Annotations;
 using UnityEngine;
 using Zenject;
+using Context = Slash.Unity.DataBind.Core.Data.Context;
 
 namespace GanShin.UI
 {
     [UsedImplicitly]
     public partial class UIManager : IInitializable
     {
-        private readonly Dictionary<Type, INotifyPropertyChanged> _dataContexts = new();
+        private readonly Dictionary<Type, Context> _dataContexts = new();
 
         public GameObject GlobalRoot { get; private set; } = null;
 
@@ -21,14 +21,14 @@ namespace GanShin.UI
 
 #region Context Management Interface
 
-        public T GetContext<T>() where T : class, INotifyPropertyChanged
+        public T GetContext<T>() where T : Context
         {
             if (_dataContexts.ContainsKey(typeof(T)))
                 return _dataContexts[typeof(T)] as T;
             return null;
         }
 
-        public T GetOrAddContext<T>() where T : class, INotifyPropertyChanged, new()
+        public T GetOrAddContext<T>() where T : Context, new()
         {
             if (_dataContexts.ContainsKey(typeof(T)))
                 return _dataContexts[typeof(T)] as T;
@@ -37,14 +37,14 @@ namespace GanShin.UI
             return context;
         }
 
-        public void AddContext<T>(T context) where T : class, INotifyPropertyChanged
+        public void AddContext<T>(T context) where T : Context
         {
             var result = _dataContexts.TryAdd(typeof(T), context);
             if (!result)
                 GanDebugger.LogWarning(nameof(UIManager), "Context already exists");
         }
 
-        public void RemoveContext<T>(T context) where T : class, INotifyPropertyChanged
+        public void RemoveContext<T>(T context) where T : Context
         {
             _dataContexts.Remove(typeof(T));
         }

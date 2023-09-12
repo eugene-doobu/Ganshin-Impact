@@ -10,8 +10,7 @@ namespace GanShin.Space.UI
     {
         protected override Context InitializeDataContext()
         {
-            // TODO: ContextManager에서 Get
-            return new LogContext();
+            return UIManager.GetOrAddContext<LogContext>();
         }
     }
 }
