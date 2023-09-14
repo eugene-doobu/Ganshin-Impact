@@ -15,7 +15,7 @@ namespace GanShin.Space.UI
             var context = UIManager.GetOrAddContext<LogContext>();
             context.Items.ItemAdded -= OnItemAdded;
             context.Items.ItemAdded += OnItemAdded;
-            return UIManager.GetOrAddContext<LogContext>();
+            return context;
         }
 
         private void OnItemAdded(object item)
