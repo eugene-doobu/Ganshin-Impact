@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 
 namespace GanShin.Space.UI
 {
-    public class InteractionItemContext : GanContext
+    public class InteractionItemContext : GanContext, IDisposable
     {
         private string _nameProperty;
         
@@ -25,6 +25,11 @@ namespace GanShin.Space.UI
         public void OnClick()
         {
             OnClickEvent?.Invoke();
+        }
+
+        public void Dispose()
+        {
+            OnClickEvent = null;
         }
     }
 }
