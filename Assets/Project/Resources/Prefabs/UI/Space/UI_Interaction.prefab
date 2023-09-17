@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7526005974139890606}
   - component: {fileID: 7526005974139890607}
   - component: {fileID: 2216817121601116463}
+  - component: {fileID: 5233460111842227552}
   m_Layer: 5
   m_Name: Scroll View
   m_TagString: Untagged
@@ -103,6 +104,33 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &5233460111842227552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7526005974139890602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5180834927af72f4d9a4684ab56ca161, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Data:
+    Constant: 
+    Path: Items
+    Provider: {fileID: 0}
+    Reference: {fileID: 0}
+    Type: 0
+  TargetBinding:
+    Constant: 
+    Path: 
+    Provider: {fileID: 0}
+    Reference: {fileID: 7526005974139890605}
+    Type: 3
+  constantTarget: {fileID: 0}
+  Prefab: {fileID: 3593402941500700917, guid: 99a54823e723d2241ae6968fc8fbfa71, type: 3}
+  InsertIndex: 0
 --- !u!1 &7858623447352977935
 GameObject:
   m_ObjectHideFlags: 0
@@ -114,7 +142,7 @@ GameObject:
   - component: {fileID: 7858623447352977920}
   - component: {fileID: 8115499938245610748}
   - component: {fileID: 9032785409425222852}
-  - component: {fileID: 4084921062436375604}
+  - component: {fileID: 5119265556987590724}
   m_Layer: 5
   m_Name: UI_Interaction
   m_TagString: Untagged
@@ -167,10 +195,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0353de6b5a9e8fa4eaded0354856aa9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  contextType: GanShin.Space.UI.LogContext, GanShinAssembly, Version=0.0.0.0, Culture=neutral,
-    PublicKeyToken=null
+  contextType: GanShin.Space.UI.InteractionContext, GanShinAssembly, Version=0.0.0.0,
+    Culture=neutral, PublicKeyToken=null
   createContext: 0
---- !u!114 &4084921062436375604
+--- !u!114 &5119265556987590724
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -179,9 +207,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7858623447352977935}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ece550209aa6b77478c4a740700a4355, type: 3}
+  m_Script: {fileID: 11500000, guid: 20755de4f29e8cc4fad1daeea6fc5b7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   fadeDuration: 0.2
-  layoutRoots:
-  - {fileID: 0}
