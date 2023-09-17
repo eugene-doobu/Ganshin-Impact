@@ -54,6 +54,8 @@ namespace GanShin.SceneManagement
         {
             if (CurrentScene != null)
                 CurrentScene.Clear();
+            
+            _ui.ClearContexts();
         }
     }
 }

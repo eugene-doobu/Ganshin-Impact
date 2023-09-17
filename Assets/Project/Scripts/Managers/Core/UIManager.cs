@@ -1,34 +1,52 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using JetBrains.Annotations;
 using UnityEngine;
 using Zenject;
+using Context = Slash.Unity.DataBind.Core.Data.Context;
 
 namespace GanShin.UI
 {
     [UsedImplicitly]
     public partial class UIManager : IInitializable
     {
-        private readonly Dictionary<Type, INotifyPropertyChanged> _dataContexts = new();
+        private readonly Dictionary<Type, Context> _dataContexts = new();
+        private readonly List<Type> _willRemoveContexts = new();
 
-        public GameObject GlobalRoot { get; private set; } = null;
+        public GameObject GlobalRoot { get; private set; }
 
         [UsedImplicitly]
-        public UIManager()
+        private UIManager() {}
+        
+        public void Initialize()
         {
+            AddGlobalUIRoot();
+        }
+        
+        public void ClearContexts()
+        {
+            _willRemoveContexts.AddRange(_dataContexts.Keys);
+            foreach (var key in _willRemoveContexts)
+            {
+                var context = _dataContexts[key];
+                if (context is IDonDestroyContext)
+                    continue;
+                
+                (context as IDisposable)?.Dispose();
+                _dataContexts.Remove(key);
+            }
+            _willRemoveContexts.Clear();
         }
 
 #region Context Management Interface
-
-        public T GetContext<T>() where T : class, INotifyPropertyChanged
+        public T GetContext<T>() where T : Context
         {
             if (_dataContexts.ContainsKey(typeof(T)))
                 return _dataContexts[typeof(T)] as T;
             return null;
         }
 
-        public T GetOrAddContext<T>() where T : class, INotifyPropertyChanged, new()
+        public T GetOrAddContext<T>() where T : Context, new()
         {
             if (_dataContexts.ContainsKey(typeof(T)))
                 return _dataContexts[typeof(T)] as T;
@@ -37,23 +55,18 @@ namespace GanShin.UI
             return context;
         }
 
-        public void AddContext<T>(T context) where T : class, INotifyPropertyChanged
+        public void AddContext<T>(T context) where T : Context
         {
             var result = _dataContexts.TryAdd(typeof(T), context);
             if (!result)
                 GanDebugger.LogWarning(nameof(UIManager), "Context already exists");
         }
 
-        public void RemoveContext<T>(T context) where T : class, INotifyPropertyChanged
+        public void RemoveContext<T>(T context) where T : Context
         {
             _dataContexts.Remove(typeof(T));
         }
-
 #endregion Context Management Interface
 
-        public void Initialize()
-        {
-            AddGlobalUIRoot();
-        }
     }
 }
