@@ -29,9 +29,9 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _CloudIntensity1: 3.42
-    - _CloudIntensity2: 2.73
-    - _CloudIntensity3: 1.96
+    - _CloudIntensity1: 1
+    - _CloudIntensity2: 1
+    - _CloudIntensity3: 1
     - _LightIntensity1: 1
     - _LightIntensity2: 1
     - _LightIntensity3: 1
