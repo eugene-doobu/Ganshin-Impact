@@ -33,8 +33,8 @@ Material:
     - _CloudIntensity2: 2.73
     - _CloudIntensity3: 1.96
     - _LightIntensity1: 1
-    - _LightIntensity2: 2.3
-    - _LightIntensity3: 10.09
+    - _LightIntensity2: 1
+    - _LightIntensity3: 1
     m_Colors:
     - _LightColor1: {r: 0.6981132, g: 0, b: 0, a: 0}
     - _LightColor2: {r: 0.16690195, g: 0.56, b: 0.16690195, a: 0}
