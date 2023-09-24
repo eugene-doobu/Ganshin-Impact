@@ -7,8 +7,7 @@ namespace GanShin.Space.Content
     {
         void UILog(string log, UIManager uiManager)
         {
-            var logContext = uiManager.GetContext<LogContext>();
-            logContext.Items.Add(new LogItemContext(log));
+            uiManager.AddLog(log);
         }
     }
 }

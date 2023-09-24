@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using GanShin.Space.UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Zenject;
@@ -177,5 +178,13 @@ namespace GanShin.UI
                 OnGlobalUI(EGlobalUI.LOADING, false);
         }
 #endregion Loading
+
+#region Log
+        public void AddLog(string log)
+        {
+            var logContext = GetContext<LogContext>();
+            logContext.Items.Add(new LogItemContext(log));
+        }
+#endregion Log
     }
 }
