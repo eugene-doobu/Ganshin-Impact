@@ -24,7 +24,7 @@ namespace GanShin.Village.Base
             };
             _itemContext.OnClickEvent += () =>
             {
-                Debug.Log("Test");
+                _ui.AddLog("Npc와 인터렉션을 시도하였습니다.");
             };
             context.Items.Add(_itemContext);
             
