@@ -496,7 +496,7 @@ namespace GanShin.Content.Creature
                 return;
             }
             
-            _currentUltimateGauge = 0f;
+            CurrentUltimateGauge = 0f;
             UltimateSkill();
         }
 #endregion ActionEvent
