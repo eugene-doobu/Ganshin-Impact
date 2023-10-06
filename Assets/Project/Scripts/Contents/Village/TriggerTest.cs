@@ -1,4 +1,4 @@
-using GanShin.MapObject;
+using GanShin.GanObject;
 using GanShin.Space.UI;
 using GanShin.UI;
 using UnityEngine;

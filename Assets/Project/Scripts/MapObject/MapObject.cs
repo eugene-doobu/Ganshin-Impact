@@ -5,7 +5,7 @@ using GanShin.Utils;
 using UnityEngine;
 using Zenject;
 
-namespace GanShin.MapObject
+namespace GanShin.GanObject
 {
     /// <summary>
     /// MapController에서 관리하는 오브젝트

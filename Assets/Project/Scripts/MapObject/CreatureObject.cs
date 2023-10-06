@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GanShin.MapObject
+namespace GanShin.GanObject
 {
     /// <summary>
     /// (다른 타입보다 더) 스스로의 판단으로 움직이는 오브젝트들

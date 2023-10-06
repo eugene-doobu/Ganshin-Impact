@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace GanShin.MapObject
+namespace GanShin.GanObject
 {
     public interface ITriggerEventProvider
     {
