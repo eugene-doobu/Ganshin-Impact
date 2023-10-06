@@ -31,7 +31,6 @@ namespace GanShin.UI
     public partial class UIManager
     {
 #region Define
-
         public const string EventSystemPath = "Prefabs/UI/EventSystem";
 
         public struct GlobalUIName
@@ -44,7 +43,6 @@ namespace GanShin.UI
             public static readonly string Toast             = $"{Root}UI_ToastPopup";
             public static readonly string Loading           = $"{Root}UI_Loading";
         }
-
 #endregion Define
 
         private readonly Dictionary<EGlobalUI, GlobalUIRootBase> _globalUIs = new();
