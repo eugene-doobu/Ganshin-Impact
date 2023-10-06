@@ -34,7 +34,7 @@ namespace GanShin.Space.UI
 				_enable = value;
 
 				if (!value) Clear();
-				else AddAllObjects();
+				else AddAllMapObject();
 				
 				OnPropertyChanged();
 			}
