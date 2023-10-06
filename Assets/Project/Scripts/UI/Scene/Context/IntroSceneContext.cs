@@ -38,9 +38,9 @@ namespace GanShin.UI
                     UnityEditor.EditorApplication.isPlaying = false;
                 }
 #else
-            {
-                    Application.Quit();
-            }
+                {
+                    UnityEngine.Application.Quit();
+                }
 #endif
             );
         }
