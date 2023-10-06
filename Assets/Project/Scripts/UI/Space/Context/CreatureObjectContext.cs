@@ -1,15 +1,11 @@
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+using GanShin.UI;
 using JetBrains.Annotations;
 using UnityEngine;
-using Context = Slash.Unity.DataBind.Core.Data.Context;
 
 namespace GanShin.Space.UI
 {
-    public abstract class CreatureObjectContext : Context, INotifyPropertyChanged
+    public abstract class CreatureObjectContext : GanContext
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-
 #region Fields
         private string _targetName;
         private int    _currentHp;
@@ -63,11 +59,5 @@ namespace GanShin.Space.UI
             }
         }
 #endregion Field Properties
-
-        [NotifyPropertyChangedInvocator]
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
     }
 }

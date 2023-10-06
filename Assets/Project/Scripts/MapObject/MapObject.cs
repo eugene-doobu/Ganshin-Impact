@@ -18,6 +18,8 @@ namespace GanShin.GanObject
 
         [field: SerializeField, ReadOnly] public long Id { get; set; }
 
+        public bool IsMine { get; set; } = false;
+
         public void Awake()
         {
             _mapObjectManager.RegisterMapObject(this);
