@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GanShin.MapObject
+namespace GanShin.GanObject
 {
     /// <summary>
     /// (겉으로 보이기에)스스로 판단하여 움직일 수 없으며,

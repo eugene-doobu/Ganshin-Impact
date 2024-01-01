@@ -10,6 +10,7 @@ namespace GanShin.Space.Content
         public override void Use()
         {
             // TODO
+            (this as IUILoggable).UILog("포션을 사용하였습니다.", Owner.UIManager);
         }
     }
 }

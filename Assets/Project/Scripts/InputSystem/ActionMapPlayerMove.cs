@@ -101,12 +101,20 @@ namespace GanShin.InputSystem
 
         private void OnAttackPerformed(InputAction.CallbackContext context)
         {
+            var eventSystem = UnityEngine.EventSystems.EventSystem.current;
+            if (eventSystem != null && eventSystem.IsPointerOverGameObject())
+                return;
+            
             OnAttack?.Invoke(true);
             GanDebugger.InputLog($"OnAttack - value: {true}");
         }
 
-        public void OnAttackCanceled(InputAction.CallbackContext context)
+        private void OnAttackCanceled(InputAction.CallbackContext context)
         {
+            var eventSystem = UnityEngine.EventSystems.EventSystem.current;
+            if (eventSystem != null && eventSystem.IsPointerOverGameObject())
+                return;
+
             OnAttack?.Invoke(false);
             GanDebugger.InputLog($"OnAttack - value: {false}");
         }

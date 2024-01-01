@@ -46,14 +46,27 @@ namespace GanShin.SceneManagement
 
         string GetSceneName(Define.eScene type)
         {
-            string name = Enum.GetName(typeof(Define.eScene), type);
-            return name;
+            switch (type)
+            {
+                case Define.eScene.UNKNOWN:
+                    return string.Empty;
+                case Define.eScene.LOADING_SCENE:
+                    return "LoadingScene";
+                case Define.eScene.INTRO:
+                    return "IntroScene";
+                case Define.eScene.SIMPLE_DEMO:
+                    return "SimpleDemo";
+            }
+
+            return string.Empty;
         }
 
         private void OnSceneUnLoaded(Scene scene)
         {
             if (CurrentScene != null)
                 CurrentScene.Clear();
+            
+            _ui.ClearContexts();
         }
     }
 }

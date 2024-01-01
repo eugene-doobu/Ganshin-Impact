@@ -178,6 +178,7 @@ GameObject:
   - component: {fileID: 2268188042713416177}
   - component: {fileID: 2268188042713416178}
   - component: {fileID: 5377574482762217032}
+  - component: {fileID: 6338903613361151563}
   m_Layer: 5
   m_Name: Canvas_IntroScene
   m_TagString: Untagged
@@ -296,6 +297,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c047cc5ec6cba045be04743d02fbebc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!225 &6338903613361151563
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2268188042713416179}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1001 &216604557998014306
 PrefabInstance:
   m_ObjectHideFlags: 0

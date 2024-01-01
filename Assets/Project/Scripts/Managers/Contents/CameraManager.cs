@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Cinemachine;
 using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using Zenject;
 
@@ -19,17 +20,22 @@ namespace GanShin.CameraSystem
     [UsedImplicitly]
     public class CameraManager : IInitializable, ITickable, ILateTickable
     {
+#region Fields
         [Inject] private CharacterCamera         _characterCamera         = null!;
         [Inject] private CharacterUltimateCamera _characterUltimateCamera = null!;
 
         private Dictionary<string, VirtualCameraJig> _virtualCameraDict = new();
         private Dictionary<eCameraState, CameraBase> _cameraStates      = new();
 
+        private readonly Dictionary<eCullingGroupType, float[]> _cullingGroupBoundingDistanceDict = new();
+
         private CameraBase? _currentCamera;
 
-        private CinemachineBrain? _mainBrain;
-        private Camera?           _mainCamera;
+        private GanCamera? _ganCamera;
+        private Camera?    _mainCamera;
+#endregion Fields
 
+#region Properties
         public Camera? MainCamera
         {
             set
@@ -37,11 +43,11 @@ namespace GanShin.CameraSystem
                 _mainCamera = value;
                 if (_mainCamera == null)
                 {
-                    _mainBrain = null;
+                    _ganCamera = null;
                     return;
                 }
 
-                _mainBrain = _mainCamera.gameObject.GetOrAddComponent<CinemachineBrain>();
+                _ganCamera = _mainCamera.gameObject.GetOrAddComponent<GanCamera>();
             }
             get
             {
@@ -49,7 +55,7 @@ namespace GanShin.CameraSystem
                 {
                     _mainCamera = Camera.main;
                     if (_mainCamera == null) return null;
-                    _mainBrain = _mainCamera.gameObject.GetOrAddComponent<CinemachineBrain>();
+                    _ganCamera = _mainCamera.gameObject.GetOrAddComponent<GanCamera>();
                 }
 
                 return _mainCamera;
@@ -57,6 +63,7 @@ namespace GanShin.CameraSystem
         }
         
         public Transform? Target { get; set; }
+#endregion Properties
 
         [UsedImplicitly]
         public CameraManager()
@@ -105,7 +112,6 @@ namespace GanShin.CameraSystem
         }
 
 #region VirtualCamera
-
         public void AddVirtualCamera(VirtualCameraJig jig)
         {
             _virtualCameraDict[jig.Name] = jig;
@@ -120,7 +126,105 @@ namespace GanShin.CameraSystem
 
             _virtualCameraDict.Remove(jig.Name);
         }
-
 #endregion VirtualCamera
+
+#region CullingMask
+        public void SetCullingMask(int cullingMask)
+        {
+            var mainCamera = MainCamera;
+            if (mainCamera == null) return;
+            
+            mainCamera.cullingMask = cullingMask;
+        }
+        
+        public void OnCullingMaskLayer(int layerIndex)
+        {
+            OnCullingMaskLayer(MainCamera, layerIndex);
+        }
+        
+        public void OffCullingMaskLayer(int layerIndex)
+        {
+            OffCullingMaskLayer(MainCamera, layerIndex);
+        }
+        
+        public static void OnCullingMaskLayer(Camera? camera, int layerIndex)
+        {
+            if (camera == null) return;
+            camera.cullingMask |= 1 << layerIndex;
+        }
+        
+        public static void OffCullingMaskLayer(Camera? camera, int layerIndex)
+        {
+            if (camera == null) return;
+            camera.cullingMask &= ~(1 << layerIndex);
+        }
+        
+        public static void FlipCullingMaskLayer(Camera? camera, int layerIndex)
+        {
+            if (camera == null) return;
+            camera.cullingMask ^= 1 << layerIndex;
+        }
+        
+        public static bool GetCullingMaskLayer(Camera? camera, int layerIndex)
+        {
+            if (camera == null) return false;
+            return (camera.cullingMask & (1 << layerIndex)) != 0;
+        }
+#endregion CullingMask
+        
+#region CullingGroupProxy
+        public CullingGroupProxy SetCullingGroupProxy(GameObject gameObject, eCullingGroupType cullingGroupType)
+        {
+            var cullingGroups = gameObject.GetComponents<CullingGroupProxy>();
+
+            CullingGroupProxy result;
+            if (cullingGroups == null || cullingGroups.Length == 0)
+            {
+                result = gameObject.AddComponent<CullingGroupProxy>();
+                result.SetCullingGroupType(cullingGroupType);
+                return result;
+            }
+
+            foreach (var cullingGroup in cullingGroups)
+            {
+                if (cullingGroup.CullingGroupType == cullingGroupType)
+                    return cullingGroup;
+            }
+            
+            result = gameObject.AddComponent<CullingGroupProxy>();
+            result.SetCullingGroupType(cullingGroupType);
+            return result;
+        }
+#endregion CullingGroupProxy
+
+#region Utils
+        public Ray GetRayFromCamera()
+        {
+            var currentEventSystem = UnityEngine.EventSystems.EventSystem.current;
+            if (currentEventSystem == null || currentEventSystem.IsPointerOverGameObject())
+                return default;
+
+            var clickPosition = Mouse.current.position.ReadValue();
+            var screenWidth   = Screen.width;
+            var screenHeight  = Screen.height;
+            
+            if (clickPosition.x < 0 || clickPosition.x >= screenWidth || clickPosition.y < 0 || clickPosition.y >= screenHeight)
+                return default;
+            
+            var mainCamera = MainCamera;
+            if (mainCamera == null) return default;
+            
+            return mainCamera.ScreenPointToRay(clickPosition);
+        }
+
+        public bool IsFrontOfCamera(Vector3 worldPosition)
+        {
+            var mainCamera = MainCamera;
+            if (mainCamera == null) return false;
+            
+            var tr = mainCamera.transform;
+            return Vector3.Dot(tr.forward, (worldPosition - tr.position).normalized) > 0;
+        }
+#endregion Utils
     }
 }

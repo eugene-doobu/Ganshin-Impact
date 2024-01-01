@@ -12,3 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4360d60ad9c6f0c45a8dfd179135cacd, type: 3}
   m_Name: VillageSceneInstaller
   m_EditorClassIdentifier: 
+  npcInfoList:
+  - npcType: 1
+    npcName: "\uAE40\uCD98\uBC30"
+    npcTitle: "\uB0E5\uAD6D\uC758 \uC655\uC790"
+    npcMenuType: 0
+    npcDialogueList:
+    - content: "\uB0D0\uB0D0\uB0E5 "
+      direction: 0
+      npcDialogueImage: 0

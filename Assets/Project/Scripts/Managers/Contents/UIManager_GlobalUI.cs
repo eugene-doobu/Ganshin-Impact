@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using GanShin.Space.UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Zenject;
@@ -30,7 +31,6 @@ namespace GanShin.UI
     public partial class UIManager
     {
 #region Define
-
         public const string EventSystemPath = "Prefabs/UI/EventSystem";
 
         public struct GlobalUIName
@@ -43,7 +43,6 @@ namespace GanShin.UI
             public static readonly string Toast             = $"{Root}UI_ToastPopup";
             public static readonly string Loading           = $"{Root}UI_Loading";
         }
-
 #endregion Define
 
         private readonly Dictionary<EGlobalUI, GlobalUIRootBase> _globalUIs = new();
@@ -144,7 +143,7 @@ namespace GanShin.UI
 #endregion Popup
 
 #region Toast
-        public void SetToast(string title, string content, EToastType type)
+        public void SetToast(string title, string content, EToastType type = EToastType.DEFAULT)
         {
             var toast = GetGlobalUI(EGlobalUI.TOAST) as UIRootToastPopup;
             if (toast == null)
@@ -177,5 +176,13 @@ namespace GanShin.UI
                 OnGlobalUI(EGlobalUI.LOADING, false);
         }
 #endregion Loading
+
+#region Log
+        public void AddLog(string log)
+        {
+            var logContext = GetContext<LogContext>();
+            logContext.Items.Add(new LogItemContext(log));
+        }
+#endregion Log
     }
 }

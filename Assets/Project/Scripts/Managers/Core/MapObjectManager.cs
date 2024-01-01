@@ -3,7 +3,7 @@ using JetBrains.Annotations;
 
 #nullable enable
 
-namespace GanShin.MapObject
+namespace GanShin.GanObject
 {
     [UsedImplicitly]
     public class MapObjectManager

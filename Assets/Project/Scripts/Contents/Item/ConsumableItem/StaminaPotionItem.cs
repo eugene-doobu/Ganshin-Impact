@@ -16,6 +16,7 @@ namespace GanShin.Space.Content
                 return;
             
             playerManager.CurrentStamina += _healAmount;
+            (this as IUILoggable).UILog("스테미나 포션을 사용하였습니다.", Owner.UIManager);
         }
     }
 }

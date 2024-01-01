@@ -439,10 +439,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI_Charcter_Info_Riko
       objectReference: {fileID: 0}
-    - target: {fileID: 4830534050439170451, guid: 61b646584f22e544fa5245d84c00f81c, type: 3}
-      propertyPath: m_text
-      value: Riko
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

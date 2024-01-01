@@ -82,14 +82,15 @@ namespace GanShin.UI
                 Disable();
                 return;
             }
+
+            _cancellationTokenSource = new CancellationTokenSource();
+            await UniTask.NextFrame(cancellationToken: _cancellationTokenSource.Token);
             
             animator.Play(_animationParamHashIn);
-            _cancellationTokenSource = new CancellationTokenSource();
             await UniTask.Delay(TimeSpan.FromSeconds(defaultDuration), cancellationToken: _cancellationTokenSource.Token);
             
             animator.Play(_animationParamHashOut);
             await UniTask.Delay(TimeSpan.FromSeconds(outDuration), cancellationToken: _cancellationTokenSource.Token);
-            Disable();
         } 
 
         public override void InitializeContextData()

@@ -1,3 +1,4 @@
+using GanShin.SceneManagement;
 using JetBrains.Annotations;
 using Context = Slash.Unity.DataBind.Core.Data.Context;
 
@@ -7,11 +8,12 @@ namespace GanShin.UI
     public class IntroSceneContext : Context
     {
         public UIManager UIManager { get; set; }
+        public SceneManagerEx SceneManager { get; set; }
         
         [UsedImplicitly]
         public void OnClickStart()
         {
-            GanDebugger.Log(GetType().Name,"OnClickStart");
+            SceneManager?.LoadScene(Define.eScene.SIMPLE_DEMO);
         }
         
         [UsedImplicitly]
@@ -36,9 +38,9 @@ namespace GanShin.UI
                     UnityEditor.EditorApplication.isPlaying = false;
                 }
 #else
-            {
-                    Application.Quit();
-            }
+                {
+                    UnityEngine.Application.Quit();
+                }
 #endif
             );
         }
