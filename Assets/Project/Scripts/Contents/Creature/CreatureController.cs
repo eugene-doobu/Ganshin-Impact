@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace GanShin.Content.Creature
@@ -8,17 +5,13 @@ namespace GanShin.Content.Creature
     public abstract class CreatureController : MonoBehaviour
     {
 #region Variables
-
         private bool     _hasAnimator;
         private Animator _objAnimator;
-
 #endregion Variables
 
 #region Properties
-
         protected Animator ObjAnimator => _objAnimator;
         protected bool     HasAnimator => _hasAnimator;
-
 #endregion Properties
 
 #region Mono
