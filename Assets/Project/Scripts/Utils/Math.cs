@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace GanShin
 {
-    public class MathUtils
+    public static class MathUtils
     {
         public static float ClampAngle(float lfAngle, float lfMin, float lfMax)
         {

@@ -3,7 +3,7 @@ using GanShin.CameraSystem;
 using GanShin.Content.Creature;
 using GanShin.Effect;
 using GanShin.InputSystem;
-using GanShin.MapObject;
+using GanShin.GanObject;
 using GanShin.SceneManagement;
 using GanShin.Sound;
 using GanShin.UI;

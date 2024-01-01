@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using GanShin.CameraSystem;
 using JetBrains.Annotations;
 using UnityEngine;
 using Zenject;
@@ -14,6 +15,8 @@ namespace GanShin.UI
         private readonly List<Type> _willRemoveContexts = new();
 
         public GameObject GlobalRoot { get; private set; }
+        
+        [Inject] private CameraManager _cameraManager;
 
         [UsedImplicitly]
         private UIManager() {}

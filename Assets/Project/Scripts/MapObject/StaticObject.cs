@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GanShin.MapObject
+namespace GanShin.GanObject
 {
     /// <summary>
     /// 움직이지 않는 오브젝트

@@ -1,6 +1,8 @@
+using System;
 using Cysharp.Threading.Tasks;
 using GanShin.Dialogue.Base;
 using GanShin.Space.Content;
+using GanShin.Space.UI;
 using GanShin.UI;
 using UnityEngine;
 using Zenject;
@@ -62,6 +64,27 @@ namespace GanShin.SceneManagement
         {
             if (Input.GetKeyDown("]"))
                 _sceneManager.LoadScene(Define.eScene.SIMPLE_DEMO).Forget();
+
+            if (Input.GetKeyDown("["))
+            {
+                switch (debugInputGroup)
+                {
+                    case EDebugInputGroup.NONE:
+                        debugInputGroup = EDebugInputGroup.CHARACTER_CHANGE;
+                        break;
+                    case EDebugInputGroup.CHARACTER_CHANGE:
+                        debugInputGroup = EDebugInputGroup.GLOBAL_UI;
+                        break;
+                    case EDebugInputGroup.GLOBAL_UI:
+                        debugInputGroup = EDebugInputGroup.DIALOGUE;
+                        break;
+                    case EDebugInputGroup.DIALOGUE:
+                        debugInputGroup = EDebugInputGroup.NONE;
+                        break;
+                }
+
+                _uiManager.AddLog($"디버그 모드가 {debugInputGroup}으로 변경되었습니다.");
+            }
         }
 
         private void ProcessCharacterChangeDebugInput()
