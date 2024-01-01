@@ -9,9 +9,9 @@ namespace GanShin.GanObject
     /// 기본적으로 Collider가 부착되어 있으며,
     /// 플레이어와의 거리에 따른 이벤트나 마우스 호버 이벤트 등이 존재한다.
     /// </summary>
-    public abstract partial class MapObject : MonoBehaviour
+    public abstract partial class Actor : MonoBehaviour
     {
-        [Inject] protected MapObjectManager _mapObjectManager;
+        [Inject] protected ActorManager ActorManager;
 
         [field: SerializeField, ReadOnly] public long Id { get; set; }
 
@@ -21,7 +21,7 @@ namespace GanShin.GanObject
 
         public void Awake()
         {
-            _mapObjectManager.RegisterMapObject(this);
+            ActorManager.RegisterActor(this);
         }
 
         public virtual void OnUpdate()
@@ -30,8 +30,8 @@ namespace GanShin.GanObject
 
         public void OnDestroy()
         {
-            if (_mapObjectManager == null) return;
-            _mapObjectManager.RemoveMapObject(this);
+            if (ActorManager == null) return;
+            ActorManager.RemoveActor(this);
         }
     }
 }

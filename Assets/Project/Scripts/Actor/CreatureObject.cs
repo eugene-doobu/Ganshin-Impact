@@ -9,7 +9,7 @@ namespace GanShin.GanObject
     /// 플레이어와 몬스터가 이 클래스에 속함
     /// 투사체의 경우도 특정 목표를 가지로 스스로 움직인다고 판단하여 Creature로 분류
     /// </summary>
-    public class CreatureObject : MapObject
+    public class CreatureObject : Actor
     {
         public override void OnUpdate()
         {

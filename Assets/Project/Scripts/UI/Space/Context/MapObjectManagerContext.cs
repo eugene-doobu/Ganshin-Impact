@@ -8,9 +8,9 @@ using JetBrains.Annotations;
 
 namespace GanShin.Space.UI
 {
-	// TODO: CreatureObjectContext에서 MapObjectContext로 변경
+	// TODO: CreatureObjectContext에서 ActorContext로 변경
 	[UsedImplicitly]
-	public class MapObjectManagerContext : CollectionManagerContext<long, CreatureObjectContext>
+	public class ActorManagerContext : CollectionManagerContext<long, CreatureObjectContext>
 	{
 		public enum eDisplayType
 		{
@@ -34,7 +34,7 @@ namespace GanShin.Space.UI
 				_enable = value;
 
 				if (!value) Clear();
-				else AddAllMapObject();
+				else AddAllActor();
 				
 				OnPropertyChanged();
 			}
@@ -58,11 +58,11 @@ namespace GanShin.Space.UI
 			}
 		}
 		
-		public Func<MapObject, bool>? CustomDisplayFilter { get; set; }
+		public Func<Actor, bool>? CustomDisplayFilter { get; set; }
 #endregion Fields/Properties
 
 #region Initialize
-		public MapObjectManagerContext()
+		public ActorManagerContext()
 		{
 			// TODO: Context에 Zenject Container 주입
 			// TODO: ObjectManager에 있는 오브젝트 목록 긁어와서 Register
@@ -70,69 +70,69 @@ namespace GanShin.Space.UI
 #endregion Initialize
 
 #region EventHandler
-		private void OnMapObjectAdded(MapObject? mapObject)
+		private void OnActorAdded(Actor? actor)
 		{
 			
 		}
 		
-		private void OnMapObjectRemoved(MapObject? mapObject)
+		private void OnActorRemoved(Actor? actor)
 		{
 			
 		}
 		
-		private void RegisterObserver(MapObject? mapObject)
+		private void RegisterObserver(Actor? actor)
 		{
-			if (mapObject == null) return;
+			if (actor == null) return;
 			
-			mapObject.OnBecomeOccluded += OnBecomeOccluded;
-			mapObject.OnBecomeUnoccluded += OnBecomeUnoccluded;
+			actor.OnBecomeOccluded += OnBecomeOccluded;
+			actor.OnBecomeUnoccluded += OnBecomeUnoccluded;
 			
-			AddMapObject(mapObject);
+			AddActor(actor);
 		}
 		
-		private void DeleteObserver(MapObject? mapObject)
+		private void DeleteObserver(Actor? actor)
 		{
-			if (mapObject == null) return;
+			if (actor == null) return;
 			
-			mapObject.OnBecomeOccluded -= OnBecomeOccluded;
-			mapObject.OnBecomeUnoccluded -= OnBecomeUnoccluded;
+			actor.OnBecomeOccluded -= OnBecomeOccluded;
+			actor.OnBecomeUnoccluded -= OnBecomeUnoccluded;
 			
-			RemoveMapObject(mapObject);
+			RemoveActor(actor);
 		}
 #endregion EventHandler
 
 #region Add/Remove Object
-		private void AddMapObject(MapObject mapObject)
+		private void AddActor(Actor actor)
 		{
 			// TODO: 컬링그룹 조건 추가
-			if (!_enable || Contains(mapObject.Id)) return;
+			if (!_enable || Contains(actor.Id)) return;
 			
-			if (!IsMatchingCondition(mapObject)) return;
+			if (!IsMatchingCondition(actor)) return;
 			
 			// TODO: 구체적인 타입 주입
-			// Add(mapObject.Id, new CreatureObjectContext());
+			// Add(actor.Id, new CreatureObjectContext());
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private bool IsMatchingCondition(MapObject mapObject)
+		private bool IsMatchingCondition(Actor actor)
 		{
 			return _type switch
 			{
 				eDisplayType.ALL    => true,
-				eDisplayType.OWN    => mapObject.IsMine,
-				eDisplayType.OTHERS => !mapObject.IsMine,
+				eDisplayType.OWN    => actor.IsMine,
+				eDisplayType.OTHERS => !actor.IsMine,
 				eDisplayType.NONE   => false,
-				eDisplayType.CUSTOM => CustomDisplayFilter?.Invoke(mapObject) ?? false,
+				eDisplayType.CUSTOM => CustomDisplayFilter?.Invoke(actor) ?? false,
 				_                   => false,
 			};
 		}
 
-		private void RemoveMapObject(MapObject mapObject)
+		private void RemoveActor(Actor actor)
 		{
-			Remove(mapObject.Id);
+			Remove(actor.Id);
 		}
 
-		private void AddAllMapObject()
+		private void AddAllActor()
 		{
 			// TODO
 		}
@@ -140,16 +140,16 @@ namespace GanShin.Space.UI
 		private void RefreshItemContexts()
 		{
 			Clear();
-			AddAllMapObject();
+			AddAllActor();
 		}
 #endregion Add/Remove Object
         
 #region CullingGroup
-		private void OnBecomeUnoccluded(MapObject? mapObject)
+		private void OnBecomeUnoccluded(Actor? actor)
 		{
 		}
 
-		private void OnBecomeOccluded(MapObject? mapObject)
+		private void OnBecomeOccluded(Actor? actor)
 		{
 		}
 #endregion CullingGroup

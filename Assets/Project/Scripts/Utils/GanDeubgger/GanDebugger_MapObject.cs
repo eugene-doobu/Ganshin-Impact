@@ -4,29 +4,29 @@ using UnityEngine;
 
 namespace GanShin
 {
-    // GanDebugger_MapObject
+    // GanDebugger_Actor
     public static partial class GanDebugger
     {
-        private static string HEADER_MAPOBJECT = "MapObject";
+        private const string HEADER_ACTOR = "Actor";
 
-        public static bool IsDebuggingMapObject = true;
+        public static readonly bool IsDebuggingActor = true;
 
-        public static void MapObjectLog(string message)
+        public static void ActorLog(string message)
         {
-            if (!IsDebuggingMapObject) return;
-            Log(HEADER_MAPOBJECT, message);
+            if (!IsDebuggingActor) return;
+            Log(HEADER_ACTOR, message);
         }
 
-        public static void MapObjectLogWarning(string message)
+        public static void ActorLogWarning(string message)
         {
-            if (!IsDebuggingMapObject) return;
-            LogWarning(HEADER_MAPOBJECT, message);
+            if (!IsDebuggingActor) return;
+            LogWarning(HEADER_ACTOR, message);
         }
 
-        public static void MapObjectLogError(string message)
+        public static void ActorLogError(string message)
         {
-            if (!IsDebuggingMapObject) return;
-            LogError(HEADER_MAPOBJECT, message);
+            if (!IsDebuggingActor) return;
+            LogError(HEADER_ACTOR, message);
         }
     }
 }

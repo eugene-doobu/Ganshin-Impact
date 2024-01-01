@@ -13,7 +13,7 @@ namespace GanShin.UI
 	{
 		private const int HUDCheckInterval = 100;
 		
-		private readonly Dictionary<long, MapObject> _nearByObjects   = new();
+		private readonly Dictionary<long, Actor> _nearByObjects   = new();
 		private readonly List<long>                  _nearByObjectIds = new();
 		
 		private CancellationTokenSource? _cancellationToken;
@@ -24,14 +24,14 @@ namespace GanShin.UI
 				SetHudSortOrder();
 		}
 
-		public void AddNearByObject(MapObject mapObject)
+		public void AddNearByObject(Actor actor)
 		{
-			_nearByObjects.TryAdd(mapObject.Id, mapObject);
+			_nearByObjects.TryAdd(actor.Id, actor);
 		}	
 		
-		public void RemoveNearByObject(MapObject mapObject)
+		public void RemoveNearByObject(Actor actor)
 		{
-			_nearByObjects.Remove(mapObject.Id);
+			_nearByObjects.Remove(actor.Id);
 		}
 
 		private void SetHudSortOrder()

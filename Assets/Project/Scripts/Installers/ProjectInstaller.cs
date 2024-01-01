@@ -42,7 +42,7 @@ namespace Ganshin
                 .To<CameraManager>()
                 .AsSingle()
                 .NonLazy();
-            Container.Bind<MapObjectManager>().AsSingle().NonLazy();
+            Container.Bind<ActorManager>().AsSingle().NonLazy();
             Container.Bind(
                     typeof(PlayerManager),
                     typeof(IInitializable),

@@ -6,7 +6,7 @@ using JetBrains.Annotations;
 namespace GanShin.GanObject
 {
     [UsedImplicitly]
-    public class MapObjectManager
+    public class ActorManager
     {
         private Dictionary<long, CreatureObject> _creatureObjects = new();
         private Dictionary<long, PassiveObject>  _passiveObjects  = new();
@@ -26,20 +26,20 @@ namespace GanShin.GanObject
 
         public void Clear()
         {
-            RemoveAllMapObjects();
+            RemoveAllActors();
             _currentId = 0;
         }
 
 #endregion Manager
 
-#region MapObject
+#region Actor
 
-        public void RegisterMapObject(MapObject mapObject)
+        public void RegisterActor(Actor actor)
         {
-            mapObject.Id = _currentId;
+            actor.Id = _currentId;
             _currentId++;
 
-            switch (mapObject)
+            switch (actor)
             {
                 case CreatureObject creatureObject:
                     _creatureObjects[_currentId] = creatureObject;
@@ -53,7 +53,7 @@ namespace GanShin.GanObject
             }
         }
 
-        public MapObject? GetMapObject(long id)
+        public Actor? GetActor(long id)
         {
             if (_creatureObjects.ContainsKey(id))
                 return _creatureObjects[id];
@@ -62,7 +62,7 @@ namespace GanShin.GanObject
             if (_staticObjects.ContainsKey(id))
                 return _staticObjects[id];
 
-            GanDebugger.MapObjectLogWarning($"MapObject with id {id} not found");
+            GanDebugger.ActorLogWarning($"Actor with id {id} not found");
             return null;
         }
 
@@ -71,7 +71,7 @@ namespace GanShin.GanObject
             if (_creatureObjects.ContainsKey(id))
                 return _creatureObjects[id];
 
-            GanDebugger.MapObjectLogWarning($"CreatureObject with id {id} not found");
+            GanDebugger.ActorLogWarning($"CreatureObject with id {id} not found");
             return null;
         }
 
@@ -80,7 +80,7 @@ namespace GanShin.GanObject
             if (_passiveObjects.ContainsKey(id))
                 return _passiveObjects[id];
 
-            GanDebugger.MapObjectLogWarning($"PassiveObject with id {id} not found");
+            GanDebugger.ActorLogWarning($"PassiveObject with id {id} not found");
             return null;
         }
 
@@ -89,11 +89,11 @@ namespace GanShin.GanObject
             if (_staticObjects.ContainsKey(id))
                 return _staticObjects[id];
 
-            GanDebugger.MapObjectLogWarning($"StaticObject with id {id} not found");
+            GanDebugger.ActorLogWarning($"StaticObject with id {id} not found");
             return null;
         }
 
-        public void RemoveMapObject(long id)
+        public void RemoveActor(long id)
         {
             if (_creatureObjects.ContainsKey(id))
                 _creatureObjects.Remove(id);
@@ -103,12 +103,12 @@ namespace GanShin.GanObject
                 _staticObjects.Remove(id);
         }
 
-        public void RemoveMapObject(MapObject mapObject)
+        public void RemoveActor(Actor actor)
         {
-            RemoveMapObject(mapObject.Id);
+            RemoveActor(actor.Id);
         }
 
-        public void RemoveAllMapObjects()
+        public void RemoveAllActors()
         {
             _creatureObjects.Clear();
             _passiveObjects.Clear();

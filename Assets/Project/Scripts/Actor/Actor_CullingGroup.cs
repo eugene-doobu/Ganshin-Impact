@@ -10,12 +10,12 @@ namespace GanShin.GanObject
 		DISABLE,
 	}
 	
-	public abstract partial class MapObject : ICullingTarget
+	public abstract partial class Actor : ICullingTarget
 	{
-		public event Action<MapObject> OnBecomeOccluded;
-		public event Action<MapObject> OnBecomeUnoccluded;
+		public event Action<Actor> OnBecomeOccluded;
+		public event Action<Actor> OnBecomeUnoccluded;
 		
-		public event Action<MapObject, eHudCullingState> OnHudCullingStateChanged;
+		public event Action<Actor, eHudCullingState> OnHudCullingStateChanged;
 
 		[SerializeField] private eCullingUpdateMode _boundingSphereUpdateMode = eCullingUpdateMode.DYNAMIC;
 		[SerializeField] private float              _cullingBoundingRadius    = 0.33f;
