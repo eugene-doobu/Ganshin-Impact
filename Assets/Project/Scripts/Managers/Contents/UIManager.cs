@@ -9,7 +9,7 @@ using Context = Slash.Unity.DataBind.Core.Data.Context;
 namespace GanShin.UI
 {
     [UsedImplicitly]
-    public partial class UIManager : IInitializable
+    public partial class UIManager : ManagerBase
     {
         private readonly Dictionary<Type, Context> _dataContexts = new();
         private readonly List<Type> _willRemoveContexts = new();
@@ -21,7 +21,7 @@ namespace GanShin.UI
         [UsedImplicitly]
         private UIManager() {}
         
-        public void Initialize()
+        public override void Initialize()
         {
             AddGlobalUIRoot();
         }

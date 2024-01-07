@@ -17,7 +17,7 @@ namespace GanShin.Space.Content
     }
     
     [UsedImplicitly]
-    public class InventoryManager : IInitializable, ITickable
+    public class InventoryManager : ManagerBase
     {
         [Inject] public PlayerManager? PlayerManager { get; private set; }
         [Inject] public UIManager?     UIManager     { get; private set; }
@@ -43,11 +43,23 @@ namespace GanShin.Space.Content
 
         public event Action<ConsumableItemType, int>? OnItemAmountUpdated;
         
-        public void Initialize()
+        public override void Initialize()
         {
             InitializeGold();
             InitializeItems();
             LoadItems();
+        }
+
+        public override void Tick()
+        {
+            if (Input.GetKeyDown("1"))
+                UseItem(ConsumableItemType.HP_POTION);
+            
+            if (Input.GetKeyDown("2"))
+                UseItem(ConsumableItemType.STAMINA_POTION);
+
+            if (Input.GetKeyDown("3"))
+                UseItem(ConsumableItemType.POTION);
         }
 
         private void InitializeGold()
@@ -71,18 +83,6 @@ namespace GanShin.Space.Content
                 _itemAmount.Add(consumableItemType, 10);
             foreach (var kvp in _itemAmount)
                 OnItemAmountUpdated?.Invoke(kvp.Key, kvp.Value);
-        }
-
-        public void Tick()
-        {
-            if (Input.GetKeyDown("1"))
-                UseItem(ConsumableItemType.HP_POTION);
-            
-            if (Input.GetKeyDown("2"))
-                UseItem(ConsumableItemType.STAMINA_POTION);
-
-            if (Input.GetKeyDown("3"))
-                UseItem(ConsumableItemType.POTION);
         }
         
         private void ItemAmountUpdated(ConsumableItemType type, int amount)

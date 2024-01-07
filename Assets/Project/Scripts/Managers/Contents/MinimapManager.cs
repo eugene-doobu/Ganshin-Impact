@@ -5,7 +5,7 @@ using Zenject;
 namespace GanShin.Space.Content
 {
     [UsedImplicitly]
-    public class MinimapManager : IInitializable, ILateTickable
+    public class MinimapManager : ManagerBase
     {
         public const string MinimapCameraId = "MinimapManager.MinimapCamera";
         
@@ -24,22 +24,12 @@ namespace GanShin.Space.Content
             return _renderTexture;
         }
         
-        public void Initialize()
+        public override void Initialize()
         {
             SetCameraRenderTarget();
         }
 
-        private void SetCameraRenderTarget()
-        {
-            if (_renderTexture != null)
-                return;
-
-            _minimapCamera.gameObject.SetActive(true);
-            _renderTexture = new RenderTexture(350, 350, 24, RenderTextureFormat.ARGB32);
-            _minimapCamera.targetTexture = _renderTexture;
-        }
-
-        public void LateTick()
+        public override void LateTick()
         {
             var playerTransform = _playerManager.CurrentPlayerTransform;
             if (playerTransform == null)
@@ -51,6 +41,16 @@ namespace GanShin.Space.Content
             position    = playerTransform.position;
             position    = new Vector3(position.x, height, position.z);
             tr.position = position;
+        }
+
+        private void SetCameraRenderTarget()
+        {
+            if (_renderTexture != null)
+                return;
+
+            _minimapCamera.gameObject.SetActive(true);
+            _renderTexture = new RenderTexture(350, 350, 24, RenderTextureFormat.ARGB32);
+            _minimapCamera.targetTexture = _renderTexture;
         }
     }
 }

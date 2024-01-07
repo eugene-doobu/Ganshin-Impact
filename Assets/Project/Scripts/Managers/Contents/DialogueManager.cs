@@ -9,7 +9,7 @@ using Zenject;
 namespace GanShin.Space.Content
 {
     [UsedImplicitly]
-    public class DialogueManager : IInitializable, ITickable
+    public class DialogueManager : ManagerBase
     {
         public DialogueContext Context { get; private set; } = new();
 
@@ -17,11 +17,11 @@ namespace GanShin.Space.Content
         
         private bool _isEnable;
         
-        public void Initialize()
+        public override void Initialize()
         {
         }
 
-        public void Tick()
+        public override void Tick()
         {
             if (Input.GetKeyDown(KeyCode.Space))
                 OnSpacePressed();

@@ -8,7 +8,7 @@ using Zenject;
 namespace GanShin.Sound
 {
     [UsedImplicitly]
-    public class SoundManager
+    public class SoundManager : ManagerBase
     {
         private const string SoundObjName = "@Sound";
 

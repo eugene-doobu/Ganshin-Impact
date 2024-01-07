@@ -18,7 +18,7 @@ namespace GanShin.CameraSystem
     }
 
     [UsedImplicitly]
-    public class CameraManager : IInitializable, ITickable, ILateTickable
+    public class CameraManager : ManagerBase
     {
 #region Fields
         [Inject] private CharacterCamera         _characterCamera         = null!;
@@ -71,18 +71,18 @@ namespace GanShin.CameraSystem
             SceneManager.sceneUnloaded += OnSceneUnLoaded;
         }
 
-        public void Initialize()
+        public override void Initialize()
         {
             CameraStateDictionaryInit();
             ChangeState(eCameraState.CHARACTER_CAMERA);
         }
 
-        public void Tick()
+        public override void Tick()
         {
             _currentCamera?.OnUpdate();
         }
 
-        public void LateTick()
+        public override void LateTick()
         {
             _currentCamera?.OnLateUpdate();
         }

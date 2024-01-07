@@ -12,7 +12,7 @@ using Object = UnityEngine.Object;
 namespace GanShin
 {
     [UsedImplicitly]
-    public class PlayerManager : IInitializable, ITickable
+    public class PlayerManager : ManagerBase
     {
 #region Internal Class
         private class PlayerAvatarContextBundle
@@ -119,11 +119,17 @@ namespace GanShin
             _playerContext.MaxStamina = _maxStamina;
         }
 
-        public void Initialize()
+        public override void Initialize()
         {
             InitializeCharacter(_riko);
             InitializeCharacter(_ai);
             InitializeCharacter(_muscleCat);
+        }
+
+        public override void Tick()
+        {
+            ChargeStaminaDelay();
+            ChargeStamina();
         }
 
         private void InitializeCharacter(PlayerController character)
@@ -131,12 +137,6 @@ namespace GanShin
             character.transform.SetParent(_playerPool);
             character.gameObject.SetActive(false);
             character.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
-        }
-
-        public void Tick()
-        {
-            ChargeStaminaDelay();
-            ChargeStamina();
         }
 #endregion Mono
 

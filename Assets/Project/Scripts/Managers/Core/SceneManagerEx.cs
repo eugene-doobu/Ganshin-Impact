@@ -9,7 +9,7 @@ using Object = UnityEngine.Object;
 namespace GanShin.SceneManagement
 {
     [UsedImplicitly]
-    public class SceneManagerEx
+    public class SceneManagerEx : ManagerBase
     {
         [Inject] private UIManager          _ui;
         [Inject] private UIRootLoadingScene _loadingScene;
