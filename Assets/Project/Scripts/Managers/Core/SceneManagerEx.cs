@@ -3,7 +3,6 @@ using Cysharp.Threading.Tasks;
 using GanShin.UI;
 using JetBrains.Annotations;
 using UnityEngine.SceneManagement;
-using Zenject;
 using Object = UnityEngine.Object;
 
 namespace GanShin.SceneManagement

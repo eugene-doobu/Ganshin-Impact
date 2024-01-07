@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using GanShin.Space.UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using Zenject;
 using Object = UnityEngine.Object;
 
 namespace GanShin.UI

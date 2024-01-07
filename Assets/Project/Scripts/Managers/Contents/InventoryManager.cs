@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using GanShin.UI;
 using JetBrains.Annotations;
 using UnityEngine;
-using Zenject;
 
 #nullable enable
 
@@ -19,8 +18,8 @@ namespace GanShin.Space.Content
     [UsedImplicitly]
     public class InventoryManager : ManagerBase
     {
-        [Inject] public PlayerManager? PlayerManager { get; private set; }
-        [Inject] public UIManager?     UIManager     { get; private set; }
+        public PlayerManager? PlayerManager => ProjectManager.Instance.GetManager<PlayerManager>();
+        public UIManager?     UIManager     => ProjectManager.Instance.GetManager<UIManager>();
         
         private readonly Dictionary<ConsumableItemType, int> _itemAmount = new();
         private readonly Dictionary<ConsumableItemType, ConsumableItem> _items = new();

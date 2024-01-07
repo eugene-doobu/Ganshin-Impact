@@ -4,7 +4,6 @@ using GanShin.Dialogue.Base;
 using GanShin.Space.UI;
 using JetBrains.Annotations;
 using UnityEngine;
-using Zenject;
 
 namespace GanShin.Space.Content
 {

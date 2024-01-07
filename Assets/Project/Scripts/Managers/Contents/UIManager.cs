@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using GanShin.CameraSystem;
 using JetBrains.Annotations;
 using UnityEngine;
-using Zenject;
 using Context = Slash.Unity.DataBind.Core.Data.Context;
 
 namespace GanShin.UI
@@ -15,8 +13,6 @@ namespace GanShin.UI
         private readonly List<Type> _willRemoveContexts = new();
 
         public GameObject GlobalRoot { get; private set; }
-        
-        [Inject] private CameraManager _cameraManager;
 
         [UsedImplicitly]
         private UIManager() {}
@@ -70,6 +66,5 @@ namespace GanShin.UI
             _dataContexts.Remove(typeof(T));
         }
 #endregion Context Management Interface
-
     }
 }

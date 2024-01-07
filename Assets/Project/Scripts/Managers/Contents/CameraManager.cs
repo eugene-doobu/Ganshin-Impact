@@ -1,10 +1,8 @@
 using System.Collections.Generic;
-using Cinemachine;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
-using Zenject;
 
 #nullable enable
 
