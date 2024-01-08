@@ -72,23 +72,25 @@ namespace GanShin.UI
                 obj.transform.SetParent(GlobalRoot.transform);
         }
 
-        [Inject]
-        public void InjectEventSystem(EventSystem eventSystem)
+        // TODO: Addressable
+        private void InjectEventSystem()
         {
+            var eventSystem = Object.Instantiate(Resources.Load<EventSystem>(EventSystemPath));
+            
             eventSystem.name = "@EventSystem";
             Object.DontDestroyOnLoad(eventSystem);
         }
 
-        [Inject]
-        public void InjectGlobalUI(
-            UIRootLoadingScene uiRootLoadingScene,
-            UIRootCharacterCutScene uiRootCharacterCutScene,
-            UIRootDimmed uiRootDimmed,
-            UIRootPopup uiRootPopup,
-            UIRootToastPopup uiRootToast,
-            UIRootLoadingPopup uiRootLoading
-            )
+        // TODO: Addressable
+        private void InjectGlobalUI()
         {
+            var uiRootLoadingScene      = Object.Instantiate(Resources.Load<UIRootLoadingScene>(GlobalUIName.LoadingScene));
+            var uiRootCharacterCutScene = Object.Instantiate(Resources.Load<UIRootCharacterCutScene>(GlobalUIName.CharacterCutScene));
+            var uiRootDimmed            = Object.Instantiate(Resources.Load<UIRootDimmed>(GlobalUIName.Dimmed));
+            var uiRootPopup             = Object.Instantiate(Resources.Load<UIRootPopup>(GlobalUIName.Popup));
+            var uiRootToast             = Object.Instantiate(Resources.Load<UIRootToastPopup>(GlobalUIName.Toast));
+            var uiRootLoading           = Object.Instantiate(Resources.Load<UIRootLoadingPopup>(GlobalUIName.Loading));
+            
             AddGlobalUI(uiRootLoadingScene, EGlobalUI.LOADING_SCENE);
             AddGlobalUI(uiRootCharacterCutScene, EGlobalUI.CHARACTER_CUT_SCENE);
             AddGlobalUI(uiRootDimmed, EGlobalUI.DIMMED);

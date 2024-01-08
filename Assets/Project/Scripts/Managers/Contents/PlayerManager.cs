@@ -43,9 +43,9 @@ namespace GanShin
 #endregion Define
 
 #region Fields
-        [Inject(Id = AvatarBindId.Riko)]      private RikoController      _riko      = null!;
-        [Inject(Id = AvatarBindId.Ai)]        private AiController        _ai        = null!;
-        [Inject(Id = AvatarBindId.MuscleCat)] private MuscleCatController _muscleCat = null!;
+        private RikoController      _riko      = null!;
+        private AiController        _ai        = null!;
+        private MuscleCatController _muscleCat = null!;
 
         [Inject]
         CameraManager _camera = null!;
@@ -121,6 +121,7 @@ namespace GanShin
 
         public override void Initialize()
         {
+            InstallCharacters();
             InitializeCharacter(_riko);
             InitializeCharacter(_ai);
             InitializeCharacter(_muscleCat);
@@ -163,6 +164,13 @@ namespace GanShin
         }
 #endregion Stamina
 
+        private void InstallCharacters()
+        {
+            _riko      = Object.Instantiate(Resources.Load<RikoController>(AvatarPath.Riko));
+            _ai        = Object.Instantiate(Resources.Load<AiController>(AvatarPath.Ai));
+            _muscleCat = Object.Instantiate(Resources.Load<MuscleCatController>(AvatarPath.MuscleCat));
+        }
+        
         public PlayerController? SetCurrentPlayer(Define.ePlayerAvatar avatar)
         {
             if (_currentAvatar == avatar) 

@@ -3,6 +3,7 @@ using Cysharp.Threading.Tasks;
 using GanShin.UI;
 using JetBrains.Annotations;
 using UnityEngine.SceneManagement;
+using Zenject;
 using Object = UnityEngine.Object;
 
 namespace GanShin.SceneManagement
@@ -10,8 +11,7 @@ namespace GanShin.SceneManagement
     [UsedImplicitly]
     public class SceneManagerEx : ManagerBase
     {
-        [Inject] private UIManager          _ui;
-        [Inject] private UIRootLoadingScene _loadingScene;
+        private UIManager UIManager => ProjectManager.Instance.GetManager<UIManager>();
 
         [Inject(Id = LoadingSettingInstaller.ChangeSceneDelayId)]
         private float _changeSceneDelay;
@@ -27,20 +27,21 @@ namespace GanShin.SceneManagement
 
         public async UniTask LoadScene(Define.eScene type)
         {
-            _ui.SetLoadingSceneUiActive(true);
+            UIManager.SetLoadingSceneUiActive(true);
             ESceneType = type;
             await SceneManager.LoadSceneAsync(GetSceneName(Define.eScene.LOADING_SCENE)).ToUniTask();
             await UniTask.Delay(TimeSpan.FromMilliseconds(_changeSceneDelay));
             await SceneManager.LoadSceneAsync(GetSceneName(type))
                 .ToUniTask(Progress.Create<float>(ApplyProgressToLoadingBar));
             await UniTask.NextFrame();
-            _ui.SetLoadingSceneUiActive(false);
+            UIManager.SetLoadingSceneUiActive(false);
         }
 
         private void ApplyProgressToLoadingBar(float x)
         {
-            if (ReferenceEquals(_loadingScene, null)) return;
-            _loadingScene.SetProgress(x);
+            var loadingScene = UIManager.GetGlobalUI(EGlobalUI.LOADING_SCENE) as UIRootLoadingScene;
+            if (ReferenceEquals(loadingScene, null)) return;
+            loadingScene.SetProgress(x);
         }
 
         string GetSceneName(Define.eScene type)
@@ -65,7 +66,7 @@ namespace GanShin.SceneManagement
             if (CurrentScene != null)
                 CurrentScene.Clear();
             
-            _ui.ClearContexts();
+            UIManager.ClearContexts();
         }
     }
 }

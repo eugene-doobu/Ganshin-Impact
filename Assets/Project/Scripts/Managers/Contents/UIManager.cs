@@ -19,6 +19,8 @@ namespace GanShin.UI
         
         public override void Initialize()
         {
+            InjectEventSystem();
+            InjectGlobalUI();
             AddGlobalUIRoot();
         }
         
