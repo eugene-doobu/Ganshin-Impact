@@ -4,9 +4,9 @@ namespace GanShin.SceneManagement
     {
         private SceneManagerEx Scene => ProjectManager.Instance.GetManager<SceneManagerEx>();
 
-        protected override void Init()
+        protected override void Initialize()
         {
-            base.Init();
+            base.Initialize();
             if (Scene.ESceneType != Define.eScene.INTRO)
                 GanDebugger.LogWarning("Current logical scene is not IntroScene");
         }

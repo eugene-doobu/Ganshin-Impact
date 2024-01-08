@@ -6,12 +6,13 @@ using System.Reflection;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using ResourceManager = GanShin.Resource.ResourceManager;
 
 namespace GanShin
 {
     public class ProjectManager
     {
-        #region Fields
+#region Fields
         private static ProjectManager? _instance;
     
         private readonly Dictionary<Type, ManagerBase> _managers = new();
@@ -19,9 +20,9 @@ namespace GanShin
         private Action? _onInitialized;
         
         private CancellationTokenSource? _cts;
-        #endregion Fields
+#endregion Fields
 
-        #region Properties
+#region Properties
         public static ProjectManager Instance => _instance ??= new ProjectManager();
         
         public event Action OnInitialized
@@ -29,12 +30,14 @@ namespace GanShin
             add => _onInitialized += value;
             remove => _onInitialized -= value;
         }
-        #endregion Properties
+        
+        public bool IsInitialized { get; private set; }
+#endregion Properties
     
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void Initialize()
         {
-            Instance.InitializeManagers();
+            Instance.InitializeManagers().Forget();
         }
     
         public T? GetManager<T>() where T : ManagerBase
@@ -46,13 +49,11 @@ namespace GanShin
             return _managers[type] as T;
         }
     
-        private void InitializeManagers()
+        private async UniTask InitializeManagers()
         {
-            RefreshCts();
+            PreInitialize();
+            await InitializeResourceManager();
             
-            _onInitialized = null;
-            _managers.Clear();
-        
             var assemblies = Assembly.GetExecutingAssembly();
             var types      = assemblies.GetTypes();
         
@@ -63,6 +64,9 @@ namespace GanShin
 
                 if (!type.IsSubclassOf(typeof(ManagerBase))) 
                     continue;
+                
+                if (type == typeof(ResourceManager))
+                    continue;
             
                 var manager = Activator.CreateInstance(type) as ManagerBase;
             
@@ -72,11 +76,38 @@ namespace GanShin
                 _managers.Add(type, manager);
                 manager.Initialize();
             }
+
+            PostInitialize();
+        }
+
+        private void PreInitialize()
+        {
+            IsInitialized = false;
+            RefreshCts();
             
+            _onInitialized = null;
+            _managers.Clear();
+        }
+        
+        private void PostInitialize()
+        {
             _onInitialized?.Invoke();
+            _onInitialized = null;
             
             Tick().Forget();
             LateTick().Forget();
+            
+            IsInitialized = true;
+        }
+
+        private async UniTask InitializeResourceManager()
+        {
+            var resourceManager = new ResourceManager();
+            _managers.Add(typeof(ResourceManager), resourceManager);
+            resourceManager.Initialize();
+
+            await resourceManager.LoadAllAsync<UnityEngine.Object>("Data");
+            await resourceManager.LoadAllAsync<UnityEngine.Object>("GlobalUI");
         }
 
         private void CancelCts()
