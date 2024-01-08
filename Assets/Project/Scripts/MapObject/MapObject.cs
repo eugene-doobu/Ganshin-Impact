@@ -1,6 +1,5 @@
 using GanShin.Utils;
 using UnityEngine;
-using Zenject;
 
 namespace GanShin.GanObject
 {
@@ -11,7 +10,7 @@ namespace GanShin.GanObject
     /// </summary>
     public abstract partial class MapObject : MonoBehaviour
     {
-        [Inject] protected MapObjectManager _mapObjectManager;
+        protected MapObjectManager MapObjectManager => ProjectManager.Instance.GetManager<MapObjectManager>();
 
         [field: SerializeField, ReadOnly] public long Id { get; set; }
 
@@ -21,7 +20,7 @@ namespace GanShin.GanObject
 
         public void Awake()
         {
-            _mapObjectManager.RegisterMapObject(this);
+            MapObjectManager.RegisterMapObject(this);
         }
 
         public virtual void OnUpdate()
@@ -30,8 +29,8 @@ namespace GanShin.GanObject
 
         public void OnDestroy()
         {
-            if (_mapObjectManager == null) return;
-            _mapObjectManager.RemoveMapObject(this);
+            if (MapObjectManager == null) return;
+            MapObjectManager.RemoveMapObject(this);
         }
     }
 }

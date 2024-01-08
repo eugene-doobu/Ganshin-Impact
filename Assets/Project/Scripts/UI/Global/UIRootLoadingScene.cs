@@ -1,7 +1,5 @@
 using System.Collections.Generic;
-using System.ComponentModel;
 using UnityEngine;
-using Zenject;
 using Context = Slash.Unity.DataBind.Core.Data.Context;
 using Random = UnityEngine.Random;
 

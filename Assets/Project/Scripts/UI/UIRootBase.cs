@@ -5,7 +5,6 @@ using DG.Tweening;
 using JetBrains.Annotations;
 using Slash.Unity.DataBind.Core.Presentation;
 using UnityEngine;
-using Zenject;
 using Context = Slash.Unity.DataBind.Core.Data.Context;
 
 namespace GanShin.UI
@@ -13,7 +12,7 @@ namespace GanShin.UI
     [RequireComponent(typeof(ContextHolder), typeof(CanvasGroup))]
     public abstract class UIRootBase : MonoBehaviour
     {
-        [UsedImplicitly] [Inject] protected UIManager UIManager { get; private set; } = null!;
+        [UsedImplicitly] protected UIManager UIManager { get; private set; } = ProjectManager.Instance.GetManager<UIManager>();
 
         protected ContextHolder? ContextHolder { get; private set; }
 

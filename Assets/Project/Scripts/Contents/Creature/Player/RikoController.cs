@@ -3,6 +3,7 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using GanShin.Data;
 using GanShin.Space.UI;
+using GanShin.UI;
 using JetBrains.Annotations;
 
 namespace GanShin.Content.Creature
@@ -121,7 +122,11 @@ namespace GanShin.Content.Creature
             Weapon.OnUltimate();
             
             PlayerAttack = ePlayerAttack.NONE;
-            CharacterCutScene.OnCharacterCutScene(Define.ePlayerAvatar.RIKO);
+            
+            var characterCutScene = 
+                ProjectManager.Instance.GetManager<UIManager>()?.GetGlobalUI(EGlobalUI.CHARACTER_CUT_SCENE) as UIRootCharacterCutScene;
+            if (characterCutScene != null)
+                characterCutScene.OnCharacterCutScene(Define.ePlayerAvatar.RIKO);
         }
 
         private async UniTask UltimateTimer()

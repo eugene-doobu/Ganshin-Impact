@@ -3,7 +3,6 @@ using GanShin.UI;
 using GanShin.Village.Base;
 using GanShin.Village.Contents;
 using UnityEngine;
-using Zenject;
 using Context = Slash.Unity.DataBind.Core.Data.Context;
 
 namespace GanShin.Village.UI

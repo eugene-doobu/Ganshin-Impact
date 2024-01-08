@@ -1,10 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using Cinemachine;
 using GanShin.InputSystem;
 using JetBrains.Annotations;
 using UnityEngine;
-using Zenject;
 
 #nullable enable
 
@@ -16,39 +13,22 @@ namespace GanShin.CameraSystem
     public class CharacterCamera : CameraBase
     {
 #region TableDatas
-        [Inject(Id = CharacterCameraSettingInstaller.TopClampID)]
         private float _topClamp;
-
-        [Inject(Id = CharacterCameraSettingInstaller.BottomClampID)]
         private float _bottomClamp;
-
-        [Inject(Id = CharacterCameraSettingInstaller.LookYawMagnitudeID)]
         private float _lookYawMagnitude;
-
-        [Inject(Id = CharacterCameraSettingInstaller.LookPitchMagnitudeID)]
         private float _lookPitchMagnitude;
-
-        [Inject(Id = CharacterCameraSettingInstaller.TargetZoomID)]
         private float _targetZoom;
-
-        [Inject(Id = CharacterCameraSettingInstaller.ZoomSmoothFactorID)]
         private float _zoomSmoothFactor;
-
-        [Inject(Id = CharacterCameraSettingInstaller.ZoomMagnitudeID)]
         private float _zoomMagnitude;
-
-        [Inject(Id = CharacterCameraSettingInstaller.ZoomThreshHoldID)]
         private float _zoomThreshHold;
-
-        [Inject(Id = CharacterCameraSettingInstaller.ZoomMinValueID)]
         private float _zoomMinValue;
-
-        [Inject(Id = CharacterCameraSettingInstaller.ZoomMaxValueID)]
         private float _zoomMaxValue;
+        
+        CharacterCameraSettingInstaller? _setting;
 #endregion TableDatas
 
 #region Variables
-        [Inject] private InputSystemManager? _input;
+        private InputSystemManager? Input => ProjectManager.Instance.GetManager<InputSystemManager>();
 
         private CameraBodyTarget?           _cameraBodyTarget;
         private Cinemachine3rdPersonFollow? _body;
@@ -173,7 +153,7 @@ namespace GanShin.CameraSystem
 
         private void AddInputEvent()
         {
-            if (_input!.GetActionMap(eActiomMap.PLAYER_MOVEMENT) is not ActionMapPlayerMove actionMap)
+            if (Input!.GetActionMap(eActiomMap.PLAYER_MOVEMENT) is not ActionMapPlayerMove actionMap)
             {
                 GanDebugger.CameraLogError("actionMap is null!");
                 return;
@@ -185,9 +165,9 @@ namespace GanShin.CameraSystem
 
         private void RemoveInputEvent()
         {
-            if (_input == null) return;
+            if (Input == null) return;
 
-            if (_input.GetActionMap(eActiomMap.PLAYER_MOVEMENT) is not ActionMapPlayerMove actionMap)
+            if (Input.GetActionMap(eActiomMap.PLAYER_MOVEMENT) is not ActionMapPlayerMove actionMap)
                 return;
 
             actionMap.OnLook -= OnLook;

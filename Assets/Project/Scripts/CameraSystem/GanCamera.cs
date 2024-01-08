@@ -5,14 +5,13 @@ using System.Collections.Generic;
 using Cinemachine;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using Zenject;
 
 namespace GanShin.CameraSystem
 {
 	[RequireComponent(typeof(Camera))]
 	public class GanCamera : MonoBehaviour
 	{
-		[Inject] CameraManager _cameraManager = null!;
+		CameraManager? _cameraManager = ProjectManager.Instance.GetManager<CameraManager>();
 		
 		private Dictionary<eCullingGroupType, CullingGroupProxy> _cullingGroupProxies = new();
 		

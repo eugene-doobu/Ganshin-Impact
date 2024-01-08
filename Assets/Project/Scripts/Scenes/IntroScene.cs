@@ -1,15 +1,13 @@
-using Zenject;
-
 namespace GanShin.SceneManagement
 {
     public class IntroScene : BaseScene
     {
-        [Inject] private SceneManagerEx _scene;
+        private SceneManagerEx Scene => ProjectManager.Instance.GetManager<SceneManagerEx>();
 
         protected override void Init()
         {
             base.Init();
-            if (_scene.ESceneType != Define.eScene.INTRO)
+            if (Scene.ESceneType != Define.eScene.INTRO)
                 GanDebugger.LogWarning("Current logical scene is not IntroScene");
         }
 

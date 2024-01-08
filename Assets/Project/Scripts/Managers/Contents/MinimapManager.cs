@@ -1,19 +1,16 @@
+using GanShin.CameraSystem;
 using JetBrains.Annotations;
 using UnityEngine;
-using Zenject;
 
 namespace GanShin.Space.Content
 {
     [UsedImplicitly]
     public class MinimapManager : ManagerBase
     {
-        public const string MinimapCameraId = "MinimapManager.MinimapCamera";
+        // TODO: Addressables 로드로 변경
+        private Camera MinimapCamera => ProjectManager.Instance.GetManager<CameraManager>()?.MinimapCamera;
         
-        [Inject(Id = MinimapCameraId)]
-        private Camera _minimapCamera = null!;
-        
-        [Inject]
-        private PlayerManager _playerManager = null!;
+        private PlayerManager PlayerManager => ProjectManager.Instance.GetManager<PlayerManager>();
         
         private RenderTexture _renderTexture;
         
@@ -31,11 +28,11 @@ namespace GanShin.Space.Content
 
         public override void LateTick()
         {
-            var playerTransform = _playerManager.CurrentPlayerTransform;
+            var playerTransform = PlayerManager.CurrentPlayerTransform;
             if (playerTransform == null)
                 return;
             
-            var tr       = _minimapCamera.transform;
+            var tr       = MinimapCamera.transform;
             var position = tr.position;
             var height   = position.y;
             position    = playerTransform.position;
@@ -48,9 +45,9 @@ namespace GanShin.Space.Content
             if (_renderTexture != null)
                 return;
 
-            _minimapCamera.gameObject.SetActive(true);
+            MinimapCamera.gameObject.SetActive(true);
             _renderTexture = new RenderTexture(350, 350, 24, RenderTextureFormat.ARGB32);
-            _minimapCamera.targetTexture = _renderTexture;
+            MinimapCamera.targetTexture = _renderTexture;
         }
     }
 }

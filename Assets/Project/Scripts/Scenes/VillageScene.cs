@@ -2,18 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using GanShin.UI;
 using UnityEngine;
-using Zenject;
 
 namespace GanShin.SceneManagement
 {
     public class VillageScene : SpaceScene
     {
-        
-        [Inject] private PlayerManager _playerManager;
-
-        [Inject] private SceneManagerEx _sceneManager;
-        
-        [Inject] private UIManager _uiManager;
+        private PlayerManager _playerManager = ProjectManager.Instance.GetManager<PlayerManager>();
+        private SceneManagerEx _sceneManager = ProjectManager.Instance.GetManager<SceneManagerEx>();
+        private UIManager _uiManager = ProjectManager.Instance.GetManager<UIManager>();
         
         [SerializeField] private Define.ePlayerAvatar playerAvatar;
 

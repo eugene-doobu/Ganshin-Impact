@@ -8,7 +8,6 @@ using GanShin.UI;
 using Slash.Unity.DataBind.Core.Presentation;
 using UnityEngine;
 using UnityEngine.AI;
-using Zenject;
 using Context = Slash.Unity.DataBind.Core.Data.Context;
 
 namespace GanShin.Content.Creature.Monster
@@ -17,8 +16,8 @@ namespace GanShin.Content.Creature.Monster
     public class FieldMonsterController : MonsterController, IDataContextOwner
     {
         protected static readonly Collider[] CharacterCollider = new Collider[2];
-        
-        [Inject] private PlayerManager _playerManager = null!;
+
+        private PlayerManager? _playerManager = ProjectManager.Instance.GetManager<PlayerManager>();
         
         [SerializeField] private FieldMonsterTable table = null!;
 

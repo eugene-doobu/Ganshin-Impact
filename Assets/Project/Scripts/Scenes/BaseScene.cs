@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.EventSystems;
-using Zenject;
+﻿using UnityEngine;
 
 namespace GanShin.SceneManagement
 {

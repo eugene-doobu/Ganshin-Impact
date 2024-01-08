@@ -10,7 +10,6 @@ using GanShin.Data;
 using GanShin.UI;
 using GanShin.Space.UI;
 using UnityEngine;
-using Zenject;
 
 namespace GanShin.Content.Creature
 {
@@ -29,11 +28,9 @@ namespace GanShin.Content.Creature
 #endregion Static
 
 #region Variables
-        [Inject] protected UIRootCharacterCutScene CharacterCutScene;
-        
-        [Inject] private InputSystemManager _input;
-        [Inject] private CameraManager      _camera;
-        [Inject] private PlayerManager      _playerManager;
+        private InputSystemManager Input => ProjectManager.Instance.GetManager<InputSystemManager>();
+        private CameraManager      Camera => ProjectManager.Instance.GetManager<CameraManager>();
+        private PlayerManager      PlayerManager => ProjectManager.Instance.GetManager<PlayerManager>();
 
         private CharacterController _characterController;
         private PlayerAvatarContext      _playerAvatarContext;
@@ -136,7 +133,7 @@ namespace GanShin.Content.Creature
 
         protected CharacterController CC => _characterController;
         
-        protected PlayerManager Player => _playerManager;
+        protected PlayerManager Player => PlayerManager;
 
         public abstract PlayerAvatarContext GetPlayerContext { get; }
         
@@ -211,7 +208,7 @@ namespace GanShin.Content.Creature
 
         private void AddInputEvent()
         {
-            if (_input.GetActionMap(eActiomMap.PLAYER_MOVEMENT) is not ActionMapPlayerMove actionMap)
+            if (Input.GetActionMap(eActiomMap.PLAYER_MOVEMENT) is not ActionMapPlayerMove actionMap)
             {
                 GanDebugger.LogError(nameof(PlayerController), "actionMap is null!");
                 return;
@@ -228,7 +225,7 @@ namespace GanShin.Content.Creature
 
         private void RemoveInputEvent()
         {
-            if (_input.GetActionMap(eActiomMap.PLAYER_MOVEMENT) is not ActionMapPlayerMove actionMap)
+            if (Input.GetActionMap(eActiomMap.PLAYER_MOVEMENT) is not ActionMapPlayerMove actionMap)
                 return;
 
             actionMap.OnAttack        -= OnAttack;
@@ -247,7 +244,7 @@ namespace GanShin.Content.Creature
             if (_lastMovementValue == Vector2.zero) return;
             if (!CanMove) return;
 
-            var mainCamera    = _camera.MainCamera;
+            var mainCamera    = Camera.MainCamera;
             var cameraForward = Vector3.forward;
             var cameraRight   = Vector3.right;
             if (!ReferenceEquals(mainCamera, null))
@@ -258,12 +255,12 @@ namespace GanShin.Content.Creature
 
             var moveSpeed = stat.moveSpeed;
             var dashCost  = _dashStaminaCostOfSecond * Time.deltaTime;
-            if (_isOnSpecialAction && _playerManager.CurrentStamina > dashCost)
+            if (_isOnSpecialAction && PlayerManager.CurrentStamina > dashCost)
             {
                 moveSpeed          = stat.dashSpeed;
                 _isDashOnLastFrame = true;
                 
-                _playerManager.CurrentStamina -= dashCost;
+                PlayerManager.CurrentStamina -= dashCost;
             }
             else
             {
@@ -297,8 +294,8 @@ namespace GanShin.Content.Creature
 
             if (!_canRoll) return;
             
-            if (_playerManager.CurrentStamina < _rollStaminaCost) return;
-            _playerManager.CurrentStamina -= _rollStaminaCost;
+            if (PlayerManager.CurrentStamina < _rollStaminaCost) return;
+            PlayerManager.CurrentStamina -= _rollStaminaCost;
             
             PlayRollAnimation();
             DelayRoll().Forget();
@@ -466,7 +463,7 @@ namespace GanShin.Content.Creature
 
         private void OnRoll()
         {
-            if (_playerManager.CurrentStamina < _rollStaminaCost) return;
+            if (PlayerManager.CurrentStamina < _rollStaminaCost) return;
             if (_isOnGround) _desiredRoll = true;
         }
 

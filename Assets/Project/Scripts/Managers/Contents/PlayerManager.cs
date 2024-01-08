@@ -6,7 +6,6 @@ using GanShin.Content.Creature;
 using GanShin.Space.UI;
 using JetBrains.Annotations;
 using UnityEngine;
-using Zenject;
 using Object = UnityEngine.Object;
 
 namespace GanShin
@@ -47,8 +46,7 @@ namespace GanShin
         private AiController        _ai        = null!;
         private MuscleCatController _muscleCat = null!;
 
-        [Inject]
-        CameraManager _camera = null!;
+        CameraManager _camera = ProjectManager.Instance.GetManager<CameraManager>()!;
         
         private readonly PlayerAvatarContextBundle _avatarContextBundle = new PlayerAvatarContextBundle();
         

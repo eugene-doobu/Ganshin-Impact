@@ -1,5 +1,4 @@
 using UnityEngine;
-using Zenject;
 using GanShin.UI;
 using Context = Slash.Unity.DataBind.Core.Data.Context;
 
@@ -16,7 +15,7 @@ namespace GanShin.Space.UI
 
     public class UIHpBar : UIRootBase
     {
-        [Inject] private PlayerManager _playerManager;
+        private PlayerManager _playerManager = ProjectManager.Instance.GetManager<PlayerManager>();
 
         [SerializeField] private eHpTarget target = eHpTarget.SELF;
 

@@ -9,14 +9,13 @@ using GanShin.Dialogue.Base;
 using GanShin.Space.Content;
 using GanShin.UI;
 using UnityEngine;
-using Zenject;
 using Context = Slash.Unity.DataBind.Core.Data.Context;
 
 namespace GanShin.Space.UI
 {
     public class UIDialogue : UIRootBase
     {
-        [Inject] private DialogueManager? _manager;
+        private DialogueManager? _manager = ProjectManager.Instance.GetManager<DialogueManager>();
         [Inject(Id = SpaceSceneInstaller.DialogueImageInfoId)]
         private Dictionary<ENpcDialogueImage, Sprite>? _npcDialogueImages;
         

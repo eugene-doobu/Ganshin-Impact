@@ -3,15 +3,14 @@ using UnityEngine;
 using GanShin.Data;
 using GanShin.Effect;
 using GanShin.Sound;
-using Zenject;
 using Random = UnityEngine.Random;
 
 namespace GanShin.Content.Weapon
 {
     public class RikoSword : PlayerWeaponBase
     {
-        [Inject] private EffectManager _effect;
-        [Inject] private SoundManager  _sound;
+        private EffectManager Effect => ProjectManager.Instance.GetManager<EffectManager>();
+        private SoundManager  Sound => ProjectManager.Instance.GetManager<SoundManager>();
         
         private readonly Collider[] _monsterColliders = new Collider[20];
 
@@ -41,7 +40,7 @@ namespace GanShin.Content.Weapon
             var attackPosition = ownerTr.position + ownerTr.forward * stat.rikoAttackForwardOffset;
             var attackRadius = _isOnUltimate ? stat.rikoUltimateAttackRadius : stat.rikoAttackRadius;
 
-            _sound.Play(_isOnUltimate
+            Sound.Play(_isOnUltimate
                 ? $"Sword/Staff/Staff {Random.Range(1, 11)}"
                 : $"Sword/Club/Club {Random.Range(1, 11)}");
             
@@ -62,7 +61,7 @@ namespace GanShin.Content.Weapon
         private void OnBaseAttackEffect(Collider monsterCollider)
         {
             var closetPoint = monsterCollider.ClosestPoint(transform.position);
-            _effect.PlayEffect(_isOnUltimate ? eEffectType.RIKO_SWORD_ULTIMATE_HIT : eEffectType.RIKO_SWORD_HIT,
+            Effect.PlayEffect(_isOnUltimate ? eEffectType.RIKO_SWORD_ULTIMATE_HIT : eEffectType.RIKO_SWORD_HIT,
                 closetPoint);
         }
 
@@ -101,7 +100,7 @@ namespace GanShin.Content.Weapon
             
             skillEffect.Play();
             impulseSource.GenerateImpulseWithForce(stat.rikoSkillShakeForce);
-            _sound.Play("Riko/OnSkill");
+            Sound.Play("Riko/OnSkill");
 
             Owner.ApplyAttackDamage(Owner.transform.position, stat.rikoSkillAttackRadius, stat.skillDamage, _monsterColliders,
                 OnBaseSkillEffect);
@@ -110,7 +109,7 @@ namespace GanShin.Content.Weapon
         private void OnBaseSkillEffect(Collider monsterCollider)
         {
             var closetPoint = monsterCollider.ClosestPoint(transform.position);
-            _effect.PlayEffect(eEffectType.RIKO_SWORD_HIT, closetPoint);
+            Effect.PlayEffect(eEffectType.RIKO_SWORD_HIT, closetPoint);
         }
 
         public override void OnUltimate()
@@ -126,7 +125,7 @@ namespace GanShin.Content.Weapon
             meshRenderer.material = ultimateMaterial;
             transform.localScale = stat.ultimateSwordScale;
             ultimateEffect.Play();
-            _sound.Play("Riko/OnUltimate");
+            Sound.Play("Riko/OnUltimate");
 
             _isOnUltimate = true;
             
