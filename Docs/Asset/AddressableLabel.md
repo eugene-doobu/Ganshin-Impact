@@ -38,10 +38,10 @@ IntroScene에서 사용되는 에셋들을 관리하는 레이블
 
 ### Space
 
-SpaceScene에서 사용되는 에셋들. 주로 단독으로 로드되지 않고 별도의 씬 Label과 함께 초기화된다.
+SpaceScene에서 사용되는 에셋들. 게임 대부분의 시간을 Space씬에서 보내기도 하고, 해당 에셋들을 반복하여 해제하고 로드하는게 불필요하다 생각하여 프로젝트 초기화 시점에서 한번에 로드한다.
  
-- 로드시점: SpaceScene기반 씬 초기화시
-- 관리 컬렉션: resources
+- 로드시점: 프로젝트 초기화
+- 관리 컬렉션: dontDestroyOnLoadResources
 
 ### Vilage
 
