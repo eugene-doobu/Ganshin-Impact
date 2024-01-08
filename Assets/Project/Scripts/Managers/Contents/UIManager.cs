@@ -1,8 +1,11 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using UnityEngine;
 using Context = Slash.Unity.DataBind.Core.Data.Context;
+using Object = UnityEngine.Object;
 
 namespace GanShin.UI
 {
@@ -12,7 +15,10 @@ namespace GanShin.UI
         private readonly Dictionary<Type, Context> _dataContexts = new();
         private readonly List<Type> _willRemoveContexts = new();
 
-        public GameObject GlobalRoot { get; private set; }
+        public GameObject? GlobalRoot { get; private set; }
+        
+        public Canvas? SpaceSceneUIPrefab { get; private set; }
+        public Canvas? IntroSceneUIPrefab { get; private set; }
 
         [UsedImplicitly]
         private UIManager() {}
@@ -22,6 +28,9 @@ namespace GanShin.UI
             InjectEventSystem();
             InjectGlobalUI();
             AddGlobalUIRoot();
+            
+            SpaceSceneUIPrefab = Object.Instantiate(Resources.Load<Canvas>("Prefabs/UI/Root/Canvas_SpaceScene"));
+            IntroSceneUIPrefab = Object.Instantiate(Resources.Load<Canvas>("Prefabs/UI/Root/Canvas_IntroScene"));
         }
         
         public void ClearContexts()
@@ -40,14 +49,14 @@ namespace GanShin.UI
         }
 
 #region Context Management Interface
-        public T GetContext<T>() where T : Context
+        public T? GetContext<T>() where T : Context
         {
             if (_dataContexts.ContainsKey(typeof(T)))
                 return _dataContexts[typeof(T)] as T;
             return null;
         }
 
-        public T GetOrAddContext<T>() where T : Context, new()
+        public T? GetOrAddContext<T>() where T : Context, new()
         {
             if (_dataContexts.ContainsKey(typeof(T)))
                 return _dataContexts[typeof(T)] as T;

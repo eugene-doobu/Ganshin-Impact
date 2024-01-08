@@ -61,6 +61,9 @@ namespace GanShin.CameraSystem
         
         public CharacterCamera         CharacterCamera        { get; } = new();
         public CharacterUltimateCamera CharacterUltimateCamera { get; } = new();
+        
+        //TODO: Addressable로 변경
+        public Camera? MinimapCamera { get; private set; }
 #endregion Properties
 
         [UsedImplicitly]
@@ -71,6 +74,8 @@ namespace GanShin.CameraSystem
 
         public override void Initialize()
         {
+            MinimapCamera = Object.Instantiate(Resources.Load<Camera>("Prefabs/Camera/MinimapCamera"));
+            
             CameraStateDictionaryInit();
             ChangeState(eCameraState.CHARACTER_CAMERA);
         }

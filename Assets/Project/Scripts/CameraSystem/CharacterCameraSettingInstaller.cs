@@ -1,12 +1,8 @@
-using System;
-using JetBrains.Annotations;
 using UnityEngine;
-using Zenject;
 
 namespace GanShin.CameraSystem
 {
-    [CreateAssetMenu(menuName = "Installers/CharacterCameraSettingInstaller")]
-    public class CharacterCameraSettingInstaller : ScriptableObjectInstaller<CharacterCameraSettingInstaller>
+    public class CharacterCameraSettingInstaller : ScriptableObject
     {
         public const string TopClampID    = "CharacterCameraSettingInstaller.topClamp";
         public const string BottomClampID = "CharacterCameraSettingInstaller.bottomClamp";
@@ -33,21 +29,5 @@ namespace GanShin.CameraSystem
         public float zoomThreshHold   = 0.1f;
         public float zoomMinValue     = 1f;
         public float zoomMaxValue     = 4f;
-
-        public override void InstallBindings()
-        {
-            Container.BindInstance(topClamp).WithId(TopClampID);
-            Container.BindInstance(bottomClamp).WithId(BottomClampID);
-
-            Container.BindInstance(lookYawMagnitude).WithId(LookYawMagnitudeID);
-            Container.BindInstance(lookPitchMagnitude).WithId(LookPitchMagnitudeID);
-
-            Container.BindInstance(targetZoom).WithId(TargetZoomID);
-            Container.BindInstance(zoomSmoothFactor).WithId(ZoomSmoothFactorID);
-            Container.BindInstance(zoomMagnitude).WithId(ZoomMagnitudeID);
-            Container.BindInstance(zoomThreshHold).WithId(ZoomThreshHoldID);
-            Container.BindInstance(zoomMinValue).WithId(ZoomMinValueID);
-            Container.BindInstance(zoomMaxValue).WithId(ZoomMaxValueID);
-        }
     }
 }
