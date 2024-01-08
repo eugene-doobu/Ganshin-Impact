@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 786f64720815ff9478629c00b00e83b7, type: 3}
-  m_Name: LoadingSettingInstaller
+  m_Name: LoadingSceneSetting
   m_EditorClassIdentifier: 
   tips:
   - "\uBC84\uAC70\uC6B8\uB550 \uBC84\uAC70 \uBA39\uC5B4\uC694"

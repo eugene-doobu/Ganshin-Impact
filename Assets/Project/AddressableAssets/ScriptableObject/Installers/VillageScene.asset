@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4360d60ad9c6f0c45a8dfd179135cacd, type: 3}
-  m_Name: VillageSceneInstaller
+  m_Name: VillageScene
   m_EditorClassIdentifier: 
   npcInfoList:
   - npcType: 1

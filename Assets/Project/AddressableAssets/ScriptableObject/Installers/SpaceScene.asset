@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4615b9d86b8f1544aa252bf8df7f3abb, type: 3}
-  m_Name: SpaceSceneInstaller
+  m_Name: SpaceScene
   m_EditorClassIdentifier: 
   dialogueImageInfos:
   - type: 1

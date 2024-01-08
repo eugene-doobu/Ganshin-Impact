@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Effect
+  m_EditorClassIdentifier: 
+  m_GroupName: Effect
+  m_Data:
+    m_SerializedData: []
+  m_GUID: c834c3a9c10df0e4ba156a35ebf45108
+  m_SerializeEntries:
+  - m_GUID: 2a3c0763b3765934ea0d2e14cebaccb3
+    m_Address: MUSCLE_CAT_GUARD.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Space
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 638883c58f34b744c9e9a2798ff89ddb
+    m_Address: MUSCLE_CAT_HIT.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Space
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0691a3dee9f8f474587de15644a7e12c
+    m_Address: MUSCLE_CAT_ULTIMATE.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Space
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c087bce72dd502447a597c213189076c
+    m_Address: RIKO_SWORD_HIT.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Space
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a28508fe549e9f24681df9bf1a75f332
+    m_Address: RIKO_SWORD_ULTIMATE_HIT.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Space
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 460a0dd41ae4490409dda8a15a6bcaf6, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 9a7d6040a638af74ca006787b396b959, type: 2}
+    - {fileID: 11400000, guid: 6a7ed261bc01d224d864448dc70a35a2, type: 2}
