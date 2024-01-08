@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -65,13 +66,14 @@ public class Pool
 
 namespace GanShin.Resource
 {
-    public class PoolManager : MonoBehaviour
+    [UsedImplicitly]
+    public class PoolManager : ManagerBase
     {
         private Dictionary<string, Pool> _pools = new();
 
         public GameObject Pop(GameObject prefab)
         {
-            if (_pools.ContainsKey(prefab.name) == false)
+            if (!_pools.ContainsKey(prefab.name))
                 CreatePool(prefab);
 
             return _pools[prefab.name].Pop();
@@ -79,7 +81,7 @@ namespace GanShin.Resource
 
         public bool Push(GameObject go)
         {
-            if (_pools.ContainsKey(go.name) == false)
+            if (!_pools.ContainsKey(go.name))
                 return false;
 
             _pools[go.name].Push(go);
