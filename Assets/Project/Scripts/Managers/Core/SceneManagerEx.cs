@@ -12,7 +12,8 @@ namespace GanShin.SceneManagement
     {
         private UIManager UIManager => ProjectManager.Instance.GetManager<UIManager>();
 
-        [Inject(Id = LoadingSettingInstaller.ChangeSceneDelayId)]
+        // TODO: Addressable로 변경
+        //[Inject(Id = LoadingSettingInstaller.ChangeSceneDelayId)]
         private float _changeSceneDelay;
 
         public Define.eScene ESceneType { get; private set; } = Define.eScene.INTRO;

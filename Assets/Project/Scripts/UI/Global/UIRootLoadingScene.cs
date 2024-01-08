@@ -7,10 +7,12 @@ namespace GanShin.UI
 {
     public class UIRootLoadingScene : GlobalUIRootBase
     {
-        [Inject(Id = LoadingSettingInstaller.TipsId)]
+        // TODO: Addressable로 변경
+        //[Inject(Id = LoadingSettingInstaller.TipsId)]
         private List<string> _tips;
 
-        [Inject(Id = LoadingSettingInstaller.ProgressSmoothFactorId)]
+        // TODO: Addressable로 변경
+        //[Inject(Id = LoadingSettingInstaller.ProgressSmoothFactorId)]
         private float _progressSmoothFactor;
 
         public LoadingSceneDataContext LoadingSceneDataContext =>

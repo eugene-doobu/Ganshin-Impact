@@ -11,7 +11,8 @@ namespace GanShin.Village.UI
     {
         [SerializeField] private NpcObject owner;
 
-        [Inject(Id = VillageSceneInstaller.NpcInfoListId)]
+        // TODO: Addressable로 변경
+        //[Inject(Id = VillageSceneInstaller.NpcInfoListId)]
         private List<NpcInfo> _npcInfoDic;
 
         protected override Context InitializeDataContext()

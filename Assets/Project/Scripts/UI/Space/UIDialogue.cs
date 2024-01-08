@@ -16,7 +16,9 @@ namespace GanShin.Space.UI
     public class UIDialogue : UIRootBase
     {
         private DialogueManager? _manager = ProjectManager.Instance.GetManager<DialogueManager>();
-        [Inject(Id = SpaceSceneInstaller.DialogueImageInfoId)]
+        
+        // TODO: Addressable로 변경
+        //[Inject(Id = SpaceSceneInstaller.DialogueImageInfoId)]
         private Dictionary<ENpcDialogueImage, Sprite>? _npcDialogueImages;
         
         [Header("UIDialogue")]
