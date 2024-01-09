@@ -151,15 +151,15 @@ namespace GanShin
         {
             var resourceManager = ProjectManager.Instance.GetManager<ResourceManager>()!;
             
-            var rikoObject = resourceManager.Instantiate("Riko.prefab", isDontDestroy: true);
+            var rikoObject = resourceManager.Instantiate("Riko.prefab");
             if (rikoObject != null)
                 _riko = rikoObject.GetComponent<RikoController>()!;
             
-            var aiObject = resourceManager.Instantiate("Ai.prefab", isDontDestroy: true);
+            var aiObject = resourceManager.Instantiate("Ai.prefab");
             if (aiObject != null)
                 _ai = aiObject.GetComponent<AiController>()!;
             
-            var muscleCatObject = resourceManager.Instantiate("MuscleCat.prefab", isDontDestroy: true);
+            var muscleCatObject = resourceManager.Instantiate("MuscleCat.prefab");
             if (muscleCatObject != null)
                 _muscleCat = muscleCatObject.GetComponent<MuscleCatController>()!;
         }

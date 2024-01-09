@@ -110,9 +110,9 @@ namespace GanShin
             _managers.Add(typeof(ResourceManager), resourceManager);
             resourceManager.Initialize();
 
-            await resourceManager.LoadAllAsync<UnityEngine.Object>("Data");
-            await resourceManager.LoadAllAsync<UnityEngine.Object>("GlobalUI");
-            await resourceManager.LoadAllAsync<UnityEngine.Object>("Space");
+            await resourceManager.LoadAllAsync<UnityEngine.Object>("Data", true);
+            await resourceManager.LoadAllAsync<UnityEngine.Object>("GlobalUI", true);
+            await resourceManager.LoadAllAsync<UnityEngine.Object>("Space", true);
         }
 
         private void CancelCts()

@@ -33,7 +33,7 @@ namespace GanShin.CameraSystem
             }
 
             var resourceManager = ProjectManager.Instance.GetManager<ResourceManager>();
-            var virtualCameraObj = resourceManager?.Instantiate("PlayerUltimateVirtualCamera.prefab", isDontDestroy: true);
+            var virtualCameraObj = resourceManager?.Instantiate("PlayerUltimateVirtualCamera.prefab");
             if (virtualCameraObj == null)
             {
                 GanDebugger.CameraLogError("Failed to instantiate virtual camera prefab");
@@ -61,9 +61,7 @@ namespace GanShin.CameraSystem
                 GanDebugger.CameraLogError("Failed to get aim component");
                 return;
             }
-
-            Object.DontDestroyOnLoad(virtualCameraObj);
-
+            
             GanDebugger.CameraLog("Virtual camera initialized");
         }
 

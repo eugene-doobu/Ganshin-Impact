@@ -30,7 +30,7 @@ namespace GanShin.Space.Content
         {
             var playerManager   = ProjectManager.Instance.GetManager<PlayerManager>();
             var playerTransform = playerManager?.CurrentPlayerTransform;
-            if (playerTransform == null || _miniMapCamera == null)
+            if (_miniMapCamera == null || playerTransform == null)
                 return;
             
             var tr       = _miniMapCamera.transform;
@@ -47,7 +47,7 @@ namespace GanShin.Space.Content
                 return;
             
             var resourceManager  = ProjectManager.Instance.GetManager<ResourceManager>();
-            var minimapCamera = resourceManager?.Instantiate("MinimapCamera.prefab", isDontDestroy: true);
+            var minimapCamera = resourceManager?.Instantiate("MinimapCamera.prefab");
             if (minimapCamera == null)
             {
                 GanDebugger.CameraLogError("Failed to instantiate virtual camera prefab");

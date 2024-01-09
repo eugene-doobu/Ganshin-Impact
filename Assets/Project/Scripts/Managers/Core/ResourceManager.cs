@@ -41,7 +41,7 @@ namespace GanShin.Resource
             return null;
         }
 
-        public GameObject? Instantiate(string key, Transform? parent = null, bool pooling = false, bool isDontDestroy = false)
+        public GameObject? Instantiate(string key, Transform? parent = null, bool pooling = false)
         {
             var prefab = Load<GameObject>($"{key}");
             if (prefab == null)
@@ -49,7 +49,8 @@ namespace GanShin.Resource
                 GanDebugger.Log($"Failed to load prefab : {key}");
                 return null;
             }
-
+            
+            var isDontDestroy = _dontDestroyOnLoadResources.ContainsKey(key);
             if (pooling)
             {
                 var pool = ProjectManager.Instance.GetManager<PoolManager>();
@@ -65,6 +66,10 @@ namespace GanShin.Resource
 
             var go = Object.Instantiate(prefab, parent);
             go.name = prefab.name;
+            
+            if (isDontDestroy)
+                Object.DontDestroyOnLoad(go);
+            
             return go;
         }
 

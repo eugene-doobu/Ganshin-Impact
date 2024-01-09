@@ -58,14 +58,13 @@ namespace GanShin.UI
                 obj.transform.SetParent(GlobalRoot.transform);
         }
 
-        // TODO: Addressable
         private void InjectEventSystem()
         {
             var resourceManager = ProjectManager.Instance.GetManager<ResourceManager>();
             if (resourceManager == null)
                 return;
             
-            var eventSystem = resourceManager.Instantiate("EventSystem.prefab", isDontDestroy: true);
+            var eventSystem = resourceManager.Instantiate("EventSystem.prefab");
             if (eventSystem == null)
                 return;
             
@@ -79,27 +78,27 @@ namespace GanShin.UI
             if (resourceManager == null)
                 return;
             
-            var uiRootLoadingScene= resourceManager.Instantiate("UI_LoadingScene.prefab", isDontDestroy: true);
+            var uiRootLoadingScene= resourceManager.Instantiate("UI_LoadingScene.prefab");
             if (uiRootLoadingScene != null)
                 AddGlobalUI(uiRootLoadingScene.GetComponent<GlobalUIRootBase>(), EGlobalUI.LOADING_SCENE);
             
-            var uiRootCharacterCutScene = resourceManager.Instantiate("UI_CharacterCutScene.prefab", isDontDestroy: true);
+            var uiRootCharacterCutScene = resourceManager.Instantiate("UI_CharacterCutScene.prefab");
             if (uiRootCharacterCutScene != null)
                 AddGlobalUI(uiRootCharacterCutScene.GetComponent<GlobalUIRootBase>(), EGlobalUI.CHARACTER_CUT_SCENE);
             
-            var uiRootDimmed            = resourceManager.Instantiate("UI_Dimmed.prefab", isDontDestroy: true);
+            var uiRootDimmed            = resourceManager.Instantiate("UI_Dimmed.prefab");
             if (uiRootDimmed != null)
                 AddGlobalUI(uiRootDimmed.GetComponent<GlobalUIRootBase>(), EGlobalUI.DIMMED);
             
-            var uiRootPopup             = resourceManager.Instantiate("UI_Popup.prefab", isDontDestroy: true);
+            var uiRootPopup             = resourceManager.Instantiate("UI_Popup.prefab");
             if (uiRootPopup != null)
                 AddGlobalUI(uiRootPopup.GetComponent<GlobalUIRootBase>(), EGlobalUI.POPUP);
             
-            var uiRootToast             = resourceManager.Instantiate("UI_ToastPopup.prefab", isDontDestroy: true);
+            var uiRootToast             = resourceManager.Instantiate("UI_ToastPopup.prefab");
             if (uiRootToast != null)
                 AddGlobalUI(uiRootToast.GetComponent<GlobalUIRootBase>(), EGlobalUI.TOAST);
             
-            var uiRootLoading           = resourceManager.Instantiate("UI_Loading.prefab", isDontDestroy: true);
+            var uiRootLoading           = resourceManager.Instantiate("UI_Loading.prefab");
             if (uiRootLoading != null)
                 AddGlobalUI(uiRootLoading.GetComponent<GlobalUIRootBase>(), EGlobalUI.LOADING);
         }
