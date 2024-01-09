@@ -3,13 +3,13 @@ using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Pool;
 
-public class Pool
+internal class Pool
 {
     private GameObject              _prefab;
     private IObjectPool<GameObject> _pool;
 
     private Transform _root;
-    private Transform Root
+    public Transform Root
     {
         get
         {
@@ -42,7 +42,7 @@ public class Pool
 #region Funcs
     GameObject OnCreate()
     {
-        GameObject go = Object.Instantiate(_prefab, Root, true);
+        var go = Object.Instantiate(_prefab, Root, true);
         go.name = _prefab.name;
         return go;
     }
@@ -71,10 +71,10 @@ namespace GanShin.Resource
     {
         private Dictionary<string, Pool> _pools = new();
 
-        public GameObject Pop(GameObject prefab)
+        public GameObject Pop(GameObject prefab, bool isDontDestroy = false)
         {
             if (!_pools.ContainsKey(prefab.name))
-                CreatePool(prefab);
+                CreatePool(prefab, isDontDestroy);
 
             return _pools[prefab.name].Pop();
         }
@@ -93,10 +93,12 @@ namespace GanShin.Resource
             _pools.Clear();
         }
 
-        void CreatePool(GameObject original)
+        private void CreatePool(GameObject original, bool isDontDestroy = false)
         {
             var pool = new Pool(original);
             _pools.Add(original.name, pool);
+            if (isDontDestroy)
+                Object.DontDestroyOnLoad(pool.Root);
         }
     }
 }

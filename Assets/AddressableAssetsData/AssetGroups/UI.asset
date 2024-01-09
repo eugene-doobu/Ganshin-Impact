@@ -174,7 +174,7 @@ MonoBehaviour:
     - Space
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f63e3727c76a51f488acb69276ab0e95
-    m_Address: Assets/Project/AddressableAssets/Prefabs/UI/EventSystem.prefab
+    m_Address: EventSystem.prefab
     m_ReadOnly: 0
     m_SerializedLabels:
     - GlobalUI

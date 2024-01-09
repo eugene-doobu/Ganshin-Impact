@@ -1,5 +1,6 @@
 using Cinemachine;
 using GanShin.InputSystem;
+using GanShin.Resource;
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -55,8 +56,14 @@ namespace GanShin.CameraSystem
                 GanDebugger.CameraLogError("Failed to load virtual camera prefab");
                 return;
             }
-
-            var virtualCameraObj = Object.Instantiate(virtualCameraPrefab);
+            
+            var resourceManager = ProjectManager.Instance.GetManager<ResourceManager>();
+            var virtualCameraObj = resourceManager?.Instantiate("PlayerVirtualCamera.prefab", isDontDestroy: true);
+            if (virtualCameraObj == null)
+            {
+                GanDebugger.CameraLogError("Failed to instantiate virtual camera prefab");
+                return;
+            }
             virtualCameraObj.name = "@PlayerVirtualCamera";
 
             VirtualCamera = virtualCameraObj.GetComponent<CinemachineVirtualCamera>();

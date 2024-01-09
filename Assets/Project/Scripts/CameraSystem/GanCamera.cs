@@ -11,8 +11,6 @@ namespace GanShin.CameraSystem
 	[RequireComponent(typeof(Camera))]
 	public class GanCamera : MonoBehaviour
 	{
-		CameraManager? _cameraManager = ProjectManager.Instance.GetManager<CameraManager>();
-		
 		private Dictionary<eCullingGroupType, CullingGroupProxy> _cullingGroupProxies = new();
 		
 		public Camera? Camera { get; private set; }
@@ -34,12 +32,19 @@ namespace GanShin.CameraSystem
 #endregion MonoBehaviour
 
 		// 캐릭터 생성시 Object HUD 타입으로 호출
-		public CullingGroupProxy GetOrAddCullingGroupProxy(eCullingGroupType cullingGroupType)
+		public CullingGroupProxy? GetOrAddCullingGroupProxy(eCullingGroupType cullingGroupType)
 		{
 			if (_cullingGroupProxies.TryGetValue(cullingGroupType, out var cullingGroupProxy) && cullingGroupProxy != null)
 				return cullingGroupProxy;
 			
-			var newCullingGroupProxy = _cameraManager.SetCullingGroupProxy(gameObject, cullingGroupType);
+			var cameraManager = ProjectManager.Instance.GetManager<CameraManager>();
+			if (cameraManager == null)
+			{
+				GanDebugger.CameraLogError("Failed to get camera manager");
+				return null;
+			}
+			
+			var newCullingGroupProxy = cameraManager.SetCullingGroupProxy(gameObject, cullingGroupType);
 			_cullingGroupProxies[cullingGroupType] = newCullingGroupProxy;
 
 			return newCullingGroupProxy;

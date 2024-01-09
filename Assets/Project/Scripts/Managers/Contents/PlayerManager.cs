@@ -3,6 +3,7 @@
 using System;
 using GanShin.CameraSystem;
 using GanShin.Content.Creature;
+using GanShin.Resource;
 using GanShin.Space.UI;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -24,21 +25,6 @@ namespace GanShin
 
 #region Define
         private const string PlayerPoolName = "@PlayerPool";
-
-        public struct AvatarPath
-        {
-            private const          string Root      = "Character/Avatar";
-            public static readonly string Riko      = $"{Root}/Riko";
-            public static readonly string Ai        = $"{Root}/Ai";
-            public static readonly string MuscleCat = $"{Root}/MuscleCat";
-        }
-
-        public struct AvatarBindId
-        {
-            public const string Riko      = "PlayerManager.Riko";
-            public const string Ai        = "PlayerManager.Ai";
-            public const string MuscleCat = "PlayerManager.MuscleCat";
-        }
 #endregion Define
 
 #region Fields
@@ -48,7 +34,7 @@ namespace GanShin
 
         CameraManager _camera = ProjectManager.Instance.GetManager<CameraManager>()!;
         
-        private readonly PlayerAvatarContextBundle _avatarContextBundle = new PlayerAvatarContextBundle();
+        private readonly PlayerAvatarContextBundle _avatarContextBundle = new();
         
         private readonly PlayerContext? _playerContext = Activator.CreateInstance(typeof(PlayerContext)) as PlayerContext;
 
@@ -164,9 +150,19 @@ namespace GanShin
 
         private void InstallCharacters()
         {
-            _riko      = Object.Instantiate(Resources.Load<RikoController>(AvatarPath.Riko));
-            _ai        = Object.Instantiate(Resources.Load<AiController>(AvatarPath.Ai));
-            _muscleCat = Object.Instantiate(Resources.Load<MuscleCatController>(AvatarPath.MuscleCat));
+            var resourceManager = ProjectManager.Instance.GetManager<ResourceManager>()!;
+            
+            var rikoObject = resourceManager.Instantiate("Riko.prefab", isDontDestroy: true);
+            if (rikoObject != null)
+                _riko = rikoObject.GetComponent<RikoController>()!;
+            
+            var aiObject = resourceManager.Instantiate("Ai.prefab", isDontDestroy: true);
+            if (aiObject != null)
+                _ai = aiObject.GetComponent<AiController>()!;
+            
+            var muscleCatObject = resourceManager.Instantiate("MuscleCat.prefab", isDontDestroy: true);
+            if (muscleCatObject != null)
+                _muscleCat = muscleCatObject.GetComponent<MuscleCatController>()!;
         }
         
         public PlayerController? SetCurrentPlayer(Define.ePlayerAvatar avatar)

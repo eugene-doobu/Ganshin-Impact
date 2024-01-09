@@ -16,9 +16,6 @@ namespace GanShin.UI
         private readonly List<Type> _willRemoveContexts = new();
 
         public GameObject? GlobalRoot { get; private set; }
-        
-        public Canvas? SpaceSceneUIPrefab { get; private set; }
-        public Canvas? IntroSceneUIPrefab { get; private set; }
 
         [UsedImplicitly]
         private UIManager() {}
@@ -28,9 +25,6 @@ namespace GanShin.UI
             InjectEventSystem();
             InjectGlobalUI();
             AddGlobalUIRoot();
-            
-            SpaceSceneUIPrefab = Object.Instantiate(Resources.Load<Canvas>("Prefabs/UI/Root/Canvas_SpaceScene"));
-            IntroSceneUIPrefab = Object.Instantiate(Resources.Load<Canvas>("Prefabs/UI/Root/Canvas_IntroScene"));
         }
         
         public void ClearContexts()

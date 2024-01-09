@@ -1,4 +1,6 @@
-using GanShin.CameraSystem;
+#nullable enable
+
+using GanShin.Resource;
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -7,14 +9,10 @@ namespace GanShin.Space.Content
     [UsedImplicitly]
     public class MinimapManager : ManagerBase
     {
-        // TODO: Addressables 로드로 변경
-        private Camera MinimapCamera => ProjectManager.Instance.GetManager<CameraManager>()?.MinimapCamera;
+        private Camera? _miniMapCamera = null;
+        private RenderTexture? _renderTexture;
         
-        private PlayerManager PlayerManager => ProjectManager.Instance.GetManager<PlayerManager>();
-        
-        private RenderTexture _renderTexture;
-        
-        public Texture GetMinimapTexture()
+        public Texture? GetMinimapTexture()
         {
             if (_renderTexture == null)
                 SetCameraRenderTarget();
@@ -28,11 +26,12 @@ namespace GanShin.Space.Content
 
         public override void LateTick()
         {
-            var playerTransform = PlayerManager.CurrentPlayerTransform;
-            if (playerTransform == null)
+            var playerManager   = ProjectManager.Instance.GetManager<PlayerManager>();
+            var playerTransform = playerManager?.CurrentPlayerTransform;
+            if (playerTransform == null || _miniMapCamera == null)
                 return;
             
-            var tr       = MinimapCamera.transform;
+            var tr       = _miniMapCamera.transform;
             var position = tr.position;
             var height   = position.y;
             position    = playerTransform.position;
@@ -44,10 +43,19 @@ namespace GanShin.Space.Content
         {
             if (_renderTexture != null)
                 return;
+            
+            var resourceManager  = ProjectManager.Instance.GetManager<ResourceManager>();
+            var minimapCamera = resourceManager?.Instantiate("MinimapCamera.prefab", isDontDestroy: true);
+            if (minimapCamera == null)
+            {
+                GanDebugger.CameraLogError("Failed to instantiate virtual camera prefab");
+                return;
+            }
 
-            MinimapCamera.gameObject.SetActive(true);
-            _renderTexture = new RenderTexture(350, 350, 24, RenderTextureFormat.ARGB32);
-            MinimapCamera.targetTexture = _renderTexture;
+            _miniMapCamera = minimapCamera.GetComponent<Camera>();
+            _miniMapCamera.gameObject.SetActive(true);
+            _renderTexture               = new RenderTexture(350, 350, 24, RenderTextureFormat.ARGB32);
+            _miniMapCamera.targetTexture = _renderTexture;
         }
     }
 }
