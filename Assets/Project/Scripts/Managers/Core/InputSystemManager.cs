@@ -15,6 +15,8 @@ namespace GanShin.InputSystem
     [UsedImplicitly]
     public class InputSystemManager : ManagerBase
     {
+        private InputSystemManager() { }
+        
         private readonly Dictionary<eActiomMap, ActionMapBase> _actionMapDict = new();
 
         private Action<InputControl> _onAnyKeyInput;
@@ -33,9 +35,11 @@ namespace GanShin.InputSystem
             }
             remove => _onAnyKeyInput -= value;
         }
-
-        public InputSystemManager()
+        
+        public override void Initialize()
         {
+            base.Initialize();
+            
             _playerActions = new GanshinActions();
             InitActionMapDict();
             ChangeActionMap(eActiomMap.PLAYER_MOVEMENT);

@@ -8,13 +8,17 @@ namespace GanShin.Sound
     [UsedImplicitly]
     public class SoundManager : ManagerBase
     {
+        private SoundManager() { }
+        
         private const string SoundObjName = "@Sound";
 
         AudioSource[]                 _audioSources = new AudioSource[(int) Define.eSound.MaxCount];
         Dictionary<string, AudioClip> _audioClips   = new Dictionary<string, AudioClip>();
 
-        public SoundManager()
+        public override void Initialize()
         {
+            base.Initialize();
+            
             GameObject root = GameObject.Find(SoundObjName);
             if (root == null)
             {
@@ -34,7 +38,7 @@ namespace GanShin.Sound
 
             SceneManager.sceneUnloaded += OnSceneUnLoaded;
         }
-
+        
         private void OnSceneUnLoaded(Scene scene)
         {
             foreach (AudioSource audioSource in _audioSources)

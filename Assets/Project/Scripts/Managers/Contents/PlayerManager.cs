@@ -14,6 +14,8 @@ namespace GanShin
     [UsedImplicitly]
     public class PlayerManager : ManagerBase
     {
+        private PlayerManager() { }
+        
 #region Internal Class
         private class PlayerAvatarContextBundle
         {
@@ -97,14 +99,11 @@ namespace GanShin
 #endregion Properties
 
 #region Mono
-        public PlayerManager()
+        public override void Initialize()
         {
             SetPlayerPoolRoot();
             _playerContext.MaxStamina = _maxStamina;
-        }
-
-        public override void Initialize()
-        {
+            
             InstallCharacters();
             InitializeCharacter(_riko);
             InitializeCharacter(_ai);

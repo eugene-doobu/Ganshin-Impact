@@ -69,6 +69,8 @@ namespace GanShin.Resource
     [UsedImplicitly]
     public class PoolManager : ManagerBase
     {
+        private PoolManager() {}
+        
         private Dictionary<string, Pool> _pools = new();
 
         public GameObject Pop(GameObject prefab, bool isDontDestroy = false)

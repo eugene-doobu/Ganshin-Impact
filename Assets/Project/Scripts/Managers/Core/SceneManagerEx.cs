@@ -10,6 +10,11 @@ namespace GanShin.SceneManagement
     [UsedImplicitly]
     public class SceneManagerEx : ManagerBase
     {
+        private SceneManagerEx() 
+        {
+            SceneManager.sceneUnloaded += OnSceneUnLoaded;
+        }
+        
         private UIManager UIManager => ProjectManager.Instance.GetManager<UIManager>();
 
         // TODO: Addressable로 변경
@@ -19,11 +24,6 @@ namespace GanShin.SceneManagement
         public Define.eScene ESceneType { get; private set; } = Define.eScene.INTRO;
 
         public BaseScene CurrentScene => Object.FindObjectOfType<BaseScene>();
-
-        public SceneManagerEx()
-        {
-            SceneManager.sceneUnloaded += OnSceneUnLoaded;
-        }
 
         public async UniTask LoadScene(Define.eScene type)
         {

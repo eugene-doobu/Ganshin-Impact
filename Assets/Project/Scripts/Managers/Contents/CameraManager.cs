@@ -18,6 +18,12 @@ namespace GanShin.CameraSystem
     [UsedImplicitly]
     public class CameraManager : ManagerBase
     {
+        [UsedImplicitly]
+        private CameraManager()
+        {
+            SceneManager.sceneUnloaded += OnSceneUnLoaded;
+        }
+        
 #region Fields
         private Dictionary<string, VirtualCameraJig> _virtualCameraDict = new();
         private Dictionary<eCameraState, CameraBase> _cameraStates      = new();
@@ -62,12 +68,6 @@ namespace GanShin.CameraSystem
         public CharacterCamera         CharacterCamera        { get; } = new();
         public CharacterUltimateCamera CharacterUltimateCamera { get; } = new();
 #endregion Properties
-
-        [UsedImplicitly]
-        public CameraManager()
-        {
-            SceneManager.sceneUnloaded += OnSceneUnLoaded;
-        }
 
         public override void Initialize()
         {

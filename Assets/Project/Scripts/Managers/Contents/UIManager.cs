@@ -12,13 +12,12 @@ namespace GanShin.UI
     [UsedImplicitly]
     public partial class UIManager : ManagerBase
     {
+        [UsedImplicitly] private UIManager() {}
+        
         private readonly Dictionary<Type, Context> _dataContexts = new();
         private readonly List<Type> _willRemoveContexts = new();
 
         public GameObject? GlobalRoot { get; private set; }
-
-        [UsedImplicitly]
-        private UIManager() {}
         
         public override void Initialize()
         {

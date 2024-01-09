@@ -1,7 +1,12 @@
+using JetBrains.Annotations;
+
 namespace GanShin
 {
     public abstract class ManagerBase
     {
+        [UsedImplicitly]
+        protected ManagerBase(){ }
+        
         public virtual void Initialize()
         {
         

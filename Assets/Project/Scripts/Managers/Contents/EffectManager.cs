@@ -18,6 +18,8 @@ namespace GanShin.Effect
     [UsedImplicitly]
     public class EffectManager : ManagerBase
     {
+        private EffectManager() { }
+        
         public ParticleSystem PlayEffect(eEffectType effectType, Vector3 position, bool isLooping = false)
         {
             var resourceManager = ProjectManager.Instance.GetManager<ResourceManager>();
