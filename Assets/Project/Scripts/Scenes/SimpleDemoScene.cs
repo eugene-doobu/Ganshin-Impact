@@ -1,5 +1,7 @@
+using System;
 using Cysharp.Threading.Tasks;
 using GanShin.Dialogue.Base;
+using GanShin.Resource;
 using GanShin.Space.Content;
 using GanShin.UI;
 using UnityEngine;
@@ -27,10 +29,22 @@ namespace GanShin.SceneManagement
 
         [SerializeField] private EDebugInputGroup debugInputGroup = EDebugInputGroup.GLOBAL_UI;
 
-        private void Start()
+        protected override void Initialize()
         {
             var player = PlayerManager.SetCurrentPlayer(playerAvatar);
             player.transform.position = startPosition;
+        }
+        
+        protected override async UniTask LoadSceneAssets()
+        {
+            var resourceManager = ProjectManager.Instance.GetManager<ResourceManager>();
+            if (resourceManager == null)
+            {
+                GanDebugger.LogError("Failed to get resource manager");
+                return;
+            }
+            
+            await resourceManager.LoadAllAsync<UnityEngine.Object>("Village");
         }
 
         private void Update()

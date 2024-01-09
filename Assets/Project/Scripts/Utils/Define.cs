@@ -35,6 +35,7 @@
             INTRO,
             DEMO,
             SIMPLE_DEMO,
+            VILLAGE,
             GAME,
         }
 

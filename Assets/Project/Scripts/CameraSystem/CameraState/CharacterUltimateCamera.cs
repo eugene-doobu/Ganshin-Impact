@@ -32,8 +32,7 @@ namespace GanShin.CameraSystem
                 return;
             }
 
-            var resourceManager = ProjectManager.Instance.GetManager<ResourceManager>();
-            var virtualCameraObj = resourceManager?.Instantiate("PlayerUltimateVirtualCamera.prefab");
+            var virtualCameraObj = Util.Instantiate("PlayerUltimateVirtualCamera.prefab");
             if (virtualCameraObj == null)
             {
                 GanDebugger.CameraLogError("Failed to instantiate virtual camera prefab");

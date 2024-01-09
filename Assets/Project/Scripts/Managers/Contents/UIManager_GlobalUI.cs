@@ -60,11 +60,7 @@ namespace GanShin.UI
 
         private void InjectEventSystem()
         {
-            var resourceManager = ProjectManager.Instance.GetManager<ResourceManager>();
-            if (resourceManager == null)
-                return;
-            
-            var eventSystem = resourceManager.Instantiate("EventSystem.prefab");
+            var eventSystem = Util.Instantiate("EventSystem.prefab");
             if (eventSystem == null)
                 return;
             

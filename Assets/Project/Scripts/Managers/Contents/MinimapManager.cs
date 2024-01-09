@@ -46,8 +46,7 @@ namespace GanShin.Space.Content
             if (_renderTexture != null)
                 return;
             
-            var resourceManager  = ProjectManager.Instance.GetManager<ResourceManager>();
-            var minimapCamera = resourceManager?.Instantiate("MinimapCamera.prefab");
+            var minimapCamera = Util.Instantiate("MinimapCamera.prefab");
             if (minimapCamera == null)
             {
                 GanDebugger.CameraLogError("Failed to instantiate virtual camera prefab");

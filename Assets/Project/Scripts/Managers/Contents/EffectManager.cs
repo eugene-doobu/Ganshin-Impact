@@ -1,6 +1,5 @@
 using System;
 using Cysharp.Threading.Tasks;
-using GanShin.Resource;
 using JetBrains.Annotations;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -22,14 +21,7 @@ namespace GanShin.Effect
         
         public ParticleSystem PlayEffect(eEffectType effectType, Vector3 position, bool isLooping = false)
         {
-            var resourceManager = ProjectManager.Instance.GetManager<ResourceManager>();
-            if (resourceManager == null)
-            {
-                GanDebugger.LogError($"Failed to get resource manager");
-                return null;
-            }
-            
-            var obj = resourceManager.Instantiate($"{effectType}.prefab");
+            var obj = Util.Instantiate($"{effectType}.prefab");
             if (obj == null)
                 return null;
             

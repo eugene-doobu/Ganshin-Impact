@@ -64,9 +64,6 @@ namespace GanShin.CameraSystem
         }
         
         public  Transform?              Target { get; set; }
-        
-        public CharacterCamera         CharacterCamera        { get; } = new();
-        public CharacterUltimateCamera CharacterUltimateCamera { get; } = new();
 #endregion Properties
 
         public override void Initialize()
@@ -104,8 +101,8 @@ namespace GanShin.CameraSystem
 
         private void CameraStateDictionaryInit()
         {
-            _cameraStates.Add(eCameraState.CHARACTER_CAMERA, CharacterCamera);
-            _cameraStates.Add(eCameraState.CHARACTER_ULTIMATE_CAMERA, CharacterUltimateCamera);
+            _cameraStates.Add(eCameraState.CHARACTER_CAMERA, new CharacterCamera());
+            _cameraStates.Add(eCameraState.CHARACTER_ULTIMATE_CAMERA, new CharacterUltimateCamera());
             // TODO: InteractionCamera, CinematicCamera 등 추가
         }
 

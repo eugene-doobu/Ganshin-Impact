@@ -1,5 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿#nullable enable
+
+using GanShin;
+using GanShin.Resource;
 using UnityEngine;
 
 public class Util
@@ -12,7 +14,7 @@ public class Util
         return component;
     }
 
-    public static GameObject FindChild(GameObject go, string name = null, bool recursive = false)
+    public static GameObject? FindChild(GameObject go, string name = null, bool recursive = false)
     {
         Transform transform = FindChild<Transform>(go, name, recursive);
         if (transform == null)
@@ -21,7 +23,22 @@ public class Util
         return transform.gameObject;
     }
 
-    public static T FindChild<T>(GameObject go, string name = null, bool recursive = false) where T : UnityEngine.Object
+    public static T? LoadAsset<T>(string key) where T : Object
+    {
+        var resourceManager = ProjectManager.Instance.GetManager<ResourceManager>();
+        if (resourceManager == null)
+            return null;
+            
+        return resourceManager.Load<T>(key);
+    }
+    
+    public static GameObject? Instantiate(string key, Transform? parent = null, bool pooling = false)
+    {
+        var resourceManager = ProjectManager.Instance.GetManager<ResourceManager>();
+        return resourceManager?.Instantiate(key, parent, pooling);
+    }
+
+    public static T? FindChild<T>(GameObject go, string? name = null, bool recursive = false) where T : UnityEngine.Object
     {
         if (go == null)
             return null;

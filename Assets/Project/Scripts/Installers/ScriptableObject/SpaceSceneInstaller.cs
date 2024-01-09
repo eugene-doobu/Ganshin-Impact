@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using GanShin.Dialogue.Base;
 using UnityEngine;
@@ -9,7 +8,7 @@ namespace GanShin
     {
         [SerializeField] private DialogueImageInfo[] dialogueImageInfos;
         
-        private readonly Dictionary<ENpcDialogueImage, Sprite> _dialogueImageInfoDic = new();
+        public Dictionary<ENpcDialogueImage, Sprite> DialogueImageInfoDic { get; } = new();
 
         private void Awake()
         {
@@ -18,9 +17,9 @@ namespace GanShin
 
         private void InitializeDialogueImageDict()
         {
-            _dialogueImageInfoDic.Clear();
+            DialogueImageInfoDic.Clear();
             foreach (var info in dialogueImageInfos)
-                _dialogueImageInfoDic.Add(info.type, info.sprite);
+                DialogueImageInfoDic.Add(info.type, info.sprite);
         }
     }
 }

@@ -24,8 +24,6 @@ namespace GanShin.CameraSystem
         private float _zoomThreshHold;
         private float _zoomMinValue;
         private float _zoomMaxValue;
-        
-        CharacterCameraSettingInstaller? _setting;
 #endregion TableDatas
 
 #region Variables
@@ -87,9 +85,35 @@ namespace GanShin.CameraSystem
 
             GanDebugger.CameraLog("Virtual camera initialized");
         }
+        
+        private void InitializeCameraSetting()
+        {
+            var data = Util.LoadAsset<CharacterCameraSettingInstaller>("CharacterCameraSetting.asset");
+            if (data == null)
+            {
+                GanDebugger.CameraLogError("Failed to load CharacterCameraSetting.asset");
+                return;
+            }
+            
+            _topClamp            = data.topClamp;
+            _bottomClamp         = data.bottomClamp;
+            _lookYawMagnitude    = data.lookYawMagnitude;
+            _lookPitchMagnitude  = data.lookPitchMagnitude;
+            _targetZoom          = data.targetZoom;
+            _zoomSmoothFactor    = data.zoomSmoothFactor;
+            _zoomMagnitude       = data.zoomMagnitude;
+            _zoomThreshHold      = data.zoomThreshHold;
+            _zoomMinValue        = data.zoomMinValue;
+            _zoomMaxValue        = data.zoomMaxValue;
+        }
 #endregion Initialization
 
 #region CameraBase
+        public CharacterCamera()
+        {
+            InitializeCameraSetting();
+        }
+
         public override void OnEnable()
         {
             base.OnEnable();
@@ -158,7 +182,6 @@ namespace GanShin.CameraSystem
 #endregion CameraProcess
 
 #region Input
-
         private void AddInputEvent()
         {
             if (Input!.GetActionMap(eActiomMap.PLAYER_MOVEMENT) is not ActionMapPlayerMove actionMap)
@@ -199,7 +222,6 @@ namespace GanShin.CameraSystem
             value       *= _zoomMagnitude;
             _targetZoom =  Mathf.Clamp(_targetZoom - value, _zoomMinValue, _zoomMaxValue);
         }
-
 #endregion Input
     }
 }

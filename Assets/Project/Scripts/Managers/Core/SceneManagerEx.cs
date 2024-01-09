@@ -1,5 +1,6 @@
 ﻿using System;
 using Cysharp.Threading.Tasks;
+using GanShin.Resource;
 using GanShin.UI;
 using JetBrains.Annotations;
 using UnityEngine.SceneManagement;
@@ -44,6 +45,7 @@ namespace GanShin.SceneManagement
             loadingScene.SetProgress(x);
         }
 
+        // TODO: Addressable로 변경
         string GetSceneName(Define.eScene type)
         {
             switch (type)
@@ -51,11 +53,11 @@ namespace GanShin.SceneManagement
                 case Define.eScene.UNKNOWN:
                     return string.Empty;
                 case Define.eScene.LOADING_SCENE:
-                    return "LoadingScene";
+                    return "Project/AddressableAssets/Scenes/LoadingScene";
                 case Define.eScene.INTRO:
-                    return "IntroScene";
+                    return "Project/AddressableAssets/Scenes/IntroScene";
                 case Define.eScene.SIMPLE_DEMO:
-                    return "SimpleDemo";
+                    return "Project/Scenes/SimpleDemo";
             }
 
             return string.Empty;
@@ -67,6 +69,9 @@ namespace GanShin.SceneManagement
                 CurrentScene.Clear();
             
             UIManager.ClearContexts();
+            
+            var resourceManager = ProjectManager.Instance.GetManager<ResourceManager>();
+            resourceManager?.ReleaseAll();
         }
     }
 }

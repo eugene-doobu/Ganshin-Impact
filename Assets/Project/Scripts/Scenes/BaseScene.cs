@@ -18,7 +18,10 @@ namespace GanShin.SceneManagement
 
         protected virtual void Initialize()
         {
+            LoadSceneAssets().Forget();
         }
+
+        protected abstract UniTask LoadSceneAssets();
 
         public abstract void Clear();
     }

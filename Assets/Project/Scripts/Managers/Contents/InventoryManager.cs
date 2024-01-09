@@ -65,7 +65,7 @@ namespace GanShin.Space.Content
 
         private void InitializeGold()
         {
-            // TODO: Load items from save file
+            // TODO: LoadAsset items from save file
             Gold = 1000;
         }
 
@@ -79,7 +79,7 @@ namespace GanShin.Space.Content
 
         private void LoadItems()
         {
-            // TODO: Load items from save file
+            // TODO: LoadAsset items from save file
             foreach (ConsumableItemType consumableItemType in Enum.GetValues(typeof(ConsumableItemType)))
                 _itemAmount.Add(consumableItemType, 10);
             foreach (var kvp in _itemAmount)

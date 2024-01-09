@@ -33,8 +33,6 @@ namespace GanShin
         private RikoController      _riko      = null!;
         private AiController        _ai        = null!;
         private MuscleCatController _muscleCat = null!;
-
-        CameraManager _camera = ProjectManager.Instance.GetManager<CameraManager>()!;
         
         private readonly PlayerAvatarContextBundle _avatarContextBundle = new();
         
@@ -173,7 +171,8 @@ namespace GanShin
             if (player == null) return null;
             if (player.CurrentHp <= 0) return null;
             
-            _camera.ChangeTarget(player.transform);
+            var camera = ProjectManager.Instance.GetManager<CameraManager>()!;
+            camera.ChangeTarget(player.transform);
             var prevPlayer = ActivePlayerContext(_currentAvatar, false);
             if (prevPlayer != null)
             {
