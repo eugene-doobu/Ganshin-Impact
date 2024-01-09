@@ -3,17 +3,19 @@
 using System;
 using GanShin.CameraSystem;
 using GanShin.Content.Creature;
+using GanShin.Resource;
 using GanShin.Space.UI;
 using JetBrains.Annotations;
 using UnityEngine;
-using Zenject;
 using Object = UnityEngine.Object;
 
 namespace GanShin
 {
     [UsedImplicitly]
-    public class PlayerManager : IInitializable, ITickable
+    public class PlayerManager : ManagerBase
     {
+        [UsedImplicitly] public PlayerManager() { }
+        
 #region Internal Class
         private class PlayerAvatarContextBundle
         {
@@ -25,36 +27,25 @@ namespace GanShin
 
 #region Define
         private const string PlayerPoolName = "@PlayerPool";
-
-        public struct AvatarPath
-        {
-            private const          string Root      = "Character/Avatar";
-            public static readonly string Riko      = $"{Root}/Riko";
-            public static readonly string Ai        = $"{Root}/Ai";
-            public static readonly string MuscleCat = $"{Root}/MuscleCat";
-        }
-
-        public struct AvatarBindId
-        {
-            public const string Riko      = "PlayerManager.Riko";
-            public const string Ai        = "PlayerManager.Ai";
-            public const string MuscleCat = "PlayerManager.MuscleCat";
-        }
 #endregion Define
 
 #region Fields
-        [Inject(Id = AvatarBindId.Riko)]      private RikoController      _riko      = null!;
-        [Inject(Id = AvatarBindId.Ai)]        private AiController        _ai        = null!;
-        [Inject(Id = AvatarBindId.MuscleCat)] private MuscleCatController _muscleCat = null!;
-
-        [Inject]
-        CameraManager _camera = null!;
+        private RikoController      _riko      = null!;
+        private AiController        _ai        = null!;
+        private MuscleCatController _muscleCat = null!;
         
-        private readonly PlayerAvatarContextBundle _avatarContextBundle = new PlayerAvatarContextBundle();
+        private readonly PlayerAvatarContextBundle _avatarContextBundle = new();
         
         private readonly PlayerContext? _playerContext = Activator.CreateInstance(typeof(PlayerContext)) as PlayerContext;
 
-        public Transform? CurrentPlayerTransform => _currentAvatar == Define.ePlayerAvatar.NONE ? null : CurrentPlayer!.transform;
+        public Transform? CurrentPlayerTransform
+        {
+            get
+            {
+                if (CurrentPlayer == null) return null;
+                return _currentAvatar == Define.ePlayerAvatar.NONE ? null : CurrentPlayer!.transform;
+            }
+        }
         
         public PlayerController? CurrentPlayer
         {
@@ -113,17 +104,21 @@ namespace GanShin
 #endregion Properties
 
 #region Mono
-        public PlayerManager()
+        public override void Initialize()
         {
             SetPlayerPoolRoot();
             _playerContext.MaxStamina = _maxStamina;
-        }
-
-        public void Initialize()
-        {
+            
+            InstallCharacters();
             InitializeCharacter(_riko);
             InitializeCharacter(_ai);
             InitializeCharacter(_muscleCat);
+        }
+
+        public override void Tick()
+        {
+            ChargeStaminaDelay();
+            ChargeStamina();
         }
 
         private void InitializeCharacter(PlayerController character)
@@ -131,12 +126,6 @@ namespace GanShin
             character.transform.SetParent(_playerPool);
             character.gameObject.SetActive(false);
             character.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
-        }
-
-        public void Tick()
-        {
-            ChargeStaminaDelay();
-            ChargeStamina();
         }
 #endregion Mono
 
@@ -163,6 +152,23 @@ namespace GanShin
         }
 #endregion Stamina
 
+        private void InstallCharacters()
+        {
+            var resourceManager = ProjectManager.Instance.GetManager<ResourceManager>()!;
+            
+            var rikoObject = resourceManager.Instantiate("Riko.prefab");
+            if (rikoObject != null)
+                _riko = rikoObject.GetComponent<RikoController>()!;
+            
+            var aiObject = resourceManager.Instantiate("Ai.prefab");
+            if (aiObject != null)
+                _ai = aiObject.GetComponent<AiController>()!;
+            
+            var muscleCatObject = resourceManager.Instantiate("MuscleCat.prefab");
+            if (muscleCatObject != null)
+                _muscleCat = muscleCatObject.GetComponent<MuscleCatController>()!;
+        }
+        
         public PlayerController? SetCurrentPlayer(Define.ePlayerAvatar avatar)
         {
             if (_currentAvatar == avatar) 
@@ -172,7 +178,8 @@ namespace GanShin
             if (player == null) return null;
             if (player.CurrentHp <= 0) return null;
             
-            _camera.ChangeTarget(player.transform);
+            var camera = ProjectManager.Instance.GetManager<CameraManager>()!;
+            camera.ChangeTarget(player.transform);
             var prevPlayer = ActivePlayerContext(_currentAvatar, false);
             if (prevPlayer != null)
             {

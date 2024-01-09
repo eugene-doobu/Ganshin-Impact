@@ -1,9 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using Cinemachine;
-using JetBrains.Annotations;
 using UnityEngine;
-using Zenject;
 
 #nullable enable
 
@@ -12,7 +8,7 @@ namespace GanShin.CameraSystem
     // TODO: 각 카메라 상태마다 VirtualCamera를 들고 있어야 한다.
     public abstract class CameraBase
     {
-        [Inject] private CameraManager _camera = null!;
+        private CameraManager? Camera => ProjectManager.Instance.GetManager<CameraManager>();
         
         protected Transform? Target { get; private set; }
         
@@ -20,7 +16,10 @@ namespace GanShin.CameraSystem
         
         public virtual void OnEnable()
         {
-            ChangeTarget(_camera.Target);
+            if (Camera == null)
+                return;
+            
+            ChangeTarget(Camera.Target);
 
             if (!ReferenceEquals(VirtualCamera, null))
                 VirtualCamera!.Priority = 100;
@@ -43,8 +42,8 @@ namespace GanShin.CameraSystem
 
         public virtual void ChangeTarget(Transform? target)
         {
-            _camera.Target = target;
-            Target         = target;
+            if (Camera != null) Camera.Target = target;
+            Target = target;
         }
     }
 }

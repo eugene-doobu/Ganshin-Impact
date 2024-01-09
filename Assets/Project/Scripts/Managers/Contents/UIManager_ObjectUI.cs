@@ -3,8 +3,8 @@
 using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using GanShin.CameraSystem;
 using GanShin.GanObject;
-using GanShin.Space.UI;
 using UnityEngine;
 
 namespace GanShin.UI
@@ -50,7 +50,7 @@ namespace GanShin.UI
 
 		private int SortDistanceComparision(long a, long b)
 		{
-			var mainCamera = _cameraManager.MainCamera;
+			var mainCamera = ProjectManager.Instance.GetManager<CameraManager>()?.MainCamera;
 			if (mainCamera == null) return 0;
 			var cameraPosition = mainCamera.transform.position;
 

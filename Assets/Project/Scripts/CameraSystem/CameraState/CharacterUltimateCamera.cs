@@ -1,6 +1,7 @@
 #nullable enable
 
 using Cinemachine;
+using GanShin.Resource;
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -31,7 +32,12 @@ namespace GanShin.CameraSystem
                 return;
             }
 
-            var virtualCameraObj = Object.Instantiate(virtualCameraPrefab);
+            var virtualCameraObj = Util.Instantiate("PlayerUltimateVirtualCamera.prefab");
+            if (virtualCameraObj == null)
+            {
+                GanDebugger.CameraLogError("Failed to instantiate virtual camera prefab");
+                return;
+            }
             virtualCameraObj.name = "@PlayerUltimateVirtualCamera";
 
             VirtualCamera = virtualCameraObj.GetComponent<CinemachineVirtualCamera>();
@@ -54,9 +60,7 @@ namespace GanShin.CameraSystem
                 GanDebugger.CameraLogError("Failed to get aim component");
                 return;
             }
-
-            Object.DontDestroyOnLoad(virtualCameraObj);
-
+            
             GanDebugger.CameraLog("Virtual camera initialized");
         }
 

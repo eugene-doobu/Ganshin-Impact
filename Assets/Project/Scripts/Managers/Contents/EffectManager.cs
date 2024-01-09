@@ -15,13 +15,16 @@ namespace GanShin.Effect
     }
     
     [UsedImplicitly]
-    public class EffectManager
+    public class EffectManager : ManagerBase
     {
-        // TODO: 풀링
+        [UsedImplicitly] public EffectManager() { }
+        
         public ParticleSystem PlayEffect(eEffectType effectType, Vector3 position, bool isLooping = false)
         {
-            var prefab = Resources.Load<GameObject>($"Effect/{effectType.ToString()}");
-            var obj    = Object.Instantiate(prefab);
+            var obj = Util.Instantiate($"{effectType}.prefab");
+            if (obj == null)
+                return null;
+            
             obj.transform.position = position;
             var particle = obj.GetComponent<ParticleSystem>();
             if(!isLooping) RemoveParticle(particle).Forget();

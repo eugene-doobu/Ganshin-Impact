@@ -1,13 +1,12 @@
 using GanShin.SceneManagement;
-using Zenject;
 using Context = Slash.Unity.DataBind.Core.Data.Context;
 
 namespace GanShin.UI
 {
     public class UIIntroScene : UIRootBase
-    {        
-        [Inject] UIManager _uiManager;
-        [Inject] SceneManagerEx _sceneManager;
+    {
+        private UIManager      _uiManager    = ProjectManager.Instance.GetManager<UIManager>();
+        private SceneManagerEx _sceneManager = ProjectManager.Instance.GetManager<SceneManagerEx>();
         
         protected override Context InitializeDataContext()
         {

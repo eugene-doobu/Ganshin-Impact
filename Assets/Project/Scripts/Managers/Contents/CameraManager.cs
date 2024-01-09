@@ -1,10 +1,8 @@
 using System.Collections.Generic;
-using Cinemachine;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
-using Zenject;
 
 #nullable enable
 
@@ -18,12 +16,15 @@ namespace GanShin.CameraSystem
     }
 
     [UsedImplicitly]
-    public class CameraManager : IInitializable, ITickable, ILateTickable
+    public class CameraManager : ManagerBase
     {
+        [UsedImplicitly]
+        public CameraManager()
+        {
+            SceneManager.sceneUnloaded += OnSceneUnLoaded;
+        }
+        
 #region Fields
-        [Inject] private CharacterCamera         _characterCamera         = null!;
-        [Inject] private CharacterUltimateCamera _characterUltimateCamera = null!;
-
         private Dictionary<string, VirtualCameraJig> _virtualCameraDict = new();
         private Dictionary<eCameraState, CameraBase> _cameraStates      = new();
 
@@ -62,27 +63,21 @@ namespace GanShin.CameraSystem
             }
         }
         
-        public Transform? Target { get; set; }
+        public  Transform?              Target { get; set; }
 #endregion Properties
 
-        [UsedImplicitly]
-        public CameraManager()
-        {
-            SceneManager.sceneUnloaded += OnSceneUnLoaded;
-        }
-
-        public void Initialize()
+        public override void Initialize()
         {
             CameraStateDictionaryInit();
             ChangeState(eCameraState.CHARACTER_CAMERA);
         }
 
-        public void Tick()
+        public override void Tick()
         {
             _currentCamera?.OnUpdate();
         }
 
-        public void LateTick()
+        public override void LateTick()
         {
             _currentCamera?.OnLateUpdate();
         }
@@ -106,8 +101,8 @@ namespace GanShin.CameraSystem
 
         private void CameraStateDictionaryInit()
         {
-            _cameraStates.Add(eCameraState.CHARACTER_CAMERA, _characterCamera);
-            _cameraStates.Add(eCameraState.CHARACTER_ULTIMATE_CAMERA, _characterUltimateCamera);
+            _cameraStates.Add(eCameraState.CHARACTER_CAMERA, new CharacterCamera());
+            _cameraStates.Add(eCameraState.CHARACTER_ULTIMATE_CAMERA, new CharacterUltimateCamera());
             // TODO: InteractionCamera, CinematicCamera 등 추가
         }
 

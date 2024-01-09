@@ -2,10 +2,10 @@
 
 using System;
 using System.Collections.Generic;
+using GanShin.Resource;
 using GanShin.Space.UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using Zenject;
 using Object = UnityEngine.Object;
 
 namespace GanShin.UI
@@ -30,21 +30,6 @@ namespace GanShin.UI
 
     public partial class UIManager
     {
-#region Define
-        public const string EventSystemPath = "Prefabs/UI/EventSystem";
-
-        public struct GlobalUIName
-        {
-            private const          string Root              = "Prefabs/UI/Global/";
-            public static readonly string LoadingScene      = $"{Root}UI_LoadingScene";
-            public static readonly string CharacterCutScene = $"{Root}UI_CharacterCutScene";
-            public static readonly string Dimmed            = $"{Root}UI_Dimmed";
-            public static readonly string Popup             = $"{Root}UI_Popup";
-            public static readonly string Toast             = $"{Root}UI_ToastPopup";
-            public static readonly string Loading           = $"{Root}UI_Loading";
-        }
-#endregion Define
-
         private readonly Dictionary<EGlobalUI, GlobalUIRootBase> _globalUIs = new();
 
         public GlobalUIRootBase? GetGlobalUI(EGlobalUI ui) =>
@@ -73,29 +58,45 @@ namespace GanShin.UI
                 obj.transform.SetParent(GlobalRoot.transform);
         }
 
-        [Inject]
-        public void InjectEventSystem(EventSystem eventSystem)
+        private void InjectEventSystem()
         {
+            var eventSystem = Util.Instantiate("EventSystem.prefab");
+            if (eventSystem == null)
+                return;
+            
             eventSystem.name = "@EventSystem";
             Object.DontDestroyOnLoad(eventSystem);
         }
 
-        [Inject]
-        public void InjectGlobalUI(
-            UIRootLoadingScene uiRootLoadingScene,
-            UIRootCharacterCutScene uiRootCharacterCutScene,
-            UIRootDimmed uiRootDimmed,
-            UIRootPopup uiRootPopup,
-            UIRootToastPopup uiRootToast,
-            UIRootLoadingPopup uiRootLoading
-            )
+        private void InjectGlobalUI()
         {
-            AddGlobalUI(uiRootLoadingScene, EGlobalUI.LOADING_SCENE);
-            AddGlobalUI(uiRootCharacterCutScene, EGlobalUI.CHARACTER_CUT_SCENE);
-            AddGlobalUI(uiRootDimmed, EGlobalUI.DIMMED);
-            AddGlobalUI(uiRootPopup, EGlobalUI.POPUP);
-            AddGlobalUI(uiRootToast, EGlobalUI.TOAST);
-            AddGlobalUI(uiRootLoading, EGlobalUI.LOADING);
+            var resourceManager = ProjectManager.Instance.GetManager<ResourceManager>();
+            if (resourceManager == null)
+                return;
+            
+            var uiRootLoadingScene= resourceManager.Instantiate("UI_LoadingScene.prefab");
+            if (uiRootLoadingScene != null)
+                AddGlobalUI(uiRootLoadingScene.GetComponent<GlobalUIRootBase>(), EGlobalUI.LOADING_SCENE);
+            
+            var uiRootCharacterCutScene = resourceManager.Instantiate("UI_CharacterCutScene.prefab");
+            if (uiRootCharacterCutScene != null)
+                AddGlobalUI(uiRootCharacterCutScene.GetComponent<GlobalUIRootBase>(), EGlobalUI.CHARACTER_CUT_SCENE);
+            
+            var uiRootDimmed            = resourceManager.Instantiate("UI_Dimmed.prefab");
+            if (uiRootDimmed != null)
+                AddGlobalUI(uiRootDimmed.GetComponent<GlobalUIRootBase>(), EGlobalUI.DIMMED);
+            
+            var uiRootPopup             = resourceManager.Instantiate("UI_Popup.prefab");
+            if (uiRootPopup != null)
+                AddGlobalUI(uiRootPopup.GetComponent<GlobalUIRootBase>(), EGlobalUI.POPUP);
+            
+            var uiRootToast             = resourceManager.Instantiate("UI_ToastPopup.prefab");
+            if (uiRootToast != null)
+                AddGlobalUI(uiRootToast.GetComponent<GlobalUIRootBase>(), EGlobalUI.TOAST);
+            
+            var uiRootLoading           = resourceManager.Instantiate("UI_Loading.prefab");
+            if (uiRootLoading != null)
+                AddGlobalUI(uiRootLoading.GetComponent<GlobalUIRootBase>(), EGlobalUI.LOADING);
         }
 
         private void AddGlobalUI(GlobalUIRootBase root, EGlobalUI type)

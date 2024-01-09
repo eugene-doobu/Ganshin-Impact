@@ -52,13 +52,19 @@ namespace GanShin.CameraSystem
 
         public void SetRotation(float angle)
         {
+            if (_tr == null)
+                return;
+            
             var targetRotation = Quaternion.Euler(0, angle, 0);
-            _tr!.rotation = Quaternion.Slerp(_tr.rotation, targetRotation, _rotationSmoothFactor * Time.deltaTime);
+            _tr.rotation = Quaternion.Slerp(_tr.rotation, targetRotation, _rotationSmoothFactor * Time.deltaTime);
         }
 
         public void SetRotation(Quaternion angle)
         {
-            _tr!.rotation = Quaternion.Slerp(_tr.rotation, angle, _rotationSmoothFactor * Time.deltaTime);
+            if (_tr == null)
+                return;
+            
+            _tr.rotation = Quaternion.Slerp(_tr.rotation, angle, _rotationSmoothFactor * Time.deltaTime);
         }
 
         public void SetTarget(Transform? target)

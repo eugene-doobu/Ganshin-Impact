@@ -6,19 +6,18 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using GanShin.Dialogue.Base;
+using GanShin.Resource;
+using GanShin.SceneManagement;
 using GanShin.Space.Content;
 using GanShin.UI;
 using UnityEngine;
-using Zenject;
 using Context = Slash.Unity.DataBind.Core.Data.Context;
 
 namespace GanShin.Space.UI
 {
     public class UIDialogue : UIRootBase
     {
-        [Inject] private DialogueManager? _manager;
-        [Inject(Id = SpaceSceneInstaller.DialogueImageInfoId)]
-        private Dictionary<ENpcDialogueImage, Sprite>? _npcDialogueImages;
+        private DialogueManager? _manager = ProjectManager.Instance.GetManager<DialogueManager>();
         
         [Header("UIDialogue")]
         [SerializeField] private float delayTime = 0.1f;
@@ -134,13 +133,20 @@ namespace GanShin.Space.UI
         }
 #endregion ContextControll
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private Sprite? GetDialogueImage(ENpcDialogueImage type)
         {
-            if (_npcDialogueImages == null || !_npcDialogueImages.ContainsKey(type))
+            var spaceSceneData = Util.LoadAsset<SpaceSceneInstaller>("SpaceScene.asset");
+            if (spaceSceneData == null)
+            {
+                GanDebugger.LogError(GetType().Name, "Failed to get space scene data");
+                return null;
+            }
+            
+            var npcDialogueImages = spaceSceneData.DialogueImageInfoDic;
+            if (npcDialogueImages == null || !npcDialogueImages.ContainsKey(type))
                 return null;
             
-            return _npcDialogueImages[type];
+            return npcDialogueImages[type];
         }
     }
 }

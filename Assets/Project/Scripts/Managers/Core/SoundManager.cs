@@ -1,22 +1,24 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using Zenject;
 
 namespace GanShin.Sound
 {
     [UsedImplicitly]
-    public class SoundManager
+    public class SoundManager : ManagerBase
     {
+        [UsedImplicitly] public SoundManager() { }
+        
         private const string SoundObjName = "@Sound";
 
         AudioSource[]                 _audioSources = new AudioSource[(int) Define.eSound.MaxCount];
         Dictionary<string, AudioClip> _audioClips   = new Dictionary<string, AudioClip>();
 
-        public SoundManager()
+        public override void Initialize()
         {
+            base.Initialize();
+            
             GameObject root = GameObject.Find(SoundObjName);
             if (root == null)
             {
@@ -36,7 +38,7 @@ namespace GanShin.Sound
 
             SceneManager.sceneUnloaded += OnSceneUnLoaded;
         }
-
+        
         private void OnSceneUnLoaded(Scene scene)
         {
             foreach (AudioSource audioSource in _audioSources)

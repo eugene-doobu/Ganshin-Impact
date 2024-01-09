@@ -1,28 +1,27 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using System.Collections.Generic;
-using GanShin.CameraSystem;
 using JetBrains.Annotations;
 using UnityEngine;
-using Zenject;
 using Context = Slash.Unity.DataBind.Core.Data.Context;
 
 namespace GanShin.UI
 {
     [UsedImplicitly]
-    public partial class UIManager : IInitializable
+    public partial class UIManager : ManagerBase
     {
+        [UsedImplicitly] public UIManager() { }
+        
         private readonly Dictionary<Type, Context> _dataContexts = new();
         private readonly List<Type> _willRemoveContexts = new();
 
-        public GameObject GlobalRoot { get; private set; }
+        public GameObject? GlobalRoot { get; private set; }
         
-        [Inject] private CameraManager _cameraManager;
-
-        [UsedImplicitly]
-        private UIManager() {}
-        
-        public void Initialize()
+        public override void Initialize()
         {
+            InjectEventSystem();
+            InjectGlobalUI();
             AddGlobalUIRoot();
         }
         
@@ -42,14 +41,14 @@ namespace GanShin.UI
         }
 
 #region Context Management Interface
-        public T GetContext<T>() where T : Context
+        public T? GetContext<T>() where T : Context
         {
             if (_dataContexts.ContainsKey(typeof(T)))
                 return _dataContexts[typeof(T)] as T;
             return null;
         }
 
-        public T GetOrAddContext<T>() where T : Context, new()
+        public T? GetOrAddContext<T>() where T : Context, new()
         {
             if (_dataContexts.ContainsKey(typeof(T)))
                 return _dataContexts[typeof(T)] as T;
@@ -70,6 +69,5 @@ namespace GanShin.UI
             _dataContexts.Remove(typeof(T));
         }
 #endregion Context Management Interface
-
     }
 }

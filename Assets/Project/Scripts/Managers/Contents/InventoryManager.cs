@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using GanShin.UI;
 using JetBrains.Annotations;
 using UnityEngine;
-using Zenject;
 
 #nullable enable
 
@@ -17,10 +16,12 @@ namespace GanShin.Space.Content
     }
     
     [UsedImplicitly]
-    public class InventoryManager : IInitializable, ITickable
+    public class InventoryManager : ManagerBase
     {
-        [Inject] public PlayerManager? PlayerManager { get; private set; }
-        [Inject] public UIManager?     UIManager     { get; private set; }
+        [UsedImplicitly] public InventoryManager() { }
+        
+        public PlayerManager? PlayerManager => ProjectManager.Instance.GetManager<PlayerManager>();
+        public UIManager?     UIManager     => ProjectManager.Instance.GetManager<UIManager>();
         
         private readonly Dictionary<ConsumableItemType, int> _itemAmount = new();
         private readonly Dictionary<ConsumableItemType, ConsumableItem> _items = new();
@@ -43,16 +44,28 @@ namespace GanShin.Space.Content
 
         public event Action<ConsumableItemType, int>? OnItemAmountUpdated;
         
-        public void Initialize()
+        public override void Initialize()
         {
             InitializeGold();
             InitializeItems();
             LoadItems();
         }
 
+        public override void Tick()
+        {
+            if (Input.GetKeyDown("1"))
+                UseItem(ConsumableItemType.HP_POTION);
+            
+            if (Input.GetKeyDown("2"))
+                UseItem(ConsumableItemType.STAMINA_POTION);
+
+            if (Input.GetKeyDown("3"))
+                UseItem(ConsumableItemType.POTION);
+        }
+
         private void InitializeGold()
         {
-            // TODO: Load items from save file
+            // TODO: LoadAsset items from save file
             Gold = 1000;
         }
 
@@ -66,23 +79,11 @@ namespace GanShin.Space.Content
 
         private void LoadItems()
         {
-            // TODO: Load items from save file
+            // TODO: LoadAsset items from save file
             foreach (ConsumableItemType consumableItemType in Enum.GetValues(typeof(ConsumableItemType)))
                 _itemAmount.Add(consumableItemType, 10);
             foreach (var kvp in _itemAmount)
                 OnItemAmountUpdated?.Invoke(kvp.Key, kvp.Value);
-        }
-
-        public void Tick()
-        {
-            if (Input.GetKeyDown("1"))
-                UseItem(ConsumableItemType.HP_POTION);
-            
-            if (Input.GetKeyDown("2"))
-                UseItem(ConsumableItemType.STAMINA_POTION);
-
-            if (Input.GetKeyDown("3"))
-                UseItem(ConsumableItemType.POTION);
         }
         
         private void ItemAmountUpdated(ConsumableItemType type, int amount)

@@ -3,7 +3,6 @@ using GanShin.Space.Content;
 using GanShin.UI;
 using Slash.Unity.DataBind.Core.Presentation;
 using UnityEngine;
-using Zenject;
 using Context = Slash.Unity.DataBind.Core.Data.Context;
 
 namespace GanShin.Space.UI
@@ -17,8 +16,7 @@ namespace GanShin.Space.UI
             public ContextHolder contextHolder;
         }
         
-        [Inject]
-        private InventoryManager _inventoryManager;
+        private InventoryManager _inventoryManager = ProjectManager.Instance.GetManager<InventoryManager>();
         
         [SerializeField] ItemContextHolder[] itemContextHolders;
 

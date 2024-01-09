@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4360d60ad9c6f0c45a8dfd179135cacd, type: 3}
+  m_Name: VillageScene
+  m_EditorClassIdentifier: 
+  npcInfoList:
+  - npcType: 1
+    npcName: "\uAE40\uCD98\uBC30"
+    npcTitle: "\uB0E5\uAD6D\uC758 \uC655\uC790"
+    npcMenuType: 0
+    npcDialogueList:
+    - content: "\uB0D0\uB0D0\uB0E5 "
+      direction: 0
+      npcDialogueImage: 0
