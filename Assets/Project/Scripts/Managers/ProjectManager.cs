@@ -87,6 +87,8 @@ namespace GanShin
             
             _onInitialized = null;
             _managers.Clear();
+            
+            GanDebugger.Log("ProjectManager PreInitialize");
         }
         
         private void PostInitialize()
@@ -98,6 +100,8 @@ namespace GanShin
             LateTick().Forget();
             
             IsInitialized = true;
+            
+            GanDebugger.Log("ProjectManager PostInitialize");
         }
 
         private async UniTask InitializeResourceManager()
