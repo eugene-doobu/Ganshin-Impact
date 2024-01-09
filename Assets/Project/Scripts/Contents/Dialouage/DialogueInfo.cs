@@ -8,9 +8,9 @@ namespace GanShin.Dialogue.Base
         NONE,
         RIKO,
         AI,
-        MUSCLE_CAT,
+        MUSCLE_CAT
     }
-    
+
     [Serializable]
     public class DialogueInfo
     {
@@ -19,10 +19,10 @@ namespace GanShin.Dialogue.Base
 
         public ENpcDialogueImage npcDialogueImage;
     }
-    
+
     [Serializable]
     public class DialogueImageInfo
-    {        
+    {
         public ENpcDialogueImage type;
         public Sprite            sprite;
     }

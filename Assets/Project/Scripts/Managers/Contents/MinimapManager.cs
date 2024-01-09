@@ -1,6 +1,5 @@
 #nullable enable
 
-using GanShin.Resource;
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -9,18 +8,21 @@ namespace GanShin.Space.Content
     [UsedImplicitly]
     public class MinimapManager : ManagerBase
     {
-        [UsedImplicitly] public MinimapManager() { }
-        
-        private Camera? _miniMapCamera = null;
+        private Camera?        _miniMapCamera;
         private RenderTexture? _renderTexture;
-        
+
+        [UsedImplicitly]
+        public MinimapManager()
+        {
+        }
+
         public Texture? GetMinimapTexture()
         {
             if (_renderTexture == null)
                 SetCameraRenderTarget();
             return _renderTexture;
         }
-        
+
         public override void Initialize()
         {
             SetCameraRenderTarget();
@@ -32,7 +34,7 @@ namespace GanShin.Space.Content
             var playerTransform = playerManager?.CurrentPlayerTransform;
             if (_miniMapCamera == null || playerTransform == null)
                 return;
-            
+
             var tr       = _miniMapCamera.transform;
             var position = tr.position;
             var height   = position.y;
@@ -45,7 +47,7 @@ namespace GanShin.Space.Content
         {
             if (_renderTexture != null)
                 return;
-            
+
             var minimapCamera = Util.Instantiate("MinimapCamera.prefab");
             if (minimapCamera == null)
             {

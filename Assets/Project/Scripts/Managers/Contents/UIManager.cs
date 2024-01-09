@@ -3,28 +3,31 @@
 using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
+using Slash.Unity.DataBind.Core.Data;
 using UnityEngine;
-using Context = Slash.Unity.DataBind.Core.Data.Context;
 
 namespace GanShin.UI
 {
     [UsedImplicitly]
     public partial class UIManager : ManagerBase
     {
-        [UsedImplicitly] public UIManager() { }
-        
-        private readonly Dictionary<Type, Context> _dataContexts = new();
-        private readonly List<Type> _willRemoveContexts = new();
+        private readonly Dictionary<Type, Context> _dataContexts       = new();
+        private readonly List<Type>                _willRemoveContexts = new();
+
+        [UsedImplicitly]
+        public UIManager()
+        {
+        }
 
         public GameObject? GlobalRoot { get; private set; }
-        
+
         public override void Initialize()
         {
             InjectEventSystem();
             InjectGlobalUI();
             AddGlobalUIRoot();
         }
-        
+
         public void ClearContexts()
         {
             _willRemoveContexts.AddRange(_dataContexts.Keys);
@@ -33,14 +36,16 @@ namespace GanShin.UI
                 var context = _dataContexts[key];
                 if (context is IDonDestroyContext)
                     continue;
-                
+
                 (context as IDisposable)?.Dispose();
                 _dataContexts.Remove(key);
             }
+
             _willRemoveContexts.Clear();
         }
 
 #region Context Management Interface
+
         public T? GetContext<T>() where T : Context
         {
             if (_dataContexts.ContainsKey(typeof(T)))
@@ -68,6 +73,7 @@ namespace GanShin.UI
         {
             _dataContexts.Remove(typeof(T));
         }
+
 #endregion Context Management Interface
     }
 }

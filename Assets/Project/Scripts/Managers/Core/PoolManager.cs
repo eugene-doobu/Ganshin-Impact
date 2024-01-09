@@ -5,22 +5,10 @@ using UnityEngine.Pool;
 
 internal class Pool
 {
-    private GameObject              _prefab;
-    private IObjectPool<GameObject> _pool;
+    private readonly IObjectPool<GameObject> _pool;
+    private readonly GameObject              _prefab;
 
     private Transform _root;
-    public Transform Root
-    {
-        get
-        {
-            if (_root != null) return _root;
-            
-            var go = new GameObject() { name = $"@{_prefab.name}Pool" };
-            _root = go.transform;
-
-            return _root;
-        }
-    }
 
     public Pool(GameObject prefab)
     {
@@ -28,9 +16,22 @@ internal class Pool
         _pool   = new ObjectPool<GameObject>(OnCreate, OnGet, OnRelease, OnDestroy);
     }
 
+    public Transform Root
+    {
+        get
+        {
+            if (_root != null) return _root;
+
+            var go = new GameObject { name = $"@{_prefab.name}Pool" };
+            _root = go.transform;
+
+            return _root;
+        }
+    }
+
     public void Push(GameObject go)
     {
-        if(go.activeSelf)
+        if (go.activeSelf)
             _pool.Release(go);
     }
 
@@ -40,27 +41,29 @@ internal class Pool
     }
 
 #region Funcs
-    GameObject OnCreate()
+
+    private GameObject OnCreate()
     {
         var go = Object.Instantiate(_prefab, Root, true);
         go.name = _prefab.name;
         return go;
     }
 
-    void OnGet(GameObject go)
+    private void OnGet(GameObject go)
     {
         go.SetActive(true);
     }
 
-    void OnRelease(GameObject go)
+    private void OnRelease(GameObject go)
     {
         go.SetActive(false);
     }
 
-    void OnDestroy(GameObject go)
+    private void OnDestroy(GameObject go)
     {
         Object.Destroy(go);
     }
+
 #endregion
 }
 
@@ -69,9 +72,12 @@ namespace GanShin.Resource
     [UsedImplicitly]
     public class PoolManager : ManagerBase
     {
-        [UsedImplicitly] public PoolManager() {}
-        
-        private Dictionary<string, Pool> _pools = new();
+        private readonly Dictionary<string, Pool> _pools = new();
+
+        [UsedImplicitly]
+        public PoolManager()
+        {
+        }
 
         public GameObject Pop(GameObject prefab, bool isDontDestroy = false)
         {

@@ -1,18 +1,18 @@
+using GanShin.Utils;
 using UnityEditor;
 using UnityEngine;
-using GanShin.Utils;
 
 // reference: https://www.patrykgalach.com/2020/01/20/readonly-attribute-in-unity-editor/
 namespace GanShinEditorAssembly.Utils
 {
     /// <summary>
-    /// This class contain custom drawer for ReadOnly attribute.
+    ///     This class contain custom drawer for ReadOnly attribute.
     /// </summary>
     [CustomPropertyDrawer(typeof(ReadOnlyAttribute))]
     public class ReadOnlyDrawer : PropertyDrawer
     {
         /// <summary>
-        /// Unity method for drawing GUI in Editor
+        ///     Unity method for drawing GUI in Editor
         /// </summary>
         /// <param name="position">Position.</param>
         /// <param name="property">Property.</param>

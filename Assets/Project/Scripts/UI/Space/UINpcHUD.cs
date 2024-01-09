@@ -2,8 +2,8 @@ using System.Collections.Generic;
 using GanShin.UI;
 using GanShin.Village.Base;
 using GanShin.Village.Contents;
+using Slash.Unity.DataBind.Core.Data;
 using UnityEngine;
-using Context = Slash.Unity.DataBind.Core.Data.Context;
 
 namespace GanShin.Village.UI
 {

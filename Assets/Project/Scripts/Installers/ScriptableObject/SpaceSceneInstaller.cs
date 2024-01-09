@@ -7,7 +7,7 @@ namespace GanShin
     public class SpaceSceneInstaller : ScriptableObject
     {
         [SerializeField] private DialogueImageInfo[] dialogueImageInfos;
-        
+
         public Dictionary<ENpcDialogueImage, Sprite> DialogueImageInfoDic { get; } = new();
 
         private void Awake()

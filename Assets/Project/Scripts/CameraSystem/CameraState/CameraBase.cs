@@ -1,7 +1,7 @@
+#nullable enable
+
 using Cinemachine;
 using UnityEngine;
-
-#nullable enable
 
 namespace GanShin.CameraSystem
 {
@@ -9,16 +9,16 @@ namespace GanShin.CameraSystem
     public abstract class CameraBase
     {
         private CameraManager? Camera => ProjectManager.Instance.GetManager<CameraManager>();
-        
+
         protected Transform? Target { get; private set; }
-        
+
         protected CinemachineVirtualCamera? VirtualCamera { get; set; }
-        
+
         public virtual void OnEnable()
         {
             if (Camera == null)
                 return;
-            
+
             ChangeTarget(Camera.Target);
 
             if (!ReferenceEquals(VirtualCamera, null))
@@ -35,7 +35,6 @@ namespace GanShin.CameraSystem
 
         public virtual void OnDisable()
         {
-
             if (!ReferenceEquals(VirtualCamera, null))
                 VirtualCamera!.Priority = 0;
         }

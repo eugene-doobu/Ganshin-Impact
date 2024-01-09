@@ -6,22 +6,31 @@ namespace GanShin.Space.UI
 {
     public sealed class PlayerAvatarContext : CreatureObjectContext
     {
+        private void ChangedUiScaleTween(float curr, float end, float duration)
+        {
+            DOTween.To(() => curr, x => curr = x, end, duration)
+                .OnUpdate(() => { UiScale = new Vector3(curr, curr, 1); }).SetEase(Ease.InSine);
+        }
+
 #region Fields
+
         private bool _isDead;
-        
+
         private float _currentBaseSkillCoolTime;
         private float _baseSkillCoolTime;
         private float _baseSkillCoolTimePercent;
-        
+
         private float _currentUltimateGauge;
         private float _ultimateGauge;
         private float _ultimateGaugePercent;
 
-        private bool  _isActive;
+        private bool    _isActive;
         private Vector3 _uiScale = new(1, 1, 1);
+
 #endregion Fields
 
 #region Field Properties
+
         [UsedImplicitly]
         public bool IsDead
         {
@@ -32,7 +41,7 @@ namespace GanShin.Space.UI
                 OnPropertyChanged();
             }
         }
-        
+
         [UsedImplicitly]
         public float CurrentBaseSkillCoolTime
         {
@@ -44,7 +53,7 @@ namespace GanShin.Space.UI
                 BaseSkillCoolTimePercent = _currentBaseSkillCoolTime / _baseSkillCoolTime;
             }
         }
-        
+
         [UsedImplicitly]
         public float BaseSkillCoolTime
         {
@@ -55,7 +64,7 @@ namespace GanShin.Space.UI
                 OnPropertyChanged();
             }
         }
-        
+
         [UsedImplicitly]
         public float BaseSkillCoolTimePercent
         {
@@ -66,7 +75,7 @@ namespace GanShin.Space.UI
                 OnPropertyChanged();
             }
         }
-        
+
         [UsedImplicitly]
         public float CurrentUltimateGauge
         {
@@ -78,7 +87,7 @@ namespace GanShin.Space.UI
                 UltimateGaugePercent = _currentUltimateGauge / _ultimateGauge;
             }
         }
-        
+
         [UsedImplicitly]
         public float UltimateGauge
         {
@@ -89,7 +98,7 @@ namespace GanShin.Space.UI
                 OnPropertyChanged();
             }
         }
-        
+
         [UsedImplicitly]
         public float UltimateGaugePercent
         {
@@ -100,7 +109,7 @@ namespace GanShin.Space.UI
                 OnPropertyChanged();
             }
         }
-        
+
         [UsedImplicitly]
         public bool IsActive
         {
@@ -115,7 +124,7 @@ namespace GanShin.Space.UI
                     ChangedUiScaleTween(1.2f, 1f, 0.5f);
             }
         }
-        
+
         [UsedImplicitly]
         public Vector3 UiScale
         {
@@ -126,12 +135,7 @@ namespace GanShin.Space.UI
                 OnPropertyChanged();
             }
         }
-#endregion Field Properties
 
-        private void ChangedUiScaleTween(float curr, float end, float duration)
-        {
-            DOTween.To(() => curr, x => curr = x, end, duration)
-                .OnUpdate(() => { UiScale = new Vector3(curr, curr, 1); }).SetEase(Ease.InSine);
-        }
+#endregion Field Properties
     }
 }

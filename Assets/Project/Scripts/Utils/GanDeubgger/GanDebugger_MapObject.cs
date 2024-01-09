@@ -1,13 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 namespace GanShin
 {
     // GanDebugger_MapObject
     public static partial class GanDebugger
     {
-        private static string HEADER_MAPOBJECT = "MapObject";
+        private static readonly string HEADER_MAPOBJECT = "MapObject";
 
         public static bool IsDebuggingMapObject = true;
 

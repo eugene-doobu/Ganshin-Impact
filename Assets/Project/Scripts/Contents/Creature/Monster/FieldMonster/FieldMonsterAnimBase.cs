@@ -5,7 +5,7 @@ namespace GanShin.Content.Creature.Monster
     public enum eFieldMonsterType
     {
         DEFAULT,
-        HUMANOID,
+        HUMANOID
     }
 
     public abstract class FieldMonsterAnimBase

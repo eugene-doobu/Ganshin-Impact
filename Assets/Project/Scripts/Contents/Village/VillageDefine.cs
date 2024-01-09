@@ -8,16 +8,16 @@ namespace GanShin.Village.Base
     {
         NONE,
         CHUN_BAE,
-        YEONG_CHUL,
+        YEONG_CHUL
     }
 
     [Flags]
     public enum ENpcMenuType
     {
         TALK,
-        SHOP,
+        SHOP
     }
-    
+
     [Serializable]
     public class NpcInfo
     {

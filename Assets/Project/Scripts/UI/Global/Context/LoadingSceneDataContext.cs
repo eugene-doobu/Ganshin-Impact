@@ -8,8 +8,6 @@ namespace GanShin.UI
 {
     public sealed class LoadingSceneDataContext : Context, INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-
         private string _loadingText;
         private float  _progress;
 
@@ -34,6 +32,8 @@ namespace GanShin.UI
                 OnPropertyChanged();
             }
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)

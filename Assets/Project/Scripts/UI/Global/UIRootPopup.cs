@@ -9,16 +9,19 @@ namespace GanShin.UI
 {
     public class UIRootPopup : GlobalUIRootBase
     {
-        public PopupDataContext? PopupDataContext =>
-            DataContext as PopupDataContext;
-
-        protected override Context InitializeDataContext() =>
-            new PopupDataContext();
-
         [SerializeField] private GameObject      cancelButtonRoot = null!;
         [SerializeField] private RectTransform[] layoutRoots      = null!;
 
-        public void SetContext(string title, string content, bool isOkCancel, Action? clickOkEvent, Action? clickCancelEvent = null)
+        public PopupDataContext? PopupDataContext =>
+            DataContext as PopupDataContext;
+
+        protected override Context InitializeDataContext()
+        {
+            return new PopupDataContext();
+        }
+
+        public void SetContext(string title, string content, bool isOkCancel, Action? clickOkEvent,
+            Action? clickCancelEvent = null)
         {
             var context = PopupDataContext;
             if (context == null)
@@ -27,14 +30,14 @@ namespace GanShin.UI
                 Disable();
                 return;
             }
-            
+
             context.TitleText   = title;
             context.ContentText = content;
             context.IsOkCancel  = isOkCancel;
 
             if (clickOkEvent != null)
                 context.ClickOkEvent += clickOkEvent;
-            
+
             if (clickCancelEvent != null)
                 context.ClickCancelEvent += clickCancelEvent;
 
@@ -42,7 +45,7 @@ namespace GanShin.UI
 
             foreach (var layoutRoot in layoutRoots)
                 LayoutRebuilder.ForceRebuildLayoutImmediate(layoutRoot);
-            
+
             // Disable 이벤트는 가장 나중에 추가해야 한다.
             context.ClickOkEvent     -= Disable;
             context.ClickOkEvent     += Disable;

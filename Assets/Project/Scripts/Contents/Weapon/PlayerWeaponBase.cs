@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using GanShin.Content.Creature;
 using UnityEngine;
 
@@ -14,7 +11,7 @@ namespace GanShin.Content.Weapon
         public abstract void OnAttack();
 
         public abstract void OnSkill();
-        
+
         public abstract void OnUltimate();
 
         public virtual void OnSkillEnd()
@@ -23,7 +20,6 @@ namespace GanShin.Content.Weapon
 
         public virtual void OnUltimateEnd()
         {
-            
         }
     }
 }

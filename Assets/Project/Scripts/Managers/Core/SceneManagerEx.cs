@@ -11,16 +11,17 @@ namespace GanShin.SceneManagement
     [UsedImplicitly]
     public class SceneManagerEx : ManagerBase
     {
-        [UsedImplicitly] public SceneManagerEx() 
-        {
-            SceneManager.sceneUnloaded += OnSceneUnLoaded;
-        }
-        
-        private UIManager UIManager => ProjectManager.Instance.GetManager<UIManager>();
-
         // TODO: Addressable로 변경
         //[Inject(Id = LoadingSettingInstaller.ChangeSceneDelayId)]
         private float _changeSceneDelay;
+
+        [UsedImplicitly]
+        public SceneManagerEx()
+        {
+            SceneManager.sceneUnloaded += OnSceneUnLoaded;
+        }
+
+        private UIManager UIManager => ProjectManager.Instance.GetManager<UIManager>();
 
         public Define.eScene ESceneType { get; private set; } = Define.eScene.INTRO;
 
@@ -46,7 +47,7 @@ namespace GanShin.SceneManagement
         }
 
         // TODO: Addressable로 변경
-        string GetSceneName(Define.eScene type)
+        private string GetSceneName(Define.eScene type)
         {
             switch (type)
             {
@@ -67,9 +68,9 @@ namespace GanShin.SceneManagement
         {
             if (CurrentScene != null)
                 CurrentScene.Clear();
-            
+
             UIManager.ClearContexts();
-            
+
             var resourceManager = ProjectManager.Instance.GetManager<ResourceManager>();
             resourceManager?.ReleaseAll();
         }

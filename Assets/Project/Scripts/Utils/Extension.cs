@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.EventSystems;
+﻿using UnityEngine;
 
 namespace GanShin
 {
     public static class Extension
     {
-        public static T GetOrAddComponent<T>(this GameObject go) where T : UnityEngine.Component
+        public static T GetOrAddComponent<T>(this GameObject go) where T : Component
         {
             return Util.GetOrAddComponent<T>(go);
         }
@@ -17,10 +13,7 @@ namespace GanShin
         {
             foreach (Transform child in parent)
             {
-                if (child.name == name)
-                {
-                    return child;
-                }
+                if (child.name == name) return child;
 
                 var found = RecursiveFind(child, name);
                 if (found != null)

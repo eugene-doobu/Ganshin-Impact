@@ -9,15 +9,22 @@ namespace GanShin.Space.UI
     [UsedImplicitly]
     public class DialogueContext : Context, INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler PropertyChanged;
+        private string _content;
 
         private string _name;
-        private string _content;
-        
-        private Color _speakerColor;
-        private Sprite _sprite;
+
+        private Color                            _speakerColor;
+        private Sprite                           _sprite;
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
 
 #region Properties
+
         [UsedImplicitly]
         public string Name
         {
@@ -28,7 +35,7 @@ namespace GanShin.Space.UI
                 OnPropertyChanged();
             }
         }
-        
+
         [UsedImplicitly]
         public string Content
         {
@@ -39,7 +46,7 @@ namespace GanShin.Space.UI
                 OnPropertyChanged();
             }
         }
-        
+
         [UsedImplicitly]
         public Sprite Sprite
         {
@@ -48,7 +55,7 @@ namespace GanShin.Space.UI
             {
                 _sprite = value;
                 OnPropertyChanged();
-                
+
                 SpeakerColor = value == null ? Color.clear : Color.white;
             }
         }
@@ -63,12 +70,7 @@ namespace GanShin.Space.UI
                 OnPropertyChanged();
             }
         }
+
 #endregion Properties
-        
-        [NotifyPropertyChangedInvocator]
-        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
     }
 }

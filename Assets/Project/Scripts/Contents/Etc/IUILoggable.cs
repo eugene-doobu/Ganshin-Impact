@@ -1,4 +1,3 @@
-using GanShin.Space.UI;
 using GanShin.UI;
 
 namespace GanShin.Space.Content

@@ -10,19 +10,10 @@ namespace GanShin.UI
 {
     public sealed class PopupDataContext : Context, INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        private string _titleText   = string.Empty;
         private string _contentText = string.Empty;
         private bool   _isOkCancel;
-        
-        public event Action? ClickOkEvent;
-        public event Action? ClickCancelEvent;
 
-        [UsedImplicitly]
-        public void ClickOk(Context context) => ClickOkEvent?.Invoke();
-        [UsedImplicitly]
-        public void ClickCancel(Context context) => ClickCancelEvent?.Invoke();
+        private string _titleText = string.Empty;
 
         [UsedImplicitly]
         public string TitleText
@@ -45,7 +36,7 @@ namespace GanShin.UI
                 OnPropertyChanged();
             }
         }
-        
+
         [UsedImplicitly]
         public bool IsOkCancel
         {
@@ -56,7 +47,24 @@ namespace GanShin.UI
                 OnPropertyChanged();
             }
         }
-        
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        public event Action? ClickOkEvent;
+        public event Action? ClickCancelEvent;
+
+        [UsedImplicitly]
+        public void ClickOk(Context context)
+        {
+            ClickOkEvent?.Invoke();
+        }
+
+        [UsedImplicitly]
+        public void ClickCancel(Context context)
+        {
+            ClickCancelEvent?.Invoke();
+        }
+
         public void ClearEvent()
         {
             ClickOkEvent     = null;
