@@ -17,18 +17,6 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 486a5e19ac65edb4aa1e8f8bd8bbd6dd
   m_SerializeEntries:
-  - m_GUID: 02b0fd4520212e347939df93f76662b4
-    m_Address: IntroScene.unity
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Intro
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: a5704a75490fd90409e1df7e402c366e
-    m_Address: LoadingScene.unity
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - GlobalUI
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: cfaa4a2c33766944d89f5a973ace553a
     m_Address: VillageScene.unity
     m_ReadOnly: 0

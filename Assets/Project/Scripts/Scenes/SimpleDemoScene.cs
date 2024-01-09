@@ -31,12 +31,14 @@ namespace GanShin.SceneManagement
 
         protected override void Initialize()
         {
+            base.Initialize();
             var player = PlayerManager.SetCurrentPlayer(playerAvatar);
             player.transform.position = startPosition;
         }
         
         protected override async UniTask LoadSceneAssets()
         {
+            await base.LoadSceneAssets();
             var resourceManager = ProjectManager.Instance.GetManager<ResourceManager>();
             if (resourceManager == null)
             {

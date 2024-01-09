@@ -38,7 +38,14 @@ namespace GanShin
         
         private readonly PlayerContext? _playerContext = Activator.CreateInstance(typeof(PlayerContext)) as PlayerContext;
 
-        public Transform? CurrentPlayerTransform => _currentAvatar == Define.ePlayerAvatar.NONE ? null : CurrentPlayer!.transform;
+        public Transform? CurrentPlayerTransform
+        {
+            get
+            {
+                if (CurrentPlayer == null) return null;
+                return _currentAvatar == Define.ePlayerAvatar.NONE ? null : CurrentPlayer!.transform;
+            }
+        }
         
         public PlayerController? CurrentPlayer
         {

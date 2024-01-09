@@ -111,6 +111,8 @@ namespace GanShin.Resource
             var opHandle = Addressables.LoadResourceLocationsAsync(label, typeof(T));
             await opHandle;
             
+            GanDebugger.Log($"LoadAllAsync : {label}");
+            
             foreach (var result in opHandle.Result)
             {
                 if (result.PrimaryKey.Contains(".sprite"))
