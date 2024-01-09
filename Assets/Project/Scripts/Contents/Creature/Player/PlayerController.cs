@@ -7,7 +7,6 @@ using GanShin.InputSystem;
 using GanShin.Utils;
 using GanShin.Content.Weapon;
 using GanShin.Data;
-using GanShin.UI;
 using GanShin.Space.UI;
 using UnityEngine;
 
@@ -28,7 +27,6 @@ namespace GanShin.Content.Creature
 #endregion Static
 
 #region Variables
-        private InputSystemManager Input => ProjectManager.Instance.GetManager<InputSystemManager>();
         private CameraManager      Camera => ProjectManager.Instance.GetManager<CameraManager>();
         private PlayerManager      PlayerManager => ProjectManager.Instance.GetManager<PlayerManager>();
 
@@ -208,7 +206,11 @@ namespace GanShin.Content.Creature
 
         private void AddInputEvent()
         {
-            if (Input.GetActionMap(eActiomMap.PLAYER_MOVEMENT) is not ActionMapPlayerMove actionMap)
+            var input = ProjectManager.Instance.GetManager<InputSystemManager>();
+            if (input == null)
+                return;
+            
+            if (input.GetActionMap(eActiomMap.PLAYER_MOVEMENT) is not ActionMapPlayerMove actionMap)
             {
                 GanDebugger.LogError(nameof(PlayerController), "actionMap is null!");
                 return;
@@ -225,7 +227,9 @@ namespace GanShin.Content.Creature
 
         private void RemoveInputEvent()
         {
-            if (Input.GetActionMap(eActiomMap.PLAYER_MOVEMENT) is not ActionMapPlayerMove actionMap)
+            var input = ProjectManager.Instance.GetManager<InputSystemManager>();
+
+            if (input?.GetActionMap(eActiomMap.PLAYER_MOVEMENT) is not ActionMapPlayerMove actionMap)
                 return;
 
             actionMap.OnAttack        -= OnAttack;

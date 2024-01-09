@@ -50,14 +50,15 @@ namespace GanShin.CameraSystem
 
         private void InitializeVirtualCamera()
         {
-            var virtualCameraPrefab = Resources.Load<GameObject>("Camera/PlayerVirtualCamera");
+            var resourceManager = ProjectManager.Instance.GetManager<ResourceManager>();
+            
+            var virtualCameraPrefab = resourceManager?.Load<GameObject>("PlayerVirtualCamera.prefab");
             if (virtualCameraPrefab == null)
             {
                 GanDebugger.CameraLogError("Failed to load virtual camera prefab");
                 return;
             }
             
-            var resourceManager = ProjectManager.Instance.GetManager<ResourceManager>();
             var virtualCameraObj = resourceManager?.Instantiate("PlayerVirtualCamera.prefab", isDontDestroy: true);
             if (virtualCameraObj == null)
             {

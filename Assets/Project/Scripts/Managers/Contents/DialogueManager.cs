@@ -10,7 +10,7 @@ namespace GanShin.Space.Content
     [UsedImplicitly]
     public class DialogueManager : ManagerBase
     {
-        private DialogueManager() { }
+        [UsedImplicitly] public DialogueManager() { }
         
         public DialogueContext Context { get; private set; } = new();
 

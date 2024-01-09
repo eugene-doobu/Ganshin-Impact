@@ -5,14 +5,13 @@ using System.Collections.Generic;
 using JetBrains.Annotations;
 using UnityEngine;
 using Context = Slash.Unity.DataBind.Core.Data.Context;
-using Object = UnityEngine.Object;
 
 namespace GanShin.UI
 {
     [UsedImplicitly]
     public partial class UIManager : ManagerBase
     {
-        [UsedImplicitly] private UIManager() {}
+        [UsedImplicitly] public UIManager() { }
         
         private readonly Dictionary<Type, Context> _dataContexts = new();
         private readonly List<Type> _willRemoveContexts = new();

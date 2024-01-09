@@ -18,7 +18,7 @@ namespace GanShin.Effect
     [UsedImplicitly]
     public class EffectManager : ManagerBase
     {
-        private EffectManager() { }
+        [UsedImplicitly] public EffectManager() { }
         
         public ParticleSystem PlayEffect(eEffectType effectType, Vector3 position, bool isLooping = false)
         {

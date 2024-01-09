@@ -19,7 +19,7 @@ namespace GanShin.CameraSystem
     public class CameraManager : ManagerBase
     {
         [UsedImplicitly]
-        private CameraManager()
+        public CameraManager()
         {
             SceneManager.sceneUnloaded += OnSceneUnLoaded;
         }

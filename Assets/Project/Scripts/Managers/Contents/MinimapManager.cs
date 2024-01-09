@@ -9,7 +9,7 @@ namespace GanShin.Space.Content
     [UsedImplicitly]
     public class MinimapManager : ManagerBase
     {
-        private MinimapManager() { }
+        [UsedImplicitly] public MinimapManager() { }
         
         private Camera? _miniMapCamera = null;
         private RenderTexture? _renderTexture;

@@ -11,6 +11,8 @@ namespace GanShin.Resource
     [UsedImplicitly]
     public class ResourceManager : ManagerBase
     {
+        [UsedImplicitly] public ResourceManager() {}
+        
         /// <summary>
         /// 프로세스 종료시까지 유지되는 리소스
         /// </summary>

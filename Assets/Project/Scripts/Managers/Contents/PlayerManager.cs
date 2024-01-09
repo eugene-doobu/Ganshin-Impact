@@ -14,7 +14,7 @@ namespace GanShin
     [UsedImplicitly]
     public class PlayerManager : ManagerBase
     {
-        private PlayerManager() { }
+        [UsedImplicitly] public PlayerManager() { }
         
 #region Internal Class
         private class PlayerAvatarContextBundle

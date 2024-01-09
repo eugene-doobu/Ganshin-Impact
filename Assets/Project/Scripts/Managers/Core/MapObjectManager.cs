@@ -8,7 +8,7 @@ namespace GanShin.GanObject
     [UsedImplicitly]
     public class MapObjectManager : ManagerBase
     {
-        private MapObjectManager() {}
+        [UsedImplicitly] public MapObjectManager() {}
         
         private Dictionary<long, CreatureObject> _creatureObjects = new();
         private Dictionary<long, PassiveObject>  _passiveObjects  = new();

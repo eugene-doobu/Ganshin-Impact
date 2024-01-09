@@ -8,7 +8,7 @@ namespace GanShin.Sound
     [UsedImplicitly]
     public class SoundManager : ManagerBase
     {
-        private SoundManager() { }
+        [UsedImplicitly] public SoundManager() { }
         
         private const string SoundObjName = "@Sound";
 

@@ -15,7 +15,7 @@ namespace GanShin.InputSystem
     [UsedImplicitly]
     public class InputSystemManager : ManagerBase
     {
-        private InputSystemManager() { }
+        [UsedImplicitly] public InputSystemManager() { }
         
         private readonly Dictionary<eActiomMap, ActionMapBase> _actionMapDict = new();
 

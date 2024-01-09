@@ -18,7 +18,7 @@ namespace GanShin.Space.Content
     [UsedImplicitly]
     public class InventoryManager : ManagerBase
     {
-        private InventoryManager() { }
+        [UsedImplicitly] public InventoryManager() { }
         
         public PlayerManager? PlayerManager => ProjectManager.Instance.GetManager<PlayerManager>();
         public UIManager?     UIManager     => ProjectManager.Instance.GetManager<UIManager>();

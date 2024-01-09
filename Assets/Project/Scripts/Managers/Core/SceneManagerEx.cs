@@ -10,7 +10,7 @@ namespace GanShin.SceneManagement
     [UsedImplicitly]
     public class SceneManagerEx : ManagerBase
     {
-        private SceneManagerEx() 
+        [UsedImplicitly] public SceneManagerEx() 
         {
             SceneManager.sceneUnloaded += OnSceneUnLoaded;
         }

@@ -69,7 +69,7 @@ namespace GanShin.Resource
     [UsedImplicitly]
     public class PoolManager : ManagerBase
     {
-        private PoolManager() {}
+        [UsedImplicitly] public PoolManager() {}
         
         private Dictionary<string, Pool> _pools = new();
 
