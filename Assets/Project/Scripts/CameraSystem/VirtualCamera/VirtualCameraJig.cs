@@ -1,19 +1,17 @@
-using System;
+#nullable enable
+
 using Cinemachine;
 using UnityEngine;
-
-#nullable enable
 
 namespace GanShin.CameraSystem
 {
     [RequireComponent(typeof(CinemachineVirtualCamera))]
     public class VirtualCameraJig : MonoBehaviour
     {
-        private CameraManager? Camera => ProjectManager.Instance.GetManager<CameraManager>();
-
-        [field: SerializeField] public string Name { get; private set; } = String.Empty;
+        [field: SerializeField] public string Name { get; private set; } = string.Empty;
 
         private CinemachineVirtualCamera? _virtualCamera;
+        private CameraManager?            Camera => ProjectManager.Instance.GetManager<CameraManager>();
 
         private void Awake()
         {

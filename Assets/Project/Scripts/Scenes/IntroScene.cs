@@ -15,7 +15,7 @@ namespace GanShin.SceneManagement
                 GanDebugger.LogError("Failed to get scene manager");
                 return;
             }
-            
+
             if (scene.ESceneType != Define.eScene.INTRO)
                 GanDebugger.LogWarning("Current logical scene is not IntroScene");
         }
@@ -28,9 +28,9 @@ namespace GanShin.SceneManagement
                 GanDebugger.LogError("Failed to get resource manager");
                 return;
             }
-            
+
             await resourceManager.LoadAllAsync<Object>("Intro");
-            
+
             resourceManager.Instantiate("Canvas_IntroScene.prefab");
         }
 

@@ -5,11 +5,11 @@ namespace GanShin.SceneManagement
 {
     public abstract class BaseScene : MonoBehaviour
     {
-        void Awake()
+        private void Awake()
         {
             WaitUntilInitialized().Forget();
         }
-        
+
         private async UniTask WaitUntilInitialized()
         {
             await UniTask.WaitUntil(() => ProjectManager.Instance.IsInitialized);

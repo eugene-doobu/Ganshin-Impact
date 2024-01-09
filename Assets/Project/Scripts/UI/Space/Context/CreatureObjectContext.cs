@@ -7,13 +7,16 @@ namespace GanShin.Space.UI
     public abstract class CreatureObjectContext : GanContext
     {
 #region Fields
+
         private string _targetName;
         private int    _currentHp;
         private int    _maxHp;
         private float  _hpPercent;
+
 #endregion Fields
 
 #region Field Properties
+
         [UsedImplicitly]
         public string TargetName
         {
@@ -33,7 +36,7 @@ namespace GanShin.Space.UI
             {
                 _currentHp = value;
                 OnPropertyChanged();
-                HpPercent = (float) _currentHp / _maxHp;
+                HpPercent = (float)_currentHp / _maxHp;
             }
         }
 
@@ -58,6 +61,7 @@ namespace GanShin.Space.UI
                 OnPropertyChanged();
             }
         }
+
 #endregion Field Properties
     }
 }

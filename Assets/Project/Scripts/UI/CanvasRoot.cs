@@ -9,7 +9,7 @@ namespace GanShin.UI
     public class CanvasRoot : MonoBehaviour
     {
         [ReadOnly] [SerializeField] private List<UIRootBase> currentUIRoots = new();
-        
+
         private void Awake()
         {
             var uiRoots = GetComponentsInChildren<UIRootBase>(true);
@@ -19,13 +19,13 @@ namespace GanShin.UI
                 uiRoot.InjectCanvasRoot(this);
             }
         }
-        
+
         public void ActiveAllUIRoots(bool value, params Type[] ignoreTypes)
         {
             foreach (var uiRoot in currentUIRoots)
             {
                 if (ignoreTypes.Contains(uiRoot.GetType())) continue;
-                
+
                 if (value) uiRoot.Show();
                 else uiRoot.Hide();
             }

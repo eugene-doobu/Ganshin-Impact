@@ -9,22 +9,28 @@ namespace GanShin.InputSystem
     public enum eActiomMap
     {
         NONE,
-        PLAYER_MOVEMENT,
+        PLAYER_MOVEMENT
     }
 
     [UsedImplicitly]
     public class InputSystemManager : ManagerBase
     {
-        [UsedImplicitly] public InputSystemManager() { }
-        
         private readonly Dictionary<eActiomMap, ActionMapBase> _actionMapDict = new();
+        private          InputActionMap                        _inputActionMap;
 
         private Action<InputControl> _onAnyKeyInput;
 
         private GanshinActions _playerActions;
-        private InputActionMap _inputActionMap;
 
-        public ActionMapBase GetActionMap(eActiomMap type) => _actionMapDict[type];
+        [UsedImplicitly]
+        public InputSystemManager()
+        {
+        }
+
+        public ActionMapBase GetActionMap(eActiomMap type)
+        {
+            return _actionMapDict[type];
+        }
 
         public event Action<InputControl> OnAnyKeyInput
         {
@@ -35,11 +41,11 @@ namespace GanShin.InputSystem
             }
             remove => _onAnyKeyInput -= value;
         }
-        
+
         public override void Initialize()
         {
             base.Initialize();
-            
+
             _playerActions = new GanshinActions();
             InitActionMapDict();
             ChangeActionMap(eActiomMap.PLAYER_MOVEMENT);

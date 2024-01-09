@@ -10,32 +10,28 @@ namespace GanShin.Content.Creature
 {
     public class RikoController : PlayerController, IAttackAnimation
     {
+        private bool          _isOnUltimate;
         private RikoStatTable _statTable;
-        
-        private bool _isOnUltimate;
-        
-        protected override void Awake()
-        {
-            base.Awake();
-            
-            _statTable = Stat as RikoStatTable;
-            if (_statTable == null)
-            {
-                GanDebugger.LogError("Stat asset is not RikoStatTable");
-                return;
-            }
-        }
 
         public override PlayerAvatarContext GetPlayerContext =>
             Player.GetAvatarContext(Define.ePlayerAvatar.RIKO);
 
+        protected override void Awake()
+        {
+            base.Awake();
+
+            _statTable = Stat as RikoStatTable;
+            if (_statTable == null) GanDebugger.LogError("Stat asset is not RikoStatTable");
+        }
+
 #region Attack
+
         protected override void Attack()
         {
-            bool  isTryAttack  = false;
-            float attackDelay  = 1f;
-            bool  isLastAttack = false;
-            
+            var isTryAttack  = false;
+            var attackDelay  = 1f;
+            var isLastAttack = false;
+
             switch (PlayerAttack)
             {
                 case ePlayerAttack.NONE:
@@ -107,7 +103,7 @@ namespace GanShin.Content.Creature
         protected override void Skill()
         {
             ObjAnimator.SetTrigger(AnimPramHashOnSkill);
-            
+
             CanMove = false;
             if (_attackCancellationTokenSource != null)
                 DisposeAttackCancellationTokenSource();
@@ -120,11 +116,12 @@ namespace GanShin.Content.Creature
             _isOnUltimate = true;
             UltimateTimer().Forget();
             Weapon.OnUltimate();
-            
+
             PlayerAttack = ePlayerAttack.NONE;
-            
-            var characterCutScene = 
-                ProjectManager.Instance.GetManager<UIManager>()?.GetGlobalUI(EGlobalUI.CHARACTER_CUT_SCENE) as UIRootCharacterCutScene;
+
+            var characterCutScene =
+                ProjectManager.Instance.GetManager<UIManager>()?.GetGlobalUI(EGlobalUI.CHARACTER_CUT_SCENE) as
+                    UIRootCharacterCutScene;
             if (characterCutScene != null)
                 characterCutScene.OnCharacterCutScene(Define.ePlayerAvatar.RIKO);
         }
@@ -134,7 +131,7 @@ namespace GanShin.Content.Creature
             await UniTask.Delay(TimeSpan.FromSeconds(_statTable.ultimateDuration));
             _isOnUltimate = false;
             Weapon.OnUltimateEnd();
-            
+
             PlayerAttack = ePlayerAttack.NONE;
         }
 
@@ -142,29 +139,33 @@ namespace GanShin.Content.Creature
         {
             //TODO: dash
         }
+
 #endregion Attack
 
 #region ActionEvent
+
         protected override void OnAttack(bool value)
         {
             if (!value) return;
             base.OnAttack(true);
         }
-        
+
         protected override void OnBaseSkill(bool value)
         {
             if (!value) return;
             base.OnBaseSkill(true);
         }
-        
+
         protected override void OnUltimateSkill(bool value)
         {
             if (!value) return;
             base.OnUltimateSkill(true);
         }
+
 #endregion ActionEvent
 
 #region AnimEvents
+
         [UsedImplicitly]
         public void OnAnimAttack()
         {
@@ -174,8 +175,9 @@ namespace GanShin.Content.Creature
         [UsedImplicitly]
         public void OnAnimSkill()
         {
-            Weapon.OnSkill();   
+            Weapon.OnSkill();
         }
+
 #endregion AnimEvents
     }
 }

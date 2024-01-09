@@ -1,7 +1,6 @@
 #nullable enable
 
 using Cinemachine;
-using GanShin.Resource;
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -10,9 +9,9 @@ namespace GanShin.CameraSystem
     [UsedImplicitly]
     public class CharacterUltimateCamera : CameraBase
     {
-        private CameraBodyTarget?           _cameraBodyTarget;
-        private Cinemachine3rdPersonFollow? _body;
         private CinemachineComposer?        _aim;
+        private Cinemachine3rdPersonFollow? _body;
+        private CameraBodyTarget?           _cameraBodyTarget;
 
         private void InitializeCameraBodyTarget()
         {
@@ -22,7 +21,7 @@ namespace GanShin.CameraSystem
 
             GanDebugger.CameraLog("CameraBody initialized");
         }
-        
+
         private void InitializeVirtualCamera()
         {
             var virtualCameraPrefab = Resources.Load<GameObject>("Camera/PlayerUltimateVirtualCamera");
@@ -38,6 +37,7 @@ namespace GanShin.CameraSystem
                 GanDebugger.CameraLogError("Failed to instantiate virtual camera prefab");
                 return;
             }
+
             virtualCameraObj.name = "@PlayerUltimateVirtualCamera";
 
             VirtualCamera = virtualCameraObj.GetComponent<CinemachineVirtualCamera>();
@@ -60,7 +60,7 @@ namespace GanShin.CameraSystem
                 GanDebugger.CameraLogError("Failed to get aim component");
                 return;
             }
-            
+
             GanDebugger.CameraLog("Virtual camera initialized");
         }
 
@@ -76,11 +76,11 @@ namespace GanShin.CameraSystem
         public override void OnEnable()
         {
             base.OnEnable();
-            
+
             if (ReferenceEquals(VirtualCamera, null))
                 InitializeVirtualCamera();
         }
-        
+
         public override void ChangeTarget(Transform? target)
         {
             base.ChangeTarget(target);

@@ -7,11 +7,10 @@ namespace GanShin.UI
 {
     public class ToastPopupDataContext : Context, INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler PropertyChanged;
+        private string _toastContent;
 
         private string _toastTitle;
-        private string _toastContent;
-        
+
         [UsedImplicitly]
         public string ToastTitle
         {
@@ -22,7 +21,7 @@ namespace GanShin.UI
                 OnPropertyChanged();
             }
         }
-        
+
         [UsedImplicitly]
         public string ToastContent
         {
@@ -33,6 +32,8 @@ namespace GanShin.UI
                 OnPropertyChanged();
             }
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)

@@ -1,13 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 namespace GanShin
 {
     // GanDebugger_Input
     public static partial class GanDebugger
     {
-        private static string HEADER_INPUT = "InputSystem";
+        private static readonly string HEADER_INPUT = "InputSystem";
 
         public static bool IsDebuggingInput = false;
 

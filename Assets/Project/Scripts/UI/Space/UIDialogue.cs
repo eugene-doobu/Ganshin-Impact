@@ -1,47 +1,61 @@
 #nullable enable
 
 using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using GanShin.Dialogue.Base;
-using GanShin.Resource;
-using GanShin.SceneManagement;
 using GanShin.Space.Content;
 using GanShin.UI;
+using Slash.Unity.DataBind.Core.Data;
 using UnityEngine;
-using Context = Slash.Unity.DataBind.Core.Data.Context;
 
 namespace GanShin.Space.UI
 {
     public class UIDialogue : UIRootBase
     {
-        private DialogueManager? _manager = ProjectManager.Instance.GetManager<DialogueManager>();
-        
-        [Header("UIDialogue")]
-        [SerializeField] private float delayTime = 0.1f;
+        [Header("UIDialogue")] [SerializeField]
+        private float delayTime = 0.1f;
 
-        private string _dialogueString    = string.Empty;
+        private readonly DialogueManager? _manager = ProjectManager.Instance.GetManager<DialogueManager>();
+
         private string _currentViewString = string.Empty;
-        
-        private CancellationTokenSource? _dialogueMessageCts;
-        
+
         private DialogueContext? _dialogueContext;
-        
+
+        private CancellationTokenSource? _dialogueMessageCts;
+
+        private string _dialogueString = string.Empty;
+
         private string CurrentViewString
         {
             get => _currentViewString;
             set
             {
-                _currentViewString = value;
+                _currentViewString        = value;
                 _dialogueContext!.Content = _currentViewString;
             }
         }
-        
+
         public bool IsOnTyping => _dialogueMessageCts != null;
 
+        private Sprite? GetDialogueImage(ENpcDialogueImage type)
+        {
+            var spaceSceneData = Util.LoadAsset<SpaceSceneInstaller>("SpaceScene.asset");
+            if (spaceSceneData == null)
+            {
+                GanDebugger.LogError(GetType().Name, "Failed to get space scene data");
+                return null;
+            }
+
+            var npcDialogueImages = spaceSceneData.DialogueImageInfoDic;
+            if (npcDialogueImages == null || !npcDialogueImages.ContainsKey(type))
+                return null;
+
+            return npcDialogueImages[type];
+        }
+
 #region Initialize
+
         protected override Context? InitializeDataContext()
         {
             if (_manager == null)
@@ -49,7 +63,7 @@ namespace GanShin.Space.UI
                 GanDebugger.LogError(GetType().Name, "DialogueManager is null");
                 return null;
             }
-            
+
             _manager.SetUI(this);
             _dialogueContext = _manager.Context;
             return _dialogueContext;
@@ -65,7 +79,7 @@ namespace GanShin.Space.UI
             if (CanvasRoot != null)
                 CanvasRoot.ActiveAllUIRoots(false, typeof(UIDialogue));
 
-            _dialogueString = string.Empty;
+            _dialogueString    = string.Empty;
             _currentViewString = string.Empty;
             Show();
         }
@@ -78,9 +92,11 @@ namespace GanShin.Space.UI
             Hide();
             SkipDialogue();
         }
+
 #endregion Initialize
 
 #region ContextControll
+
         public void SetDialogue(DialogueInfo info)
         {
             if (_dialogueContext == null)
@@ -90,22 +106,22 @@ namespace GanShin.Space.UI
             }
 
             SetString(info.content);
-            _dialogueContext.Name    = info.name;
+            _dialogueContext.Name   = info.name;
             _dialogueContext.Sprite = GetDialogueImage(info.npcDialogueImage);
         }
-        
+
         private void SetString(string dialogueString)
         {
             SkipDialogue();
             _dialogueMessageCts = new CancellationTokenSource();
             SetStringAsync(dialogueString, _dialogueMessageCts).Forget();
         }
-        
+
         private async UniTask SetStringAsync(string dialogueString, CancellationTokenSource cts)
         {
             CurrentViewString = string.Empty;
             _dialogueString   = dialogueString;
-            
+
             while (CurrentViewString.Length < _dialogueString.Length)
             {
                 var currentViewNum = Mathf.Max(1, Time.deltaTime / delayTime);
@@ -113,10 +129,11 @@ namespace GanShin.Space.UI
                 for (var i = 0; i < currentViewNum; i++)
                 {
                     if (CurrentViewString.Length >= _dialogueString.Length) break;
-                    CurrentViewString         += _dialogueString[CurrentViewString.Length];
+                    CurrentViewString += _dialogueString[CurrentViewString.Length];
                 }
-                
-                var isCancelled = await UniTask.Delay(TimeSpan.FromSeconds(delayTime), cancellationToken: cts.Token).SuppressCancellationThrow();
+
+                var isCancelled = await UniTask.Delay(TimeSpan.FromSeconds(delayTime), cancellationToken: cts.Token)
+                    .SuppressCancellationThrow();
                 if (!isCancelled) continue;
                 if (_dialogueMessageCts != null && cts != _dialogueMessageCts) return;
 
@@ -124,29 +141,14 @@ namespace GanShin.Space.UI
                 return;
             }
         }
-        
+
         public void SkipDialogue()
         {
             _dialogueMessageCts?.Cancel();
             _dialogueMessageCts?.Dispose();
             _dialogueMessageCts = null;
         }
-#endregion ContextControll
 
-        private Sprite? GetDialogueImage(ENpcDialogueImage type)
-        {
-            var spaceSceneData = Util.LoadAsset<SpaceSceneInstaller>("SpaceScene.asset");
-            if (spaceSceneData == null)
-            {
-                GanDebugger.LogError(GetType().Name, "Failed to get space scene data");
-                return null;
-            }
-            
-            var npcDialogueImages = spaceSceneData.DialogueImageInfoDic;
-            if (npcDialogueImages == null || !npcDialogueImages.ContainsKey(type))
-                return null;
-            
-            return npcDialogueImages[type];
-        }
+#endregion ContextControll
     }
 }

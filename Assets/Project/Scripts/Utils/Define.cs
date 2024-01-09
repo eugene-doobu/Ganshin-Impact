@@ -5,19 +5,7 @@
         public enum eLayer
         {
             CHARACTER = 3,
-            MONSTER = 8
-        }
-
-        public static int GetLayerMask(eLayer layer)
-        {
-            return 1 << (int) layer;
-        }
-
-        public struct Tag
-        {
-            public static string Player       = "Player";
-            public static string PlayerWeapon = "PlayerWeapon";
-            public static string Monster      = "Monster";
+            MONSTER   = 8
         }
 
         public enum ePlayerAvatar
@@ -25,7 +13,7 @@
             RIKO,
             AI,
             MUSCLE_CAT,
-            NONE,
+            NONE
         }
 
         public enum eScene
@@ -36,20 +24,32 @@
             DEMO,
             SIMPLE_DEMO,
             VILLAGE,
-            GAME,
+            GAME
         }
 
         public enum eSound
         {
             Bgm,
             Effect,
-            MaxCount,
+            MaxCount
         }
 
         public enum eUIEvent
         {
             Click,
-            Drag,
+            Drag
+        }
+
+        public static int GetLayerMask(eLayer layer)
+        {
+            return 1 << (int)layer;
+        }
+
+        public struct Tag
+        {
+            public static string Player       = "Player";
+            public static string PlayerWeapon = "PlayerWeapon";
+            public static string Monster      = "Monster";
         }
     }
 }

@@ -6,8 +6,8 @@ namespace GanShin.UI
     [UsedImplicitly]
     public class LoadingSceneContext : Context
     {
-        private readonly Property<string> _loadingText = new Property<string>();
-        private readonly Property<float>  _progress    = new Property<float>();
+        private readonly Property<string> _loadingText = new();
+        private readonly Property<float>  _progress    = new();
 
         public string LoadingText
         {

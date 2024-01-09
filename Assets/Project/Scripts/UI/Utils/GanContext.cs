@@ -3,9 +3,9 @@ using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
 using Slash.Unity.DataBind.Core.Data;
 
-namespace GanShin.UI    
+namespace GanShin.UI
 {
-    public class GanContext :  Context, INotifyPropertyChanged
+    public class GanContext : Context, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 

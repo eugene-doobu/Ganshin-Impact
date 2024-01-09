@@ -7,21 +7,10 @@ using UnityEngine;
 namespace GanShin.Space.UI
 {
     /// <summary>
-    /// 플레이어의 아바타 상관없이 적용되는 수치에 대한 viewmodel context
+    ///     플레이어의 아바타 상관없이 적용되는 수치에 대한 viewmodel context
     /// </summary>
     public class PlayerContext : Context, INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-        
-#region Fields
-        private bool _isRikoActive;
-        private bool _isAiActive;
-        private bool _isMuscleCatActive;
-        
-        private float _currentCurrentStamina;
-        private float _maxStamina;
-        private float _staminaPercent;
-#endregion Fields
         [UsedImplicitly]
         public bool IsRikoActive
         {
@@ -30,13 +19,13 @@ namespace GanShin.Space.UI
             {
                 _isRikoActive = value;
                 OnPropertyChanged();
-                
+
                 if (!value) return;
                 IsAiActive        = false;
                 IsMuscleCatActive = false;
             }
         }
-        
+
         [UsedImplicitly]
         public bool IsAiActive
         {
@@ -45,13 +34,13 @@ namespace GanShin.Space.UI
             {
                 _isAiActive = value;
                 OnPropertyChanged();
-                
+
                 if (!value) return;
                 IsRikoActive      = false;
                 IsMuscleCatActive = false;
             }
         }
-        
+
         [UsedImplicitly]
         public bool IsMuscleCatActive
         {
@@ -60,7 +49,7 @@ namespace GanShin.Space.UI
             {
                 _isMuscleCatActive = value;
                 OnPropertyChanged();
-                
+
                 if (!value) return;
                 IsRikoActive = false;
                 IsAiActive   = false;
@@ -89,7 +78,7 @@ namespace GanShin.Space.UI
                 OnPropertyChanged();
             }
         }
-        
+
         [UsedImplicitly]
         public float StaminaPercent
         {
@@ -101,10 +90,24 @@ namespace GanShin.Space.UI
             }
         }
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
         [NotifyPropertyChangedInvocator]
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+#region Fields
+
+        private bool _isRikoActive;
+        private bool _isAiActive;
+        private bool _isMuscleCatActive;
+
+        private float _currentCurrentStamina;
+        private float _maxStamina;
+        private float _staminaPercent;
+
+#endregion Fields
     }
 }

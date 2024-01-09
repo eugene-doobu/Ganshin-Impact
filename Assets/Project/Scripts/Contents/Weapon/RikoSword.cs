@@ -1,31 +1,29 @@
 using Cinemachine;
-using UnityEngine;
 using GanShin.Data;
 using GanShin.Effect;
 using GanShin.Sound;
-using Random = UnityEngine.Random;
+using UnityEngine;
 
 namespace GanShin.Content.Weapon
 {
     public class RikoSword : PlayerWeaponBase
     {
-        private EffectManager Effect => ProjectManager.Instance.GetManager<EffectManager>();
-        private SoundManager  Sound => ProjectManager.Instance.GetManager<SoundManager>();
-        
-        private readonly Collider[] _monsterColliders = new Collider[20];
+        [SerializeField] private MeshRenderer meshRenderer;
 
-        [SerializeField] private  MeshRenderer meshRenderer;
-        
         [SerializeField] private ParticleSystem skillEffect;
         [SerializeField] private ParticleSystem ultimateEffect;
         [SerializeField] private ParticleSystem ultimateEndEffect;
-        
+
         [SerializeField] private Material defaultMaterial;
         [SerializeField] private Material ultimateMaterial;
-        
+
         [SerializeField] private CinemachineImpulseSource impulseSource;
-        
-        private bool _isOnUltimate;
+
+        private readonly Collider[] _monsterColliders = new Collider[20];
+
+        private bool          _isOnUltimate;
+        private EffectManager Effect => ProjectManager.Instance.GetManager<EffectManager>();
+        private SoundManager  Sound  => ProjectManager.Instance.GetManager<SoundManager>();
 
         public override void OnAttack()
         {
@@ -36,15 +34,16 @@ namespace GanShin.Content.Weapon
                 return;
             }
 
-            var ownerTr = Owner.transform;
+            var ownerTr        = Owner.transform;
             var attackPosition = ownerTr.position + ownerTr.forward * stat.rikoAttackForwardOffset;
-            var attackRadius = _isOnUltimate ? stat.rikoUltimateAttackRadius : stat.rikoAttackRadius;
+            var attackRadius   = _isOnUltimate ? stat.rikoUltimateAttackRadius : stat.rikoAttackRadius;
 
             Sound.Play(_isOnUltimate
-                ? $"Sword/Staff/Staff {Random.Range(1, 11)}"
-                : $"Sword/Club/Club {Random.Range(1, 11)}");
-            
-            var rst = Owner.ApplyAttackDamage(attackPosition, attackRadius, GetBaseAttackDamage(stat), _monsterColliders, OnBaseAttackEffect);
+                           ? $"Sword/Staff/Staff {Random.Range(1, 11)}"
+                           : $"Sword/Club/Club {Random.Range(1, 11)}");
+
+            var rst = Owner.ApplyAttackDamage(attackPosition, attackRadius, GetBaseAttackDamage(stat),
+                                              _monsterColliders, OnBaseAttackEffect);
             if (!rst) return;
 
             if (_isOnUltimate)
@@ -57,12 +56,12 @@ namespace GanShin.Content.Weapon
                 Owner.CurrentUltimateGauge += Owner.Stat.ultimateSkillChargeOnBaseAttack;
             }
         }
-        
+
         private void OnBaseAttackEffect(Collider monsterCollider)
         {
             var closetPoint = monsterCollider.ClosestPoint(transform.position);
             Effect.PlayEffect(_isOnUltimate ? eEffectType.RIKO_SWORD_ULTIMATE_HIT : eEffectType.RIKO_SWORD_HIT,
-                closetPoint);
+                              closetPoint);
         }
 
         private float GetBaseAttackDamage(RikoStatTable stat)
@@ -86,6 +85,7 @@ namespace GanShin.Content.Weapon
                 case ePlayerAttack.RIKO_ULTIMATE_ATTACK4:
                     return stat.ultimate4Damage;
             }
+
             return 0;
         }
 
@@ -97,13 +97,14 @@ namespace GanShin.Content.Weapon
                 GanDebugger.LogError("Stat asset is not RikoStatTable");
                 return;
             }
-            
+
             skillEffect.Play();
             impulseSource.GenerateImpulseWithForce(stat.rikoSkillShakeForce);
             Sound.Play("Riko/OnSkill");
 
-            Owner.ApplyAttackDamage(Owner.transform.position, stat.rikoSkillAttackRadius, stat.skillDamage, _monsterColliders,
-                OnBaseSkillEffect);
+            Owner.ApplyAttackDamage(Owner.transform.position, stat.rikoSkillAttackRadius, stat.skillDamage,
+                                    _monsterColliders,
+                                    OnBaseSkillEffect);
         }
 
         private void OnBaseSkillEffect(Collider monsterCollider)
@@ -120,15 +121,15 @@ namespace GanShin.Content.Weapon
                 GanDebugger.LogError("Stat asset is not RikoStatTable");
                 return;
             }
-            
+
             ultimateEndEffect.Play();
             meshRenderer.material = ultimateMaterial;
-            transform.localScale = stat.ultimateSwordScale;
+            transform.localScale  = stat.ultimateSwordScale;
             ultimateEffect.Play();
             Sound.Play("Riko/OnUltimate");
 
             _isOnUltimate = true;
-            
+
             impulseSource.GenerateImpulseWithForce(stat.rikoSkillShakeForce);
         }
 
@@ -137,9 +138,9 @@ namespace GanShin.Content.Weapon
             meshRenderer.material = defaultMaterial;
             transform.localScale  = Vector3.one;
             ultimateEffect.Stop();
-            
+
             ultimateEndEffect.Play();
-            
+
             _isOnUltimate = false;
         }
     }

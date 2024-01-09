@@ -6,9 +6,10 @@ namespace GanShin.Content.Creature.Monster
 {
     public abstract class MonsterController : CreatureController, IDisposable
     {
-        protected virtual Transform Target { get; set; }
+        [field: SerializeField] [field: ReadOnly]
+        private eMonsterState state;
 
-        [field: SerializeField, ReadOnly] private eMonsterState state;
+        protected virtual Transform Target { get; set; }
 
         public virtual eMonsterState State
         {
@@ -20,11 +21,6 @@ namespace GanShin.Content.Creature.Monster
             }
         }
 
-        public virtual void OnDamaged(float damage)
-        {
-            if (State == eMonsterState.DEAD) return;
-        }
-
         protected override void Awake()
         {
             base.Awake();
@@ -33,10 +29,6 @@ namespace GanShin.Content.Creature.Monster
         protected override void Start()
         {
             base.Start();
-        }
-
-        protected virtual void OnDestroy()
-        {
         }
 
         protected override void Update()
@@ -61,16 +53,27 @@ namespace GanShin.Content.Creature.Monster
             }
         }
 
+        protected virtual void OnDestroy()
+        {
+        }
+
         public void Dispose()
         {
         }
 
+        public virtual void OnDamaged(float damage)
+        {
+            if (State == eMonsterState.DEAD) return;
+        }
+
 #region ProcessState
+
         protected abstract void ProcessCreated();
         protected abstract void ProcessIdle();
         protected abstract void ProcessTracing();
         protected abstract void ProcessAttack();
         protected abstract void ProcessDead();
+
 #endregion ProcessState
     }
 }

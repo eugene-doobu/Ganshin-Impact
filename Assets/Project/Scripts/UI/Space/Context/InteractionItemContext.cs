@@ -7,8 +7,6 @@ namespace GanShin.Space.UI
     public class InteractionItemContext : GanContext, IDisposable
     {
         private string _nameProperty;
-        
-        public event Action OnClickEvent;
 
         [UsedImplicitly]
         public string Name
@@ -21,15 +19,17 @@ namespace GanShin.Space.UI
             }
         }
 
+        public void Dispose()
+        {
+            OnClickEvent = null;
+        }
+
+        public event Action OnClickEvent;
+
         [UsedImplicitly]
         public void OnClick()
         {
             OnClickEvent?.Invoke();
-        }
-
-        public void Dispose()
-        {
-            OnClickEvent = null;
         }
     }
 }

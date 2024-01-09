@@ -1,6 +1,6 @@
-using UnityEngine;
 using GanShin.UI;
-using Context = Slash.Unity.DataBind.Core.Data.Context;
+using Slash.Unity.DataBind.Core.Data;
+using UnityEngine;
 
 namespace GanShin.Space.UI
 {
@@ -10,19 +10,23 @@ namespace GanShin.Space.UI
         AI,
         MUSCLE_CAT,
         OBJECT, // 특정 오브젝트의 Context를 가져오는 경우
-        SELF,   // 자신의 contextHolder를 이용하는 경우
+        SELF    // 자신의 contextHolder를 이용하는 경우
     }
 
     public class UIHpBar : UIRootBase
     {
-        private PlayerManager _playerManager = ProjectManager.Instance.GetManager<PlayerManager>();
-
         [SerializeField] private eHpTarget target = eHpTarget.SELF;
 
         /// <summary>
-        /// target이 Object인경우 컨텍스트를 가지고 있는 오브젝트
+        ///     target이 Object인경우 컨텍스트를 가지고 있는 오브젝트
         /// </summary>
         [SerializeField] private GameObject owner;
+
+        private readonly PlayerManager _playerManager = ProjectManager.Instance.GetManager<PlayerManager>();
+
+        private CreatureObjectContext _context;
+
+        public CreatureObjectContext Context => _context ?? DataContext as CreatureObjectContext;
 
         protected override Context InitializeDataContext()
         {
@@ -47,9 +51,5 @@ namespace GanShin.Space.UI
                     return null;
             }
         }
-
-        private CreatureObjectContext _context;
-
-        public CreatureObjectContext Context => _context ?? DataContext as CreatureObjectContext;
     }
 }

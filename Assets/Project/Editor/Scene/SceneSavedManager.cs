@@ -1,27 +1,29 @@
 using UnityEditor;
-using UnityEngine.EventSystems;
+using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 namespace GanShinEditorAssembly
-{        
+{
     public static class SceneSavedManager
     {
         [InitializeOnLoad]
-        static class EditorSceneManagerSceneSaved
+        private static class EditorSceneManagerSceneSaved
         {
             static EditorSceneManagerSceneSaved()
             {
-                UnityEditor.SceneManagement.EditorSceneManager.sceneSaving += OnSceneSaving;
+                EditorSceneManager.sceneSaving += OnSceneSaving;
             }
 
-            static void OnSceneSaving(UnityEngine.SceneManagement.Scene scene, string path)
+            private static void OnSceneSaving(Scene scene, string path)
             {
                 Debug.Log($"Saving scene '{scene.name}' to {path}");
 
                 CleaningEventSystem();
             }
 
-            static void CleaningEventSystem()
+            private static void CleaningEventSystem()
             {
                 var eventTriggers = Object.FindObjectsOfType<EventSystem>();
                 foreach (var eventTrigger in eventTriggers)

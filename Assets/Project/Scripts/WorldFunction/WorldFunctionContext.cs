@@ -1,17 +1,24 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using Slash.Unity.DataBind.Core.Data;
+using UnityEngine;
 
 namespace GanShin.UI
 {
     public class WorldFunctionContext : Context
     {
+#region Events
+
+        public void OnClickQuit(Context context)
+        {
+            Debug.Log("Quit");
+        }
+
+#endregion Events
+
 #region Variables
 
-        private readonly Property<int>   _currentHealth = new Property<int>(100);
-        private readonly Property<int>   _maxHealth     = new Property<int>(200);
-        private readonly Property<Color> _color         = new Property<Color>(Color.green);
+        private readonly Property<int>   _currentHealth = new(100);
+        private readonly Property<int>   _maxHealth     = new(200);
+        private readonly Property<Color> _color         = new(Color.green);
 
 #endregion Variables
 
@@ -36,14 +43,5 @@ namespace GanShin.UI
         }
 
 #endregion Properties
-
-#region Events
-
-        public void OnClickQuit(Context context)
-        {
-            Debug.Log("Quit");
-        }
-
-#endregion Events
     }
 }
