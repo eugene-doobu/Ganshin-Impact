@@ -188,6 +188,7 @@ namespace GanShin.SceneManagement
 
         public override void Clear()
         {
+            base.Clear();
         }
 
         private enum EDebugInputGroup

@@ -25,17 +25,25 @@ namespace GanShin.SceneManagement
 
         public Define.eScene ESceneType { get; private set; } = Define.eScene.INTRO;
 
-        public BaseScene CurrentScene => Object.FindObjectOfType<BaseScene>();
+        private BaseScene _currentScene;
+        
+        public override void PostInitialize()
+        {
+            base.PostInitialize();
+            _currentScene = Object.FindObjectOfType<BaseScene>();
+        }
 
         public async UniTask LoadScene(Define.eScene type)
         {
             UIManager.SetLoadingSceneUiActive(true);
             ESceneType = type;
+            ClearScene();
             await SceneManager.LoadSceneAsync(GetSceneName(Define.eScene.LOADING_SCENE)).ToUniTask();
             await UniTask.Delay(TimeSpan.FromMilliseconds(_changeSceneDelay));
             await SceneManager.LoadSceneAsync(GetSceneName(type))
                 .ToUniTask(Progress.Create<float>(ApplyProgressToLoadingBar));
             await UniTask.NextFrame();
+            _currentScene = Object.FindObjectOfType<BaseScene>();
             UIManager.SetLoadingSceneUiActive(false);
         }
 
@@ -64,15 +72,20 @@ namespace GanShin.SceneManagement
             return string.Empty;
         }
 
-        private void OnSceneUnLoaded(Scene scene)
+        private void ClearScene()
         {
-            if (CurrentScene != null)
-                CurrentScene.Clear();
+            if (_currentScene != null)
+                _currentScene.Clear();
+            _currentScene = null;
 
             UIManager.ClearContexts();
 
             var resourceManager = ProjectManager.Instance.GetManager<ResourceManager>();
             resourceManager?.ReleaseAll();
+        }
+
+        private void OnSceneUnLoaded(Scene scene)
+        {
         }
     }
 }
