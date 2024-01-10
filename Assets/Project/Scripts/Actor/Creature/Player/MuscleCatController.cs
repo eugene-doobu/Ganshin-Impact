@@ -155,10 +155,12 @@ namespace GanShin.Content.Creature
         {
             var len = Physics.OverlapSphereNonAlloc(transform.position, _statTable.skillRadius, _monsterColliders,
                                                     Define.GetLayerMask(Define.eLayer.MONSTER));
-            var monsters = new MonsterController[len];
             await UniTask.Delay(TimeSpan.FromMilliseconds(_statTable.skillDuration));
-            foreach (var monster in monsters)
-                monster.OnDamaged(_statTable.skillDamage);
+            for (var i = 0; i < len; ++i)
+            {
+                if (_monsterColliders[i] == null) continue;
+                _monsterColliders[i].GetComponent<MonsterController>()?.OnDamaged(_statTable.skillDamage);
+            }
             CurrentUltimateGauge += _statTable.ultimateSkillChargeOnBaseAttack;
         }
 
