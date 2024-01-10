@@ -1,12 +1,14 @@
+using System;
+using Cysharp.Threading.Tasks;
 using GanShin.Utils;
 using UnityEngine;
 
 namespace GanShin.GanObject
 {
     /// <summary>
-    ///     MapController에서 관리하는 오브젝트
-    ///     기본적으로 Collider가 부착되어 있으며,
-    ///     플레이어와의 거리에 따른 이벤트나 마우스 호버 이벤트 등이 존재한다.
+    /// ActorManager에서 관리하는 오브젝트
+    /// 기본적으로 Collider가 부착되어 있으며,
+    /// 플레이어와의 거리에 따른 이벤트나 마우스 호버 이벤트 등이 존재한다.
     /// </summary>
     public abstract partial class Actor : MonoBehaviour
     {
@@ -14,25 +16,45 @@ namespace GanShin.GanObject
         [field: ReadOnly]
         public long Id { get; set; }
 
-        protected ActorManager ActorManager => ProjectManager.Instance.GetManager<ActorManager>();
-
         public bool IsMine { get; set; } = false;
 
         public float ObjectHeight { get; protected set; } = 0.5f;
 
-        public void Awake()
+        protected virtual void Awake()
         {
-            ActorManager.RegisterActor(this);
+            WaitUntilInitialized().Forget();
         }
 
-        public virtual void OnUpdate()
+        protected virtual void Start()
+        {
+            
+        }
+
+        protected virtual void OnDestroy()
+        {
+            var actorManager = ProjectManager.Instance.GetManager<ActorManager>();
+            actorManager?.RemoveActor(this);
+        }
+
+        public virtual void Tick()
         {
         }
 
-        public void OnDestroy()
+        protected virtual void Initialize()
         {
-            if (ActorManager == null) return;
-            ActorManager.RemoveActor(this);
+            var actorManager = ProjectManager.Instance.GetManager<ActorManager>();
+            if (actorManager == null)
+            {
+                GanDebugger.ActorLogError("Failed to get actor manager");
+                return;
+            }
+            actorManager.RegisterActor(this);
+        }
+
+        private async UniTask WaitUntilInitialized()
+        {
+            await UniTask.WaitUntil(() => ProjectManager.Instance.IsInitialized);
+            Initialize();
         }
     }
 }

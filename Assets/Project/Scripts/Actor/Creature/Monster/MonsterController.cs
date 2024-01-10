@@ -1,10 +1,11 @@
 using System;
+using GanShin.GanObject;
 using GanShin.Utils;
 using UnityEngine;
 
 namespace GanShin.Content.Creature.Monster
 {
-    public abstract class MonsterController : CreatureController, IDisposable
+    public abstract class MonsterController : CreatureObject, IDisposable
     {
         [field: SerializeField] [field: ReadOnly]
         private eMonsterState state;
@@ -21,17 +22,7 @@ namespace GanShin.Content.Creature.Monster
             }
         }
 
-        protected override void Awake()
-        {
-            base.Awake();
-        }
-
-        protected override void Start()
-        {
-            base.Start();
-        }
-
-        protected override void Update()
+        public override void Tick()
         {
             switch (State)
             {
@@ -53,10 +44,6 @@ namespace GanShin.Content.Creature.Monster
             }
         }
 
-        protected virtual void OnDestroy()
-        {
-        }
-
         public void Dispose()
         {
         }
@@ -67,13 +54,11 @@ namespace GanShin.Content.Creature.Monster
         }
 
 #region ProcessState
-
         protected abstract void ProcessCreated();
         protected abstract void ProcessIdle();
         protected abstract void ProcessTracing();
         protected abstract void ProcessAttack();
         protected abstract void ProcessDead();
-
 #endregion ProcessState
     }
 }

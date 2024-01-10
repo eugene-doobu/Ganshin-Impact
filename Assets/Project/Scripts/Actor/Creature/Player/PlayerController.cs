@@ -5,6 +5,7 @@ using GanShin.CameraSystem;
 using GanShin.Content.Creature.Monster;
 using GanShin.Content.Weapon;
 using GanShin.Data;
+using GanShin.GanObject;
 using GanShin.InputSystem;
 using GanShin.Space.UI;
 using GanShin.Utils;
@@ -13,7 +14,7 @@ using UnityEngine;
 namespace GanShin.Content.Creature
 {
     [RequireComponent(typeof(CharacterController))]
-    public abstract class PlayerController : CreatureController
+    public abstract class PlayerController : CreatureObject
     {
         private void AddInputEvent()
         {
@@ -177,7 +178,6 @@ namespace GanShin.Content.Creature
 #endregion Properties
 
 #region Mono
-
         protected override void Awake()
         {
             base.Awake();
@@ -202,15 +202,15 @@ namespace GanShin.Content.Creature
             RemoveInputEvent();
         }
 
-        protected override void Update()
+        public override void Tick()
         {
+            base.Tick();
             CheckOnGround();
             Movement();
             Roll();
             ApplyGravity();
             TryAttack();
         }
-
 #endregion Mono
 
 #region StateCheck

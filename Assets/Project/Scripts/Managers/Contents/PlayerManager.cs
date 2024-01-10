@@ -237,7 +237,7 @@ namespace GanShin
 
 #region Mono
 
-        public override void Initialize()
+        public override void PostInitialize()
         {
             SetPlayerPoolRoot();
             _playerContext.MaxStamina = _maxStamina;

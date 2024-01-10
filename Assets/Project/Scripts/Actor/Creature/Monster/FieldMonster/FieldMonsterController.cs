@@ -24,8 +24,6 @@ namespace GanShin.Content.Creature.Monster
 
         private readonly PlayerAvatarContext _playerAvatarContext = new();
 
-        private readonly PlayerManager? _playerManager = ProjectManager.Instance.GetManager<PlayerManager>();
-
         private Animator             _animator       = null!;
         private FieldMonsterAnimBase _animController = null!;
 
@@ -122,8 +120,12 @@ namespace GanShin.Content.Creature.Monster
             set
             {
                 _playerTarget = value;
-                if (value != null) _playerManager.OnPlayerChanged += OnPlayerChanged;
-                else _playerManager.OnPlayerChanged               -= OnPlayerChanged;
+                
+                var playerManager = ProjectManager.Instance.GetManager<PlayerManager>();
+                if (playerManager == null) return;
+                
+                if (value != null) playerManager.OnPlayerChanged += OnPlayerChanged;
+                else playerManager.OnPlayerChanged               -= OnPlayerChanged;
             }
         }
 
@@ -188,7 +190,6 @@ namespace GanShin.Content.Creature.Monster
 #endregion Properties
 
 #region Initalize
-
         private void Initialize()
         {
             InitializeNavMeshAgent();
@@ -205,11 +206,9 @@ namespace GanShin.Content.Creature.Monster
             _capsuleCollider.center    = new Vector3(0, 0.5f, 0);
             _capsuleCollider.isTrigger = true;
         }
-
 #endregion Initalize
 
 #region ProcessState
-
         protected override void ProcessCreated()
         {
             Initialize();
@@ -221,8 +220,8 @@ namespace GanShin.Content.Creature.Monster
 
         protected override void ProcessIdle()
         {
-            var playerTr = _playerManager.CurrentPlayerTransform;
-
+            var playerManager = ProjectManager.Instance.GetManager<PlayerManager>();
+            var playerTr      = playerManager?.CurrentPlayerTransform;
             if (playerTr == null) return;
 
             var diff = playerTr.position - transform.position;
@@ -274,10 +273,11 @@ namespace GanShin.Content.Creature.Monster
             if (_isDead) return;
             _isDead = true;
 
-            if (_playerManager.CurrentPlayer == null) return;
+            var playerManager = ProjectManager.Instance.GetManager<PlayerManager>();
+            if (playerManager?.CurrentPlayer == null) return;
 
-            _playerManager.CurrentPlayer.CurrentUltimateGauge
-                += _playerManager.CurrentPlayer.Stat.ultimateSkillChargeOnKill;
+            playerManager.CurrentPlayer.CurrentUltimateGauge
+                += playerManager.CurrentPlayer.Stat.ultimateSkillChargeOnKill;
 
             DestroyOnDead().Forget();
         }
@@ -307,11 +307,9 @@ namespace GanShin.Content.Creature.Monster
             State = eMonsterState.TRACING;
             return true;
         }
-
 #endregion ProcessState
 
 #region Helper
-
         private void RotateToTarget(Vector3 targetPosition)
         {
             var direction = (targetPosition - transform.position).normalized;
@@ -355,7 +353,6 @@ namespace GanShin.Content.Creature.Monster
             await UniTask.Delay(TimeSpan.FromSeconds(table.destroyDelay));
             Destroy(gameObject);
         }
-
 #endregion Helper
     }
 }

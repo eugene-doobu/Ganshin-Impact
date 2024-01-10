@@ -10,7 +10,7 @@ namespace GanShin.GanObject
     {
         private readonly Dictionary<long, CreatureObject> _creatureObjects = new();
         private readonly Dictionary<long, PassiveObject>  _passiveObjects  = new();
-        private readonly Dictionary<long, StaticObject>   _staticObjects   = new();
+        private readonly Dictionary<long, SkillObject>    _skillObjects    = new();
 
         private long _currentId;
 
@@ -20,13 +20,26 @@ namespace GanShin.GanObject
         }
 
 #region Manager
-
-        public void Init()
+        public override void Initialize()
         {
         }
 
-        public void OnUpdate()
+        public override void Tick()
         {
+            TickCollection(_creatureObjects);
+            TickCollection(_passiveObjects);
+            TickCollection(_skillObjects);
+        }
+        
+        private void TickCollection<T>(Dictionary<long, T> collection) where T : Actor
+        {
+            foreach (var actor in collection.Values)
+            {
+                if (actor == null || !actor.isActiveAndEnabled)
+                    continue;
+                
+                actor.Tick();
+            }
         }
 
         public void Clear()
@@ -34,16 +47,12 @@ namespace GanShin.GanObject
             RemoveAllActors();
             _currentId = 0;
         }
-
 #endregion Manager
 
 #region Actor
-
         public void RegisterActor(Actor actor)
         {
             actor.Id = _currentId;
-            _currentId++;
-
             switch (actor)
             {
                 case CreatureObject creatureObject:
@@ -52,10 +61,11 @@ namespace GanShin.GanObject
                 case PassiveObject passiveObject:
                     _passiveObjects[_currentId] = passiveObject;
                     break;
-                case StaticObject staticObject:
-                    _staticObjects[_currentId] = staticObject;
+                case SkillObject staticObject:
+                    _skillObjects[_currentId] = staticObject;
                     break;
             }
+            _currentId++;
         }
 
         public Actor? GetActor(long id)
@@ -64,8 +74,8 @@ namespace GanShin.GanObject
                 return _creatureObjects[id];
             if (_passiveObjects.ContainsKey(id))
                 return _passiveObjects[id];
-            if (_staticObjects.ContainsKey(id))
-                return _staticObjects[id];
+            if (_skillObjects.ContainsKey(id))
+                return _skillObjects[id];
 
             GanDebugger.ActorLogWarning($"Actor with id {id} not found");
             return null;
@@ -89,10 +99,10 @@ namespace GanShin.GanObject
             return null;
         }
 
-        public StaticObject? GetStaticObject(long id)
+        public SkillObject? GetStaticObject(long id)
         {
-            if (_staticObjects.ContainsKey(id))
-                return _staticObjects[id];
+            if (_skillObjects.ContainsKey(id))
+                return _skillObjects[id];
 
             GanDebugger.ActorLogWarning($"StaticObject with id {id} not found");
             return null;
@@ -104,8 +114,8 @@ namespace GanShin.GanObject
                 _creatureObjects.Remove(id);
             if (_passiveObjects.ContainsKey(id))
                 _passiveObjects.Remove(id);
-            if (_staticObjects.ContainsKey(id))
-                _staticObjects.Remove(id);
+            if (_skillObjects.ContainsKey(id))
+                _skillObjects.Remove(id);
         }
 
         public void RemoveActor(Actor actor)
@@ -117,9 +127,8 @@ namespace GanShin.GanObject
         {
             _creatureObjects.Clear();
             _passiveObjects.Clear();
-            _staticObjects.Clear();
+            _skillObjects.Clear();
         }
-
 #endregion MapObjecct
     }
 }
