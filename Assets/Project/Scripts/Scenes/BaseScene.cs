@@ -6,7 +6,11 @@ namespace GanShin.SceneManagement
 {
     public abstract class BaseScene : MonoBehaviour
     {
-        private void Awake()
+        /// <summary>
+        /// 씬의 모든 오브젝트가 초기화된 뒤 씬 객체를 초기화하기 위해
+        /// Awake가 아닌 Start타이밍에 초기화를 진행함
+        /// </summary>
+        private void Start()
         {
             WaitUntilInitialized().Forget();
         }

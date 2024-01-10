@@ -95,12 +95,6 @@ MonoBehaviour:
     m_SerializedLabels:
     - Space
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 6b0ea94c464a6804e9766bc41b152ea4
-    m_Address: Canvas_HpBar_World.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Space
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ed731b66b4aa0234dadc8188ac33acbd
     m_Address: UI_Dialogue.prefab
     m_ReadOnly: 0

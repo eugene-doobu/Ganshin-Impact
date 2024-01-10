@@ -88,7 +88,7 @@ namespace GanShin.CameraSystem
         {
             return cullingGroupType switch
             {
-                eCullingGroupType.OBJECT_HUD => new[] { 0f, 2, 4, 6 },
+                eCullingGroupType.OBJECT_HUD => new[] { 0f, 4, 8, 14 },
                 _                            => null
             };
         }

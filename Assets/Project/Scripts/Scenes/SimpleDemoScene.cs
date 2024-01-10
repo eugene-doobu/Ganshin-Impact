@@ -34,7 +34,6 @@ namespace GanShin.SceneManagement
 
         protected override async UniTask LoadSceneAssets()
         {
-            await base.LoadSceneAssets();
             var resourceManager = ProjectManager.Instance.GetManager<ResourceManager>();
             if (resourceManager == null)
             {

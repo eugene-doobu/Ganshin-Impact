@@ -1,21 +1,25 @@
 using System;
 using GanShin.CameraSystem;
+using GanShin.Utils;
 using UnityEngine;
 
 namespace GanShin.GanObject
 {
     public enum eHudCullingState
     {
-        ENABLE,
-        DISABLE
+        LEVEL_1,
+        LEVEL_2,
+        LEVEL_3,
+        DISABLE,
     }
 
     public abstract partial class Actor : ICullingTarget
     {
         [SerializeField] private eCullingUpdateMode _boundingSphereUpdateMode = eCullingUpdateMode.DYNAMIC;
-        [SerializeField] private float              _cullingBoundingRadius    = 0.33f;
+        [SerializeField] private float              _cullingBoundingRadius    = 0.5f;
 
         private BoundingSphere   _boundingSphere;
+        [SerializeField, ReadOnly]
         private eHudCullingState _hudCullingState = eHudCullingState.DISABLE;
 
         public bool IsOccluded => HudCullingState == eHudCullingState.DISABLE;
@@ -66,7 +70,11 @@ namespace GanShin.GanObject
         {
             switch (prevState)
             {
-                case eHudCullingState.ENABLE:
+                case eHudCullingState.LEVEL_1:
+                    break;
+                case eHudCullingState.LEVEL_2:
+                    break;
+                case eHudCullingState.LEVEL_3:
                     break;
                 case eHudCullingState.DISABLE:
                     OnBecomeUnoccluded?.Invoke(this);
@@ -78,7 +86,11 @@ namespace GanShin.GanObject
         {
             switch (state)
             {
-                case eHudCullingState.ENABLE:
+                case eHudCullingState.LEVEL_1:
+                    break;
+                case eHudCullingState.LEVEL_2:
+                    break;
+                case eHudCullingState.LEVEL_3:
                     break;
                 case eHudCullingState.DISABLE:
                     OnBecomeOccluded?.Invoke(this);

@@ -129,6 +129,7 @@ namespace GanShin.Space.UI
 			
 			if (!IsMatchingCondition(actor)) return;
 			
+			RefreshOcclusionState(actor);
 			AddContext(actor);
 		}
 
@@ -150,6 +151,7 @@ namespace GanShin.Space.UI
 
 		private void RemoveActor(Actor actor)
 		{
+			OnBecomeOccluded(actor);
 			Remove(actor.Id);
 		}
 
@@ -162,11 +164,7 @@ namespace GanShin.Space.UI
 			foreach (var creatureObject in creatureObjects.Values)
 			{
 				RegisterObserver(creatureObject);
-				
-				if (creatureObject.IsOccluded) 
-					OnBecomeOccluded(creatureObject);
-				else 
-					OnBecomeUnoccluded(creatureObject);	
+				RefreshOcclusionState(creatureObject);
 			}
 		}
 		
@@ -178,6 +176,14 @@ namespace GanShin.Space.UI
 #endregion Add/Remove Object
 
 #region CullingGroup
+		private void RefreshOcclusionState(Actor actor)
+		{
+			if (actor.IsOccluded) 
+				OnBecomeOccluded(actor);
+			else 
+				OnBecomeUnoccluded(actor);	
+		}
+		
 		private void OnBecomeUnoccluded(Actor? actor)
 		{
 			if (actor == null) return;
