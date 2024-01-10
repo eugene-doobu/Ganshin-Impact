@@ -27,6 +27,14 @@ namespace GanShin.SceneManagement
 
         private BaseScene _currentScene;
         
+        public override void Initialize()
+        {
+            base.Initialize();
+            var loadingSetting = Util.LoadAsset<LoadingSettingInstaller>("LoadingSceneSetting.asset");
+            if (loadingSetting != null)
+                _changeSceneDelay = loadingSetting.changeSceneDelay;
+        }
+        
         public override void PostInitialize()
         {
             base.PostInitialize();

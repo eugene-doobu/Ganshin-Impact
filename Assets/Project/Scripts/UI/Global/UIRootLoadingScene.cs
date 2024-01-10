@@ -8,14 +8,9 @@ namespace GanShin.UI
     {
         private bool _isInitialized;
 
-        // TODO: Addressable로 변경
-        //[Inject(Id = LoadingSettingInstaller.ProgressSmoothFactorId)]
         private float _progressSmoothFactor;
-
         private float _targetProgress;
 
-        // TODO: Addressable로 변경
-        //[Inject(Id = LoadingSettingInstaller.TipsId)]
         private List<string> _tips;
         private float        _viewProgress;
 
@@ -32,6 +27,13 @@ namespace GanShin.UI
 
         protected override Context InitializeDataContext()
         {
+            var loadingSetting = Util.LoadAsset<LoadingSettingInstaller>("LoadingSceneSetting.asset");
+            if (loadingSetting != null)
+            {
+                _tips                 = loadingSetting.tips;
+                _progressSmoothFactor = loadingSetting.progressSmoothFactor;
+            }
+            
             return new LoadingSceneDataContext();
         }
 
