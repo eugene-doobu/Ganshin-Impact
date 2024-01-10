@@ -5,6 +5,7 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using GanShin.CameraSystem;
 using GanShin.GanObject;
+using GanShin.Space.UI;
 using UnityEngine;
 
 namespace GanShin.UI
@@ -17,6 +18,8 @@ namespace GanShin.UI
         private readonly Dictionary<long, Actor> _nearByObjects = new();
         
         private CancellationTokenSource? _cancellationToken;
+
+        private FieldMonsterManagerContext? _fieldMonsterManagerContext;
 
         private async UniTask HudDistanceChecker(CancellationTokenSource cancellationToken)
         {
@@ -44,7 +47,11 @@ namespace GanShin.UI
             for (var i = 0; i < _nearByObjectIds.Count; ++i)
             {
                 var currId = _nearByObjectIds[i];
-                // GetContext, Set SortOrder
+                if (_fieldMonsterManagerContext == null ||
+                    !_fieldMonsterManagerContext.TryGet(currId, out var currContext) ||
+                    currContext == null)
+                    continue;
+                currContext.SortOrder = i;
             }
         }
 
@@ -71,12 +78,22 @@ namespace GanShin.UI
             _cancellationToken = new CancellationTokenSource();
             HudDistanceChecker(_cancellationToken).Forget();
 
-            // ManagerContext 셋팅
+            var actorManagerContext = GetOrAddContext<FieldMonsterManagerContext>();
+            if (actorManagerContext != null)
+            {
+                _fieldMonsterManagerContext = actorManagerContext;
+                actorManagerContext.Enable  = true;
+            }
         }
 
         public void DisableControlObjectUI()
         {
-            // ManagerContext = null
+            if (_fieldMonsterManagerContext != null)
+            {
+                _fieldMonsterManagerContext.Dispose();
+                _fieldMonsterManagerContext = null;
+            }
+            
             _nearByObjects.Clear();
             _nearByObjectIds.Clear();
 

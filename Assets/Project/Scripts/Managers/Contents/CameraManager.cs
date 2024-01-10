@@ -68,11 +68,12 @@ namespace GanShin.CameraSystem
 #region CullingGroupProxy
         public CullingGroupProxy? GetOrAddCullingGroupProxy(eCullingGroupType cullingGroupType)
         {
-            if (_ganCamera != null) 
-                return _ganCamera.GetOrAddCullingGroupProxy(cullingGroupType);
+            InitializeCamera();
             
-            GanDebugger.CameraLogError("GanCamera is null");
-            return null;
+            if (_ganCamera == null)
+                return null;
+            
+            return _ganCamera.GetOrAddCullingGroupProxy(cullingGroupType);
         }
         
         public CullingGroupProxy SetCullingGroupProxy(GameObject gameObject, eCullingGroupType cullingGroupType)

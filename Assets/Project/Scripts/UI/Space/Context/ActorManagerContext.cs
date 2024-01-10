@@ -9,7 +9,7 @@ using JetBrains.Annotations;
 namespace GanShin.Space.UI
 {
 	[UsedImplicitly]
-	public class ActorManagerContext : CollectionManagerContext<long, CreatureObjectContext>
+	public abstract class ActorManagerContext : CollectionManagerContext<long, CreatureObjectContext>
 	{
 		public enum eDisplayType
 		{
@@ -39,7 +39,7 @@ namespace GanShin.Space.UI
 			}
 		}
 		
-		private eDisplayType _type = eDisplayType.ALL;
+		protected eDisplayType _type = eDisplayType.ALL;
 		
 		public eDisplayType Type
 		{
@@ -61,27 +61,43 @@ namespace GanShin.Space.UI
 #endregion Fields/Properties
 
 #region Initialize
-		public ActorManagerContext()
+		protected ActorManagerContext()
 		{
-			// TODO: ObjectManager에 있는 오브젝트 목록 긁어와서 Register
+			var actorManager = ProjectManager.Instance.GetManager<ActorManager>();
+			
+			if (actorManager == null)
+			{
+				GanDebugger.ActorLogError("Failed to get actor manager");
+				return;
+			}
+
+			AddAllActor();
+			
+			actorManager.OnRegister += OnActorAdded;
+			actorManager.OnUnregister += OnActorRemoved;
 		}
 		
         protected override void OnDispose()
         {
-            // TODO: 등록된 이벤트 제거
-            base.OnDispose();
+	        base.OnDispose();
+	        
+	        var actorManager = ProjectManager.Instance.GetManager<ActorManager>();
+	        if (actorManager == null) return;
+	        
+	        actorManager.OnRegister -= OnActorAdded;
+	        actorManager.OnUnregister -= OnActorRemoved;
         }
 #endregion Initialize
 
 #region EventHandler
 		private void OnActorAdded(Actor? actor)
 		{
-			
+			RegisterObserver(actor);
 		}
 		
 		private void OnActorRemoved(Actor? actor)
 		{
-			
+			DeleteObserver(actor);
 		}
 		
 		private void RegisterObserver(Actor? actor)
@@ -113,9 +129,10 @@ namespace GanShin.Space.UI
 			
 			if (!IsMatchingCondition(actor)) return;
 			
-			// TODO: 구체적인 타입 주입
-			// Add(actor.Id, new CreatureObjectContext());
+			AddContext(actor);
 		}
+
+		protected abstract void AddContext(Actor actor);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private bool IsMatchingCondition(Actor actor)
@@ -138,7 +155,19 @@ namespace GanShin.Space.UI
 
 		private void AddAllActor()
 		{
-			// TODO
+			var actorManager = ProjectManager.Instance.GetManager<ActorManager>();
+			if (actorManager == null) return;
+			
+			var creatureObjects = actorManager.CreatureObjects;
+			foreach (var creatureObject in creatureObjects.Values)
+			{
+				RegisterObserver(creatureObject);
+				
+				if (creatureObject.IsOccluded) 
+					OnBecomeOccluded(creatureObject);
+				else 
+					OnBecomeUnoccluded(creatureObject);	
+			}
 		}
 		
 		private void RefreshItemContexts()
@@ -151,10 +180,26 @@ namespace GanShin.Space.UI
 #region CullingGroup
 		private void OnBecomeUnoccluded(Actor? actor)
 		{
+			if (actor == null) return;
+			var uiManager = ProjectManager.Instance.GetManager<UIManager>();
+			uiManager?.AddNearByObject(actor);
+			
+			var hasContext = TryGet(actor.Id, out var context);
+			if (!hasContext || context == null) return;
+			
+			context.IsEnable = true;
 		}
 
 		private void OnBecomeOccluded(Actor? actor)
 		{
+			if (actor == null) return;
+			var uiManager = ProjectManager.Instance.GetManager<UIManager>();
+			uiManager?.RemoveNearByObject(actor);
+			
+			var hasContext = TryGet(actor.Id, out var context);
+			if (!hasContext || context == null) return;
+			
+			context.IsEnable = false;
 		}
 #endregion CullingGroup
     }

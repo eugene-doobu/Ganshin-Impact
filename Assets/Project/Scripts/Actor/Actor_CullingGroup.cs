@@ -33,7 +33,7 @@ namespace GanShin.GanObject
 
         public CullingGroupProxy HudCullingGroup { get; set; }
 
-        public CullingGroup.StateChanged OnHudStateChanged { get; }
+        public CullingGroup.StateChanged OnHudStateChanged { get; set; }
 
         public eCullingUpdateMode BoundingSphereUpdateMode => _boundingSphereUpdateMode;
         public BoundingSphere     BoundingSphere           => _boundingSphere;
@@ -50,7 +50,6 @@ namespace GanShin.GanObject
 
         public event Action<Actor, eHudCullingState> OnHudCullingStateChanged;
 
-        // 오브젝트 생성 / 삭제시 이벤트에 연동
         private void OnHudCullingGroupStateChanged(CullingGroupEvent cullingGroupEvent)
         {
             var prevState = HudCullingState;

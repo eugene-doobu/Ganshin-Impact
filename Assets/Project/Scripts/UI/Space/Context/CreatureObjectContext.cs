@@ -7,16 +7,26 @@ namespace GanShin.Space.UI
     public abstract class CreatureObjectContext : GanContext
     {
 #region Fields
-
+        private bool   _isEnable;
         private string _targetName;
         private int    _currentHp;
         private int    _maxHp;
         private float  _hpPercent;
-
+        private float  _sortOrder;
 #endregion Fields
 
 #region Field Properties
-
+        [UsedImplicitly]
+        public bool IsEnable
+        {
+            get => _isEnable;
+            set
+            {
+                _isEnable = value;
+                OnPropertyChanged();
+            }
+        }
+        
         [UsedImplicitly]
         public string TargetName
         {
@@ -61,7 +71,17 @@ namespace GanShin.Space.UI
                 OnPropertyChanged();
             }
         }
-
+        
+        [UsedImplicitly]
+        public float SortOrder
+        {
+            get => _sortOrder;
+            set
+            {
+                _sortOrder = value;
+                OnPropertyChanged();
+            }
+        }
 #endregion Field Properties
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using Cysharp.Threading.Tasks;
+using GanShin.CameraSystem;
 using GanShin.Utils;
 using UnityEngine;
 
@@ -20,6 +21,7 @@ namespace GanShin.GanObject
 
         public float ObjectHeight { get; protected set; } = 0.5f;
 
+#region Mono
         protected virtual void Awake()
         {
             WaitUntilInitialized().Forget();
@@ -35,11 +37,9 @@ namespace GanShin.GanObject
             var actorManager = ProjectManager.Instance.GetManager<ActorManager>();
             actorManager?.RemoveActor(this);
         }
+#endregion Mono
 
-        public virtual void Tick()
-        {
-        }
-
+#region Actor
         /// <summary>
         /// 함수명은 Initialize이지만, ProjectManager상에서의 호출 순서는
         /// PostInitialize와 동일함
@@ -55,10 +55,33 @@ namespace GanShin.GanObject
             actorManager.RegisterActor(this);
         }
 
+        public virtual void Tick()
+        {
+        }
+
         private async UniTask WaitUntilInitialized()
         {
             await UniTask.WaitUntil(() => ProjectManager.Instance.IsInitialized);
             Initialize();
         }
+        
+        public virtual void OnRegister()
+        {
+            var cameraManager = ProjectManager.Instance.GetManager<CameraManager>();
+            var cullingGroup = cameraManager?.GetOrAddCullingGroupProxy(eCullingGroupType.OBJECT_HUD);
+            if (cullingGroup == null) return;
+            cullingGroup.Add(this);
+            OnHudStateChanged += OnHudCullingGroupStateChanged;
+        }
+        
+        public virtual void OnUnregister()
+        {
+            var cameraManager = ProjectManager.Instance.GetManager<CameraManager>();
+            var cullingGroup  = cameraManager?.GetOrAddCullingGroupProxy(eCullingGroupType.OBJECT_HUD);
+            if (cullingGroup == null) return;
+            cullingGroup.Remove(this);
+            OnHudStateChanged -= OnHudCullingGroupStateChanged;
+        }
+#endregion Actor
     }
 }

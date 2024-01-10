@@ -1,7 +1,10 @@
 #nullable enable
 
+using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
+using Unity.Plastic.Newtonsoft.Json.Serialization;
+using Action = Unity.Plastic.Newtonsoft.Json.Serialization.Action;
 
 namespace GanShin.GanObject
 {
@@ -18,6 +21,28 @@ namespace GanShin.GanObject
         public ActorManager()
         {
         }
+        
+        private Action<Actor?>? _onRegister;
+        private Action<Actor?>? _onUnregister;
+
+
+#region Event & Properties
+        public event Action<Actor?>? OnRegister
+        {
+            add => _onRegister += value;
+            remove => _onRegister -= value;
+        }
+        
+        public event Action<Actor?>? OnUnregister
+        {
+            add => _onUnregister += value;
+            remove => _onUnregister -= value;
+        }
+        
+        public IReadOnlyDictionary<long, CreatureObject> CreatureObjects => _creatureObjects;
+        public IReadOnlyDictionary<long, PassiveObject>  PassiveObjects  => _passiveObjects;
+        public IReadOnlyDictionary<long, SkillObject>    SkillObjects    => _skillObjects;
+#endregion Event & Properties
 
 #region Manager
         public override void Initialize()
@@ -66,16 +91,18 @@ namespace GanShin.GanObject
                     break;
             }
             _currentId++;
+            actor.OnRegister();
+            _onRegister?.Invoke(actor);
         }
 
         public Actor? GetActor(long id)
         {
-            if (_creatureObjects.ContainsKey(id))
-                return _creatureObjects[id];
-            if (_passiveObjects.ContainsKey(id))
-                return _passiveObjects[id];
-            if (_skillObjects.ContainsKey(id))
-                return _skillObjects[id];
+            if (_creatureObjects.TryGetValue(id, value: out var creatureObject))
+                return creatureObject;
+            if (_passiveObjects.TryGetValue(id, value: out var passiveObject))
+                return passiveObject;
+            if (_skillObjects.TryGetValue(id, out var skillObject))
+                return skillObject;
 
             GanDebugger.ActorLogWarning($"Actor with id {id} not found");
             return null;
@@ -108,7 +135,7 @@ namespace GanShin.GanObject
             return null;
         }
 
-        public void RemoveActor(long id)
+        private void RemoveActor(long id)
         {
             if (_creatureObjects.ContainsKey(id))
                 _creatureObjects.Remove(id);
@@ -120,6 +147,8 @@ namespace GanShin.GanObject
 
         public void RemoveActor(Actor actor)
         {
+            actor.OnUnregister();
+            _onUnregister?.Invoke(actor);
             RemoveActor(actor.Id);
         }
 

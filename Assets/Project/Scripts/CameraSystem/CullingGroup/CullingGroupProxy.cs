@@ -88,13 +88,12 @@ namespace GanShin.CameraSystem
         {
             return cullingGroupType switch
             {
-                eCullingGroupType.OBJECT_HUD => new[] { 0f, 10, 14, 18 },
+                eCullingGroupType.OBJECT_HUD => new[] { 0f, 2, 4, 6 },
                 _                            => null
             };
         }
 
 #region ConstantFields
-
         private static readonly int     ArrayMinLength   = 16;
         private static readonly float[] DefaultDistances = { 0, float.PositiveInfinity };
 
@@ -102,11 +101,9 @@ namespace GanShin.CameraSystem
         private readonly HashSet<ICullingTarget> _targetsToAdd         = new();
         private readonly HashSet<ICullingTarget> _targetsToRemove      = new();
         private readonly List<int>               _dynamicTargetIndices = new();
-
 #endregion ConstantFields
 
 #region InspectorFields
-
         [SerializeField] [ReadOnly] private eCullingGroupType _cullingGroupType = eCullingGroupType.OBJECT_HUD;
 
         [SerializeField] private eCullingTargetUpdateMode _targetsUpdateMode = eCullingTargetUpdateMode.EVERY_UPDATE;
@@ -114,18 +111,14 @@ namespace GanShin.CameraSystem
         [SerializeField] private Transform? _distanceReferencePoint;
 
         [SerializeField] private float[] _boundingDistances = Array.Empty<float>();
-
 #endregion InspectorFields
 
 #region Fields
-
         private BoundingSphere[] _boundingSpheres = Array.Empty<BoundingSphere>();
         private CullingGroup?    _cullingGroup;
-
 #endregion Fields
 
 #region Properites
-
         public Transform? DistanceReferencePoint
         {
             get => _distanceReferencePoint;
@@ -153,11 +146,9 @@ namespace GanShin.CameraSystem
         public IReadOnlyList<BoundingSphere> BoundingSpheres => _boundingSpheres;
 
         public eCullingGroupType CullingGroupType => _cullingGroupType;
-
 #endregion Properites
 
 #region MonoBehaviour
-
         private void Awake()
         {
             _cullingGroup = new CullingGroup
@@ -211,19 +202,15 @@ namespace GanShin.CameraSystem
         }
 
 #if UNITY_EDITOR
-
         private void OnValidate()
         {
             DistanceReferencePoint = DistanceReferencePoint;
             BoundingDistances      = BoundingDistances;
         }
-
 #endif
-
 #endregion MonoBehaviour
 
 #region UpdateTarget
-
         public void UpdateTargets()
         {
             var hasTargetsToRemove = _targetsToRemove.Count > 0;
@@ -270,7 +257,6 @@ namespace GanShin.CameraSystem
             _cullingTargets.AddRange(_targetsToAdd);
             _targetsToAdd.Clear();
         }
-
 #endregion UpdateTarget
     }
 }

@@ -3,6 +3,8 @@
 using Cysharp.Threading.Tasks;
 using GanShin.CameraSystem;
 using GanShin.Resource;
+using GanShin.Space.UI;
+using GanShin.UI;
 using UnityEngine;
 
 namespace GanShin.SceneManagement
@@ -16,6 +18,9 @@ namespace GanShin.SceneManagement
             base.Initialize();
             var cameraManager = ProjectManager.Instance.GetManager<CameraManager>();
             cameraManager?.GetOrAddCullingGroupProxy(eCullingGroupType.OBJECT_HUD);
+            
+            var uiManager = ProjectManager.Instance.GetManager<UIManager>();
+            uiManager?.EnableControlObjectUI();
         }
 
         protected override async UniTask LoadSceneAssets()
@@ -34,6 +39,9 @@ namespace GanShin.SceneManagement
 
         public override void Clear()
         {
+            var uiManager = ProjectManager.Instance.GetManager<UIManager>();
+            uiManager?.DisableControlObjectUI();
+            
             var resourceManager = ProjectManager.Instance.GetManager<ResourceManager>();
             if (_canvasRoot != null && resourceManager != null)
                 resourceManager.Destroy(_canvasRoot);
