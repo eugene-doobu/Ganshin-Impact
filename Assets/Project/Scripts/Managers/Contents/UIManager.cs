@@ -1,31 +1,33 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using System.Collections.Generic;
-using GanShin.CameraSystem;
 using JetBrains.Annotations;
+using Slash.Unity.DataBind.Core.Data;
 using UnityEngine;
-using Zenject;
-using Context = Slash.Unity.DataBind.Core.Data.Context;
 
 namespace GanShin.UI
 {
     [UsedImplicitly]
-    public partial class UIManager : IInitializable
+    public partial class UIManager : ManagerBase
     {
-        private readonly Dictionary<Type, Context> _dataContexts = new();
-        private readonly List<Type> _willRemoveContexts = new();
-
-        public GameObject GlobalRoot { get; private set; }
-        
-        [Inject] private CameraManager _cameraManager;
+        private readonly Dictionary<Type, Context> _dataContexts       = new();
+        private readonly List<Type>                _willRemoveContexts = new();
 
         [UsedImplicitly]
-        private UIManager() {}
-        
-        public void Initialize()
+        public UIManager()
         {
+        }
+
+        public GameObject? GlobalRoot { get; private set; }
+
+        public override void Initialize()
+        {
+            InjectEventSystem();
+            InjectGlobalUI();
             AddGlobalUIRoot();
         }
-        
+
         public void ClearContexts()
         {
             _willRemoveContexts.AddRange(_dataContexts.Keys);
@@ -34,22 +36,24 @@ namespace GanShin.UI
                 var context = _dataContexts[key];
                 if (context is IDonDestroyContext)
                     continue;
-                
+
                 (context as IDisposable)?.Dispose();
                 _dataContexts.Remove(key);
             }
+
             _willRemoveContexts.Clear();
         }
 
 #region Context Management Interface
-        public T GetContext<T>() where T : Context
+
+        public T? GetContext<T>() where T : Context
         {
             if (_dataContexts.ContainsKey(typeof(T)))
                 return _dataContexts[typeof(T)] as T;
             return null;
         }
 
-        public T GetOrAddContext<T>() where T : Context, new()
+        public T? GetOrAddContext<T>() where T : Context, new()
         {
             if (_dataContexts.ContainsKey(typeof(T)))
                 return _dataContexts[typeof(T)] as T;
@@ -69,7 +73,7 @@ namespace GanShin.UI
         {
             _dataContexts.Remove(typeof(T));
         }
-#endregion Context Management Interface
 
+#endregion Context Management Interface
     }
 }

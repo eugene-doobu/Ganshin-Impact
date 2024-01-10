@@ -1,7 +1,7 @@
+#nullable enable
+
 using UnityEngine;
 using UnityEngine.Playables;
-
-#nullable enable
 
 namespace GanShin.Director
 {

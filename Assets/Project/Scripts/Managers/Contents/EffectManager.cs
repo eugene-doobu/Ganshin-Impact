@@ -11,20 +11,26 @@ namespace GanShin.Effect
         RIKO_SWORD_HIT,
         RIKO_SWORD_ULTIMATE_HIT,
         MUSCLE_CAT_HIT,
-        MUSCLE_CAT_ULTIMATE,
+        MUSCLE_CAT_ULTIMATE
     }
-    
+
     [UsedImplicitly]
-    public class EffectManager
+    public class EffectManager : ManagerBase
     {
-        // TODO: 풀링
+        [UsedImplicitly]
+        public EffectManager()
+        {
+        }
+
         public ParticleSystem PlayEffect(eEffectType effectType, Vector3 position, bool isLooping = false)
         {
-            var prefab = Resources.Load<GameObject>($"Effect/{effectType.ToString()}");
-            var obj    = Object.Instantiate(prefab);
+            var obj = Util.Instantiate($"{effectType}.prefab");
+            if (obj == null)
+                return null;
+
             obj.transform.position = position;
             var particle = obj.GetComponent<ParticleSystem>();
-            if(!isLooping) RemoveParticle(particle).Forget();
+            if (!isLooping) RemoveParticle(particle).Forget();
             return particle;
         }
 
@@ -37,7 +43,7 @@ namespace GanShin.Effect
 
         private float GetParticleDuration(ParticleSystem particleSystem)
         {
-            float duration = particleSystem.main.duration + particleSystem.main.startLifetime.constantMax;
+            var duration = particleSystem.main.duration + particleSystem.main.startLifetime.constantMax;
             foreach (var subParticles in particleSystem.GetComponentsInChildren<ParticleSystem>())
                 duration = Mathf.Max(subParticles.main.duration + subParticles.main.startLifetime.constantMax);
             return duration;

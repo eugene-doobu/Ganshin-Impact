@@ -1,0 +1,109 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Data
+  m_EditorClassIdentifier: 
+  m_GroupName: Data
+  m_Data:
+    m_SerializedData: []
+  m_GUID: fdfba771b8121ec49a85649ff49a4123
+  m_SerializeEntries:
+  - m_GUID: 237faf683c2d3f144b47ef4b33cd7f91
+    m_Address: AiStat.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Data
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8dff2f2e58b65e14085e2f510d636968
+    m_Address: MuscleCatStat.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Data
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1b349abea2212904a928ac59b814cabe
+    m_Address: RikoStat.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Data
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b667e719b55fa7c40b37276808e8fea1
+    m_Address: Fire_Gazer.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Data
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5994b9ffce80a624098fb633e2165911
+    m_Address: Cute_Butterfly.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Data
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ef5327a1a4e80cc46a2000eafe3752fa
+    m_Address: Fire_Pig.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Data
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0cff4a60fd71d4f42a85c6a9a97c64d9
+    m_Address: Golem.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Data
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8d09a9a96cfeb4948955959e3c899813
+    m_Address: Minotos.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Data
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 99aebd1e411223a4891d680e75ddda5a
+    m_Address: Tampora.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Data
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2246c429c5a1433499d06e390084c332
+    m_Address: CharacterCameraSetting.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Data
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a1ba217971e8d0b4a8db3408e7f93a25
+    m_Address: IntroSceneSetting.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Data
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8fa1671e985d3ea49be8aed0b41edecb
+    m_Address: LoadingSceneSetting.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Data
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8319a3a27d8025d47960da0bbb8118e5
+    m_Address: SpaceScene.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Data
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 42b8a765af4cd184a8abb0b86819f95a
+    m_Address: VillageScene.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Data
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 460a0dd41ae4490409dda8a15a6bcaf6, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: bdf43b2a16719dd4f80c37039772bac7, type: 2}
+    - {fileID: 11400000, guid: 4846fd4270d8c474492c0b7ea927ce21, type: 2}

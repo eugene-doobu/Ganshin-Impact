@@ -1,18 +1,23 @@
+#nullable enable
+
 using System.Collections.Generic;
 using JetBrains.Annotations;
-
-#nullable enable
 
 namespace GanShin.GanObject
 {
     [UsedImplicitly]
-    public class ActorManager
+    public class ActorManager : ManagerBase
     {
-        private Dictionary<long, CreatureObject> _creatureObjects = new();
-        private Dictionary<long, PassiveObject>  _passiveObjects  = new();
-        private Dictionary<long, StaticObject>   _staticObjects   = new();
+        private readonly Dictionary<long, CreatureObject> _creatureObjects = new();
+        private readonly Dictionary<long, PassiveObject>  _passiveObjects  = new();
+        private readonly Dictionary<long, StaticObject>   _staticObjects   = new();
 
-        private long _currentId = 0;
+        private long _currentId;
+
+        [UsedImplicitly]
+        public ActorManager()
+        {
+        }
 
 #region Manager
 

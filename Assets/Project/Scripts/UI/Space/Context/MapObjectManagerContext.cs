@@ -8,7 +8,6 @@ using JetBrains.Annotations;
 
 namespace GanShin.Space.UI
 {
-	// TODO: CreatureObjectContext에서 ActorContext로 변경
 	[UsedImplicitly]
 	public class ActorManagerContext : CollectionManagerContext<long, CreatureObjectContext>
 	{
@@ -64,9 +63,14 @@ namespace GanShin.Space.UI
 #region Initialize
 		public ActorManagerContext()
 		{
-			// TODO: Context에 Zenject Container 주입
 			// TODO: ObjectManager에 있는 오브젝트 목록 긁어와서 Register
 		}
+		
+        protected override void OnDispose()
+        {
+            // TODO: 등록된 이벤트 제거
+            base.OnDispose();
+        }
 #endregion Initialize
 
 #region EventHandler
@@ -143,7 +147,7 @@ namespace GanShin.Space.UI
 			AddAllActor();
 		}
 #endregion Add/Remove Object
-        
+
 #region CullingGroup
 		private void OnBecomeUnoccluded(Actor? actor)
 		{
@@ -153,11 +157,5 @@ namespace GanShin.Space.UI
 		{
 		}
 #endregion CullingGroup
-
-		protected override void OnDispose()
-		{
-			// TODO: 등록된 이벤트 제거
-			base.OnDispose();
-		}
-	}
+    }
 }

@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: MonsterPrefabs
+  m_EditorClassIdentifier: 
+  m_GroupName: MonsterPrefabs
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 1b72229fc9a16044cb37dc3d3036c9ff
+  m_SerializeEntries:
+  - m_GUID: 11122277f7dd9a54e842f0d3b47a9bd9
+    m_Address: Character_BR_BigOrk_01.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Space
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5aa85bbee6065d647bbacc371f3e9001
+    m_Address: Cute Butterfly_A.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Space
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fe3d35f5c513a0340a13e623f29aca79
+    m_Address: Fire_Gazer_A.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Space
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 38bad32df65f519448a5026694d1ceec
+    m_Address: Fire_Pig_A.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Space
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7956b21d52b63494ca9a2b3351d80f4e
+    m_Address: Golem_A.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Space
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 84d796ed783699a44a08190c31a1adcb
+    m_Address: Minotos.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Space
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5a5e883b8fa87dc47a622e16a155cf01
+    m_Address: Tampora_A.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Space
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 460a0dd41ae4490409dda8a15a6bcaf6, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 2fc5c429df764244bb4512e05e9cd95c, type: 2}
+    - {fileID: 11400000, guid: 9ac2c3ef7361fa74c97603416212e6f8, type: 2}

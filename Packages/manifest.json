@@ -2,6 +2,7 @@
   "dependencies": {
     "com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask",
     "com.cysharp.zstring": "https://github.com/Cysharp/ZString.git?path=src/ZString.Unity/Assets/Scripts/ZString",
+    "com.unity.addressables": "1.21.19",
     "com.unity.ai.navigation": "1.1.1",
     "com.unity.cinemachine": "2.9.2",
     "com.unity.collab-proxy": "1.17.7",
@@ -9,6 +10,7 @@
     "com.unity.ide.visualstudio": "2.0.16",
     "com.unity.ide.vscode": "1.2.5",
     "com.unity.inputsystem": "1.4.4",
+    "com.unity.profiling.core": "1.0.2",
     "com.unity.render-pipelines.universal": "14.0.4",
     "com.unity.test-framework": "1.1.33",
     "com.unity.textmeshpro": "3.0.6",

@@ -1,16 +1,14 @@
 using GanShin.UI;
+using Slash.Unity.DataBind.Core.Data;
 using UnityEngine;
-using Zenject;
-using Context = Slash.Unity.DataBind.Core.Data.Context;
 
 namespace GanShin.Space.UI
 {
     public class UIPlayerAvatarContext : UIRootBase
     {
-        [Inject] private PlayerManager _playerManager;
-        
         [SerializeField] private Define.ePlayerAvatar target;
-        
+        private readonly         PlayerManager _playerManager = ProjectManager.Instance.GetManager<PlayerManager>();
+
         protected override Context InitializeDataContext()
         {
             return target switch

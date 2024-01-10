@@ -11,15 +11,15 @@ namespace GanShin.Director
         [SerializeField] private float _intensity       = 1f;
         [SerializeField] private float _bounceIntensity = 1f;
         [SerializeField] private float _range           = 10f;
-
-        private Light _light;
-
-        private bool _firstFrameHappened;
+        private                  float _defaultBounceIntensity;
 
         private Color _defaultColor;
         private float _defaultIntensity;
-        private float _defaultBounceIntensity;
         private float _defaultRange;
+
+        private bool _firstFrameHappened;
+
+        private Light _light;
 
         public override void ProcessFrame(Playable playable, FrameData info, object playerData)
         {
@@ -28,20 +28,20 @@ namespace GanShin.Director
 
             CheckFirstFrame(light);
 
-            int inputCount = playable.GetInputCount();
+            var inputCount = playable.GetInputCount();
 
-            Color blendedColor           = Color.clear;
-            float blendedIntensity       = 0f;
-            float blendedBounceIntensity = 0f;
-            float blendedRange           = 0f;
-            float totalWeight            = 0f;
+            var blendedColor           = Color.clear;
+            var blendedIntensity       = 0f;
+            var blendedBounceIntensity = 0f;
+            var blendedRange           = 0f;
+            var totalWeight            = 0f;
 
-            for (int i = 0; i < inputCount; i++)
+            for (var i = 0; i < inputCount; i++)
             {
-                float inputWeight = playable.GetInputWeight(i);
-                ScriptPlayable<LightControlBehaviour> inputPlayable =
-                    (ScriptPlayable<LightControlBehaviour>) playable.GetInput(i);
-                LightControlBehaviour input = inputPlayable.GetBehaviour();
+                var inputWeight = playable.GetInputWeight(i);
+                var inputPlayable =
+                    (ScriptPlayable<LightControlBehaviour>)playable.GetInput(i);
+                var input = inputPlayable.GetBehaviour();
 
                 blendedColor           += input._color * inputWeight;
                 blendedIntensity       += input._intensity * inputWeight;

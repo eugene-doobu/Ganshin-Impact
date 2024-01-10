@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 namespace GanShin.UI
 {
     public abstract class GlobalUIRootBase : UIRootBase
@@ -16,7 +12,7 @@ namespace GanShin.UI
             gameObject.SetActive(true);
             InitializeContextData();
         }
-        
+
         public void Disable()
         {
             ClearContextData();

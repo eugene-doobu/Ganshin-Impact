@@ -2,54 +2,76 @@ using System;
 using System.Threading;
 using Cinemachine;
 using Cysharp.Threading.Tasks;
-using DG.Tweening;
 using GanShin.CameraSystem;
 using GanShin.Content.Creature.Monster;
 using GanShin.Data;
 using GanShin.Effect;
 using GanShin.Space.UI;
+using GanShin.UI;
 using UnityEngine;
-using Zenject;
 
 namespace GanShin.Content.Creature
 {
     public class MuscleCatController : PlayerController
-    {   
+    {
         private static readonly int AnimPramHashIsOnGuard = Animator.StringToHash("IsOnGuard");
         private static readonly int AnimPramHashSetPunch  = Animator.StringToHash("SetPunch");
-        
-        [Inject] private EffectManager _effect;
-        [Inject] private CameraManager _camera;
 
-        private readonly Collider[] _monsterColliders = new Collider[30];
-        
         [SerializeField] private CinemachineImpulseSource baseAttackImpulseSource;
         [SerializeField] private CinemachineImpulseSource ultimateImpulseSource;
 
+        private readonly Collider[] _monsterColliders = new Collider[30];
+
         private MuscleCatStatTable _statTable;
+
+        private EffectManager Effect => ProjectManager.Instance.GetManager<EffectManager>();
+        private CameraManager Camera => ProjectManager.Instance.GetManager<CameraManager>();
 
         public override PlayerAvatarContext GetPlayerContext =>
             Player.GetAvatarContext(Define.ePlayerAvatar.MUSCLE_CAT);
-        
+
         protected override void Awake()
         {
             base.Awake();
-            
+
             _statTable = Stat as MuscleCatStatTable;
-            if (_statTable == null)
-            {
-                GanDebugger.LogError("Stat asset is not MuscleCatStatTable");
-                return;
-            }
+            if (_statTable == null) GanDebugger.LogError("Stat asset is not MuscleCatStatTable");
         }
-        
+
+#region Attack Util
+
+        private float GetAttackDamage()
+        {
+            float damage = 0;
+            switch (PlayerAttack)
+            {
+                case ePlayerAttack.MUSCLE_CAT_ATTACK1:
+                    damage = _statTable.attack1Damage;
+                    break;
+                case ePlayerAttack.MUSCLE_CAT_ATTACK2:
+                    damage = _statTable.attack2Damage;
+                    break;
+                case ePlayerAttack.MUSCLE_CAT_ATTACK3:
+                    damage = _statTable.attack3Damage;
+                    break;
+                case ePlayerAttack.MUSCLE_CAT_ATTACK4:
+                    damage = _statTable.attack4Damage;
+                    break;
+            }
+
+            return damage;
+        }
+
+#endregion Attack Util
+
 #region Attack
+
         protected override void Attack()
         {
-            bool  isTryAttack  = false;
-            float attackDelay  = 1f;
-            bool  isLastAttack = false;
-            
+            var isTryAttack  = false;
+            var attackDelay  = 1f;
+            var isLastAttack = false;
+
             switch (PlayerAttack)
             {
                 case ePlayerAttack.NONE:
@@ -92,13 +114,13 @@ namespace GanShin.Content.Creature
 
         private void OnAttack()
         {
-            var tr             = transform;
-            var damage         = GetAttackDamage();
+            var tr = transform;
+            var damage = GetAttackDamage();
             var attackPosition = tr.position + tr.forward * _statTable.attackForwardOffset;
-            var attackRadius   = _statTable.attackRadius;
+            var attackRadius = _statTable.attackRadius;
             var rst = ApplyAttackDamage(attackPosition, attackRadius, damage, _monsterColliders, OnAttackEffect);
             if (!rst) return;
-            
+
             CurrentUltimateGauge += _statTable.ultimateSkillChargeOnBaseAttack;
             baseAttackImpulseSource.GenerateImpulseWithForce(_statTable.baseAttackShakeForce);
         }
@@ -107,7 +129,7 @@ namespace GanShin.Content.Creature
         {
             var tr          = transform;
             var closetPoint = monsterCollider.ClosestPoint(tr.position + tr.up * _statTable.attackEffectYupPosition);
-            _effect.PlayEffect(eEffectType.MUSCLE_CAT_HIT, closetPoint);
+            Effect.PlayEffect(eEffectType.MUSCLE_CAT_HIT, closetPoint);
         }
 
         protected override void Skill()
@@ -121,16 +143,18 @@ namespace GanShin.Content.Creature
             if (IsOnSpecialAction)
             {
                 var tr = transform;
-                _effect.PlayEffect(eEffectType.MUSCLE_CAT_HIT, tr.position + tr.up * _statTable.attackEffectYupPosition);
+                Effect.PlayEffect(eEffectType.MUSCLE_CAT_HIT, tr.position + tr.up * _statTable.attackEffectYupPosition);
                 base.OnDamaged(0);
                 return;
             }
+
             base.OnDamaged(damage);
         }
 
         private async UniTask SkillAsync()
         {
-            var len = Physics.OverlapSphereNonAlloc(transform.position, _statTable.skillRadius, _monsterColliders, Define.GetLayerMask(Define.eLayer.MONSTER));
+            var len = Physics.OverlapSphereNonAlloc(transform.position, _statTable.skillRadius, _monsterColliders,
+                                                    Define.GetLayerMask(Define.eLayer.MONSTER));
             var monsters = new MonsterController[len];
             await UniTask.Delay(TimeSpan.FromMilliseconds(_statTable.skillDuration));
             foreach (var monster in monsters)
@@ -145,24 +169,29 @@ namespace GanShin.Content.Creature
 
         private async UniTask UltimateSkillAsync()
         {
-            CharacterCutScene.OnCharacterCutScene(Define.ePlayerAvatar.MUSCLE_CAT);
+            var characterCutScene =
+                ProjectManager.Instance.GetManager<UIManager>()?.GetGlobalUI(EGlobalUI.CHARACTER_CUT_SCENE) as
+                    UIRootCharacterCutScene;
+            if (characterCutScene != null)
+                characterCutScene.OnCharacterCutScene(Define.ePlayerAvatar.MUSCLE_CAT);
 
-            _camera.ChangeState(eCameraState.CHARACTER_ULTIMATE_CAMERA);
+            Camera.ChangeState(eCameraState.CHARACTER_ULTIMATE_CAMERA);
             ObjAnimator.SetTrigger(AnimPramHashOnUltimate);
 
             var rightHandTr = ObjAnimator.GetBoneTransform(HumanBodyBones.RightHand);
-            _effect.PlayEffect(eEffectType.MUSCLE_CAT_ULTIMATE, rightHandTr.position);
+            Effect.PlayEffect(eEffectType.MUSCLE_CAT_ULTIMATE, rightHandTr.position);
 
             await UniTask.Delay(TimeSpan.FromSeconds(_statTable.ultimateChargeDelay));
             ObjAnimator.SetTrigger(AnimPramHashSetPunch);
-            _camera.ChangeState(eCameraState.CHARACTER_CAMERA);
+            Camera.ChangeState(eCameraState.CHARACTER_CAMERA);
 
             ultimateImpulseSource.GenerateImpulseWithForce(_statTable.ultimateShakeForce);
-            
+
             var tr             = transform;
             var attackPosition = tr.position + tr.forward * _statTable.ultimateForwardOffset;
-            ApplyAttackDamage(attackPosition, _statTable.ultimateRadius, _statTable.ultimateDamage, _monsterColliders, OnAttackEffect);
-            
+            ApplyAttackDamage(attackPosition, _statTable.ultimateRadius, _statTable.ultimateDamage, _monsterColliders,
+                              OnAttackEffect);
+
             PlayerAttack = ePlayerAttack.NONE;
         }
 
@@ -170,33 +199,11 @@ namespace GanShin.Content.Creature
         {
             ObjAnimator.SetBool(AnimPramHashIsOnGuard, IsOnSpecialAction);
         }
+
 #endregion Attack
 
-#region Attack Util
-        private float GetAttackDamage()
-        {
-            float damage = 0;
-            switch (PlayerAttack)
-            {
-                case ePlayerAttack.MUSCLE_CAT_ATTACK1:
-                    damage = _statTable.attack1Damage;
-                    break;
-                case ePlayerAttack.MUSCLE_CAT_ATTACK2:
-                    damage = _statTable.attack2Damage;
-                    break;
-                case ePlayerAttack.MUSCLE_CAT_ATTACK3:
-                    damage = _statTable.attack3Damage;
-                    break;
-                case ePlayerAttack.MUSCLE_CAT_ATTACK4:
-                    damage = _statTable.attack4Damage;
-                    break;
-            }
-
-            return damage;
-        }
-#endregion Attack Util
-
 #region ActionEvent
+
         protected override void OnAttack(bool value)
         {
             if (!value) return;
@@ -214,6 +221,7 @@ namespace GanShin.Content.Creature
             if (!value) return;
             base.OnUltimateSkill(true);
         }
+
 #endregion ActionEvent
     }
 }

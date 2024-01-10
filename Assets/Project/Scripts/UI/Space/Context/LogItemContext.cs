@@ -8,10 +8,17 @@ namespace GanShin.Space.UI
     [UsedImplicitly]
     public class LogItemContext : Context, INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-        
         private string _content;
-        
+
+        public LogItemContext()
+        {
+        }
+
+        public LogItemContext(string content)
+        {
+            Content = content;
+        }
+
         public string Content
         {
             get => _content;
@@ -22,12 +29,7 @@ namespace GanShin.Space.UI
             }
         }
 
-        public LogItemContext() {}
-
-        public LogItemContext(string content)
-        {
-            Content = content;
-        }
+        public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)

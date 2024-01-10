@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Scenes
+  m_EditorClassIdentifier: 
+  m_GroupName: Scenes
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 486a5e19ac65edb4aa1e8f8bd8bbd6dd
+  m_SerializeEntries:
+  - m_GUID: cfaa4a2c33766944d89f5a973ace553a
+    m_Address: VillageScene.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Village
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 460a0dd41ae4490409dda8a15a6bcaf6, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: b76660ecf14c9a34ab19c494c92f37a0, type: 2}
+    - {fileID: 11400000, guid: d551e33abc4e2f1499c44fd4660ab10f, type: 2}

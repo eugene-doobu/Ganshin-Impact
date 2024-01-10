@@ -1,13 +1,12 @@
 using GanShin.UI;
-using Zenject;
-using Context = Slash.Unity.DataBind.Core.Data.Context;
+using Slash.Unity.DataBind.Core.Data;
 
 namespace GanShin.Space.UI
 {
     public class UIPlayerContext : UIRootBase
     {
-        [Inject] private PlayerManager _playerManager;
-        
+        private readonly PlayerManager _playerManager = ProjectManager.Instance.GetManager<PlayerManager>();
+
         protected override Context InitializeDataContext()
         {
             return _playerManager?.PlayerContext;

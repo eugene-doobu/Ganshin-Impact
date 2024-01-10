@@ -1,22 +1,27 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using Cysharp.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using Zenject;
 
 namespace GanShin.SceneManagement
 {
-    // TODO: Zenject Installer를 통한 BaseScene 객체 생성?
     public abstract class BaseScene : MonoBehaviour
     {
-        void Awake()
+        private void Awake()
         {
-            Init();
+            WaitUntilInitialized().Forget();
         }
 
-        protected virtual void Init()
+        private async UniTask WaitUntilInitialized()
         {
+            await UniTask.WaitUntil(() => ProjectManager.Instance.IsInitialized);
+            Initialize();
         }
+
+        protected virtual void Initialize()
+        {
+            LoadSceneAssets().Forget();
+        }
+
+        protected abstract UniTask LoadSceneAssets();
 
         public abstract void Clear();
     }
