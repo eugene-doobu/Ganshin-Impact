@@ -40,6 +40,10 @@ namespace GanShin.GanObject
         {
         }
 
+        /// <summary>
+        /// 함수명은 Initialize이지만, ProjectManager상에서의 호출 순서는
+        /// PostInitialize와 동일함
+        /// </summary>
         protected virtual void Initialize()
         {
             var actorManager = ProjectManager.Instance.GetManager<ActorManager>();

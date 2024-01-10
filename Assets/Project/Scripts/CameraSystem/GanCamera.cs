@@ -15,11 +15,10 @@ namespace GanShin.CameraSystem
 
         private float _defaultBlendTime;
 
-        public Camera?          Camera { get; private set; }
-        public CinemachineBrain Brain  { get; private set; }
+        public Camera?           Camera { get; private set; }
+        public CinemachineBrain? Brain  { get; private set; }
 
 #region MonoBehaviour
-
         private void Awake()
         {
             Camera            = GetComponent<Camera>();
@@ -30,10 +29,8 @@ namespace GanShin.CameraSystem
 
             // TODO: CameraManager 주입 후 MainVirtualCamera 관리
         }
-
 #endregion MonoBehaviour
 
-        // 캐릭터 생성시 Object HUD 타입으로 호출
         public CullingGroupProxy? GetOrAddCullingGroupProxy(eCullingGroupType cullingGroupType)
         {
             if (_cullingGroupProxies.TryGetValue(cullingGroupType, out var cullingGroupProxy) &&

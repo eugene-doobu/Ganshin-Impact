@@ -1,4 +1,5 @@
 ﻿using Cysharp.Threading.Tasks;
+using GanShin.CameraSystem;
 using UnityEngine;
 
 namespace GanShin.SceneManagement
@@ -16,8 +17,13 @@ namespace GanShin.SceneManagement
             Initialize();
         }
 
+        /// <summary>
+        /// 함수명은 Initialize이지만, ProjectManager상에서의 호출 순서는
+        /// PostInitialize와 동일함
+        /// </summary>
         protected virtual void Initialize()
         {
+            ProjectManager.Instance.GetManager<CameraManager>()?.InitializeCamera();
             LoadSceneAssets().Forget();
         }
 

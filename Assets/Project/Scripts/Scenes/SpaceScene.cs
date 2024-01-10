@@ -1,6 +1,7 @@
 #nullable enable
 
 using Cysharp.Threading.Tasks;
+using GanShin.CameraSystem;
 using GanShin.Resource;
 using UnityEngine;
 
@@ -9,6 +10,13 @@ namespace GanShin.SceneManagement
     public abstract class SpaceScene : BaseScene
     {
         private GameObject? _canvasRoot;
+
+        protected override void Initialize()
+        {
+            base.Initialize();
+            var cameraManager = ProjectManager.Instance.GetManager<CameraManager>();
+            cameraManager?.GetOrAddCullingGroupProxy(eCullingGroupType.OBJECT_HUD);
+        }
 
         protected override async UniTask LoadSceneAssets()
         {
