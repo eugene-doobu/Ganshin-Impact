@@ -15,9 +15,7 @@ namespace GanShin
     public class PlayerManager : ManagerBase
     {
 #region Define
-
-        private const string PlayerPoolName = "@PlayerPool";
-
+        private const string PLAYER_POOL_NAME = "@PlayerPool";
 #endregion Define
 
         [UsedImplicitly]
@@ -97,18 +95,23 @@ namespace GanShin
 
             var isDead = player.CurrentHp <= 0;
             player.gameObject.SetActive(value);
+            
+            if (_playerContext == null) return player;
 
             switch (avatar)
             {
                 case Define.ePlayerAvatar.RIKO:
+                    if (_avatarContextBundle.RikoHpBarContext == null) return player;
                     _playerContext.IsRikoActive                    = !isDead && value;
                     _avatarContextBundle.RikoHpBarContext.IsActive = value;
                     break;
                 case Define.ePlayerAvatar.AI:
+                    if (_avatarContextBundle.AIHpBarContext == null) return player;
                     _playerContext.IsAiActive                    = !isDead && value;
                     _avatarContextBundle.AIHpBarContext.IsActive = value;
                     break;
                 case Define.ePlayerAvatar.MUSCLE_CAT:
+                    if (_avatarContextBundle.MuscleCatHpBarContext == null) return player;
                     _playerContext.IsMuscleCatActive                    = !isDead && value;
                     _avatarContextBundle.MuscleCatHpBarContext.IsActive = value;
                     break;
@@ -150,9 +153,9 @@ namespace GanShin
 
         private void SetPlayerPoolRoot()
         {
-            var root = GameObject.Find(PlayerPoolName);
+            var root = GameObject.Find(PLAYER_POOL_NAME);
             if (root != null) return;
-            root = new GameObject { name = PlayerPoolName };
+            root = new GameObject { name = PLAYER_POOL_NAME };
             Object.DontDestroyOnLoad(root);
 
             _playerPool = root.transform;
@@ -240,7 +243,8 @@ namespace GanShin
             {
                 if (value < _currentStamina) SetStaminaDelay();
                 _currentStamina               = Mathf.Clamp(value, 0f, _maxStamina);
-                _playerContext.CurrentStamina = _currentStamina;
+                if (_playerContext != null)
+                    _playerContext.CurrentStamina = _currentStamina;
             }
         }
 
@@ -251,7 +255,8 @@ namespace GanShin
         public override void PostInitialize()
         {
             SetPlayerPoolRoot();
-            _playerContext.MaxStamina = _maxStamina;
+            if (_playerContext != null)
+                _playerContext.MaxStamina = _maxStamina;
 
             InstallCharacters();
             InitializeCharacter(_riko);

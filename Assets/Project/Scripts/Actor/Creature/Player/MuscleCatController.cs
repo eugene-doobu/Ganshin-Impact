@@ -105,9 +105,9 @@ namespace GanShin.Content.Creature
             if (isTryAttack)
             {
                 CanMove = false;
-                if (_attackCancellationTokenSource != null)
+                if (AttackCancellationTokenSource != null)
                     DisposeAttackCancellationTokenSource();
-                _attackCancellationTokenSource = new CancellationTokenSource();
+                AttackCancellationTokenSource = new CancellationTokenSource();
                 ReturnToIdle(attackDelay, isLastAttack).Forget();
                 OnAttack();
             }

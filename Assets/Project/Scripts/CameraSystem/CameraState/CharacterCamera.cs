@@ -196,7 +196,7 @@ namespace GanShin.CameraSystem
 
         private void AddInputEvent()
         {
-            if (Input!.GetActionMap(eActiomMap.PLAYER_MOVEMENT) is not ActionMapPlayerMove actionMap)
+            if (Input!.GetActionMap(eActionMap.PLAYER_MOVEMENT) is not ActionMapPlayerMove actionMap)
             {
                 GanDebugger.CameraLogError("actionMap is null!");
                 return;
@@ -210,7 +210,7 @@ namespace GanShin.CameraSystem
         {
             if (Input == null) return;
 
-            if (Input.GetActionMap(eActiomMap.PLAYER_MOVEMENT) is not ActionMapPlayerMove actionMap)
+            if (Input.GetActionMap(eActionMap.PLAYER_MOVEMENT) is not ActionMapPlayerMove actionMap)
                 return;
 
             actionMap.OnLook -= OnLook;

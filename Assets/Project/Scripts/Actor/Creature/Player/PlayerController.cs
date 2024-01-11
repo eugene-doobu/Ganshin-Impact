@@ -74,7 +74,7 @@ namespace GanShin.Content.Creature
         private readonly float _rollStaminaCost         = 20f;
         private readonly float _dashStaminaCostOfSecond = 10f;
 
-        protected CancellationTokenSource _attackCancellationTokenSource;
+        protected CancellationTokenSource AttackCancellationTokenSource;
 
         private bool  _isOnAttack;
         private float _currentHp;
@@ -212,7 +212,7 @@ namespace GanShin.Content.Creature
             if (input == null)
                 return;
 
-            if (input.GetActionMap(eActiomMap.PLAYER_MOVEMENT) is not ActionMapPlayerMove actionMap)
+            if (input.GetActionMap(eActionMap.PLAYER_MOVEMENT) is not ActionMapPlayerMove actionMap)
             {
                 GanDebugger.LogError(nameof(PlayerController), "actionMap is null!");
                 return;
@@ -232,7 +232,7 @@ namespace GanShin.Content.Creature
         {
             var input = ProjectManager.Instance.GetManager<InputSystemManager>();
 
-            if (input?.GetActionMap(eActiomMap.PLAYER_MOVEMENT) is not ActionMapPlayerMove actionMap)
+            if (input?.GetActionMap(eActionMap.PLAYER_MOVEMENT) is not ActionMapPlayerMove actionMap)
                 return;
 
             actionMap.OnAttack        -= OnAttack;
@@ -382,7 +382,7 @@ namespace GanShin.Content.Creature
             _isOnAttack = true;
 
             await UniTask.Delay(TimeSpan.FromSeconds(attackToIdleTime), cancellationToken:
-                                _attackCancellationTokenSource.Token);
+                                AttackCancellationTokenSource.Token);
 
             if (IsDead) return;
 
@@ -411,10 +411,10 @@ namespace GanShin.Content.Creature
 
         protected void DisposeAttackCancellationTokenSource()
         {
-            if (_attackCancellationTokenSource == null) return;
-            _attackCancellationTokenSource.Cancel();
-            _attackCancellationTokenSource.Dispose();
-            _attackCancellationTokenSource = null;
+            if (AttackCancellationTokenSource == null) return;
+            AttackCancellationTokenSource.Cancel();
+            AttackCancellationTokenSource.Dispose();
+            AttackCancellationTokenSource = null;
         }
 
         public virtual void OnDamaged(float damage)

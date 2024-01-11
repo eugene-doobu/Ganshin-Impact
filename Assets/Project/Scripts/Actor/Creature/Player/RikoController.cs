@@ -78,9 +78,9 @@ namespace GanShin.Content.Creature
             if (!isTryAttack) return;
             
             CanMove = false;
-            if (_attackCancellationTokenSource != null)
+            if (AttackCancellationTokenSource != null)
                 DisposeAttackCancellationTokenSource();
-            _attackCancellationTokenSource = new CancellationTokenSource();
+            AttackCancellationTokenSource = new CancellationTokenSource();
             ReturnToIdle(attackDelay, isLastAttack).Forget();
         }
 
@@ -89,9 +89,9 @@ namespace GanShin.Content.Creature
             ObjAnimator.SetTrigger(AnimPramHashOnSkill);
 
             CanMove = false;
-            if (_attackCancellationTokenSource != null)
+            if (AttackCancellationTokenSource != null)
                 DisposeAttackCancellationTokenSource();
-            _attackCancellationTokenSource = new CancellationTokenSource();
+            AttackCancellationTokenSource = new CancellationTokenSource();
             ReturnToIdle(_statTable.skillDelay).Forget();
         }
 
