@@ -46,71 +46,42 @@ namespace GanShin.Content.Creature
             switch (PlayerAttack)
             {
                 case ePlayerAttack.NONE:
-                    if (!_isOnUltimate)
-                    {
-                        PlayerAttack = ePlayerAttack.RIKO_BASIC_ATTACK1;
-                        ObjAnimator.SetInteger(AnimPramHashAttackState, 1);
-                        attackDelay = _statTable.attack1Delay;
-                    }
-                    else
-                    {
-                        PlayerAttack = ePlayerAttack.RIKO_ULTIMATE_ATTACK1;
-                        ObjAnimator.SetInteger(AnimPramHashAttackState, 5);
-                        attackDelay = _statTable.attack1Delay;
-                    }
-
+                    PlayerAttack = !_isOnUltimate ? ePlayerAttack.RIKO_BASIC_ATTACK1 : ePlayerAttack.RIKO_ULTIMATE_ATTACK1;
+                    ObjAnimator.SetInteger(AnimPramHashAttackState, (int)PlayerAttack);
+                    attackDelay = _statTable.attack1Delay;
                     isTryAttack = true;
                     break;
                 case ePlayerAttack.RIKO_BASIC_ATTACK1:
-                    PlayerAttack = ePlayerAttack.RIKO_BASIC_ATTACK2;
-                    ObjAnimator.SetInteger(AnimPramHashAttackState, 2);
+                case ePlayerAttack.RIKO_ULTIMATE_ATTACK1:
+                    PlayerAttack += 1;
+                    ObjAnimator.SetInteger(AnimPramHashAttackState, (int)PlayerAttack);
                     attackDelay = _statTable.attack2Delay;
                     isTryAttack = true;
                     break;
                 case ePlayerAttack.RIKO_BASIC_ATTACK2:
-                    PlayerAttack = ePlayerAttack.RIKO_BASIC_ATTACK3;
-                    ObjAnimator.SetInteger(AnimPramHashAttackState, 3);
+                case ePlayerAttack.RIKO_ULTIMATE_ATTACK2:
+                    PlayerAttack += 1;
+                    ObjAnimator.SetInteger(AnimPramHashAttackState, (int)PlayerAttack);
                     attackDelay = _statTable.attack3Delay;
                     isTryAttack = true;
                     break;
                 case ePlayerAttack.RIKO_BASIC_ATTACK3:
-                    PlayerAttack = ePlayerAttack.RIKO_BASIC_ATTACK4;
-                    ObjAnimator.SetInteger(AnimPramHashAttackState, 4);
-                    attackDelay  = _statTable.attack4Delay;
-                    isTryAttack  = true;
-                    isLastAttack = true;
-                    break;
-                case ePlayerAttack.RIKO_ULTIMATE_ATTACK1:
-                    PlayerAttack = ePlayerAttack.RIKO_ULTIMATE_ATTACK2;
-                    ObjAnimator.SetInteger(AnimPramHashAttackState, 6);
-                    attackDelay = _statTable.attack2Delay;
-                    isTryAttack = true;
-                    break;
-                case ePlayerAttack.RIKO_ULTIMATE_ATTACK2:
-                    PlayerAttack = ePlayerAttack.RIKO_ULTIMATE_ATTACK3;
-                    ObjAnimator.SetInteger(AnimPramHashAttackState, 7);
-                    attackDelay = _statTable.attack3Delay;
-                    isTryAttack = true;
-                    break;
                 case ePlayerAttack.RIKO_ULTIMATE_ATTACK3:
-                    PlayerAttack = ePlayerAttack.RIKO_ULTIMATE_ATTACK4;
-                    ObjAnimator.SetInteger(AnimPramHashAttackState, 8);
+                    PlayerAttack += 1;
+                    ObjAnimator.SetInteger(AnimPramHashAttackState, (int)PlayerAttack);
                     attackDelay  = _statTable.attack4Delay;
                     isTryAttack  = true;
                     isLastAttack = true;
                     break;
             }
-            
-            
 
-            if (isTryAttack)
-            {
-                CanMove = false;
-                if (_attackCancellationTokenSource != null)
-                    DisposeAttackCancellationTokenSource();
-                _attackCancellationTokenSource = new CancellationTokenSource();
-                ReturnToIdle(attackDelay, isLastAttack).Forget();
-            }
+            if (!isTryAttack) return;
+            
+            CanMove = false;
+            if (_attackCancellationTokenSource != null)
+                DisposeAttackCancellationTokenSource();
+            _attackCancellationTokenSource = new CancellationTokenSource();
+            ReturnToIdle(attackDelay, isLastAttack).Forget();
         }
 
         protected override void Skill()
