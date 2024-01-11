@@ -8,6 +8,7 @@ namespace GanShin.Data
     {
         [Header("FieldMonster")] public eFieldMonsterType monsterType = eFieldMonsterType.DEFAULT;
 
+        public float monsterHeight        = 1f;
         public float destroyDelay         = 5f;
         public float rotationSmoothFactor = 8f;
         public float moveSpeed            = 4f;

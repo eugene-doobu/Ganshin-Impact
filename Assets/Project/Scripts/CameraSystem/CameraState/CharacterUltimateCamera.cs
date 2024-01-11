@@ -24,20 +24,12 @@ namespace GanShin.CameraSystem
 
         private void InitializeVirtualCamera()
         {
-            var virtualCameraPrefab = Resources.Load<GameObject>("Camera/PlayerUltimateVirtualCamera");
-            if (virtualCameraPrefab == null)
-            {
-                GanDebugger.CameraLogError("Failed to load virtual camera prefab");
-                return;
-            }
-
             var virtualCameraObj = Util.Instantiate("PlayerUltimateVirtualCamera.prefab");
             if (virtualCameraObj == null)
             {
                 GanDebugger.CameraLogError("Failed to instantiate virtual camera prefab");
                 return;
             }
-
             virtualCameraObj.name = "@PlayerUltimateVirtualCamera";
 
             VirtualCamera = virtualCameraObj.GetComponent<CinemachineVirtualCamera>();
@@ -67,8 +59,8 @@ namespace GanShin.CameraSystem
         public override void OnUpdate()
         {
             base.OnUpdate();
-            if (ReferenceEquals(_cameraBodyTarget, null)) return;
-            if (ReferenceEquals(Target, null)) return;
+            if (_cameraBodyTarget == null) return;
+            if (Target == null) return;
 
             _cameraBodyTarget.SetRotation(Target.rotation);
         }

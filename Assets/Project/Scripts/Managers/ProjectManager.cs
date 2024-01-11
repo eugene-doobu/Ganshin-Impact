@@ -78,6 +78,11 @@ namespace GanShin
             Tick().Forget();
             LateTick().Forget();
 
+            foreach (var manager in _managers.Values)
+            {
+                manager.PostInitialize();
+            }
+
             IsInitialized = true;
 
             GanDebugger.Log("ProjectManager PostInitialize");

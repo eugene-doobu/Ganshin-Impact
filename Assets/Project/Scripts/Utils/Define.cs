@@ -29,15 +29,15 @@
 
         public enum eSound
         {
-            Bgm,
-            Effect,
-            MaxCount
+            BGM,
+            EFFECT,
+            MAX_COUNT,
         }
 
         public enum eUIEvent
         {
-            Click,
-            Drag
+            CLICK,
+            DRAG,
         }
 
         public static int GetLayerMask(eLayer layer)

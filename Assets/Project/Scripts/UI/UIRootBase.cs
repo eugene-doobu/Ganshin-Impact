@@ -25,6 +25,8 @@ namespace GanShin.UI
         public Context? DataContext { get; protected set; }
 
         protected CanvasRoot? CanvasRoot { get; private set; }
+        
+        private Tweener? _fadeTweener;
 
         protected virtual void Awake()
         {
@@ -57,12 +59,14 @@ namespace GanShin.UI
 
         public void Show()
         {
-            _canvasGroup.DOFade(1, fadeDuration);
+            _fadeTweener?.Kill();
+            _fadeTweener = _canvasGroup.DOFade(1, fadeDuration);
         }
 
         public void Hide()
         {
-            _canvasGroup.DOFade(0, fadeDuration);
+            _fadeTweener?.Kill();
+            _fadeTweener = _canvasGroup.DOFade(0, fadeDuration);
         }
     }
 }

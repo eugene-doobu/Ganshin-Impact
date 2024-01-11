@@ -143,7 +143,6 @@ namespace GanShin.Content.Creature
 #endregion Attack
 
 #region ActionEvent
-
         protected override void OnAttack(bool value)
         {
             if (!value) return;
@@ -161,11 +160,9 @@ namespace GanShin.Content.Creature
             if (!value) return;
             base.OnUltimateSkill(true);
         }
-
 #endregion ActionEvent
 
 #region AnimEvents
-
         [UsedImplicitly]
         public void OnAnimAttack()
         {
@@ -177,7 +174,6 @@ namespace GanShin.Content.Creature
         {
             Weapon.OnSkill();
         }
-
 #endregion AnimEvents
     }
 }

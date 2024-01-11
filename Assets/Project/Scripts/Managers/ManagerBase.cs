@@ -12,6 +12,10 @@ namespace GanShin
         public virtual void Initialize()
         {
         }
+        
+        public virtual void PostInitialize()
+        {
+        }
 
         public virtual void Tick()
         {

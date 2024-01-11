@@ -6,7 +6,6 @@ using GanShin.Data;
 using GanShin.Space.UI;
 using GanShin.UI;
 using Slash.Unity.DataBind.Core.Data;
-using Slash.Unity.DataBind.Core.Presentation;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -22,16 +21,13 @@ namespace GanShin.Content.Creature.Monster
         [SerializeField] private float attackForwardDistance = 0.1f;
         [SerializeField] private float attackRadius          = 1.2f;
 
-        private readonly PlayerAvatarContext _playerAvatarContext = new();
-
-        private readonly PlayerManager? _playerManager = ProjectManager.Instance.GetManager<PlayerManager>();
+        private FieldMonsterContext? _fieldMonsterContext;
 
         private Animator             _animator       = null!;
         private FieldMonsterAnimBase _animController = null!;
 
         private float           _attackTimer;
         private CapsuleCollider _capsuleCollider = null!;
-        private ContextHolder   _contextHolder   = null!;
 
         private float        _currentHp;
         private bool         _isAttacking;
@@ -41,7 +37,6 @@ namespace GanShin.Content.Creature.Monster
         private Transform? _playerTarget;
 
 #region MonoBehaviour
-
         protected override void Awake()
         {
             base.Awake();
@@ -60,12 +55,35 @@ namespace GanShin.Content.Creature.Monster
             }
 
             _animController.Initialize(_animator);
-
-            _contextHolder         = gameObject.AddComponent<ContextHolder>();
-            _contextHolder.Context = _playerAvatarContext;
+        }
+#endregion MonoBehaviour
+        
+        protected override void Initialize()
+        {
+            base.Initialize();
+            var managerContext = Util.GetContext<FieldMonsterManagerContext>();
+            if (managerContext == null) return;
+            
+            InitializeNavMeshAgent();
+            InitializeCapsuleCollider();
+            
+            if (managerContext.TryGet(Id, out var context) && context is FieldMonsterContext fieldMonsterContext)
+            {
+                fieldMonsterContext.MaxHp      = (int)table.hp;
+                fieldMonsterContext.TargetName = name;
+                _fieldMonsterContext           = fieldMonsterContext;
+            }
+            
+            CurrentHp = table.hp;
+            ObjectHeight = table.monsterHeight;
         }
 
-#endregion MonoBehaviour
+        public override void Tick()
+        {
+            base.Tick();
+            if (_fieldMonsterContext == null) return;
+            _fieldMonsterContext.Position = transform.position + Vector3.up * ObjectHeight;
+        }
 
         public override void OnDamaged(float damage)
         {
@@ -103,7 +121,6 @@ namespace GanShin.Content.Creature.Monster
         }
 
 #region Debug
-
 #if UNITY_EDITOR
         [ContextMenu("TestDead")]
         public void TestDead()
@@ -111,19 +128,21 @@ namespace GanShin.Content.Creature.Monster
             State = eMonsterState.DEAD;
         }
 #endif // UNITY_EDITOR
-
 #endregion Debug
 
 #region Properties
-
         protected override Transform? Target
         {
             get => _playerTarget;
             set
             {
                 _playerTarget = value;
-                if (value != null) _playerManager.OnPlayerChanged += OnPlayerChanged;
-                else _playerManager.OnPlayerChanged               -= OnPlayerChanged;
+                
+                var playerManager = ProjectManager.Instance.GetManager<PlayerManager>();
+                if (playerManager == null) return;
+                
+                if (value != null) playerManager.OnPlayerChanged += OnPlayerChanged;
+                else playerManager.OnPlayerChanged               -= OnPlayerChanged;
             }
         }
 
@@ -178,23 +197,16 @@ namespace GanShin.Content.Creature.Monster
                 if (Mathf.Approximately(_currentHp, value)) return;
                 _currentHp = Mathf.Clamp(value, 0, table.hp);
 
-                _currentHp                     = value;
-                _playerAvatarContext.CurrentHp = (int)_currentHp;
+                _currentHp = value;
+                if (_fieldMonsterContext != null)
+                    _fieldMonsterContext.CurrentHp = (int)_currentHp;
             }
         }
 
-        public Context DataContext => _playerAvatarContext;
-
+        public Context? DataContext => _fieldMonsterContext;
 #endregion Properties
 
 #region Initalize
-
-        private void Initialize()
-        {
-            InitializeNavMeshAgent();
-            InitializeCapsuleCollider();
-        }
-
         private void InitializeNavMeshAgent()
         {
             _navMeshAgent.speed = table.moveSpeed;
@@ -205,24 +217,19 @@ namespace GanShin.Content.Creature.Monster
             _capsuleCollider.center    = new Vector3(0, 0.5f, 0);
             _capsuleCollider.isTrigger = true;
         }
-
 #endregion Initalize
 
 #region ProcessState
-
         protected override void ProcessCreated()
         {
-            Initialize();
-            _playerAvatarContext.MaxHp      = (int)table.hp;
-            _playerAvatarContext.TargetName = name;
-            CurrentHp                       = table.hp;
-            State                           = eMonsterState.IDLE;
+            CurrentHp = table.hp;
+            State     = eMonsterState.IDLE;
         }
 
         protected override void ProcessIdle()
         {
-            var playerTr = _playerManager.CurrentPlayerTransform;
-
+            var playerManager = ProjectManager.Instance.GetManager<PlayerManager>();
+            var playerTr      = playerManager?.CurrentPlayerTransform;
             if (playerTr == null) return;
 
             var diff = playerTr.position - transform.position;
@@ -274,10 +281,11 @@ namespace GanShin.Content.Creature.Monster
             if (_isDead) return;
             _isDead = true;
 
-            if (_playerManager.CurrentPlayer == null) return;
+            var playerManager = ProjectManager.Instance.GetManager<PlayerManager>();
+            if (playerManager?.CurrentPlayer == null) return;
 
-            _playerManager.CurrentPlayer.CurrentUltimateGauge
-                += _playerManager.CurrentPlayer.Stat.ultimateSkillChargeOnKill;
+            playerManager.CurrentPlayer.CurrentUltimateGauge
+                += playerManager.CurrentPlayer.Stat.ultimateSkillChargeOnKill;
 
             DestroyOnDead().Forget();
         }
@@ -307,11 +315,9 @@ namespace GanShin.Content.Creature.Monster
             State = eMonsterState.TRACING;
             return true;
         }
-
 #endregion ProcessState
 
 #region Helper
-
         private void RotateToTarget(Vector3 targetPosition)
         {
             var direction = (targetPosition - transform.position).normalized;
@@ -332,7 +338,7 @@ namespace GanShin.Content.Creature.Monster
             // TODO: 투사체 공격도 처리
             _animController.OnAttack();
             _isAttacking = true;
-            await UniTask.Delay(TimeSpan.FromSeconds(table.attackDuration));
+            await UniTask.Delay(TimeSpan.FromSeconds(table.attackDuration), cancellationToken: destroyCancellationToken);
             var tr       = transform;
             var position = tr.position + tr.forward * attackForwardDistance;
             var len = Physics.OverlapSphereNonAlloc(position, attackRadius, CharacterCollider,
@@ -352,10 +358,9 @@ namespace GanShin.Content.Creature.Monster
 
         private async UniTask DestroyOnDead()
         {
-            await UniTask.Delay(TimeSpan.FromSeconds(table.destroyDelay));
+            await UniTask.Delay(TimeSpan.FromSeconds(table.destroyDelay), cancellationToken: destroyCancellationToken);
             Destroy(gameObject);
         }
-
 #endregion Helper
     }
 }

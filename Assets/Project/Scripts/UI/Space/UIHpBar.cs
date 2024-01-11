@@ -22,22 +22,21 @@ namespace GanShin.Space.UI
         /// </summary>
         [SerializeField] private GameObject owner;
 
-        private readonly PlayerManager _playerManager = ProjectManager.Instance.GetManager<PlayerManager>();
-
         private CreatureObjectContext _context;
 
         public CreatureObjectContext Context => _context ?? DataContext as CreatureObjectContext;
 
         protected override Context InitializeDataContext()
         {
+            var playerManager = ProjectManager.Instance.GetManager<PlayerManager>();
             switch (target)
             {
                 case eHpTarget.RIKO:
-                    return _playerManager?.GetAvatarContext(Define.ePlayerAvatar.RIKO);
+                    return playerManager?.GetAvatarContext(Define.ePlayerAvatar.RIKO);
                 case eHpTarget.AI:
-                    return _playerManager?.GetAvatarContext(Define.ePlayerAvatar.AI);
+                    return playerManager?.GetAvatarContext(Define.ePlayerAvatar.AI);
                 case eHpTarget.MUSCLE_CAT:
-                    return _playerManager?.GetAvatarContext(Define.ePlayerAvatar.MUSCLE_CAT);
+                    return playerManager?.GetAvatarContext(Define.ePlayerAvatar.MUSCLE_CAT);
                 case eHpTarget.OBJECT:
                     if (owner == null)
                     {

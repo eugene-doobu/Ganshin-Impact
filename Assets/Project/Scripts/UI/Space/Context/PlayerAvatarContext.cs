@@ -13,7 +13,6 @@ namespace GanShin.Space.UI
         }
 
 #region Fields
-
         private bool _isDead;
 
         private float _currentBaseSkillCoolTime;
@@ -26,7 +25,6 @@ namespace GanShin.Space.UI
 
         private bool    _isActive;
         private Vector3 _uiScale = new(1, 1, 1);
-
 #endregion Fields
 
 #region Field Properties

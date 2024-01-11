@@ -32,7 +32,7 @@ namespace GanShin.CameraSystem
         /// <summary>
         ///     거리에 따라 컬링그룹 상태가 변경될 때 호출될 콜백을 등록합니다
         /// </summary>
-        CullingGroup.StateChanged OnHudStateChanged { get; }
+        CullingGroup.StateChanged OnHudStateChanged { get; set; }
 
         /// <summary>
         ///     Bounding Sphere를 업데이트 후 리턴합니다

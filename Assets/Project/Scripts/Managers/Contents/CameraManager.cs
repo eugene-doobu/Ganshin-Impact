@@ -66,7 +66,16 @@ namespace GanShin.CameraSystem
         }
 
 #region CullingGroupProxy
-
+        public CullingGroupProxy? GetOrAddCullingGroupProxy(eCullingGroupType cullingGroupType)
+        {
+            InitializeCamera();
+            
+            if (_ganCamera == null)
+                return null;
+            
+            return _ganCamera.GetOrAddCullingGroupProxy(cullingGroupType);
+        }
+        
         public CullingGroupProxy SetCullingGroupProxy(GameObject gameObject, eCullingGroupType cullingGroupType)
         {
             var cullingGroups = gameObject.GetComponents<CullingGroupProxy>();
@@ -87,7 +96,6 @@ namespace GanShin.CameraSystem
             result.SetCullingGroupType(cullingGroupType);
             return result;
         }
-
 #endregion CullingGroupProxy
 
 #region Fields
@@ -105,7 +113,6 @@ namespace GanShin.CameraSystem
 #endregion Fields
 
 #region Properties
-
         public Camera? MainCamera
         {
             set
@@ -133,11 +140,9 @@ namespace GanShin.CameraSystem
         }
 
         public Transform? Target { get; set; }
-
 #endregion Properties
 
 #region VirtualCamera
-
         public void AddVirtualCamera(VirtualCameraJig jig)
         {
             _virtualCameraDict[jig.Name] = jig;
@@ -150,11 +155,9 @@ namespace GanShin.CameraSystem
 
             _virtualCameraDict.Remove(jig.Name);
         }
-
 #endregion VirtualCamera
 
 #region CullingMask
-
         public void SetCullingMask(int cullingMask)
         {
             var mainCamera = MainCamera;
@@ -196,11 +199,9 @@ namespace GanShin.CameraSystem
             if (camera == null) return false;
             return (camera.cullingMask & (1 << layerIndex)) != 0;
         }
-
 #endregion CullingMask
 
 #region Utils
-
         public Ray GetRayFromCamera()
         {
             var currentEventSystem = EventSystem.current;
@@ -229,7 +230,11 @@ namespace GanShin.CameraSystem
             var tr = mainCamera.transform;
             return Vector3.Dot(tr.forward, (worldPosition - tr.position).normalized) > 0;
         }
-
+        
+        public void InitializeCamera()
+        {
+            MainCamera = Camera.main;
+        }
 #endregion Utils
     }
 }

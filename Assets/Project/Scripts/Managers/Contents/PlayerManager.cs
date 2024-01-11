@@ -45,7 +45,14 @@ namespace GanShin
         public PlayerController? SetCurrentPlayer(Define.ePlayerAvatar avatar)
         {
             if (_currentAvatar == avatar)
-                return GetPlayer(avatar);
+            {
+                var currentPlayer = GetPlayer(avatar);
+                if (currentPlayer == null) 
+                    return null;
+                
+                SetCullingGroupPlayer(currentPlayer.transform);
+                return currentPlayer;
+            }
 
             var player = ActivePlayerContext(avatar);
             if (player == null) return null;
@@ -67,7 +74,20 @@ namespace GanShin
             _onPlayerChanged?.Invoke(player);
 
             _currentAvatar = avatar;
+            
+            SetCullingGroupPlayer(player.transform);
+            
             return player;
+        }
+
+        private void SetCullingGroupPlayer(Transform playerTransform)
+        {
+            var cameraManager = ProjectManager.Instance.GetManager<CameraManager>();
+            var cullingGroup  = cameraManager?.GetOrAddCullingGroupProxy(eCullingGroupType.OBJECT_HUD);
+            if (!ReferenceEquals(cullingGroup, null))
+            {
+                cullingGroup.DistanceReferencePoint = playerTransform;
+            }
         }
 
         private PlayerController? ActivePlayerContext(Define.ePlayerAvatar avatar, bool value = true)
@@ -139,7 +159,6 @@ namespace GanShin
         }
 
 #region Internal Class
-
         private class PlayerAvatarContextBundle
         {
             public PlayerAvatarContext? RikoHpBarContext { get; } =
@@ -151,11 +170,9 @@ namespace GanShin
             public PlayerAvatarContext? MuscleCatHpBarContext { get; } =
                 Activator.CreateInstance(typeof(PlayerAvatarContext)) as PlayerAvatarContext;
         }
-
 #endregion Internal Class
 
 #region Fields
-
         private RikoController      _riko      = null!;
         private AiController        _ai        = null!;
         private MuscleCatController _muscleCat = null!;
@@ -199,11 +216,9 @@ namespace GanShin
         private bool _isChargingStamina = true;
 
         private Define.ePlayerAvatar _currentAvatar = Define.ePlayerAvatar.NONE;
-
 #endregion Fields
 
 #region Event
-
         private Action<PlayerController>? _onPlayerChanged;
 
         public event Action<PlayerController>? OnPlayerChanged
@@ -215,11 +230,9 @@ namespace GanShin
             }
             remove => _onPlayerChanged -= value;
         }
-
 #endregion Event
 
 #region Properties
-
         public float CurrentStamina
         {
             get => _currentStamina;
@@ -232,12 +245,10 @@ namespace GanShin
         }
 
         private Transform _playerPool = null!;
-
 #endregion Properties
 
 #region Mono
-
-        public override void Initialize()
+        public override void PostInitialize()
         {
             SetPlayerPoolRoot();
             _playerContext.MaxStamina = _maxStamina;
@@ -260,11 +271,9 @@ namespace GanShin
             character.gameObject.SetActive(false);
             character.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
         }
-
 #endregion Mono
 
 #region Stamina
-
         private void ChargeStamina()
         {
             if (!_isChargingStamina) return;
@@ -285,7 +294,6 @@ namespace GanShin
             if (_currentStaminaDelay > 0) return;
             _isChargingStamina = true;
         }
-
 #endregion Stamina
     }
 }

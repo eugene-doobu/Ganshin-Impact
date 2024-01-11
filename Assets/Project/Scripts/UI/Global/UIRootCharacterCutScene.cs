@@ -21,6 +21,8 @@ namespace GanShin.UI
 
         public void OnCharacterCutScene(Define.ePlayerAvatar avatar)
         {
+            gameObject.SetActive(true);
+            
             RectTransform target = null;
             switch (avatar)
             {
@@ -39,14 +41,15 @@ namespace GanShin.UI
 
             target.DOAnchorPosX(0, onDuration).SetEase(onEase).OnComplete(() =>
             {
-                target.DOAnchorPosX(
-                        InitialPosition, offDuration)
-                    .SetEase(offEase).SetDelay(onDelay);
+                target.DOAnchorPosX(InitialPosition, offDuration)
+                    .SetEase(offEase).SetDelay(onDelay).OnComplete(() =>
+                    {
+                        gameObject.SetActive(false);
+                    });
             });
         }
 
 #region GlobalUIRootBase
-
         protected override Context InitializeDataContext()
         {
             return null;
@@ -59,7 +62,6 @@ namespace GanShin.UI
         public override void ClearContextData()
         {
         }
-
 #endregion GlobalUIRootBase
     }
 }

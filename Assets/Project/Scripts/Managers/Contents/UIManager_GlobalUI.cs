@@ -157,7 +157,6 @@ namespace GanShin.UI
 #endregion Log
 
 #region Popup
-
         public void SetPopupOk(string title, string content, Action? okAction = null)
         {
             var popup = GetGlobalUI(EGlobalUI.POPUP) as UIRootPopup;
@@ -177,11 +176,9 @@ namespace GanShin.UI
             OnGlobalUI(EGlobalUI.POPUP, true);
             popup.SetContext(title, content, true, okAction, cancelAction);
         }
-
 #endregion Popup
 
 #region Loading
-
         public void ShowLoadingUI(int hash)
         {
             var loading = GetGlobalUI(EGlobalUI.LOADING) as UIRootLoadingPopup;
@@ -202,7 +199,6 @@ namespace GanShin.UI
             if (loading.IsEmpty())
                 OnGlobalUI(EGlobalUI.LOADING, false);
         }
-
 #endregion Loading
     }
 }
