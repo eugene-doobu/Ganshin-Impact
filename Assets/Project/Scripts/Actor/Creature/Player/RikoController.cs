@@ -5,6 +5,7 @@ using GanShin.Data;
 using GanShin.Space.UI;
 using GanShin.UI;
 using JetBrains.Annotations;
+using UnityEngine;
 
 namespace GanShin.Content.Creature
 {
@@ -12,6 +13,8 @@ namespace GanShin.Content.Creature
     {
         private bool          _isOnUltimate;
         private RikoStatTable _statTable;
+
+        private float _rikoAttackCooldown;
 
         public override PlayerAvatarContext GetPlayerContext =>
             Player.GetAvatarContext(Define.ePlayerAvatar.RIKO);
@@ -24,10 +27,18 @@ namespace GanShin.Content.Creature
             if (_statTable == null) GanDebugger.LogError("Stat asset is not RikoStatTable");
         }
 
-#region Attack
+        public override void Tick()
+        {
+            base.Tick();
+            _rikoAttackCooldown = Mathf.Clamp(_rikoAttackCooldown - Time.deltaTime, 0, _statTable.rikoAttackCooldown);
+        }
 
+#region Attack
         protected override void Attack()
         {
+            if (_rikoAttackCooldown > 0) return;
+            _rikoAttackCooldown += _statTable.rikoAttackCooldown;
+            
             var isTryAttack  = false;
             var attackDelay  = 1f;
             var isLastAttack = false;
@@ -89,6 +100,8 @@ namespace GanShin.Content.Creature
                     isLastAttack = true;
                     break;
             }
+            
+            
 
             if (isTryAttack)
             {
@@ -143,7 +156,6 @@ namespace GanShin.Content.Creature
         {
             //TODO: dash
         }
-
 #endregion Attack
 
 #region ActionEvent
