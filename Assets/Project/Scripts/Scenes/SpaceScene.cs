@@ -1,14 +1,42 @@
+#nullable enable
+
+using GanShin.CameraSystem;
+using GanShin.Resource;
+using GanShin.UI;
 using UnityEngine;
-using Zenject;
 
 namespace GanShin.SceneManagement
 {
     public abstract class SpaceScene : BaseScene
     {
-        private const string UIPrefabName = "Prefabs/UI/Root/Canvas_SpaceScene";
+        private GameObject? _canvasRoot;
 
-        public static void InstallSpaceUi(DiContainer container)
+        protected override void Initialize()
         {
+            base.Initialize();
+            var cameraManager = ProjectManager.Instance.GetManager<CameraManager>();
+            cameraManager?.GetOrAddCullingGroupProxy(eCullingGroupType.OBJECT_HUD);
+            
+            var resourceManager = ProjectManager.Instance.GetManager<ResourceManager>();
+            if (resourceManager == null)
+            {
+                GanDebugger.LogError("Failed to get resource manager");
+                return;
+            }
+            _canvasRoot = resourceManager.Instantiate("Canvas_SpaceScene.prefab");
+            
+            var uiManager = ProjectManager.Instance.GetManager<UIManager>();
+            uiManager?.EnableControlObjectUI();
+        }
+
+        public override void Clear()
+        {
+            var uiManager = ProjectManager.Instance.GetManager<UIManager>();
+            uiManager?.DisableControlObjectUI();
+            
+            var resourceManager = ProjectManager.Instance.GetManager<ResourceManager>();
+            if (_canvasRoot != null && resourceManager != null)
+                resourceManager.Destroy(_canvasRoot);
         }
     }
 }

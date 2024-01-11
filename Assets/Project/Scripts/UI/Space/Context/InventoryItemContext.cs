@@ -8,10 +8,8 @@ namespace GanShin.Space.UI
 {
     public class InventoryItemContext : Context, INotifyPropertyChanged, IDisposable
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-
         private int _amount;
-        
+
         [UsedImplicitly]
         public int Amount
         {
@@ -28,6 +26,8 @@ namespace GanShin.Space.UI
             Amount          = 0;
             PropertyChanged = null;
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)

@@ -1,21 +1,22 @@
 using System;
+using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using Vector2 = UnityEngine.Vector2;
 
 namespace GanShin.InputSystem
 {
     public class ActionMapPlayerMove : ActionMapBase
     {
-        public Action<Vector2> OnMovement;
-        public Action<Vector2> OnLook;
-        public Action<bool>    OnSpecialAction;
         public Action<bool>    OnAttack;
-        public Action          OnRoll;
-        public Action<float>   OnZoom;
         public Action<bool>    OnBaseSkill;
         public Action<bool>    OnBaseSkill2;
         public Action<bool>    OnUltimateSkill;
+        
         public Action<bool>    OnInteraction;
+        public Action<Vector2> OnLook;
+        public Action<Vector2> OnMovement;
+        public Action          OnRoll;
+        public Action          OnShortcutNumber0;
         public Action          OnShortcutNumber1;
         public Action          OnShortcutNumber2;
         public Action          OnShortcutNumber3;
@@ -25,7 +26,8 @@ namespace GanShin.InputSystem
         public Action          OnShortcutNumber7;
         public Action          OnShortcutNumber8;
         public Action          OnShortcutNumber9;
-        public Action          OnShortcutNumber0;
+        public Action<bool>    OnSpecialAction;
+        public Action<float>   OnZoom;
 
         public ActionMapPlayerMove(GanshinActions.PlayerMovementActions actionMap) : base(actionMap)
         {
@@ -101,17 +103,17 @@ namespace GanShin.InputSystem
 
         private void OnAttackPerformed(InputAction.CallbackContext context)
         {
-            var eventSystem = UnityEngine.EventSystems.EventSystem.current;
+            var eventSystem = EventSystem.current;
             if (eventSystem != null && eventSystem.IsPointerOverGameObject())
                 return;
-            
+
             OnAttack?.Invoke(true);
             GanDebugger.InputLog($"OnAttack - value: {true}");
         }
 
         private void OnAttackCanceled(InputAction.CallbackContext context)
         {
-            var eventSystem = UnityEngine.EventSystems.EventSystem.current;
+            var eventSystem = EventSystem.current;
             if (eventSystem != null && eventSystem.IsPointerOverGameObject())
                 return;
 
@@ -135,7 +137,7 @@ namespace GanShin.InputSystem
         private void OnZoomCanceled(InputAction.CallbackContext context)
         {
             OnZoom?.Invoke(0);
-            GanDebugger.InputLog($"OnZoom - value: 0");
+            GanDebugger.InputLog("OnZoom - value: 0");
         }
 
         private void OnBaseSkillPerformed(InputAction.CallbackContext context)

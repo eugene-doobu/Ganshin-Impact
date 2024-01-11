@@ -10,21 +10,47 @@ namespace GanShin.Village.UI
 {
     public class NpcContext : Context, INotifyPropertyChanged
     {
+        public NpcContext(UINpcHUD owner)
+        {
+            _owner = owner;
+        }
+
+        public NpcContext(UINpcHUD owner, NpcInfo npcInfo)
+        {
+            _owner   = owner;
+            _npcInfo = npcInfo;
+
+            NpcName  = npcInfo.npcName;
+            NpcTitle = npcInfo.npcTitle;
+
+            CurrentDialogue = string.Empty;
+        }
+
         public event PropertyChangedEventHandler? PropertyChanged;
 
+
+        [NotifyPropertyChangedInvocator]
+        private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
 #region Fields
+
         private UINpcHUD _owner;
         private NpcInfo? _npcInfo;
-        
+
         private bool _isShowMenu;
         private bool _isDialogue;
-        
+
         private string _npcName         = string.Empty;
         private string _npcTitle        = string.Empty;
         private string _currentDialogue = string.Empty;
+
 #endregion Fields
 
 #region Properties
+
         [UsedImplicitly]
         public bool IsShowMenu
         {
@@ -35,7 +61,7 @@ namespace GanShin.Village.UI
                 OnPropertyChanged();
             }
         }
-        
+
         [UsedImplicitly]
         public bool IsDialogue
         {
@@ -43,12 +69,12 @@ namespace GanShin.Village.UI
             set
             {
                 if (value) IsShowMenu = false;
-                
+
                 _isDialogue = value;
                 OnPropertyChanged();
             }
         }
-        
+
         [UsedImplicitly]
         public string NpcName
         {
@@ -59,7 +85,7 @@ namespace GanShin.Village.UI
                 OnPropertyChanged();
             }
         }
-        
+
         [UsedImplicitly]
         public string NpcTitle
         {
@@ -70,7 +96,7 @@ namespace GanShin.Village.UI
                 OnPropertyChanged();
             }
         }
-        
+
         [UsedImplicitly]
         public string CurrentDialogue
         {
@@ -81,39 +107,19 @@ namespace GanShin.Village.UI
                 OnPropertyChanged();
             }
         }
+
 #endregion Properties
 
 #region Event
+
         public void OnStartDialogue()
         {
         }
-        
+
         public void OnEndDialogue()
         {
         }
+
 #endregion Event
-
-        public NpcContext(UINpcHUD owner)
-        {
-            _owner = owner;
-        }
-
-        public NpcContext(UINpcHUD owner, NpcInfo npcInfo)
-        {
-            _owner   = owner;
-            _npcInfo = npcInfo;
-            
-            NpcName  = npcInfo.npcName;
-            NpcTitle = npcInfo.npcTitle;
-
-            CurrentDialogue = string.Empty;
-        }
-        
-        
-        [NotifyPropertyChangedInvocator]
-        private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
     }
 }

@@ -1,11 +1,10 @@
+#nullable enable
+
 using System;
 using System.Collections.Generic;
 using GanShin.UI;
 using JetBrains.Annotations;
 using UnityEngine;
-using Zenject;
-
-#nullable enable
 
 namespace GanShin.Space.Content
 {
@@ -13,22 +12,27 @@ namespace GanShin.Space.Content
     {
         HP_POTION,
         STAMINA_POTION,
-        POTION, // TODO: 아이템 정체성 정하기
+        POTION // TODO: 아이템 정체성 정하기
     }
-    
+
     [UsedImplicitly]
-    public class InventoryManager : IInitializable, ITickable
+    public class InventoryManager : ManagerBase
     {
-        [Inject] public PlayerManager? PlayerManager { get; private set; }
-        [Inject] public UIManager?     UIManager     { get; private set; }
-        
-        private readonly Dictionary<ConsumableItemType, int> _itemAmount = new();
-        private readonly Dictionary<ConsumableItemType, ConsumableItem> _items = new();
+        private readonly Dictionary<ConsumableItemType, int>            _itemAmount = new();
+        private readonly Dictionary<ConsumableItemType, ConsumableItem> _items      = new();
 
         private int _gold;
-        
+
+        [UsedImplicitly]
+        public InventoryManager()
+        {
+        }
+
+        public PlayerManager? PlayerManager => ProjectManager.Instance.GetManager<PlayerManager>();
+        public UIManager?     UIManager     => ProjectManager.Instance.GetManager<UIManager>();
+
         public IReadOnlyDictionary<ConsumableItemType, int> ItemAmount => _itemAmount;
-        
+
         public int Gold
         {
             get => _gold;
@@ -38,21 +42,33 @@ namespace GanShin.Space.Content
                 OnGoldUpdated?.Invoke(_gold);
             }
         }
-        
+
         public event Action<int>? OnGoldUpdated;
 
         public event Action<ConsumableItemType, int>? OnItemAmountUpdated;
-        
-        public void Initialize()
+
+        public override void Initialize()
         {
             InitializeGold();
             InitializeItems();
             LoadItems();
         }
 
+        public override void Tick()
+        {
+            if (Input.GetKeyDown("1"))
+                UseItem(ConsumableItemType.HP_POTION);
+
+            if (Input.GetKeyDown("2"))
+                UseItem(ConsumableItemType.STAMINA_POTION);
+
+            if (Input.GetKeyDown("3"))
+                UseItem(ConsumableItemType.POTION);
+        }
+
         private void InitializeGold()
         {
-            // TODO: Load items from save file
+            // TODO: LoadAsset items from save file
             Gold = 1000;
         }
 
@@ -66,28 +82,17 @@ namespace GanShin.Space.Content
 
         private void LoadItems()
         {
-            // TODO: Load items from save file
+            // TODO: LoadAsset items from save file
             foreach (ConsumableItemType consumableItemType in Enum.GetValues(typeof(ConsumableItemType)))
                 _itemAmount.Add(consumableItemType, 10);
             foreach (var kvp in _itemAmount)
                 OnItemAmountUpdated?.Invoke(kvp.Key, kvp.Value);
         }
 
-        public void Tick()
-        {
-            if (Input.GetKeyDown("1"))
-                UseItem(ConsumableItemType.HP_POTION);
-            
-            if (Input.GetKeyDown("2"))
-                UseItem(ConsumableItemType.STAMINA_POTION);
-
-            if (Input.GetKeyDown("3"))
-                UseItem(ConsumableItemType.POTION);
-        }
-        
         private void ItemAmountUpdated(ConsumableItemType type, int amount)
         {
-            _itemAmount[type] = Mathf.Max(amount, 0);;
+            _itemAmount[type] = Mathf.Max(amount, 0);
+            ;
             OnItemAmountUpdated?.Invoke(type, amount);
         }
 
@@ -101,7 +106,7 @@ namespace GanShin.Space.Content
                 UIManager?.SetToast("아이템 사용불가", "플레이어가 사망하였습니다.", EToastType.ERROR);
                 return;
             }
-            
+
             if (_itemAmount[type] <= 0)
             {
                 UIManager?.SetToast("아이템 사용불가", "아이템을 부족합니다", EToastType.WARNING);
@@ -110,7 +115,7 @@ namespace GanShin.Space.Content
 
             ItemAmountUpdated(type, _itemAmount[type] - 1);
             OnItemAmountUpdated?.Invoke(type, _itemAmount[type]);
-            
+
             if (!_items.TryGetValue(type, out var item)) return;
             item.Use();
         }

@@ -1,36 +1,40 @@
 using System.Collections.Generic;
-using System.ComponentModel;
+using Slash.Unity.DataBind.Core.Data;
 using UnityEngine;
-using Zenject;
-using Context = Slash.Unity.DataBind.Core.Data.Context;
-using Random = UnityEngine.Random;
 
 namespace GanShin.UI
 {
     public class UIRootLoadingScene : GlobalUIRootBase
     {
-        [Inject(Id = LoadingSettingInstaller.TipsId)]
-        private List<string> _tips;
+        private bool _isInitialized;
 
-        [Inject(Id = LoadingSettingInstaller.ProgressSmoothFactorId)]
         private float _progressSmoothFactor;
+        private float _targetProgress;
+
+        private List<string> _tips;
+        private float        _viewProgress;
 
         public LoadingSceneDataContext LoadingSceneDataContext =>
             DataContext as LoadingSceneDataContext;
-
-        protected override Context InitializeDataContext() =>
-            new LoadingSceneDataContext();
-
-        private bool  _isInitialized;
-        private float _targetProgress;
-        private float _viewProgress;
 
         private void Update()
         {
             if (!_isInitialized) return;
             _viewProgress = Mathf.Lerp(_viewProgress, _targetProgress,
-                _progressSmoothFactor * Time.deltaTime);
+                                       _progressSmoothFactor * Time.deltaTime);
             LoadingSceneDataContext.Progress = _viewProgress;
+        }
+
+        protected override Context InitializeDataContext()
+        {
+            var loadingSetting = Util.LoadAsset<LoadingSettingInstaller>("LoadingSceneSetting.asset");
+            if (loadingSetting != null)
+            {
+                _tips                 = loadingSetting.tips;
+                _progressSmoothFactor = loadingSetting.progressSmoothFactor;
+            }
+            
+            return new LoadingSceneDataContext();
         }
 
         public void SetProgress(float progress)

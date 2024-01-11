@@ -1,37 +1,43 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using Zenject;
+using Object = UnityEngine.Object;
 
 namespace GanShin.Sound
 {
     [UsedImplicitly]
-    public class SoundManager
+    public class SoundManager : ManagerBase
     {
-        private const string SoundObjName = "@Sound";
+        private const    string                        SoundObjName  = "@Sound";
+        private readonly Dictionary<string, AudioClip> _audioClips   = new();
+        private readonly AudioSource[]                 _audioSources = new AudioSource[(int)Define.eSound.MAX_COUNT];
 
-        AudioSource[]                 _audioSources = new AudioSource[(int) Define.eSound.MaxCount];
-        Dictionary<string, AudioClip> _audioClips   = new Dictionary<string, AudioClip>();
-
+        [UsedImplicitly]
         public SoundManager()
         {
-            GameObject root = GameObject.Find(SoundObjName);
+        }
+
+        public override void Initialize()
+        {
+            base.Initialize();
+
+            var root = GameObject.Find(SoundObjName);
             if (root == null)
             {
-                root = new GameObject {name = SoundObjName};
+                root = new GameObject { name = SoundObjName };
                 Object.DontDestroyOnLoad(root);
 
-                string[] soundNames = System.Enum.GetNames(typeof(Define.eSound));
-                for (int i = 0; i < soundNames.Length - 1; i++)
+                var soundNames = Enum.GetNames(typeof(Define.eSound));
+                for (var i = 0; i < soundNames.Length - 1; i++)
                 {
-                    GameObject go = new GameObject {name = soundNames[i]};
+                    var go = new GameObject { name = soundNames[i] };
                     _audioSources[i]    = go.AddComponent<AudioSource>();
                     go.transform.parent = root.transform;
                 }
 
-                _audioSources[(int) Define.eSound.Bgm].loop = true;
+                _audioSources[(int) Define.eSound.BGM].loop = true;
             }
 
             SceneManager.sceneUnloaded += OnSceneUnLoaded;
@@ -39,7 +45,7 @@ namespace GanShin.Sound
 
         private void OnSceneUnLoaded(Scene scene)
         {
-            foreach (AudioSource audioSource in _audioSources)
+            foreach (var audioSource in _audioSources)
             {
                 audioSource.clip = null;
                 audioSource.Stop();
@@ -48,20 +54,20 @@ namespace GanShin.Sound
             _audioClips.Clear();
         }
 
-        public void Play(string path, Define.eSound type = Define.eSound.Effect, float pitch = 1.0f)
+        public void Play(string path, Define.eSound type = Define.eSound.EFFECT, float pitch = 1.0f)
         {
-            AudioClip audioClip = GetOrAddAudioClip(path, type);
+            var audioClip = GetOrAddAudioClip(path, type);
             Play(audioClip, type, pitch);
         }
 
-        public void Play(AudioClip audioClip, Define.eSound type = Define.eSound.Effect, float pitch = 1.0f)
+        public void Play(AudioClip audioClip, Define.eSound type = Define.eSound.EFFECT, float pitch = 1.0f)
         {
             if (audioClip == null)
                 return;
 
-            if (type == Define.eSound.Bgm)
+            if (type == Define.eSound.BGM)
             {
-                AudioSource audioSource = _audioSources[(int) Define.eSound.Bgm];
+                var audioSource = _audioSources[(int)Define.eSound.BGM];
                 if (audioSource.isPlaying)
                     audioSource.Stop();
 
@@ -71,20 +77,20 @@ namespace GanShin.Sound
             }
             else
             {
-                AudioSource audioSource = _audioSources[(int) Define.eSound.Effect];
+                var audioSource = _audioSources[(int)Define.eSound.EFFECT];
                 audioSource.pitch = pitch;
                 audioSource.PlayOneShot(audioClip);
             }
         }
 
-        AudioClip GetOrAddAudioClip(string path, Define.eSound type = Define.eSound.Effect)
+        private AudioClip GetOrAddAudioClip(string path, Define.eSound type = Define.eSound.EFFECT)
         {
             if (path.Contains("Sounds/") == false)
                 path = $"Sounds/{path}";
 
             AudioClip audioClip = null;
 
-            if (type == Define.eSound.Bgm)
+            if (type == Define.eSound.BGM)
             {
                 audioClip = Resources.Load<AudioClip>(path);
             }

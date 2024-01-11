@@ -1,8 +1,8 @@
+#nullable enable
+
 using System.Runtime.CompilerServices;
 using GanShin.Utils;
 using UnityEngine;
-
-#nullable enable
 
 namespace GanShin.CameraSystem
 {
@@ -13,7 +13,7 @@ namespace GanShin.CameraSystem
         [SerializeField] private float _tracingTargetSmoothFactor = 12f;
         [SerializeField] private float _rotationSmoothFactor      = 11f;
 
-        [SerializeField] private float _yOffset = 1.32f;
+        [SerializeField] private float _yOffset                 = 1.32f;
         [SerializeField] private float _moveImmdiateSqrDistance = 5f;
 
         private Transform? _tr;
@@ -32,12 +32,15 @@ namespace GanShin.CameraSystem
                 return;
             }
 
-            _tr!.position = Vector3.Lerp(_tr.position, GetTargetPosition(_target.position), _tracingTargetSmoothFactor * Time.deltaTime);
+            _tr!.position = Vector3.Lerp(_tr.position, GetTargetPosition(_target.position),
+                                         _tracingTargetSmoothFactor * Time.deltaTime);
         }
-        
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private Vector3 GetTargetPosition(Vector3 targetPosition) =>
-             new(targetPosition.x, targetPosition.y + _yOffset, targetPosition.z);
+        private Vector3 GetTargetPosition(Vector3 targetPosition)
+        {
+            return new Vector3(targetPosition.x, targetPosition.y + _yOffset, targetPosition.z);
+        }
 
         public void SetPositionImmediate()
         {
@@ -52,13 +55,19 @@ namespace GanShin.CameraSystem
 
         public void SetRotation(float angle)
         {
+            if (_tr == null)
+                return;
+
             var targetRotation = Quaternion.Euler(0, angle, 0);
-            _tr!.rotation = Quaternion.Slerp(_tr.rotation, targetRotation, _rotationSmoothFactor * Time.deltaTime);
+            _tr.rotation = Quaternion.Slerp(_tr.rotation, targetRotation, _rotationSmoothFactor * Time.deltaTime);
         }
 
         public void SetRotation(Quaternion angle)
         {
-            _tr!.rotation = Quaternion.Slerp(_tr.rotation, angle, _rotationSmoothFactor * Time.deltaTime);
+            if (_tr == null)
+                return;
+
+            _tr.rotation = Quaternion.Slerp(_tr.rotation, angle, _rotationSmoothFactor * Time.deltaTime);
         }
 
         public void SetTarget(Transform? target)

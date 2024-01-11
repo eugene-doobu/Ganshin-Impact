@@ -4,7 +4,7 @@
 
 ### 기획
 
-[캐릭터 조작](./Docs/Character/CharacterManipulation.md)<br>
+[캐릭터 조작](./Docs/Actor/Character/CharacterManipulation.md)<br>
 [카메라 조작](./Docs/CameraSystem.md)
 
 ## 플레이
@@ -15,7 +15,6 @@
 - Universal Render Pipeline
 - UI - MVVM Architecture
 - UniTask기반 비동기 처리
-- Zenject
 
 ## 사용 에셋 / 패키지
 

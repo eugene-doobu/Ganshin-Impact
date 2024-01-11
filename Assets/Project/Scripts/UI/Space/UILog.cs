@@ -7,7 +7,7 @@ using UnityEngine.UI;
 namespace GanShin.Space.UI
 {
     public class UILog : UIRootBase
-    {        
+    {
         [SerializeField] private RectTransform[] layoutRoots = null!;
 
         protected override Context InitializeDataContext()

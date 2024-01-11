@@ -1,7 +1,6 @@
 #nullable enable
 
 using System;
-using System.ComponentModel;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Slash.Unity.DataBind.Core.Data;
@@ -12,32 +11,33 @@ namespace GanShin.UI
 {
     public class UIRootToastPopup : GlobalUIRootBase
     {
-        private readonly int _animationParamHashIn   = Animator.StringToHash("In");
-        private readonly int _animationParamHashOut  = Animator.StringToHash("Out");
-        private readonly int _animationParamHashWait = Animator.StringToHash("Wait");
-        
-        public ToastPopupDataContext? ToastPopupDataContext =>
-            DataContext as ToastPopupDataContext;
+        [Header("UI Object")] [SerializeField] private Image background = null!;
 
-        protected override Context InitializeDataContext() =>
-            new ToastPopupDataContext();
-        
-        [Header("UI Object")]
-        [SerializeField] private Image    background  = null!;
-        [SerializeField] private Animator animator    = null!;
-        
+        [SerializeField] private Animator animator = null!;
+
         [SerializeField] private RectTransform[] layoutRoots = null!;
 
-        [Header("Options")]
-        [SerializeField] private Color defaultColor;
+        [Header("Options")] [SerializeField] private Color defaultColor;
+
         [SerializeField] private Color notificationColor;
         [SerializeField] private Color warningColor;
         [SerializeField] private Color errorColor;
-        
-        [SerializeField] private float defaultDuration = 2.5f;
-        [SerializeField] private float outDuration     = 0.2f;
-        
+
+        [SerializeField] private float defaultDuration         = 2.5f;
+        [SerializeField] private float outDuration             = 0.2f;
+        private readonly         int   _animationParamHashIn   = Animator.StringToHash("In");
+        private readonly         int   _animationParamHashOut  = Animator.StringToHash("Out");
+        private readonly         int   _animationParamHashWait = Animator.StringToHash("Wait");
+
         private CancellationTokenSource? _cancellationTokenSource;
+
+        public ToastPopupDataContext? ToastPopupDataContext =>
+            DataContext as ToastPopupDataContext;
+
+        protected override Context InitializeDataContext()
+        {
+            return new ToastPopupDataContext();
+        }
 
         public void SetContext(string title, string content, EToastType toastType)
         {
@@ -70,7 +70,7 @@ namespace GanShin.UI
                     background.color = errorColor;
                     break;
             }
-            
+
             ShowToast().Forget();
         }
 
@@ -84,14 +84,15 @@ namespace GanShin.UI
             }
 
             _cancellationTokenSource = new CancellationTokenSource();
-            await UniTask.NextFrame(cancellationToken: _cancellationTokenSource.Token);
-            
+            await UniTask.NextFrame(_cancellationTokenSource.Token);
+
             animator.Play(_animationParamHashIn);
-            await UniTask.Delay(TimeSpan.FromSeconds(defaultDuration), cancellationToken: _cancellationTokenSource.Token);
-            
+            await UniTask.Delay(TimeSpan.FromSeconds(defaultDuration),
+                                cancellationToken: _cancellationTokenSource.Token);
+
             animator.Play(_animationParamHashOut);
             await UniTask.Delay(TimeSpan.FromSeconds(outDuration), cancellationToken: _cancellationTokenSource.Token);
-        } 
+        }
 
         public override void InitializeContextData()
         {
@@ -103,10 +104,10 @@ namespace GanShin.UI
             var context = ToastPopupDataContext;
             if (context != null)
             {
-                context.ToastTitle   = string.Empty;   
+                context.ToastTitle   = string.Empty;
                 context.ToastContent = string.Empty;
             }
-            
+
             CancelToken();
         }
 
@@ -114,7 +115,7 @@ namespace GanShin.UI
         {
             if (animator != null)
                 animator.Play(_animationParamHashWait);
-            
+
             _cancellationTokenSource?.Cancel();
             _cancellationTokenSource?.Dispose();
             _cancellationTokenSource = null;

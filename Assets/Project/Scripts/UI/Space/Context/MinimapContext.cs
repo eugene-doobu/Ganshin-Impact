@@ -8,11 +8,10 @@ namespace GanShin.Space.UI
 {
     public class MinimapContext : Context, INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-        
-        private Texture _texture;
         private Texture _defaultTexture;
-        
+
+        private Texture _texture;
+
         [UsedImplicitly]
         public Texture Texture
         {
@@ -34,6 +33,8 @@ namespace GanShin.Space.UI
                     Texture = value;
             }
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)

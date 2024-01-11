@@ -13,10 +13,8 @@ namespace GanShin.Space.UI
     {
         private readonly Dictionary<ConsumableItemType, InventoryItemContext> _items = new();
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
         private int _gold;
-        
+
         [UsedImplicitly]
         public int Gold
         {
@@ -28,25 +26,27 @@ namespace GanShin.Space.UI
             }
         }
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public Context AddContext(ConsumableItemType type)
         {
             var context = new InventoryItemContext();
             _items.Add(type, context);
             return context;
         }
-        
+
         public void RemoveContext(ConsumableItemType type)
         {
             if (_items.TryGetValue(type, out var context))
                 (context as IDisposable)?.Dispose();
-            
+
             _items.Remove(type);
         }
 
         public void SetItem(ConsumableItemType type, int value)
         {
             if (!_items.TryGetValue(type, out var context)) return;
-            
+
             context.Amount = value;
         }
 

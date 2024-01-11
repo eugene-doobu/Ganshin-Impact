@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 339bbc8354757954ea5abc4d28c3d93e, type: 3}
+  m_Name: IntroSceneSetting
+  m_EditorClassIdentifier: 
+  bridgeSettings:
+    numberOfBridge: 10
+    bridgeDistanceInterval: 5
+    bridgeUpSpeed: 1
+    bridgeSpawnYPosition: -2.5
+    bridge1SpawnRate: 0.8
+    pillarSpawnRate: 0.4
+    pillar1SpawnRate: 0.3
+    pillar2SpawnRate: 0.3
+  bridgePrefabs:
+    bridge1: {fileID: 9059285663892853932, guid: 94f572c1f8cad8f44980c5708330cd97, type: 3}
+    bridge2: {fileID: 8886913633004478913, guid: 448078380b8a6684cbddab4a8d03b764, type: 3}
+    pillar1: {fileID: 1470111321101913718, guid: 7abffffb99b37d340a796921c17301e7, type: 3}
+    pillar2: {fileID: 3457327108819025257, guid: 9be3fe95b61b2de49bf0a9b2ef2d6930, type: 3}
+    pillar3: {fileID: 9199229787048172971, guid: 9c48a7983059eac4fb0ab585ef00c9bc, type: 3}
+  directorPrefabPath: Prefabs/Decoration/IntroScene/IntroSceneDirector

@@ -1,13 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 namespace GanShin
 {
     // GanDebugger_Camera
     public static partial class GanDebugger
     {
-        private static string HEADER_CAMERA = "CameraSystem";
+        private static readonly string HEADER_CAMERA = "CameraSystem";
 
         public static bool IsDebuggingCamera = true;
 

@@ -6,6 +6,5 @@ namespace GanShin.Effect
 {
     public class MoveDestoryEffect : MonoBehaviour
     {
-        [SerializeField]
     }
 }

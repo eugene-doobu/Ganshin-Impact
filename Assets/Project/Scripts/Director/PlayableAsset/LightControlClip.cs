@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
@@ -10,7 +8,7 @@ namespace GanShin.Director
     [Serializable]
     public class LightControlClip : PlayableAsset, ITimelineClipAsset
     {
-        [SerializeField] private LightControlBehaviour _template = new LightControlBehaviour();
+        [SerializeField] private LightControlBehaviour _template = new();
 
         public ClipCaps clipCaps => ClipCaps.Blending;
 
