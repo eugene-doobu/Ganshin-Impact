@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hp: 100
   baseSkillCoolTime: 10
+  baseSkill2CoolTime: 2
   moveSpeed: 4
   dashSpeed: 6
   attackCoolTime: 0.8
@@ -23,6 +24,8 @@ MonoBehaviour:
   ultimateSkillChargeOnDamaged: 3
   ultimateSkillChargeOnKill: 5
   ultimateSkillChargeOnSkill: 5
+  ultimateSkillChargeOnSkill2: 5
+  rikoAttackCooldown: 0.5
   rikoAttackForwardOffset: 0.5
   rikoAttackRadius: 1.5
   rikoUltimateAttackRadius: 2.5
@@ -44,5 +47,12 @@ MonoBehaviour:
   attack3Delay: 1.4
   attack4Delay: 1.6
   skillDelay: 1.5
+  skill2Delay: 0.6
+  skill2Offset: {x: 0, y: 0.1, z: 5}
+  skill2CapsuleRadius: 1.78
+  skill2CapsuleHeight: 11.55
+  skill2Damage: 80
+  skill2ShakeForce: 0.45
+  skill2DamageDelay: 0.5
   ultimateSwordScale: {x: 1.4, y: 1.4, z: 1}
   ultimateDuration: 20
