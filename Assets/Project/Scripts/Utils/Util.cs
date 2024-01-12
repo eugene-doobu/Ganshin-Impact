@@ -5,7 +5,7 @@ using GanShin.Resource;
 using GanShin.UI;
 using UnityEngine;
 
-public class Util
+public static class Util
 {
     public static T GetOrAddComponent<T>(GameObject go) where T : Component
     {
