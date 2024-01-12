@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using GanShin.Data;
+using GanShin.Effect;
 using GanShin.Space.UI;
 using GanShin.UI;
 using JetBrains.Annotations;
@@ -97,6 +98,20 @@ namespace GanShin.Content.Creature
 
         protected override void Skill2()
         {
+            var particle = ProjectManager.Instance.GetManager<EffectManager>()?.PlayEffect(eEffectType.RIKO_SKILL2, transform.position);
+            if (particle == null)
+            {
+                GanDebugger.ActorLogError("Failed to get particle");
+                return;
+            }
+            
+            var skillTr = particle.transform;
+            var rikoTr  = transform;
+            
+            skillTr.SetParent(rikoTr);
+            skillTr.localPosition = _statTable.skill2Offset;
+            skillTr.localRotation = Quaternion.identity;
+            skillTr.SetParent(null);
         }
 
         protected override void UltimateSkill()

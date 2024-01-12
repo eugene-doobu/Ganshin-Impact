@@ -10,6 +10,7 @@ namespace GanShin.Effect
     {
         RIKO_SWORD_HIT,
         RIKO_SWORD_ULTIMATE_HIT,
+        RIKO_SKILL2,
         MUSCLE_CAT_HIT,
         MUSCLE_CAT_ULTIMATE,
         MUSCLE_CAT_SKILL,

@@ -1,3 +1,5 @@
+using Cysharp.Threading.Tasks;
+
 namespace GanShin.GanObject
 {
     /// <summary>
@@ -7,6 +9,20 @@ namespace GanShin.GanObject
     /// </summary>
     public class SkillObject : Actor
     {
+        private CreatureObject _owner;
         
+        public virtual CreatureObject Owner
+        {
+            get => _owner;
+            set
+            {
+                if (_owner != null)
+                {
+                    GanDebugger.ActorLogError("Owner is already set");
+                    return;
+                }
+                _owner = value;
+            }
+        }
     }
 }

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace GanShin.Data
 {
@@ -37,7 +38,16 @@ namespace GanShin.Data
         public float attack4Delay = 1.6f;
 
         public float skillDelay = 1.5f;
-
+        
+        [Header("Skill2")]
+        public float   skill2Delay         = 0.6f;
+        public Vector3 skill2Offset        = new Vector3(0, 0.5f, 0.6f);
+        public float   skill2CapsuleRadius = 0.5f;
+        public float   skill2CapsuleHeight = 1f;
+        public float   skill2Damage        = 80f;
+        public float   skill2ShakeForce    = 0.2f;
+        public float   skill2DamageDelay   = 0.8f;
+        
         [Header("Ultimate")] 
         public Vector3 ultimateSwordScale = new(1.4f, 1.4f, 1f);
         public float ultimateDuration = 20f;
