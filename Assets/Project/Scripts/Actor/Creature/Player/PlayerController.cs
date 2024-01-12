@@ -370,6 +370,26 @@ namespace GanShin.Content.Creature
 
             return len > 0;
         }
+        
+        public bool ApplyAttackDamageCapsule(Vector3 attackPosition, Vector3 attackDir, float attackRadius, float attackHeight, float damage,
+            Collider[] monsterColliders, Action<Collider> monsterCollider)
+        {
+            var len = Physics.OverlapCapsuleNonAlloc(attackPosition + attackDir * (attackHeight * 0.5f - attackRadius),
+                                                     attackPosition - attackDir * (attackHeight * 0.5f - attackRadius),
+                                                     attackRadius, monsterColliders,
+                                                     Define.GetLayerMask(Define.eLayer.MONSTER));
+            for (var i = 0; i < len; ++i)
+            {
+                var monster = monsterColliders[i].GetComponent<MonsterController>();
+                if (ReferenceEquals(monster, null)) continue;
+
+                monster.OnDamaged(damage);
+
+                monsterCollider?.Invoke(monsterColliders[i]);
+            }
+
+            return len > 0;
+        }
 
         protected async UniTask DelayAttack()
         {
