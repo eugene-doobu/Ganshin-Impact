@@ -74,6 +74,8 @@ namespace GanShin.GanObject
                 return;
             }
             
+            // TODO: Sound
+            
             player.ApplyAttackDamageCapsule(transform.position, transform.forward, _stat.skill2CapsuleRadius, _stat.skill2CapsuleHeight,
                 _stat.skill2Damage, _monsterColliders, OnSkillEffect);
             
