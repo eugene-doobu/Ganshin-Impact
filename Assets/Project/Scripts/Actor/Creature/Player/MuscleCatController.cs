@@ -32,6 +32,10 @@ namespace GanShin.Content.Creature
         public override PlayerAvatarContext GetPlayerContext =>
             Player.GetAvatarContext(Define.ePlayerAvatar.MUSCLE_CAT);
 
+#if UNITY_EDITOR
+        private bool _isOnSkill1Debug;
+#endif // UNITY_EDITOR
+        
         protected override void Awake()
         {
             base.Awake();
@@ -175,6 +179,10 @@ namespace GanShin.Content.Creature
             IsCantToIdleAnimation = false;
             
             ReturnToIdle(0.01f).Forget();
+
+#if UNITY_EDITOR
+            OnSkill1Debug(_statTable.skillDuration).Forget();
+#endif // UNITY_EDITOR
             
             var effect = ProjectManager.Instance.GetManager<EffectManager>();
             if (effect == null)
@@ -268,7 +276,26 @@ namespace GanShin.Content.Creature
 #endregion ActionEvent
 
 #if UNITY_EDITOR
+        private void Skill1RangeDebug()
+        {
+            var tr = transform;
+            Gizmos.color = Color.red;
+            var attackPosition = tr.position + tr.forward * _statTable.attackForwardOffset;
+            var attackRadius   = _statTable.skillRadius;
+            Gizmos.DrawWireSphere(attackPosition, attackRadius);
+        }
         
+        private void OnDrawGizmos()
+        {
+            if (_isOnSkill1Debug) Skill1RangeDebug();
+        }
+        
+        private async UniTask OnSkill1Debug(float duration)
+        {
+            _isOnSkill1Debug = true;
+            await UniTask.Delay(TimeSpan.FromSeconds(duration));
+            _isOnSkill1Debug = false;
+        }
 #endif // UNITY_EDITOR
     }
 }
