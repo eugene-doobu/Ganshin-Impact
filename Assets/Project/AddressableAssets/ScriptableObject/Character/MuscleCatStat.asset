@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hp: 100
   baseSkillCoolTime: 5
-  baseSkill2CoolTime: 2
+  baseSkill2CoolTime: 22
   moveSpeed: 4
   dashSpeed: 6
   attackCoolTime: 0.3
@@ -42,10 +42,10 @@ MonoBehaviour:
   skillRadius: 4
   skillDamage: 40
   skillDuration: 0.8
-  skill2Radius: 2
-  skill2AttackDelay: 0.15
-  skill2Damage: 8
-  skill2Duration: 2
+  skill2Radius: 3
+  skill2AttackDelay: 0.2
+  skill2Damage: 5
+  skill2Duration: 4
   ultimateForwardOffset: 1.5
   ultimateRadius: 7
   ultimateDamage: 100
