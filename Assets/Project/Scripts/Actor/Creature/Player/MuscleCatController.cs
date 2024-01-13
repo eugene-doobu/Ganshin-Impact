@@ -173,7 +173,18 @@ namespace GanShin.Content.Creature
             ApplyAttackDamage(attackPosition, attackRadius, _statTable.skillDamage, _monsterColliders, OnAttackEffect);
             CurrentUltimateGauge += _statTable.ultimateSkillChargeOnBaseAttack;
             IsCantToIdleAnimation = false;
+            
             ReturnToIdle(0.01f).Forget();
+            
+            var effect = ProjectManager.Instance.GetManager<EffectManager>();
+            if (effect == null)
+            {
+                GanDebugger.ActorLogWarning("Failed to get EffectManager");
+                return;
+            }
+            
+            var particle = effect.PlayEffect(eEffectType.MUSCLE_CAT_SKILL1, tr.position);
+            particle.Play();
         }
 
         private async UniTask Skill2Async()
@@ -255,5 +266,9 @@ namespace GanShin.Content.Creature
             base.OnUltimateSkill(true);
         }
 #endregion ActionEvent
+
+#if UNITY_EDITOR
+        
+#endif // UNITY_EDITOR
     }
 }

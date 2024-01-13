@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: MuscleCatStat
   m_EditorClassIdentifier: 
   hp: 100
-  baseSkillCoolTime: 5
+  baseSkillCoolTime: 1
+  baseSkill2CoolTime: 10
   moveSpeed: 4
   dashSpeed: 6
   attackCoolTime: 0.3
@@ -23,9 +24,11 @@ MonoBehaviour:
   ultimateSkillChargeOnDamaged: 3
   ultimateSkillChargeOnKill: 5
   ultimateSkillChargeOnSkill: 5
+  ultimateSkillChargeOnSkill2: 5
   attackForwardOffset: 0.3
   attackRadius: 1.5
   attackEffectYupPosition: 1.2
+  effectNoiseMaxValue: 0.2
   baseAttackShakeForce: 0.01
   ultimateShakeForce: 0.5
   attack1Damage: 10
@@ -36,12 +39,13 @@ MonoBehaviour:
   attack2Delay: 0.3
   attack3Delay: 0.3
   attack4Delay: 0.3
-  skillEaseType: 3
   skillRadius: 4
   skillDamage: 20
-  skillKnockBackDistance: 6.5
-  skillKnockBackDuration: 1.2
-  skillDuration: 1.5
+  skillDuration: 0.8
+  skill2Radius: 2
+  skill2AttackDelay: 0.15
+  skill2Damage: 8
+  skill2Duration: 2
   ultimateForwardOffset: 1.5
   ultimateRadius: 7
   ultimateDamage: 100

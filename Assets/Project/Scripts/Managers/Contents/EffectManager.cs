@@ -13,7 +13,7 @@ namespace GanShin.Effect
         RIKO_SKILL2,
         MUSCLE_CAT_HIT,
         MUSCLE_CAT_ULTIMATE,
-        MUSCLE_CAT_SKILL,
+        MUSCLE_CAT_SKILL1,
         MUSCLE_CAT_SKILL2,
     }
 
