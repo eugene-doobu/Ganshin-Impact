@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MuscleCatStat
   m_EditorClassIdentifier: 
   hp: 100
-  baseSkillCoolTime: 1
+  baseSkillCoolTime: 5
   baseSkill2CoolTime: 10
   moveSpeed: 4
   dashSpeed: 6
@@ -40,7 +40,7 @@ MonoBehaviour:
   attack3Delay: 0.3
   attack4Delay: 0.3
   skillRadius: 4
-  skillDamage: 20
+  skillDamage: 40
   skillDuration: 0.8
   skill2Radius: 2
   skill2AttackDelay: 0.15

@@ -193,6 +193,7 @@ namespace GanShin.Content.Creature
             
             var particle = effect.PlayEffect(eEffectType.MUSCLE_CAT_SKILL1, tr.position);
             particle.Play();
+            particle.transform.position += tr.up * 0.4f;
         }
 
         private async UniTask Skill2Async()
