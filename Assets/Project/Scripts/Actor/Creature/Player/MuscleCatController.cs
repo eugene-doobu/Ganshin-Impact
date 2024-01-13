@@ -200,7 +200,14 @@ namespace GanShin.Content.Creature
         {
             IsCantToIdleAnimation = true;
             ObjAnimator.SetTrigger(AnimPramHashOnSkill2);
-            var timer = 0f;
+            
+            var effect = ProjectManager.Instance.GetManager<EffectManager>();
+            if (effect != null)
+            {
+                effect.PlayEffect(eEffectType.MUSCLE_CAT_SKILL2, transform.position);
+            }
+            
+            var timer = _statTable.skill2AttackDelay;
             while (timer < _statTable.skill2Duration)
             {
                 var tr             = transform;

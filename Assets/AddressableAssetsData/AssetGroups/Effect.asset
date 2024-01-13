@@ -59,6 +59,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Space
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fd85a3c93edfd3049b860915635ba762
+    m_Address: MUSCLE_CAT_SKILL2.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Space
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 460a0dd41ae4490409dda8a15a6bcaf6, type: 2}
   m_SchemaSet:

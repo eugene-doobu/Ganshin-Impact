@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hp: 100
   baseSkillCoolTime: 5
-  baseSkill2CoolTime: 10
+  baseSkill2CoolTime: 2
   moveSpeed: 4
   dashSpeed: 6
   attackCoolTime: 0.3

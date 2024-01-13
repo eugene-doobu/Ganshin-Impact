@@ -138,7 +138,7 @@ namespace GanShin.Content.Creature
         /// <summary>
         /// 스킬이나 연출 애니메이션 등 현재 애니메이션 상태에서 강제로 Idle 애니메이션으로 돌아가는 것을 막습니다.
         /// </summary>
-        protected bool IsCantToIdleAnimation { get; set; }
+        public bool IsCantToIdleAnimation { get; set; }
 #endregion Properties
 
 #region Mono
