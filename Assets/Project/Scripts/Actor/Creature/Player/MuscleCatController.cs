@@ -3,7 +3,6 @@ using System.Threading;
 using Cinemachine;
 using Cysharp.Threading.Tasks;
 using GanShin.CameraSystem;
-using GanShin.Content.Creature.Monster;
 using GanShin.Data;
 using GanShin.Effect;
 using GanShin.Space.UI;
@@ -25,6 +24,8 @@ namespace GanShin.Content.Creature
 
         private MuscleCatStatTable _statTable;
 
+        private bool _isOnSkill;
+
         private EffectManager Effect => ProjectManager.Instance.GetManager<EffectManager>();
         private CameraManager Camera => ProjectManager.Instance.GetManager<CameraManager>();
 
@@ -40,7 +41,6 @@ namespace GanShin.Content.Creature
         }
 
 #region Attack Util
-
         private float GetAttackDamage()
         {
             float damage = 0;
@@ -62,13 +62,14 @@ namespace GanShin.Content.Creature
 
             return damage;
         }
-
 #endregion Attack Util
 
 #region Attack
-
         protected override void Attack()
         {
+            if (_isOnSkill) 
+                return;
+            
             var isTryAttack  = false;
             var attackDelay  = 1f;
             var isLastAttack = false;
@@ -108,6 +109,7 @@ namespace GanShin.Content.Creature
                 if (AttackCancellationTokenSource != null)
                     DisposeAttackCancellationTokenSource();
                 AttackCancellationTokenSource = new CancellationTokenSource();
+                
                 ReturnToIdle(attackDelay, isLastAttack).Forget();
                 OnAttack();
             }
@@ -139,7 +141,6 @@ namespace GanShin.Content.Creature
 
         protected override void Skill()
         {
-            ObjAnimator.SetTrigger(AnimPramHashOnSkill);
             SkillAsync().Forget();
         }
 
@@ -163,16 +164,21 @@ namespace GanShin.Content.Creature
 
         private async UniTask SkillAsync()
         {
-            await UniTask.Delay(TimeSpan.FromMilliseconds(_statTable.skillDuration));
+            IsCantToIdleAnimation = true;
+            ObjAnimator.SetTrigger(AnimPramHashOnSkill);
+            await UniTask.Delay(TimeSpan.FromSeconds(_statTable.skillDuration));
             var tr            = transform;
             var attackPosition = tr.position + tr.forward * _statTable.attackForwardOffset;
             var attackRadius   = _statTable.skillRadius;
             ApplyAttackDamage(attackPosition, attackRadius, _statTable.skillDamage, _monsterColliders, OnAttackEffect);
             CurrentUltimateGauge += _statTable.ultimateSkillChargeOnBaseAttack;
+            IsCantToIdleAnimation = false;
+            ReturnToIdle(0.01f).Forget();
         }
 
         private async UniTask Skill2Async()
         {
+            IsCantToIdleAnimation = true;
             ObjAnimator.SetTrigger(AnimPramHashOnSkill2);
             var timer = 0f;
             while (timer < _statTable.skill2Duration)
@@ -186,6 +192,8 @@ namespace GanShin.Content.Creature
                 timer += _statTable.skill2AttackDelay;
             }
             ObjAnimator.SetTrigger(AnimPramHashSetIdle);
+            IsCantToIdleAnimation = false;
+            ReturnToIdle(0.01f).Forget();
         }
 
         protected override void UltimateSkill()
@@ -229,7 +237,6 @@ namespace GanShin.Content.Creature
 #endregion Attack
 
 #region ActionEvent
-
         protected override void OnAttack(bool value)
         {
             if (!value) return;
@@ -247,7 +254,6 @@ namespace GanShin.Content.Creature
             if (!value) return;
             base.OnUltimateSkill(true);
         }
-
 #endregion ActionEvent
     }
 }

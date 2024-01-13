@@ -17,7 +17,6 @@ namespace GanShin.Content.Creature
     public abstract class PlayerController : CreatureObject
     {
 #region Static
-
         protected static readonly int AnimPramHashIsMove      = Animator.StringToHash("IsMove");
         protected static readonly int AnimPramHashMoveSpeed   = Animator.StringToHash("MoveSpeed");
         protected static readonly int AnimPramHashRollStart   = Animator.StringToHash("RollStart");
@@ -27,11 +26,9 @@ namespace GanShin.Content.Creature
         protected static readonly int AnimPramHashOnSkill     = Animator.StringToHash("OnSkill");
         protected static readonly int AnimPramHashOnSkill2     = Animator.StringToHash("OnSkill2");
         protected static readonly int AnimPramHashOnUltimate  = Animator.StringToHash("OnUltimate");
-
 #endregion Static
 
 #region Variables
-
         private CameraManager Camera        => ProjectManager.Instance.GetManager<CameraManager>();
         private PlayerManager PlayerManager => ProjectManager.Instance.GetManager<PlayerManager>();
 
@@ -85,7 +82,6 @@ namespace GanShin.Content.Creature
 #endregion Variables
 
 #region Properties
-
         public CharacterStatTable Stat => stat;
 
         public ePlayerAttack PlayerAttack
@@ -138,7 +134,11 @@ namespace GanShin.Content.Creature
         public abstract PlayerAvatarContext GetPlayerContext { get; }
 
         public bool IsDead { get; private set; }
-
+        
+        /// <summary>
+        /// 스킬이나 연출 애니메이션 등 현재 애니메이션 상태에서 강제로 Idle 애니메이션으로 돌아가는 것을 막습니다.
+        /// </summary>
+        protected bool IsCantToIdleAnimation { get; set; }
 #endregion Properties
 
 #region Mono
@@ -178,7 +178,6 @@ namespace GanShin.Content.Creature
 #endregion Mono
 
 #region StateCheck
-
         private void InitializeAvatar()
         {
             CC  = GetComponent<CharacterController>();
@@ -203,7 +202,6 @@ namespace GanShin.Content.Creature
             else
                 _isOnGround = false;
         }
-
 #endregion StateCheck
 
         private void AddInputEvent()
@@ -246,7 +244,6 @@ namespace GanShin.Content.Creature
         }
 
 #region Movement
-
         private void Movement()
         {
             PlayMovementAnimation();
@@ -327,7 +324,6 @@ namespace GanShin.Content.Creature
         {
             CC.Move(Vector3.up * gravity * Time.deltaTime);
         }
-
 #endregion Movement
 
 #region Attack
@@ -401,10 +397,12 @@ namespace GanShin.Content.Creature
         {
             _isOnAttack = true;
 
-            await UniTask.Delay(TimeSpan.FromSeconds(attackToIdleTime), cancellationToken:
-                                AttackCancellationTokenSource.Token);
+            if (AttackCancellationTokenSource is { IsCancellationRequested: false })
+                await UniTask.Delay(TimeSpan.FromSeconds(attackToIdleTime), cancellationToken:
+                                    AttackCancellationTokenSource.Token);
 
-            if (IsDead) return;
+            if (IsCantToIdleAnimation || IsDead)
+                return;
 
             CanMove     = true;
             _canAttack  = true;
