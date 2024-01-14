@@ -17,9 +17,6 @@ namespace GanShin.Content.Creature
 
         private float _rikoAttackCooldown;
 
-        public override PlayerAvatarContext GetPlayerContext =>
-            Player.GetAvatarContext(PlayerType);
-
         protected override void Awake()
         {
             PlayerType = Define.ePlayerAvatar.RIKO;

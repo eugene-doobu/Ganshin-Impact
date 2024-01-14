@@ -6,7 +6,6 @@ using GanShin.CameraSystem;
 using GanShin.Data;
 using GanShin.Effect;
 using GanShin.Space.UI;
-using GanShin.UI;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -28,9 +27,6 @@ namespace GanShin.Content.Creature
 
         private EffectManager Effect => ProjectManager.Instance.GetManager<EffectManager>();
         private CameraManager Camera => ProjectManager.Instance.GetManager<CameraManager>();
-
-        public override PlayerAvatarContext GetPlayerContext =>
-            Player.GetAvatarContext(PlayerType);
 
 #if UNITY_EDITOR
         private bool _isOnSkill1Debug;

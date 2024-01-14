@@ -7,9 +7,6 @@ namespace GanShin.Content.Creature
     {
         private AiStatTable _statTable;
 
-        public override PlayerAvatarContext GetPlayerContext =>
-            Player.GetAvatarContext(Define.ePlayerAvatar.AI);
-
 #region Attack
 
         protected override void Awake()

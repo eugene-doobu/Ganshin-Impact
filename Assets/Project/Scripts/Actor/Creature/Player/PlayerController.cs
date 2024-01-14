@@ -132,7 +132,8 @@ namespace GanShin.Content.Creature
 
         protected PlayerManager Player => PlayerManager;
 
-        public abstract PlayerAvatarContext GetPlayerContext { get; }
+        private PlayerAvatarContext GetPlayerContext =>
+            Player.GetAvatarContext(PlayerType);
 
         public bool IsDead { get; private set; }
         
