@@ -15,11 +15,10 @@ namespace GanShin.CameraSystem
 
         private void InitializeCameraBodyTarget()
         {
-            var cameraBodyTargetObj = new GameObject("@CameraBodyTarget");
-            Object.DontDestroyOnLoad(cameraBodyTargetObj);
-            _cameraBodyTarget = cameraBodyTargetObj.GetOrAddComponent<CameraBodyTarget>();
-
-            GanDebugger.CameraLog("CameraBody initialized");
+            _cameraBodyTarget = ProjectManager.Instance.GetManager<CameraManager>()?.CharacterBodyTarget;
+            if (_cameraBodyTarget != null) return;
+            
+            GanDebugger.CameraLogError("Failed to get camera body target");
         }
 
         private void InitializeVirtualCamera()
@@ -54,15 +53,6 @@ namespace GanShin.CameraSystem
             }
 
             GanDebugger.CameraLog("Virtual camera initialized");
-        }
-
-        public override void OnUpdate()
-        {
-            base.OnUpdate();
-            if (_cameraBodyTarget == null) return;
-            if (Target == null) return;
-
-            _cameraBodyTarget.SetRotation(Target.rotation);
         }
 
         public override void OnEnable()

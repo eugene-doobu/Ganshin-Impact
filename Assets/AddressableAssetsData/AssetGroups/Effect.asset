@@ -47,6 +47,24 @@ MonoBehaviour:
     m_SerializedLabels:
     - Space
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e36a192f42f75104f90619c682bd2dc8
+    m_Address: RIKO_SKILL2.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Space
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4fba02c024663f14cade2b0dfeab63bc
+    m_Address: MUSCLE_CAT_SKILL1.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Space
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fd85a3c93edfd3049b860915635ba762
+    m_Address: MUSCLE_CAT_SKILL2.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Space
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 460a0dd41ae4490409dda8a15a6bcaf6, type: 2}
   m_SchemaSet:

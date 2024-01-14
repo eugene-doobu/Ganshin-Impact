@@ -7,13 +7,12 @@ namespace GanShin.Content.Creature
     {
         private AiStatTable _statTable;
 
-        public override PlayerAvatarContext GetPlayerContext =>
-            Player.GetAvatarContext(Define.ePlayerAvatar.AI);
-
 #region Attack
 
         protected override void Awake()
         {
+            PlayerType = Define.ePlayerAvatar.AI;
+            
             base.Awake();
 
             _statTable = Stat as AiStatTable;
@@ -25,6 +24,10 @@ namespace GanShin.Content.Creature
         }
 
         protected override void Skill()
+        {
+        }
+
+        protected override void Skill2()
         {
         }
 

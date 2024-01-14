@@ -69,6 +69,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "BaseSkill2",
+                    "type": "Button",
+                    "id": "02244dc2-16ee-4a40-90ab-b0f2808f35b9",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "UltimateSkill",
                     "type": "Button",
                     "id": "a3512e22-cf83-479c-ab01-6577ce7648da",
@@ -450,6 +459,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Zoom",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "42e7efaa-a562-47dc-aaf6-896e3126c80e",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "BaseSkill2",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

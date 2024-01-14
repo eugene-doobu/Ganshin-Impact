@@ -5,7 +5,7 @@ using GanShin.Resource;
 using GanShin.UI;
 using UnityEngine;
 
-public class Util
+public static class Util
 {
     public static T GetOrAddComponent<T>(GameObject go) where T : Component
     {
@@ -15,7 +15,7 @@ public class Util
         return component;
     }
 
-    public static GameObject? FindChild(GameObject go, string name = null, bool recursive = false)
+    public static GameObject? FindChild(GameObject go, string? name = null, bool recursive = false)
     {
         var transform = FindChild<Transform>(go, name, recursive);
         if (transform == null)

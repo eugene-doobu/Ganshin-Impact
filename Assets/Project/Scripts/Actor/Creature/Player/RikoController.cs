@@ -2,9 +2,11 @@ using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using GanShin.Data;
+using GanShin.Effect;
 using GanShin.Space.UI;
 using GanShin.UI;
 using JetBrains.Annotations;
+using UnityEngine;
 
 namespace GanShin.Content.Creature
 {
@@ -13,21 +15,30 @@ namespace GanShin.Content.Creature
         private bool          _isOnUltimate;
         private RikoStatTable _statTable;
 
-        public override PlayerAvatarContext GetPlayerContext =>
-            Player.GetAvatarContext(Define.ePlayerAvatar.RIKO);
+        private float _rikoAttackCooldown;
 
         protected override void Awake()
         {
+            PlayerType = Define.ePlayerAvatar.RIKO;
+            
             base.Awake();
 
             _statTable = Stat as RikoStatTable;
             if (_statTable == null) GanDebugger.LogError("Stat asset is not RikoStatTable");
         }
 
-#region Attack
+        public override void Tick()
+        {
+            base.Tick();
+            _rikoAttackCooldown = Mathf.Clamp(_rikoAttackCooldown - Time.deltaTime, 0, _statTable.rikoAttackCooldown);
+        }
 
+#region Attack
         protected override void Attack()
         {
+            if (_rikoAttackCooldown > 0) return;
+            _rikoAttackCooldown += _statTable.rikoAttackCooldown;
+            
             var isTryAttack  = false;
             var attackDelay  = 1f;
             var isLastAttack = false;
@@ -35,69 +46,42 @@ namespace GanShin.Content.Creature
             switch (PlayerAttack)
             {
                 case ePlayerAttack.NONE:
-                    if (!_isOnUltimate)
-                    {
-                        PlayerAttack = ePlayerAttack.RIKO_BASIC_ATTACK1;
-                        ObjAnimator.SetInteger(AnimPramHashAttackState, 1);
-                        attackDelay = _statTable.attack1Delay;
-                    }
-                    else
-                    {
-                        PlayerAttack = ePlayerAttack.RIKO_ULTIMATE_ATTACK1;
-                        ObjAnimator.SetInteger(AnimPramHashAttackState, 5);
-                        attackDelay = _statTable.attack1Delay;
-                    }
-
+                    PlayerAttack = !_isOnUltimate ? ePlayerAttack.RIKO_BASIC_ATTACK1 : ePlayerAttack.RIKO_ULTIMATE_ATTACK1;
+                    ObjAnimator.SetInteger(AnimPramHashAttackState, (int)PlayerAttack);
+                    attackDelay = _statTable.attack1Delay;
                     isTryAttack = true;
                     break;
                 case ePlayerAttack.RIKO_BASIC_ATTACK1:
-                    PlayerAttack = ePlayerAttack.RIKO_BASIC_ATTACK2;
-                    ObjAnimator.SetInteger(AnimPramHashAttackState, 2);
+                case ePlayerAttack.RIKO_ULTIMATE_ATTACK1:
+                    PlayerAttack += 1;
+                    ObjAnimator.SetInteger(AnimPramHashAttackState, (int)PlayerAttack);
                     attackDelay = _statTable.attack2Delay;
                     isTryAttack = true;
                     break;
                 case ePlayerAttack.RIKO_BASIC_ATTACK2:
-                    PlayerAttack = ePlayerAttack.RIKO_BASIC_ATTACK3;
-                    ObjAnimator.SetInteger(AnimPramHashAttackState, 3);
+                case ePlayerAttack.RIKO_ULTIMATE_ATTACK2:
+                    PlayerAttack += 1;
+                    ObjAnimator.SetInteger(AnimPramHashAttackState, (int)PlayerAttack);
                     attackDelay = _statTable.attack3Delay;
                     isTryAttack = true;
                     break;
                 case ePlayerAttack.RIKO_BASIC_ATTACK3:
-                    PlayerAttack = ePlayerAttack.RIKO_BASIC_ATTACK4;
-                    ObjAnimator.SetInteger(AnimPramHashAttackState, 4);
-                    attackDelay  = _statTable.attack4Delay;
-                    isTryAttack  = true;
-                    isLastAttack = true;
-                    break;
-                case ePlayerAttack.RIKO_ULTIMATE_ATTACK1:
-                    PlayerAttack = ePlayerAttack.RIKO_ULTIMATE_ATTACK2;
-                    ObjAnimator.SetInteger(AnimPramHashAttackState, 6);
-                    attackDelay = _statTable.attack2Delay;
-                    isTryAttack = true;
-                    break;
-                case ePlayerAttack.RIKO_ULTIMATE_ATTACK2:
-                    PlayerAttack = ePlayerAttack.RIKO_ULTIMATE_ATTACK3;
-                    ObjAnimator.SetInteger(AnimPramHashAttackState, 7);
-                    attackDelay = _statTable.attack3Delay;
-                    isTryAttack = true;
-                    break;
                 case ePlayerAttack.RIKO_ULTIMATE_ATTACK3:
-                    PlayerAttack = ePlayerAttack.RIKO_ULTIMATE_ATTACK4;
-                    ObjAnimator.SetInteger(AnimPramHashAttackState, 8);
+                    PlayerAttack += 1;
+                    ObjAnimator.SetInteger(AnimPramHashAttackState, (int)PlayerAttack);
                     attackDelay  = _statTable.attack4Delay;
                     isTryAttack  = true;
                     isLastAttack = true;
                     break;
             }
 
-            if (isTryAttack)
-            {
-                CanMove = false;
-                if (_attackCancellationTokenSource != null)
-                    DisposeAttackCancellationTokenSource();
-                _attackCancellationTokenSource = new CancellationTokenSource();
-                ReturnToIdle(attackDelay, isLastAttack).Forget();
-            }
+            if (!isTryAttack) return;
+            
+            CanMove = false;
+            if (AttackCancellationTokenSource != null)
+                DisposeAttackCancellationTokenSource();
+            AttackCancellationTokenSource = new CancellationTokenSource();
+            ReturnToIdle(attackDelay, isLastAttack).Forget();
         }
 
         protected override void Skill()
@@ -105,10 +89,28 @@ namespace GanShin.Content.Creature
             ObjAnimator.SetTrigger(AnimPramHashOnSkill);
 
             CanMove = false;
-            if (_attackCancellationTokenSource != null)
+            if (AttackCancellationTokenSource != null)
                 DisposeAttackCancellationTokenSource();
-            _attackCancellationTokenSource = new CancellationTokenSource();
+            AttackCancellationTokenSource = new CancellationTokenSource();
             ReturnToIdle(_statTable.skillDelay).Forget();
+        }
+
+        protected override void Skill2()
+        {
+            var particle = ProjectManager.Instance.GetManager<EffectManager>()?.PlayEffect(eEffectType.RIKO_SKILL2, transform.position);
+            if (particle == null)
+            {
+                GanDebugger.ActorLogError("Failed to get particle");
+                return;
+            }
+            
+            var skillTr = particle.transform;
+            var rikoTr  = transform;
+            
+            skillTr.SetParent(rikoTr);
+            skillTr.localPosition = _statTable.skill2Offset;
+            skillTr.localRotation = Quaternion.identity;
+            skillTr.SetParent(null);
         }
 
         protected override void UltimateSkill()
@@ -119,11 +121,7 @@ namespace GanShin.Content.Creature
 
             PlayerAttack = ePlayerAttack.NONE;
 
-            var characterCutScene =
-                ProjectManager.Instance.GetManager<UIManager>()?.GetGlobalUI(EGlobalUI.CHARACTER_CUT_SCENE) as
-                    UIRootCharacterCutScene;
-            if (characterCutScene != null)
-                characterCutScene.OnCharacterCutScene(Define.ePlayerAvatar.RIKO);
+            ShowCutScene();
         }
 
         private async UniTask UltimateTimer()
@@ -139,7 +137,6 @@ namespace GanShin.Content.Creature
         {
             //TODO: dash
         }
-
 #endregion Attack
 
 #region ActionEvent

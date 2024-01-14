@@ -24,9 +24,12 @@ namespace GanShin.CameraSystem
         {
             SceneManager.sceneUnloaded += OnSceneUnLoaded;
         }
+        
+        public CameraBodyTarget? CharacterBodyTarget { get; private set; }
 
         public override void Initialize()
         {
+            InitializeCharacterBodyTarget();
             CameraStateDictionaryInit();
             ChangeState(eCameraState.CHARACTER_CAMERA);
         }
@@ -41,6 +44,15 @@ namespace GanShin.CameraSystem
             _currentCamera?.OnLateUpdate();
         }
 
+        private void InitializeCharacterBodyTarget()
+        {
+            var cameraBodyTargetObj = new GameObject("@CameraBodyTarget");
+            Object.DontDestroyOnLoad(cameraBodyTargetObj);
+            CharacterBodyTarget = cameraBodyTargetObj.GetOrAddComponent<CameraBodyTarget>();
+
+            GanDebugger.CameraLog("CameraBody initialized");
+        }
+        
         private void OnSceneUnLoaded(Scene scene)
         {
             MainCamera = null;

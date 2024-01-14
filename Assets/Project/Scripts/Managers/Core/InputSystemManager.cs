@@ -6,7 +6,7 @@ using UnityEngine.InputSystem.Utilities;
 
 namespace GanShin.InputSystem
 {
-    public enum eActiomMap
+    public enum eActionMap
     {
         NONE,
         PLAYER_MOVEMENT
@@ -15,7 +15,7 @@ namespace GanShin.InputSystem
     [UsedImplicitly]
     public class InputSystemManager : ManagerBase
     {
-        private readonly Dictionary<eActiomMap, ActionMapBase> _actionMapDict = new();
+        private readonly Dictionary<eActionMap, ActionMapBase> _actionMapDict = new();
         private          InputActionMap                        _inputActionMap;
 
         private Action<InputControl> _onAnyKeyInput;
@@ -27,7 +27,7 @@ namespace GanShin.InputSystem
         {
         }
 
-        public ActionMapBase GetActionMap(eActiomMap type)
+        public ActionMapBase GetActionMap(eActionMap type)
         {
             return _actionMapDict[type];
         }
@@ -48,12 +48,12 @@ namespace GanShin.InputSystem
 
             _playerActions = new GanshinActions();
             InitActionMapDict();
-            ChangeActionMap(eActiomMap.PLAYER_MOVEMENT);
+            ChangeActionMap(eActionMap.PLAYER_MOVEMENT);
 
             UnityEngine.InputSystem.InputSystem.onAnyButtonPress.Call(anyKey => _onAnyKeyInput?.Invoke(anyKey));
         }
 
-        public void ChangeActionMap(eActiomMap actionMap)
+        public void ChangeActionMap(eActionMap actionMap)
         {
             _inputActionMap?.Disable();
             _inputActionMap = _actionMapDict[actionMap].GetActionMap();
@@ -62,8 +62,8 @@ namespace GanShin.InputSystem
 
         private void InitActionMapDict()
         {
-            _actionMapDict.Add(eActiomMap.NONE, new ActionMapNone(_playerActions.None));
-            _actionMapDict.Add(eActiomMap.PLAYER_MOVEMENT, new ActionMapPlayerMove(_playerActions.PlayerMovement));
+            _actionMapDict.Add(eActionMap.NONE, new ActionMapNone(_playerActions.None));
+            _actionMapDict.Add(eActionMap.PLAYER_MOVEMENT, new ActionMapPlayerMove(_playerActions.PlayerMovement));
         }
     }
 }

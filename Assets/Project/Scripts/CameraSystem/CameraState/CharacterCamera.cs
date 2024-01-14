@@ -14,7 +14,6 @@ namespace GanShin.CameraSystem
     public class CharacterCamera : CameraBase
     {
 #region TableDatas
-
         private float _topClamp;
         private float _bottomClamp;
         private float _lookYawMagnitude;
@@ -25,11 +24,9 @@ namespace GanShin.CameraSystem
         private float _zoomThreshHold;
         private float _zoomMinValue;
         private float _zoomMaxValue;
-
 #endregion TableDatas
 
 #region Variables
-
         private InputSystemManager? Input => ProjectManager.Instance.GetManager<InputSystemManager>();
 
         private CameraBodyTarget?           _cameraBodyTarget;
@@ -37,18 +34,15 @@ namespace GanShin.CameraSystem
 
         private float _cinemachineTargetYaw;
         private float _cinemachineTargetPitch;
-
 #endregion Variables
 
 #region Initialization
-
         private void InitializeCameraBodyTarget()
         {
-            var cameraBodyTargetObj = new GameObject("@CameraBodyTarget");
-            Object.DontDestroyOnLoad(cameraBodyTargetObj);
-            _cameraBodyTarget = cameraBodyTargetObj.GetOrAddComponent<CameraBodyTarget>();
-
-            GanDebugger.CameraLog("CameraBody initialized");
+            _cameraBodyTarget = ProjectManager.Instance.GetManager<CameraManager>()?.CharacterBodyTarget;
+            if (_cameraBodyTarget != null) return;
+            
+            GanDebugger.CameraLogError("Failed to get camera body target");
         }
 
         private void InitializeVirtualCamera()
@@ -112,11 +106,9 @@ namespace GanShin.CameraSystem
             _zoomMinValue       = data.zoomMinValue;
             _zoomMaxValue       = data.zoomMaxValue;
         }
-
 #endregion Initialization
 
 #region CameraBase
-
         public CharacterCamera()
         {
             InitializeCameraSetting();
@@ -165,7 +157,6 @@ namespace GanShin.CameraSystem
             VirtualCamera!.Follow = cameraBodyTarget;
             VirtualCamera.LookAt  = cameraBodyTarget;
         }
-
 #endregion CameraBase
 
 #region CameraProcess
@@ -193,10 +184,9 @@ namespace GanShin.CameraSystem
 #endregion CameraProcess
 
 #region Input
-
         private void AddInputEvent()
         {
-            if (Input!.GetActionMap(eActiomMap.PLAYER_MOVEMENT) is not ActionMapPlayerMove actionMap)
+            if (Input!.GetActionMap(eActionMap.PLAYER_MOVEMENT) is not ActionMapPlayerMove actionMap)
             {
                 GanDebugger.CameraLogError("actionMap is null!");
                 return;
@@ -210,7 +200,7 @@ namespace GanShin.CameraSystem
         {
             if (Input == null) return;
 
-            if (Input.GetActionMap(eActiomMap.PLAYER_MOVEMENT) is not ActionMapPlayerMove actionMap)
+            if (Input.GetActionMap(eActionMap.PLAYER_MOVEMENT) is not ActionMapPlayerMove actionMap)
                 return;
 
             actionMap.OnLook -= OnLook;
@@ -222,9 +212,6 @@ namespace GanShin.CameraSystem
             if (value == Vector2.zero)
                 return;
 
-            if (ReferenceEquals(_cameraBodyTarget, null))
-                InitializeCameraBodyTarget();
-
             _cinemachineTargetYaw   += value.x * _lookYawMagnitude;
             _cinemachineTargetPitch += value.y * _lookPitchMagnitude;
         }
@@ -234,7 +221,6 @@ namespace GanShin.CameraSystem
             value       *= _zoomMagnitude;
             _targetZoom =  Mathf.Clamp(_targetZoom - value, _zoomMinValue, _zoomMaxValue);
         }
-
 #endregion Input
     }
 }

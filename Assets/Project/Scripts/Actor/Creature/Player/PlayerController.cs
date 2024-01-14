@@ -8,6 +8,7 @@ using GanShin.Data;
 using GanShin.GanObject;
 using GanShin.InputSystem;
 using GanShin.Space.UI;
+using GanShin.UI;
 using GanShin.Utils;
 using UnityEngine;
 
@@ -16,45 +17,7 @@ namespace GanShin.Content.Creature
     [RequireComponent(typeof(CharacterController))]
     public abstract class PlayerController : CreatureObject
     {
-        private void AddInputEvent()
-        {
-            var input = ProjectManager.Instance.GetManager<InputSystemManager>();
-            if (input == null)
-                return;
-
-            if (input.GetActionMap(eActiomMap.PLAYER_MOVEMENT) is not ActionMapPlayerMove actionMap)
-            {
-                GanDebugger.LogError(nameof(PlayerController), "actionMap is null!");
-                return;
-            }
-
-            actionMap.OnAttack        += OnAttack;
-            actionMap.OnSpecialAction += OnSpecialAction;
-            actionMap.OnInteraction   += OnInteraction;
-            actionMap.OnRoll          += OnRoll;
-            actionMap.OnMovement      += OnMovement;
-            actionMap.OnBaseSkill     += OnBaseSkill;
-            actionMap.OnUltimateSkill += OnUltimateSkill;
-        }
-
-        private void RemoveInputEvent()
-        {
-            var input = ProjectManager.Instance.GetManager<InputSystemManager>();
-
-            if (input?.GetActionMap(eActiomMap.PLAYER_MOVEMENT) is not ActionMapPlayerMove actionMap)
-                return;
-
-            actionMap.OnAttack        -= OnAttack;
-            actionMap.OnSpecialAction -= OnSpecialAction;
-            actionMap.OnInteraction   -= OnInteraction;
-            actionMap.OnRoll          -= OnRoll;
-            actionMap.OnMovement      -= OnMovement;
-            actionMap.OnBaseSkill     -= OnBaseSkill;
-            actionMap.OnUltimateSkill -= OnUltimateSkill;
-        }
-
 #region Static
-
         protected static readonly int AnimPramHashIsMove      = Animator.StringToHash("IsMove");
         protected static readonly int AnimPramHashMoveSpeed   = Animator.StringToHash("MoveSpeed");
         protected static readonly int AnimPramHashRollStart   = Animator.StringToHash("RollStart");
@@ -62,12 +25,11 @@ namespace GanShin.Content.Creature
         protected static readonly int AnimPramHashSetIdle     = Animator.StringToHash("SetIdle");
         protected static readonly int AnimPramHashSetDead     = Animator.StringToHash("SetDead");
         protected static readonly int AnimPramHashOnSkill     = Animator.StringToHash("OnSkill");
+        protected static readonly int AnimPramHashOnSkill2     = Animator.StringToHash("OnSkill2");
         protected static readonly int AnimPramHashOnUltimate  = Animator.StringToHash("OnUltimate");
-
 #endregion Static
 
 #region Variables
-
         private CameraManager Camera        => ProjectManager.Instance.GetManager<CameraManager>();
         private PlayerManager PlayerManager => ProjectManager.Instance.GetManager<PlayerManager>();
 
@@ -110,18 +72,17 @@ namespace GanShin.Content.Creature
         private readonly float _rollStaminaCost         = 20f;
         private readonly float _dashStaminaCostOfSecond = 10f;
 
-        protected CancellationTokenSource _attackCancellationTokenSource;
+        protected CancellationTokenSource AttackCancellationTokenSource;
 
         private bool  _isOnAttack;
         private float _currentHp;
 
         private float _currentUltimateGauge;
-        private bool  _isAvailableSkill = true;
-
+        private bool  _isAvailableSkill  = true;
+        private bool  _isAvailableSkill2 = true;
 #endregion Variables
 
 #region Properties
-
         public CharacterStatTable Stat => stat;
 
         public ePlayerAttack PlayerAttack
@@ -171,10 +132,17 @@ namespace GanShin.Content.Creature
 
         protected PlayerManager Player => PlayerManager;
 
-        public abstract PlayerAvatarContext GetPlayerContext { get; }
+        private PlayerAvatarContext GetPlayerContext =>
+            Player.GetAvatarContext(PlayerType);
 
         public bool IsDead { get; private set; }
-
+        
+        /// <summary>
+        /// 스킬이나 연출 애니메이션 등 현재 애니메이션 상태에서 강제로 Idle 애니메이션으로 돌아가는 것을 막습니다.
+        /// </summary>
+        public bool IsCantToIdleAnimation { get; set; }
+        
+        protected Define.ePlayerAvatar PlayerType { get; set; }
 #endregion Properties
 
 #region Mono
@@ -214,7 +182,6 @@ namespace GanShin.Content.Creature
 #endregion Mono
 
 #region StateCheck
-
         private void InitializeAvatar()
         {
             CC  = GetComponent<CharacterController>();
@@ -239,11 +206,63 @@ namespace GanShin.Content.Creature
             else
                 _isOnGround = false;
         }
-
 #endregion StateCheck
 
-#region Movement
+        private void AddInputEvent()
+        {
+            var input = ProjectManager.Instance.GetManager<InputSystemManager>();
+            if (input == null)
+                return;
 
+            if (input.GetActionMap(eActionMap.PLAYER_MOVEMENT) is not ActionMapPlayerMove actionMap)
+            {
+                GanDebugger.LogError(nameof(PlayerController), "actionMap is null!");
+                return;
+            }
+
+            actionMap.OnAttack        += OnAttack;
+            actionMap.OnSpecialAction += OnSpecialAction;
+            actionMap.OnInteraction   += OnInteraction;
+            actionMap.OnRoll          += OnRoll;
+            actionMap.OnMovement      += OnMovement;
+            actionMap.OnBaseSkill     += OnBaseSkill;
+            actionMap.OnBaseSkill2    += OnBaseSkill2;
+            actionMap.OnUltimateSkill += OnUltimateSkill;
+        }
+
+        private void RemoveInputEvent()
+        {
+            var input = ProjectManager.Instance.GetManager<InputSystemManager>();
+
+            if (input?.GetActionMap(eActionMap.PLAYER_MOVEMENT) is not ActionMapPlayerMove actionMap)
+                return;
+
+            actionMap.OnAttack        -= OnAttack;
+            actionMap.OnSpecialAction -= OnSpecialAction;
+            actionMap.OnInteraction   -= OnInteraction;
+            actionMap.OnRoll          -= OnRoll;
+            actionMap.OnMovement      -= OnMovement;
+            actionMap.OnBaseSkill     -= OnBaseSkill;
+            actionMap.OnBaseSkill2    -= OnBaseSkill2;
+            actionMap.OnUltimateSkill -= OnUltimateSkill;
+        }
+
+        protected void ShowCutScene()
+        {
+            if (PlayerType == Define.ePlayerAvatar.NONE)
+            {
+                GanDebugger.ActorLogWarning("PlayerType is NONE");
+                return;
+            }
+            
+            var characterCutScene =
+                ProjectManager.Instance.GetManager<UIManager>()?.GetGlobalUI(EGlobalUI.CHARACTER_CUT_SCENE) as
+                    UIRootCharacterCutScene;
+            if (characterCutScene != null)
+                characterCutScene.OnCharacterCutScene(PlayerType);
+        }
+
+#region Movement
         private void Movement()
         {
             PlayMovementAnimation();
@@ -324,11 +343,9 @@ namespace GanShin.Content.Creature
         {
             CC.Move(Vector3.up * gravity * Time.deltaTime);
         }
-
 #endregion Movement
 
 #region Attack
-
         private void TryAttack()
         {
             if (!_desiredAttack) return;
@@ -345,6 +362,8 @@ namespace GanShin.Content.Creature
 
         protected abstract void Skill();
 
+        protected abstract void Skill2();
+        
         protected abstract void UltimateSkill();
 
         protected abstract void SpecialAction();
@@ -354,6 +373,26 @@ namespace GanShin.Content.Creature
         {
             var len = Physics.OverlapSphereNonAlloc(attackPosition, attackRadius, monsterColliders,
                                                     Define.GetLayerMask(Define.eLayer.MONSTER));
+            for (var i = 0; i < len; ++i)
+            {
+                var monster = monsterColliders[i].GetComponent<MonsterController>();
+                if (ReferenceEquals(monster, null)) continue;
+
+                monster.OnDamaged(damage);
+
+                monsterCollider?.Invoke(monsterColliders[i]);
+            }
+
+            return len > 0;
+        }
+        
+        public bool ApplyAttackDamageCapsule(Vector3 attackPosition, Vector3 attackDir, float attackRadius, float attackHeight, float damage,
+            Collider[] monsterColliders, Action<Collider> monsterCollider)
+        {
+            var len = Physics.OverlapCapsuleNonAlloc(attackPosition + attackDir * (attackHeight * 0.5f - attackRadius),
+                                                     attackPosition - attackDir * (attackHeight * 0.5f - attackRadius),
+                                                     attackRadius, monsterColliders,
+                                                     Define.GetLayerMask(Define.eLayer.MONSTER));
             for (var i = 0; i < len; ++i)
             {
                 var monster = monsterColliders[i].GetComponent<MonsterController>();
@@ -377,10 +416,12 @@ namespace GanShin.Content.Creature
         {
             _isOnAttack = true;
 
-            await UniTask.Delay(TimeSpan.FromSeconds(attackToIdleTime), cancellationToken:
-                                _attackCancellationTokenSource.Token);
+            if (AttackCancellationTokenSource is { IsCancellationRequested: false })
+                await UniTask.Delay(TimeSpan.FromSeconds(attackToIdleTime), cancellationToken:
+                                    AttackCancellationTokenSource.Token);
 
-            if (IsDead) return;
+            if (IsCantToIdleAnimation || IsDead)
+                return;
 
             CanMove     = true;
             _canAttack  = true;
@@ -407,10 +448,10 @@ namespace GanShin.Content.Creature
 
         protected void DisposeAttackCancellationTokenSource()
         {
-            if (_attackCancellationTokenSource == null) return;
-            _attackCancellationTokenSource.Cancel();
-            _attackCancellationTokenSource.Dispose();
-            _attackCancellationTokenSource = null;
+            if (AttackCancellationTokenSource == null) return;
+            AttackCancellationTokenSource.Cancel();
+            AttackCancellationTokenSource.Dispose();
+            AttackCancellationTokenSource = null;
         }
 
         public virtual void OnDamaged(float damage)
@@ -448,16 +489,29 @@ namespace GanShin.Content.Creature
             GetPlayerContext.BaseSkillCoolTimePercent = 0f;
             _isAvailableSkill                         = true;
         }
+        
+        private async UniTask Skill2CoolTime()
+        {
+            _isAvailableSkill2 = false;
+            float value = 0, coolTime = stat.baseSkill2CoolTime;
+            while (value < coolTime)
+            {
+                GetPlayerContext.BaseSkill2CoolTimePercent =  1 - value / coolTime;
+                value                                     += Time.deltaTime;
+                await UniTask.Yield();
+            }
+
+            GetPlayerContext.BaseSkill2CoolTimePercent = 0f;
+            _isAvailableSkill2                         = true;
+        }
 
         private void RefreshUltimateGauge()
         {
             GetPlayerContext.UltimateGaugePercent = 1 - _currentUltimateGauge / stat.ultimateSkillAvailabilityGauge;
         }
-
 #endregion Attack
 
 #region ActionEvent
-
         private void OnMovement(Vector2 value)
         {
             _lastMovementValue = value;
@@ -497,6 +551,19 @@ namespace GanShin.Content.Creature
             Skill();
         }
 
+        protected virtual void OnBaseSkill2(bool value)
+        {
+            if (!_isAvailableSkill2)
+            {
+                GanDebugger.Log(nameof(PlayerController), "스킬 쿨타임입니다.");
+                return;
+            }
+
+            Skill2CoolTime().Forget();
+            CurrentUltimateGauge += stat.ultimateSkillChargeOnSkill2;
+            Skill2();
+        }
+
         protected virtual void OnUltimateSkill(bool value)
         {
             if (stat.ultimateSkillAvailabilityGauge > _currentUltimateGauge)
@@ -507,8 +574,8 @@ namespace GanShin.Content.Creature
 
             CurrentUltimateGauge = 0f;
             UltimateSkill();
+            RefreshUltimateGauge();
         }
-
 #endregion ActionEvent
     }
 }

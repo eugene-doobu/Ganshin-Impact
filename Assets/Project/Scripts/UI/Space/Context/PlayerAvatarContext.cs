@@ -18,7 +18,8 @@ namespace GanShin.Space.UI
         private float _currentBaseSkillCoolTime;
         private float _baseSkillCoolTime;
         private float _baseSkillCoolTimePercent;
-
+        private float _baseSkill2CoolTimePercent;
+        
         private float _currentUltimateGauge;
         private float _ultimateGauge;
         private float _ultimateGaugePercent;
@@ -74,6 +75,17 @@ namespace GanShin.Space.UI
             }
         }
 
+        [UsedImplicitly]
+        public float BaseSkill2CoolTimePercent
+        {
+            get => _baseSkill2CoolTimePercent;
+            set
+            {
+                _baseSkill2CoolTimePercent = Mathf.Clamp(value, 0, 1f);
+                OnPropertyChanged();
+            }
+        }
+        
         [UsedImplicitly]
         public float CurrentUltimateGauge
         {

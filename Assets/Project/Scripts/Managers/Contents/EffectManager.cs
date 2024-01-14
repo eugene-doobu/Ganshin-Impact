@@ -10,8 +10,11 @@ namespace GanShin.Effect
     {
         RIKO_SWORD_HIT,
         RIKO_SWORD_ULTIMATE_HIT,
+        RIKO_SKILL2,
         MUSCLE_CAT_HIT,
-        MUSCLE_CAT_ULTIMATE
+        MUSCLE_CAT_ULTIMATE,
+        MUSCLE_CAT_SKILL1,
+        MUSCLE_CAT_SKILL2,
     }
 
     [UsedImplicitly]
@@ -26,11 +29,14 @@ namespace GanShin.Effect
         {
             var obj = Util.Instantiate($"{effectType}.prefab");
             if (obj == null)
+            {
+                GanDebugger.LogWarning(nameof(EffectManager), $"Failed to instantiate {effectType}.prefab");
                 return null;
+            }
 
             obj.transform.position = position;
             var particle = obj.GetComponent<ParticleSystem>();
-            if (!isLooping) RemoveParticle(particle).Forget();
+            if (particle != null && !isLooping) RemoveParticle(particle).Forget();
             return particle;
         }
 
