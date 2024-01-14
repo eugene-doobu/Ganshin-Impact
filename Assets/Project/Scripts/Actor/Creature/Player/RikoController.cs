@@ -18,10 +18,12 @@ namespace GanShin.Content.Creature
         private float _rikoAttackCooldown;
 
         public override PlayerAvatarContext GetPlayerContext =>
-            Player.GetAvatarContext(Define.ePlayerAvatar.RIKO);
+            Player.GetAvatarContext(PlayerType);
 
         protected override void Awake()
         {
+            PlayerType = Define.ePlayerAvatar.RIKO;
+            
             base.Awake();
 
             _statTable = Stat as RikoStatTable;
@@ -122,11 +124,7 @@ namespace GanShin.Content.Creature
 
             PlayerAttack = ePlayerAttack.NONE;
 
-            var characterCutScene =
-                ProjectManager.Instance.GetManager<UIManager>()?.GetGlobalUI(EGlobalUI.CHARACTER_CUT_SCENE) as
-                    UIRootCharacterCutScene;
-            if (characterCutScene != null)
-                characterCutScene.OnCharacterCutScene(Define.ePlayerAvatar.RIKO);
+            ShowCutScene();
         }
 
         private async UniTask UltimateTimer()

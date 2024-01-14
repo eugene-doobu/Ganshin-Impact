@@ -14,6 +14,8 @@ namespace GanShin.Content.Creature
 
         protected override void Awake()
         {
+            PlayerType = Define.ePlayerAvatar.AI;
+            
             base.Awake();
 
             _statTable = Stat as AiStatTable;

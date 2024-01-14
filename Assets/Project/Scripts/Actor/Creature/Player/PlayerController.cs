@@ -8,6 +8,7 @@ using GanShin.Data;
 using GanShin.GanObject;
 using GanShin.InputSystem;
 using GanShin.Space.UI;
+using GanShin.UI;
 using GanShin.Utils;
 using UnityEngine;
 
@@ -139,6 +140,8 @@ namespace GanShin.Content.Creature
         /// 스킬이나 연출 애니메이션 등 현재 애니메이션 상태에서 강제로 Idle 애니메이션으로 돌아가는 것을 막습니다.
         /// </summary>
         public bool IsCantToIdleAnimation { get; set; }
+        
+        protected Define.ePlayerAvatar PlayerType { get; set; }
 #endregion Properties
 
 #region Mono
@@ -241,6 +244,21 @@ namespace GanShin.Content.Creature
             actionMap.OnBaseSkill     -= OnBaseSkill;
             actionMap.OnBaseSkill2    -= OnBaseSkill2;
             actionMap.OnUltimateSkill -= OnUltimateSkill;
+        }
+
+        protected void ShowCutScene()
+        {
+            if (PlayerType == Define.ePlayerAvatar.NONE)
+            {
+                GanDebugger.ActorLogWarning("PlayerType is NONE");
+                return;
+            }
+            
+            var characterCutScene =
+                ProjectManager.Instance.GetManager<UIManager>()?.GetGlobalUI(EGlobalUI.CHARACTER_CUT_SCENE) as
+                    UIRootCharacterCutScene;
+            if (characterCutScene != null)
+                characterCutScene.OnCharacterCutScene(PlayerType);
         }
 
 #region Movement

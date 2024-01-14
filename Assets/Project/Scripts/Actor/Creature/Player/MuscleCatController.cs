@@ -30,7 +30,7 @@ namespace GanShin.Content.Creature
         private CameraManager Camera => ProjectManager.Instance.GetManager<CameraManager>();
 
         public override PlayerAvatarContext GetPlayerContext =>
-            Player.GetAvatarContext(Define.ePlayerAvatar.MUSCLE_CAT);
+            Player.GetAvatarContext(PlayerType);
 
 #if UNITY_EDITOR
         private bool _isOnSkill1Debug;
@@ -38,6 +38,8 @@ namespace GanShin.Content.Creature
         
         protected override void Awake()
         {
+            PlayerType = Define.ePlayerAvatar.MUSCLE_CAT;
+            
             base.Awake();
 
             _statTable = Stat as MuscleCatStatTable;
@@ -230,12 +232,8 @@ namespace GanShin.Content.Creature
 
         private async UniTask UltimateSkillAsync()
         {
-            var characterCutScene =
-                ProjectManager.Instance.GetManager<UIManager>()?.GetGlobalUI(EGlobalUI.CHARACTER_CUT_SCENE) as
-                    UIRootCharacterCutScene;
-            if (characterCutScene != null)
-                characterCutScene.OnCharacterCutScene(Define.ePlayerAvatar.MUSCLE_CAT);
-
+            ShowCutScene();
+            
             Camera.ChangeState(eCameraState.CHARACTER_ULTIMATE_CAMERA);
             ObjAnimator.SetTrigger(AnimPramHashOnUltimate);
 

@@ -32,6 +32,17 @@ namespace GanShin.GanObject
                 base.Owner = value;
             }
         }
+
+        public override void Tick()
+        {
+            base.Tick();
+            if (Owner == null || _stat == null) return;
+            
+            var tr             = transform;
+            var ownerTransform = Owner.transform;
+            tr.position = ownerTransform.position + ownerTransform.forward * _stat.attackForwardOffset;
+            tr.rotation = ownerTransform.rotation;
+        }
         
         protected override void Initialize()
         {
