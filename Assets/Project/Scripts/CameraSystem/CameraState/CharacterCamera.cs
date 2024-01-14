@@ -39,11 +39,10 @@ namespace GanShin.CameraSystem
 #region Initialization
         private void InitializeCameraBodyTarget()
         {
-            var cameraBodyTargetObj = new GameObject("@CameraBodyTarget");
-            Object.DontDestroyOnLoad(cameraBodyTargetObj);
-            _cameraBodyTarget = cameraBodyTargetObj.GetOrAddComponent<CameraBodyTarget>();
-
-            GanDebugger.CameraLog("CameraBody initialized");
+            _cameraBodyTarget = ProjectManager.Instance.GetManager<CameraManager>()?.CharacterBodyTarget;
+            if (_cameraBodyTarget != null) return;
+            
+            GanDebugger.CameraLogError("Failed to get camera body target");
         }
 
         private void InitializeVirtualCamera()
@@ -212,9 +211,6 @@ namespace GanShin.CameraSystem
         {
             if (value == Vector2.zero)
                 return;
-
-            if (ReferenceEquals(_cameraBodyTarget, null))
-                InitializeCameraBodyTarget();
 
             _cinemachineTargetYaw   += value.x * _lookYawMagnitude;
             _cinemachineTargetPitch += value.y * _lookPitchMagnitude;
