@@ -1,6 +1,7 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using GanShin.Data;
+using GanShin.Effect;
 using UnityEngine;
 
 namespace GanShin.Content.Creature
@@ -74,6 +75,8 @@ namespace GanShin.Content.Creature
 
         protected override void Skill2()
         {
+            var effect = ProjectManager.Instance.GetManager<EffectManager>();
+            effect?.PlayEffect(eEffectType.AI_SKILL2, transform.position);
         }
 
         protected override void UltimateSkill()

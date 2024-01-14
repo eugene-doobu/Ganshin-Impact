@@ -15,6 +15,7 @@ namespace GanShin.Effect
         MUSCLE_CAT_ULTIMATE,
         MUSCLE_CAT_SKILL1,
         MUSCLE_CAT_SKILL2,
+        AI_SKILL2,
     }
 
     [UsedImplicitly]
