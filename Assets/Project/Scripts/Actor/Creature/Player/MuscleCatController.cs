@@ -197,6 +197,8 @@ namespace GanShin.Content.Creature
         private async UniTask Skill2Async()
         {
             IsCantToIdleAnimation = true;
+            CanMove = false;
+            
             ObjAnimator.SetTrigger(AnimPramHashOnSkill2);
             
             var effect = ProjectManager.Instance.GetManager<EffectManager>();
@@ -217,7 +219,9 @@ namespace GanShin.Content.Creature
                 timer += _statTable.skill2AttackDelay;
             }
             ObjAnimator.SetTrigger(AnimPramHashSetIdle);
+            
             IsCantToIdleAnimation = false;
+            CanMove = true;
             ReturnToIdle(0.01f).Forget();
         }
 
@@ -229,6 +233,7 @@ namespace GanShin.Content.Creature
         private async UniTask UltimateSkillAsync()
         {
             ShowCutScene();
+            CanMove = false;
             
             Camera.ChangeState(eCameraState.CHARACTER_ULTIMATE_CAMERA);
             ObjAnimator.SetTrigger(AnimPramHashOnUltimate);
@@ -248,10 +253,12 @@ namespace GanShin.Content.Creature
                               OnAttackEffect);
 
             PlayerAttack = ePlayerAttack.NONE;
+            CanMove      = true;
         }
 
         protected override void SpecialAction()
         {
+            CanMove = !IsOnSpecialAction;
             ObjAnimator.SetBool(AnimPramHashIsOnGuard, IsOnSpecialAction);
         }
 
