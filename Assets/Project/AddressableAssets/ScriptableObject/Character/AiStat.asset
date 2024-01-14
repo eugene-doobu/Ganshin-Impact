@@ -14,12 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hp: 100
   baseSkillCoolTime: 10
+  baseSkill2CoolTime: 10
   moveSpeed: 4
   dashSpeed: 6
   attackCoolTime: 0.8
-  previousAttackStateHoldTime: 4
+  previousAttackStateHoldTime: 1.8
   ultimateSkillAvailabilityGauge: 30
   ultimateSkillChargeOnBaseAttack: 2
   ultimateSkillChargeOnDamaged: 3
   ultimateSkillChargeOnKill: 5
   ultimateSkillChargeOnSkill: 5
+  ultimateSkillChargeOnSkill2: 5
+  aiAttackCooldown: 0.7
+  attack1Delay: 1
+  attack2Delay: 1
