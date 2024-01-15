@@ -9,6 +9,12 @@ namespace GanShin.Data
         public float aiAttackCooldown = 0.4f;
         public float attack1Delay = 1f;
         public float attack2Delay = 1.2f;
+        public float aiProjectileSpeed = 10f;
+        public float aiProjectileDuration = 7f;
+        public float aiProjectileDamage = 15f;
+        public float aiProjectileRadius = 0.5f;
+        public float aiProjectileDetectRadius = 3f;
+        public float aiProjectileMonsterHeightRatio = 0.7f;
         
         [Header("Skill1")]
         public float skill1SpellDelay = 0.5f;

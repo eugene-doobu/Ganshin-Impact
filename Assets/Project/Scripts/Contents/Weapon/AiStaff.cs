@@ -1,11 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
+#nullable enable
+
 using GanShin.Data;
+using GanShin.Effect;
+using UnityEngine;
 
 namespace GanShin.Content.Weapon
 {
     public class AiStaff : PlayerWeaponBase
     {
+        [SerializeField] private Transform spawnSocket = null!;
+        
         public override void OnAttack()
         {
             var stat = Owner.Stat as AiStatTable;
@@ -14,31 +18,20 @@ namespace GanShin.Content.Weapon
                 GanDebugger.LogError("Stat asset is not AiStatTable");
                 return;
             }
-
-            switch (AttackType)
-            {
-                case ePlayerAttack.AI_ATTACK1:
-                    MakeProjectile(1);
-                    break;
-                case ePlayerAttack.AI_ATTACK2:
-                    MakeProjectile(2);
-                    break;
-            }
+            
+            MakeProjectile();
         }
         
-        private void MakeProjectile(int num)
+        private void MakeProjectile()
         {
-            GanDebugger.LogWarning(num + "번째 공격");
-        }
+            var effectManager = ProjectManager.Instance.GetManager<EffectManager>();
+            if (effectManager == null)
+            {
+                GanDebugger.ActorLogError("EffectManager is null");
+                return;
+            }
 
-        public override void OnSkill()
-        {
-            // 번쩍이 이펙트 노랭
-        }
-
-        public override void OnUltimate()
-        {
-            // 번쩍이 이펙트 파랭
+            effectManager.PlayEffect(eEffectType.AI_PROJECTILE, Owner.transform.position);      
         }
     }
 }

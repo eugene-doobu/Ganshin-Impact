@@ -35,6 +35,8 @@ namespace GanShin.Content.Creature.Monster
         private NavMeshAgent _navMeshAgent = null!;
 
         private Transform? _playerTarget;
+        
+        public FieldMonsterTable Table => table;
 
 #region MonoBehaviour
         protected override void Awake()
@@ -280,6 +282,8 @@ namespace GanShin.Content.Creature.Monster
         {
             if (_isDead) return;
             _isDead = true;
+            
+            _capsuleCollider.enabled = false;
 
             var playerManager = ProjectManager.Instance.GetManager<PlayerManager>();
             if (playerManager?.CurrentPlayer == null) return;
