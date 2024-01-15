@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 0
   m_AmbientMode: 3
   m_SubtractiveShadowColor: {r: 0.86126727, g: 0.8630549, b: 0.86764705, a: 1}
-  m_SkyboxMaterial: {fileID: 2100000, guid: f85c198a2e4172a4786fea49350145c8, type: 2}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 8c152589ab2593f40b95b013c06dbedd, type: 2}
   m_HaloStrength: 0.34
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 1093279407}
-  m_IndirectSpecularColor: {r: 0.5149121, g: 0.6809772, b: 0.986344, a: 1}
+  m_IndirectSpecularColor: {r: 0.38995394, g: 0.22453848, b: 0.5913039, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -482,7 +482,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8277235755073664730, guid: 0ec4f4e7327534e60b58887488450e9c, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8277235755073664730, guid: 0ec4f4e7327534e60b58887488450e9c, type: 3}
       propertyPath: m_Intensity
@@ -501,8 +501,24 @@ PrefabInstance:
       value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 8277235755199117565, guid: 0ec4f4e7327534e60b58887488450e9c, type: 3}
+      propertyPath: m_Color.b
+      value: 0.64599997
+      objectReference: {fileID: 0}
+    - target: {fileID: 8277235755199117565, guid: 0ec4f4e7327534e60b58887488450e9c, type: 3}
+      propertyPath: m_Color.g
+      value: 0.49219054
+      objectReference: {fileID: 0}
+    - target: {fileID: 8277235755199117565, guid: 0ec4f4e7327534e60b58887488450e9c, type: 3}
+      propertyPath: m_Color.r
+      value: 0.33222854
+      objectReference: {fileID: 0}
+    - target: {fileID: 8277235755199117565, guid: 0ec4f4e7327534e60b58887488450e9c, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8277235755199117565, guid: 0ec4f4e7327534e60b58887488450e9c, type: 3}
+      propertyPath: m_Intensity
+      value: 2.86
       objectReference: {fileID: 0}
     - target: {fileID: 8277235755917428536, guid: 0ec4f4e7327534e60b58887488450e9c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -515,6 +531,22 @@ PrefabInstance:
     - target: {fileID: 8277235755917428536, guid: 0ec4f4e7327534e60b58887488450e9c, type: 3}
       propertyPath: m_LocalPosition.z
       value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8277235755929409220, guid: 0ec4f4e7327534e60b58887488450e9c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.6747894
+      objectReference: {fileID: 0}
+    - target: {fileID: 8277235755929409220, guid: 0ec4f4e7327534e60b58887488450e9c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.21132739
+      objectReference: {fileID: 0}
+    - target: {fileID: 8277235755929409220, guid: 0ec4f4e7327534e60b58887488450e9c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.67478937
+      objectReference: {fileID: 0}
+    - target: {fileID: 8277235755929409220, guid: 0ec4f4e7327534e60b58887488450e9c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.21132739
       objectReference: {fileID: 0}
     - target: {fileID: 8277235756537912283, guid: 0ec4f4e7327534e60b58887488450e9c, type: 3}
       propertyPath: m_RootOrder
@@ -571,7 +603,7 @@ PrefabInstance:
     - target: {fileID: 8277235756537912284, guid: 0ec4f4e7327534e60b58887488450e9c, type: 3}
       propertyPath: m_SkyProfile
       value: 
-      objectReference: {fileID: 11400000, guid: 7c70b0584eac17a4fadec9eadf166aa3, type: 2}
+      objectReference: {fileID: 11400000, guid: 9fdb44fb7be13ae4cb6655ad23257d51, type: 2}
     - target: {fileID: 8277235756537912286, guid: 0ec4f4e7327534e60b58887488450e9c, type: 3}
       propertyPath: m_Name
       value: SkySystemController
@@ -590,19 +622,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8277235756832742032, guid: 0ec4f4e7327534e60b58887488450e9c, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.6789795
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 8277235756832742032, guid: 0ec4f4e7327534e60b58887488450e9c, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.19745077
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 8277235756832742032, guid: 0ec4f4e7327534e60b58887488450e9c, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.6789795
+      value: -0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 8277235756832742032, guid: 0ec4f4e7327534e60b58887488450e9c, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.19745077
+      value: -0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -611,6 +643,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8277235755073664733, guid: 0ec4f4e7327534e60b58887488450e9c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1093279409}
+    - targetCorrespondingSourceObject: {fileID: 8277235755199117567, guid: 0ec4f4e7327534e60b58887488450e9c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1899461932}
   m_SourcePrefab: {fileID: 100100000, guid: 0ec4f4e7327534e60b58887488450e9c, type: 3}
 --- !u!108 &1093279407 stripped
 Light:
@@ -964,6 +999,34 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 38bad32df65f519448a5026694d1ceec, type: 3}
+--- !u!1 &1899461929 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8277235755199117567, guid: 0ec4f4e7327534e60b58887488450e9c, type: 3}
+  m_PrefabInstance: {fileID: 1093279406}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1899461932
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1899461929}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Version: 2
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_LightLayerMask: 1
+  m_RenderingLayers: 1
+  m_CustomShadowLayers: 0
+  m_ShadowLayerMask: 1
+  m_ShadowRenderingLayers: 1
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 1
 --- !u!1 &1937935721
 GameObject:
   m_ObjectHideFlags: 0
