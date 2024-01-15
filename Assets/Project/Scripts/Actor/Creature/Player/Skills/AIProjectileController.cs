@@ -133,8 +133,8 @@ namespace GanShin
                 return;
             
             await UniTask.Delay(TimeSpan.FromSeconds(_stat.aiProjectileDuration), cancellationToken: destroyCancellationToken);
-            
-            Destroy(gameObject);
+
+            Impact();
         }
 
         private void Impact()

@@ -13,21 +13,28 @@ MonoBehaviour:
   m_Name: AiStat
   m_EditorClassIdentifier: 
   hp: 100
-  baseSkillCoolTime: 4
-  baseSkill2CoolTime: 4
+  baseSkillCoolTime: 8
+  baseSkill2CoolTime: 28
   moveSpeed: 4
   dashSpeed: 6
   attackCoolTime: 0.8
   previousAttackStateHoldTime: 1.8
-  ultimateSkillAvailabilityGauge: 2
+  ultimateSkillAvailabilityGauge: 30
   ultimateSkillChargeOnBaseAttack: 2
   ultimateSkillChargeOnDamaged: 3
   ultimateSkillChargeOnKill: 5
   ultimateSkillChargeOnSkill: 5
   ultimateSkillChargeOnSkill2: 5
+  aiDetectMonsterRadius: 15
   aiAttackCooldown: 0.7
   attack1Delay: 1
   attack2Delay: 1
+  aiProjectileSpeed: 10
+  aiProjectileDuration: 1
+  aiProjectileDamage: 14
+  aiProjectileRadius: 0.4
+  aiProjectileDetectRadius: 2
+  aiProjectileMonsterHeightRatio: 0.7
   skill1SpellDelay: 0.6
   skill1Duration: 4
   skill1Radius: 5
