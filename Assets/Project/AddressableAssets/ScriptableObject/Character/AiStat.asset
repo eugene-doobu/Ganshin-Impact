@@ -19,7 +19,7 @@ MonoBehaviour:
   dashSpeed: 6
   attackCoolTime: 0.8
   previousAttackStateHoldTime: 1.8
-  ultimateSkillAvailabilityGauge: 30
+  ultimateSkillAvailabilityGauge: 2
   ultimateSkillChargeOnBaseAttack: 2
   ultimateSkillChargeOnDamaged: 3
   ultimateSkillChargeOnKill: 5
@@ -41,3 +41,8 @@ MonoBehaviour:
   skill2HealDelay: 0.1
   skill2YPositionOffset: 0.1
   ultimateSpellDelay: 1
+  ultimateCameraDelay: 1.5
+  ultimateDuration: 8
+  ultimatePositionOffset: {x: 0, y: 4, z: -2.3}
+  ultimateHitDamage: 55
+  ultimateHitRadius: 5

@@ -28,5 +28,11 @@ namespace GanShin.Data
         
         [Header("Ultimate")]
         public float ultimateSpellDelay = 2.3f;
+        public float   ultimateCameraDelay    = 3f;
+        public float   ultimateDuration       = 10f;
+        public Vector3 ultimatePositionOffset = new(0, 1.3f, -2f);
+
+        public float ultimateHitDamage = 40;
+        public float ultimateHitRadius = 5f;
     }
 }
