@@ -18,7 +18,7 @@ namespace GanShin.UI
         private CanvasGroup _canvasGroup = null!;
 
         [UsedImplicitly]
-        protected UIManager UIManager { get; private set; } = ProjectManager.Instance.GetManager<UIManager>();
+        protected UIManager? UIManager { get; private set; } = ProjectManager.Instance.GetManager<UIManager>();
 
         protected ContextHolder? ContextHolder { get; private set; }
 

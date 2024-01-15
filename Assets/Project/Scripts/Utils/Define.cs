@@ -5,7 +5,9 @@
         public enum eLayer
         {
             CHARACTER = 3,
-            MONSTER   = 8
+            GROUND    = 7,
+            MONSTER   = 8,
+            ENVIRONMENT = 9,
         }
 
         public enum ePlayerAvatar

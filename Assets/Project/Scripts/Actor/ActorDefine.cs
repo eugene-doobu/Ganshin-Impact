@@ -20,7 +20,9 @@ namespace GanShin.Content
         MUSCLE_CAT_ATTACK1,
         MUSCLE_CAT_ATTACK2,
         MUSCLE_CAT_ATTACK3,
-        MUSCLE_CAT_ATTACK4
+        MUSCLE_CAT_ATTACK4,
+        AI_ATTACK1,
+        AI_ATTACK2,
     }
 
     public enum eMonsterState

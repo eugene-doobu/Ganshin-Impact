@@ -3,8 +3,6 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using GanShin.Data;
 using GanShin.Effect;
-using GanShin.Space.UI;
-using GanShin.UI;
 using JetBrains.Annotations;
 using UnityEngine;
 

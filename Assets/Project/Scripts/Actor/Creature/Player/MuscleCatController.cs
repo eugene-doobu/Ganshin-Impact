@@ -5,7 +5,6 @@ using Cysharp.Threading.Tasks;
 using GanShin.CameraSystem;
 using GanShin.Data;
 using GanShin.Effect;
-using GanShin.Space.UI;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
