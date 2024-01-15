@@ -28,7 +28,7 @@ MonoBehaviour:
   aiAttackCooldown: 0.7
   attack1Delay: 1
   attack2Delay: 1
-  skill1SpellDelay: 0.3
+  skill1SpellDelay: 0.6
   skill1Duration: 4
   skill1Radius: 5
   skill1Damage: 1.5
