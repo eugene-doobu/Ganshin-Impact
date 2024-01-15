@@ -41,6 +41,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Space
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bad08e171f542f94e837bd2ea9bda7f4
+    m_Address: AiStaff.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Space
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 460a0dd41ae4490409dda8a15a6bcaf6, type: 2}
   m_SchemaSet:

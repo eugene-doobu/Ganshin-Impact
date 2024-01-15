@@ -1,8 +1,10 @@
 using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using GanShin.CameraSystem;
 using GanShin.Data;
 using GanShin.Effect;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace GanShin.Content.Creature
@@ -121,14 +123,22 @@ namespace GanShin.Content.Creature
         {
             ShowCutScene();
             var playerManager = ProjectManager.Instance.GetManager<PlayerManager>();
+            var cameraManager = ProjectManager.Instance.GetManager<CameraManager>();
             if (playerManager == null) return;
 
             CantMove();
             ObjAnimator.SetTrigger(AnimPramHashOnUltimate);
-            
+            cameraManager?.ChangeState(eCameraState.CHARACTER_ULTIMATE_CAMERA);
+
             await UniTask.Delay(TimeSpan.FromSeconds(_statTable.ultimateSpellDelay));
             if (IsDead || playerManager.CurrentPlayer != this) return;
             ReturnToIdleFromSkill();
+            
+            var effect = ProjectManager.Instance.GetManager<EffectManager>();
+            effect?.PlayEffect(eEffectType.AI_ULTIMATE, transform.position);
+            
+            await UniTask.Delay(TimeSpan.FromSeconds(_statTable.ultimateCameraDelay));
+            cameraManager?.ChangeState(eCameraState.CHARACTER_CAMERA);
         }
         
         private void CantMove()
@@ -169,5 +179,13 @@ namespace GanShin.Content.Creature
             //TODO: 조준
         }
 #endregion ActionEvent
+
+#region AnimEvents
+        [UsedImplicitly]
+        public void OnAnimAttack()
+        {
+            Weapon.OnAttack();
+        }
+#endregion AnimEvents
     }
 }

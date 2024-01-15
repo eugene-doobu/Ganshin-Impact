@@ -10,9 +10,15 @@ namespace GanShin.Content.Weapon
 
         public abstract void OnAttack();
 
-        public abstract void OnSkill();
+        public virtual void OnSkill()
+        {
+            
+        }
 
-        public abstract void OnUltimate();
+        public virtual void OnUltimate()
+        {
+            
+        }
 
         public virtual void OnSkillEnd()
         {

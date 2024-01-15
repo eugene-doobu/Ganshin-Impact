@@ -1888,7 +1888,7 @@ MonoBehaviour:
   _boundingSphereUpdateMode: 0
   _cullingBoundingRadius: 0.5
   _hudCullingState: 3
-  weapon: {fileID: 0}
+  weapon: {fileID: 373220542531523001}
   stat: {fileID: 11400000, guid: 237faf683c2d3f144b47ef4b33cd7f91, type: 2}
   rotationSmoothFactor: 8
   rollCooldown: 0.5
@@ -8135,18 +8135,6 @@ PrefabInstance:
       value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 5778368116502810737, guid: bad08e171f542f94e837bd2ea9bda7f4, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5778368116502810737, guid: bad08e171f542f94e837bd2ea9bda7f4, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5778368116502810737, guid: bad08e171f542f94e837bd2ea9bda7f4, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5778368116502810737, guid: bad08e171f542f94e837bd2ea9bda7f4, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.0501
       objectReference: {fileID: 0}
@@ -8191,6 +8179,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bad08e171f542f94e837bd2ea9bda7f4, type: 3}
+--- !u!114 &373220542531523001 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3213616917011135552, guid: bad08e171f542f94e837bd2ea9bda7f4, type: 3}
+  m_PrefabInstance: {fileID: 3005305663910456825}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f009408df3efea4e8a19ef4b961cd22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &8756157367500799368 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5778368116502810737, guid: bad08e171f542f94e837bd2ea9bda7f4, type: 3}

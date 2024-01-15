@@ -53,11 +53,11 @@ namespace GanShin.GanObject
             var len = Physics.OverlapSphereNonAlloc(transform.position, _stat.skill1Radius, _monsterColliders, Define.GetLayerMask(Define.eLayer.MONSTER));
             for (var i = 0; i < len; i++)
             {
-                var player = _monsterColliders[i].GetComponent<MonsterController>();
-                if (player == null)
+                var monster = _monsterColliders[i].GetComponent<MonsterController>();
+                if (monster == null)
                     continue;
                 
-                player.OnDamaged(_stat.skill1Damage);
+                monster.OnDamaged(_stat.skill1Damage);
             }
         }
 
