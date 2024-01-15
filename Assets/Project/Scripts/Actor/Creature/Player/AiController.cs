@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using GanShin.Data;
@@ -71,18 +72,76 @@ namespace GanShin.Content.Creature
 
         protected override void Skill()
         {
+            Skill1Spell().Forget();
+        }
+
+        private async UniTask Skill1Spell()
+        {
+            var playerManager = ProjectManager.Instance.GetManager<PlayerManager>();
+            if (playerManager == null) return;
+            
+            CantMove();
+            ObjAnimator.SetTrigger(AnimPramHashOnSkill);
+            
+            await UniTask.Delay(TimeSpan.FromSeconds(_statTable.skill1SpellDelay));
+            if (IsDead || playerManager.CurrentPlayer != this) return;
+            ReturnToIdleFromSkill();
+            
             var effect = ProjectManager.Instance.GetManager<EffectManager>();
             effect?.PlayEffect(eEffectType.AI_SKILL1, transform.position);
         }
 
         protected override void Skill2()
         {
+            Skill2Spell().Forget();
+        }
+
+        private async UniTask Skill2Spell()
+        {
+            var playerManager = ProjectManager.Instance.GetManager<PlayerManager>();
+            if (playerManager == null) return;
+            
+            CantMove();
+            ObjAnimator.SetTrigger(AnimPramHashOnSkill2);
+            
+            await UniTask.Delay(TimeSpan.FromSeconds(_statTable.skill2SpellDelay));
+            if (IsDead || playerManager.CurrentPlayer != this) return;
+            ReturnToIdleFromSkill();
+            
             var effect = ProjectManager.Instance.GetManager<EffectManager>();
             effect?.PlayEffect(eEffectType.AI_SKILL2, transform.position);
         }
 
         protected override void UltimateSkill()
         {
+            UltimateSpell().Forget();
+        }
+        
+        private async UniTask UltimateSpell()
+        {
+            ShowCutScene();
+            var playerManager = ProjectManager.Instance.GetManager<PlayerManager>();
+            if (playerManager == null) return;
+
+            CantMove();
+            ObjAnimator.SetTrigger(AnimPramHashOnUltimate);
+            
+            await UniTask.Delay(TimeSpan.FromSeconds(_statTable.ultimateSpellDelay));
+            if (IsDead || playerManager.CurrentPlayer != this) return;
+            ReturnToIdleFromSkill();
+        }
+        
+        private void CantMove()
+        {
+            CanMove               = false;
+            IsCantToIdleAnimation = true;
+        }
+        
+        private void ReturnToIdleFromSkill()
+        {
+            CanMove               = true;
+            IsCantToIdleAnimation = false;
+            ReturnToIdle(0.01f).Forget();
         }
 #endregion Attack
 
