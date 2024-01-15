@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using GanShin.CameraSystem;
+using GanShin.Content.Creature.Monster;
 using GanShin.Data;
 using GanShin.Effect;
 using JetBrains.Annotations;
@@ -15,6 +16,8 @@ namespace GanShin.Content.Creature
 
         private float _aiAttackCooldown;
         private bool _isOnSkill;
+        
+        private readonly Collider[] _monsterColliders = new Collider[20];
         
         protected override void Awake()
         {
@@ -176,7 +179,17 @@ namespace GanShin.Content.Creature
 
         protected override void SpecialAction()
         {
-            //TODO: 조준
+            var len = Physics.OverlapSphereNonAlloc(transform.position, _statTable.aiDetectMonsterRadius, _monsterColliders, Define.GetLayerMask(Define.eLayer.MONSTER));
+            for (var i = 0; i < len; i++)
+            {
+                var monster = _monsterColliders[i].GetComponent<MonsterController>();
+                if (monster == null)
+                    continue;
+            
+                var monsterController = _monsterColliders[0].GetComponent<MonsterController>();
+                transform.rotation = Quaternion.LookRotation(monsterController.transform.position - transform.position);
+                break;
+            }
         }
 #endregion ActionEvent
 
