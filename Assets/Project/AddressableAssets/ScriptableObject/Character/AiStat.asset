@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: AiStat
   m_EditorClassIdentifier: 
   hp: 100
-  baseSkillCoolTime: 10
+  baseSkillCoolTime: 4
   baseSkill2CoolTime: 4
   moveSpeed: 4
   dashSpeed: 6
@@ -28,8 +28,13 @@ MonoBehaviour:
   aiAttackCooldown: 0.7
   attack1Delay: 1
   attack2Delay: 1
+  skill1Duration: 4
+  skill1Radius: 5
+  skill1Damage: 1.5
+  skill1DamageDelay: 0.1
+  skill1PositionOffset: {x: 0, y: 0.1, z: 4}
   skill2Duration: 6
-  skill2Radius: 5
+  skill2Radius: 3.5
   skill2HealAmount: 1
   skill2HealDelay: 0.1
   skill2YPositionOffset: 0.1

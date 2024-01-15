@@ -10,6 +10,13 @@ namespace GanShin.Data
         public float attack1Delay = 1f;
         public float attack2Delay = 1.2f;
         
+        [Header("Skill1")]
+        public float skill1Duration = 4f;
+        public float skill1Radius = 5f;
+        public float skill1Damage = 0.1f;
+        public float skill1DamageDelay = 0.1f;
+        public Vector3 skill1PositionOffset = new Vector3(0, 0.1f, 3f);
+        
         [Header("Skill2")]
         public float skill2Duration = 5f;
         public float skill2Radius = 5f;

@@ -71,6 +71,8 @@ namespace GanShin.Content.Creature
 
         protected override void Skill()
         {
+            var effect = ProjectManager.Instance.GetManager<EffectManager>();
+            effect?.PlayEffect(eEffectType.AI_SKILL1, transform.position);
         }
 
         protected override void Skill2()
