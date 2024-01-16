@@ -14,8 +14,5 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Project/AddressableAssets/Scenes/LoadingScene.unity
     guid: a5704a75490fd90409e1df7e402c366e
-  - enabled: 1
-    path: Assets/Project/Scenes/Demo.unity
-    guid: 9a36afe203cf34b4fad518f34185f921
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: e58fd7e09f9c1d24cb6353003ad2daf0, type: 2}

@@ -13,8 +13,10 @@ namespace GanShin
 {
     public class ProjectManager
     {
+#if UNITY_EDITOR
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-        private static void Initialize()
+#endif // UNITY_EDITOR
+        public static void Initialize()
         {
             Instance.InitializeManagers().Forget();
         }

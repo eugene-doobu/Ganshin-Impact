@@ -3,8 +3,6 @@
 using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
-using Unity.Plastic.Newtonsoft.Json.Serialization;
-using Action = Unity.Plastic.Newtonsoft.Json.Serialization.Action;
 
 namespace GanShin.GanObject
 {
