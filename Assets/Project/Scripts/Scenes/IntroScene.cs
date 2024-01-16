@@ -1,11 +1,20 @@
+using System;
 using Cysharp.Threading.Tasks;
 using GanShin.Resource;
-using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace GanShin.SceneManagement
 {
     public class IntroScene : BaseScene
     {
+        private void Awake()
+        {
+            // TODO: 별도의 초기화 씬으로 이동
+#if !UNITY_EDITOR
+            ProjectManager.Initialize();
+#endif // !UNITY_EDITOR
+        }
+
         protected override void Initialize()
         {
             base.Initialize();
