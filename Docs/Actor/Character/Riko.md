@@ -1,6 +1,7 @@
 ![rikoFace](./Images/face/riko.jpg)
 
-https://youtu.be/FLvxez7zvJk
+https://youtu.be/FLvxez7zvJk<br>
+https://www.youtube.com/shorts/2y0_dX1UVvw
 
 ## 공격 및 스킬
 
@@ -18,13 +19,17 @@ https://youtu.be/FLvxez7zvJk
 
 스태미너를 소모하며 빠르게 뛰어간다.
 
-### 기본스킬 : E키
+### 기본스킬1 : E키
 
-칼을 휘둘러 광역 공격
+칼을 휘둘러 주위 적들에게 광역 공격을 한다.
+
+### 기본스킬2 : R키
+
+머리 위로 거대한 검을 생성하여 내려쳐 전방의 적들에게 데미지를 입힌다.
 
 ### 궁극스킬 : Q키
 
-칼의 강화시켜 일정 시간동안 광역 공격이 가능
+칼의 강화시켜 일정 시간동안 기본 공격의 범위와 데미지가 증가한다.
 
 ## 설정
 
