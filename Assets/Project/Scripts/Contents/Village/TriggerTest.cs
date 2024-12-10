@@ -1,5 +1,5 @@
 using GanShin.GanObject;
-using GanShin.Space.UI;
+using GanShin.UI.Space;
 using GanShin.UI;
 using UnityEngine;
 

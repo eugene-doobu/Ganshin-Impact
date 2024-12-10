@@ -1,7 +1,7 @@
 #nullable enable
 
 using GanShin.Dialogue.Base;
-using GanShin.Space.UI;
+using GanShin.UI.Space;
 using JetBrains.Annotations;
 using UnityEngine;
 

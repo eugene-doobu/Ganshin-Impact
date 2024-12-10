@@ -22,7 +22,7 @@ namespace GanShin.UI
         public void OnCharacterCutScene(Define.ePlayerAvatar avatar)
         {
             gameObject.SetActive(true);
-            
+
             RectTransform target = null;
             switch (avatar)
             {

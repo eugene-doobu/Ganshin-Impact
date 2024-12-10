@@ -1,12 +1,9 @@
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
-using Slash.Unity.DataBind.Core.Data;
 using UnityEngine;
 
-namespace GanShin.Space.UI
+namespace GanShin.UI.Space
 {
-    public class MinimapContext : Context, INotifyPropertyChanged
+    public class MinimapContext : GanContext
     {
         private Texture _defaultTexture;
 
@@ -32,14 +29,6 @@ namespace GanShin.Space.UI
                 if (Texture == null)
                     Texture = value;
             }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

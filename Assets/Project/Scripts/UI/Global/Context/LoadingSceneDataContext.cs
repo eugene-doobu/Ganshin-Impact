@@ -1,12 +1,9 @@
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
-using Slash.Unity.DataBind.Core.Data;
 using UnityEngine;
 
 namespace GanShin.UI
 {
-    public sealed class LoadingSceneDataContext : Context, INotifyPropertyChanged
+    public sealed class LoadingSceneDataContext : GanContext
     {
         private string _loadingText;
         private float  _progress;
@@ -31,14 +28,6 @@ namespace GanShin.UI
                 _progress = Mathf.Clamp(value, 0, 1f);
                 OnPropertyChanged();
             }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

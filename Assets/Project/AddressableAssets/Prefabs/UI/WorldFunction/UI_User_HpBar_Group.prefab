@@ -66,7 +66,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0353de6b5a9e8fa4eaded0354856aa9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  contextType: GanShin.Space.UI.PlayerContext, GanShinAssembly, Version=0.0.0.0,
+  contextType: GanShin.UI.Space.PlayerContext, GanShinAssembly, Version=0.0.0.0,
     Culture=neutral, PublicKeyToken=null
   createContext: 1
 --- !u!114 &4329812412386271726
@@ -347,7 +347,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 412232676, guid: 68b6e0d5df2d8574cb29c8e1b08cbce7, type: 3}
       propertyPath: contextType
-      value: GanShin.Space.UI.PlayerAvatarContext, GanShinAssembly, Version=0.0.0.0,
+      value: GanShin.UI.Space.PlayerAvatarContext, GanShinAssembly, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
       objectReference: {fileID: 0}
     - target: {fileID: 412232676, guid: 68b6e0d5df2d8574cb29c8e1b08cbce7, type: 3}
@@ -555,7 +555,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 412232676, guid: 68b6e0d5df2d8574cb29c8e1b08cbce7, type: 3}
       propertyPath: contextType
-      value: GanShin.Space.UI.PlayerAvatarContext, GanShinAssembly, Version=0.0.0.0,
+      value: GanShin.UI.Space.PlayerAvatarContext, GanShinAssembly, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
       objectReference: {fileID: 0}
     - target: {fileID: 412232676, guid: 68b6e0d5df2d8574cb29c8e1b08cbce7, type: 3}

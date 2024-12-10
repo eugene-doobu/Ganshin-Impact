@@ -1,7 +1,7 @@
 using JetBrains.Annotations;
 using UnityEngine;
 
-namespace GanShin.Space.UI
+namespace GanShin.UI.Space
 {
     public class FieldMonsterContext : CreatureObjectContext
     {

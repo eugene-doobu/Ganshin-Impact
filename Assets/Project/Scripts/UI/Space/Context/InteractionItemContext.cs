@@ -1,8 +1,7 @@
 using System;
-using GanShin.UI;
 using JetBrains.Annotations;
 
-namespace GanShin.Space.UI
+namespace GanShin.UI.Space
 {
     public class InteractionItemContext : GanContext, IDisposable
     {

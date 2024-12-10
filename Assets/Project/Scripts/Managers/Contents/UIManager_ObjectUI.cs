@@ -5,7 +5,7 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using GanShin.CameraSystem;
 using GanShin.GanObject;
-using GanShin.Space.UI;
+using GanShin.UI.Space;
 using UnityEngine;
 
 namespace GanShin.UI

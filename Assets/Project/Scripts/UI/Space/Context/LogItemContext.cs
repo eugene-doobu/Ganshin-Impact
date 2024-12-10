@@ -1,12 +1,9 @@
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
-using Slash.Unity.DataBind.Core.Data;
 
-namespace GanShin.Space.UI
+namespace GanShin.UI.Space
 {
     [UsedImplicitly]
-    public class LogItemContext : Context, INotifyPropertyChanged
+    public class LogItemContext : GanContext
     {
         private string _content;
 
@@ -27,14 +24,6 @@ namespace GanShin.Space.UI
                 _content = value;
                 OnPropertyChanged();
             }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

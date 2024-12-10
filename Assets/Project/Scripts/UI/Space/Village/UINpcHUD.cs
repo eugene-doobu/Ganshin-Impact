@@ -1,11 +1,10 @@
 using System.Collections.Generic;
-using GanShin.UI;
 using GanShin.Village.Base;
 using GanShin.Village.Contents;
 using Slash.Unity.DataBind.Core.Data;
 using UnityEngine;
 
-namespace GanShin.Village.UI
+namespace GanShin.UI.Village
 {
     public class UINpcHUD : UIRootBase
     {

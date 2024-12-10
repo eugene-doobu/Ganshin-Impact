@@ -1,8 +1,7 @@
-using GanShin.UI;
 using Slash.Unity.DataBind.Core.Data;
 using UnityEngine;
 
-namespace GanShin.Space.UI
+namespace GanShin.UI.Space
 {
     public enum eHpTarget
     {

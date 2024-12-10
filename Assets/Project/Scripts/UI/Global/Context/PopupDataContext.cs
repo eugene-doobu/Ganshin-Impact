@@ -1,14 +1,12 @@
 #nullable enable
 
 using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
 using Slash.Unity.DataBind.Core.Data;
 
 namespace GanShin.UI
 {
-    public sealed class PopupDataContext : Context, INotifyPropertyChanged
+    public sealed class PopupDataContext : GanContext
     {
         private string _contentText = string.Empty;
         private bool   _isOkCancel;
@@ -48,8 +46,6 @@ namespace GanShin.UI
             }
         }
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-
         public event Action? ClickOkEvent;
         public event Action? ClickCancelEvent;
 
@@ -69,12 +65,6 @@ namespace GanShin.UI
         {
             ClickOkEvent     = null;
             ClickCancelEvent = null;
-        }
-
-        [NotifyPropertyChangedInvocator]
-        private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

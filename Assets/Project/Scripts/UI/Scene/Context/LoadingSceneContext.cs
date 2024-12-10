@@ -4,7 +4,7 @@ using Slash.Unity.DataBind.Core.Data;
 namespace GanShin.UI
 {
     [UsedImplicitly]
-    public class LoadingSceneContext : Context
+    public class LoadingSceneContext : GanContext
     {
         private readonly Property<string> _loadingText = new();
         private readonly Property<float>  _progress    = new();

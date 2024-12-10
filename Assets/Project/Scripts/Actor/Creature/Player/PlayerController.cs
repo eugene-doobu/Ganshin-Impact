@@ -7,7 +7,7 @@ using GanShin.Content.Weapon;
 using GanShin.Data;
 using GanShin.GanObject;
 using GanShin.InputSystem;
-using GanShin.Space.UI;
+using GanShin.UI.Space;
 using GanShin.UI;
 using GanShin.Utils;
 using UnityEngine;
