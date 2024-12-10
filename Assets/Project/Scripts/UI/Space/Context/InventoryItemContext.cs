@@ -1,12 +1,9 @@
-using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+using GanShin.UI;
 using JetBrains.Annotations;
-using Slash.Unity.DataBind.Core.Data;
 
 namespace GanShin.Space.UI
 {
-    public class InventoryItemContext : Context, INotifyPropertyChanged, IDisposable
+    public class InventoryItemContext : GanContext
     {
         private int _amount;
 
@@ -23,16 +20,7 @@ namespace GanShin.Space.UI
 
         public void Dispose()
         {
-            Amount          = 0;
-            PropertyChanged = null;
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            Amount = 0;
         }
     }
 }

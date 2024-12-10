@@ -26,7 +26,7 @@ namespace GanShin.Space.UI
                 OnPropertyChanged();
             }
         }
-        
+
         [UsedImplicitly]
         public string TargetName
         {
@@ -71,7 +71,7 @@ namespace GanShin.Space.UI
                 OnPropertyChanged();
             }
         }
-        
+
         [UsedImplicitly]
         public float SortOrder
         {

@@ -11,7 +11,7 @@ namespace GanShin.Space.UI
         {
             if (actor is not FieldMonsterController)
                 return;
-            
+
             Add(actor.Id, new FieldMonsterContext());
         }
     }

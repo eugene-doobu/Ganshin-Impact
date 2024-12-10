@@ -1,15 +1,14 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using GanShin.Space.Content;
+using GanShin.UI;
 using JetBrains.Annotations;
 using Slash.Unity.DataBind.Core.Data;
 
 namespace GanShin.Space.UI
 {
     [UsedImplicitly]
-    public class InventoryContext : Context, INotifyPropertyChanged
+    public class InventoryContext : GanContext
     {
         private readonly Dictionary<ConsumableItemType, InventoryItemContext> _items = new();
 
@@ -25,8 +24,6 @@ namespace GanShin.Space.UI
                 OnPropertyChanged();
             }
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         public Context AddContext(ConsumableItemType type)
         {
@@ -48,12 +45,6 @@ namespace GanShin.Space.UI
             if (!_items.TryGetValue(type, out var context)) return;
 
             context.Amount = value;
-        }
-
-        [NotifyPropertyChangedInvocator]
-        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

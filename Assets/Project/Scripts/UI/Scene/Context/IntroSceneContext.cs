@@ -1,12 +1,11 @@
 using GanShin.SceneManagement;
 using JetBrains.Annotations;
-using Slash.Unity.DataBind.Core.Data;
 using UnityEditor;
 
 namespace GanShin.UI
 {
     [UsedImplicitly]
-    public class IntroSceneContext : Context
+    public class IntroSceneContext : GanContext
     {
         public UIManager      UIManager    { get; set; }
         public SceneManagerEx SceneManager { get; set; }

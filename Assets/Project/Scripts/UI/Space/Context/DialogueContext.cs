@@ -1,27 +1,18 @@
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+using GanShin.UI;
 using JetBrains.Annotations;
-using Slash.Unity.DataBind.Core.Data;
 using UnityEngine;
 
 namespace GanShin.Space.UI
 {
     [UsedImplicitly]
-    public class DialogueContext : Context, INotifyPropertyChanged
+    public class DialogueContext : GanContext
     {
         private string _content;
 
         private string _name;
 
-        private Color                            _speakerColor;
-        private Sprite                           _sprite;
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        private Color  _speakerColor;
+        private Sprite _sprite;
 
 #region Properties
 

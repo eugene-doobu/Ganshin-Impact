@@ -22,41 +22,41 @@ namespace GanShin.Space.UI
 
 #region Fields/Properties
 		private bool _enable;
-		
+
 		public bool Enable
 		{
 			get => _enable;
 			set
 			{
 				if (_enable == value) return;
-				
+
 				_enable = value;
 
 				if (!value) Clear();
 				else AddAllActor();
-				
+
 				OnPropertyChanged();
 			}
 		}
-		
-		protected eDisplayType _type = eDisplayType.ALL;
-		
+
+		private eDisplayType _type = eDisplayType.ALL;
+
 		public eDisplayType Type
 		{
 			get => _type;
 			set
 			{
 				if (_type == value) return;
-				
+
 				if (value != eDisplayType.CUSTOM)
 					CustomDisplayFilter = null;
-				
+
 				_type = value;
 				OnPropertyChanged();
 				RefreshItemContexts();
 			}
 		}
-		
+
 		public Func<Actor, bool>? CustomDisplayFilter { get; set; }
 #endregion Fields/Properties
 
@@ -64,7 +64,7 @@ namespace GanShin.Space.UI
 		protected ActorManagerContext()
 		{
 			var actorManager = ProjectManager.Instance.GetManager<ActorManager>();
-			
+
 			if (actorManager == null)
 			{
 				GanDebugger.ActorLogError("Failed to get actor manager");
@@ -72,18 +72,18 @@ namespace GanShin.Space.UI
 			}
 
 			AddAllActor();
-			
+
 			actorManager.OnRegister += OnActorAdded;
 			actorManager.OnUnregister += OnActorRemoved;
 		}
-		
+
         protected override void OnDispose()
         {
 	        base.OnDispose();
-	        
+
 	        var actorManager = ProjectManager.Instance.GetManager<ActorManager>();
 	        if (actorManager == null) return;
-	        
+
 	        actorManager.OnRegister -= OnActorAdded;
 	        actorManager.OnUnregister -= OnActorRemoved;
         }
@@ -94,29 +94,29 @@ namespace GanShin.Space.UI
 		{
 			RegisterObserver(actor);
 		}
-		
+
 		private void OnActorRemoved(Actor? actor)
 		{
 			DeleteObserver(actor);
 		}
-		
+
 		private void RegisterObserver(Actor? actor)
 		{
 			if (actor == null) return;
-			
+
 			actor.OnBecomeOccluded += OnBecomeOccluded;
 			actor.OnBecomeUnoccluded += OnBecomeUnoccluded;
-			
+
 			AddActor(actor);
 		}
-		
+
 		private void DeleteObserver(Actor? actor)
 		{
 			if (actor == null) return;
-			
+
 			actor.OnBecomeOccluded -= OnBecomeOccluded;
 			actor.OnBecomeUnoccluded -= OnBecomeUnoccluded;
-			
+
 			RemoveActor(actor);
 		}
 #endregion EventHandler
@@ -126,9 +126,9 @@ namespace GanShin.Space.UI
 		{
 			// TODO: 컬링그룹 조건 추가
 			if (!_enable || Contains(actor.Id)) return;
-			
+
 			if (!IsMatchingCondition(actor)) return;
-			
+
 			RefreshOcclusionState(actor);
 			AddContext(actor);
 		}
@@ -159,7 +159,7 @@ namespace GanShin.Space.UI
 		{
 			var actorManager = ProjectManager.Instance.GetManager<ActorManager>();
 			if (actorManager == null) return;
-			
+
 			var creatureObjects = actorManager.CreatureObjects;
 			foreach (var creatureObject in creatureObjects.Values)
 			{
@@ -167,7 +167,7 @@ namespace GanShin.Space.UI
 				RefreshOcclusionState(creatureObject);
 			}
 		}
-		
+
 		private void RefreshItemContexts()
 		{
 			Clear();
@@ -178,21 +178,21 @@ namespace GanShin.Space.UI
 #region CullingGroup
 		private void RefreshOcclusionState(Actor actor)
 		{
-			if (actor.IsOccluded) 
+			if (actor.IsOccluded)
 				OnBecomeOccluded(actor);
-			else 
-				OnBecomeUnoccluded(actor);	
+			else
+				OnBecomeUnoccluded(actor);
 		}
-		
+
 		private void OnBecomeUnoccluded(Actor? actor)
 		{
 			if (actor == null) return;
 			var uiManager = ProjectManager.Instance.GetManager<UIManager>();
 			uiManager?.AddNearByObject(actor);
-			
+
 			var hasContext = TryGet(actor.Id, out var context);
 			if (!hasContext || context == null) return;
-			
+
 			context.IsEnable = true;
 		}
 
@@ -201,10 +201,10 @@ namespace GanShin.Space.UI
 			if (actor == null) return;
 			var uiManager = ProjectManager.Instance.GetManager<UIManager>();
 			uiManager?.RemoveNearByObject(actor);
-			
+
 			var hasContext = TryGet(actor.Id, out var context);
 			if (!hasContext || context == null) return;
-			
+
 			context.IsEnable = false;
 		}
 #endregion CullingGroup
