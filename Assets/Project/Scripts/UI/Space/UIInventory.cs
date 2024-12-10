@@ -1,11 +1,10 @@
 using System;
 using GanShin.Space.Content;
-using GanShin.UI;
 using Slash.Unity.DataBind.Core.Data;
 using Slash.Unity.DataBind.Core.Presentation;
 using UnityEngine;
 
-namespace GanShin.Space.UI
+namespace GanShin.UI.Space
 {
     public class UIInventory : UIRootBase
     {

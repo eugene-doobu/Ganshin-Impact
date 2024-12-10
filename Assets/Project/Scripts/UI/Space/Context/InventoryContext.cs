@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
 using GanShin.Space.Content;
-using GanShin.UI;
 using JetBrains.Annotations;
 using Slash.Unity.DataBind.Core.Data;
 
-namespace GanShin.Space.UI
+namespace GanShin.UI.Space
 {
     [UsedImplicitly]
     public class InventoryContext : GanContext

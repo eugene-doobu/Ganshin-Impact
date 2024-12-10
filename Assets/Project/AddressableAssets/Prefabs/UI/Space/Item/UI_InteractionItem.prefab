@@ -323,6 +323,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0353de6b5a9e8fa4eaded0354856aa9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  contextType: GanShin.Space.UI.InteractionItemContext, GanShinAssembly, Version=0.0.0.0,
+  contextType: GanShin.UI.Space.InteractionItemContext, GanShinAssembly, Version=0.0.0.0,
     Culture=neutral, PublicKeyToken=null
   createContext: 0

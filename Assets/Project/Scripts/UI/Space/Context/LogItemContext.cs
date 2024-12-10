@@ -1,7 +1,6 @@
-using GanShin.UI;
 using JetBrains.Annotations;
 
-namespace GanShin.Space.UI
+namespace GanShin.UI.Space
 {
     [UsedImplicitly]
     public class LogItemContext : GanContext

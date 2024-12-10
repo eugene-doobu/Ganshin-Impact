@@ -1,8 +1,7 @@
-using GanShin.UI;
 using JetBrains.Annotations;
 using Slash.Unity.DataBind.Core.Data;
 
-namespace GanShin.Space.UI
+namespace GanShin.UI.Space
 {
     [UsedImplicitly]
     public class LogContext : GanContext

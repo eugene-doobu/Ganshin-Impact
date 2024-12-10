@@ -3,7 +3,7 @@
 using System;
 using System.Collections.Generic;
 using GanShin.Resource;
-using GanShin.Space.UI;
+using GanShin.UI.Space;
 using UnityEngine;
 using Object = UnityEngine.Object;
 

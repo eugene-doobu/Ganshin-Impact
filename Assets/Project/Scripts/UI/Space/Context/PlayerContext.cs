@@ -1,8 +1,7 @@
-using GanShin.UI;
 using JetBrains.Annotations;
 using UnityEngine;
 
-namespace GanShin.Space.UI
+namespace GanShin.UI.Space
 {
     /// <summary>
     ///     플레이어의 아바타 상관없이 적용되는 수치에 대한 viewmodel context

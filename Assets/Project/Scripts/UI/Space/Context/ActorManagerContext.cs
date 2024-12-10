@@ -3,10 +3,9 @@
 using System;
 using System.Runtime.CompilerServices;
 using GanShin.GanObject;
-using GanShin.UI;
 using JetBrains.Annotations;
 
-namespace GanShin.Space.UI
+namespace GanShin.UI.Space
 {
 	[UsedImplicitly]
 	public abstract class ActorManagerContext : CollectionManagerContext<long, CreatureObjectContext>

@@ -1,8 +1,7 @@
-using GanShin.UI;
 using JetBrains.Annotations;
 using UnityEngine;
 
-namespace GanShin.Space.UI
+namespace GanShin.UI.Space
 {
     public abstract class CreatureObjectContext : GanContext
     {

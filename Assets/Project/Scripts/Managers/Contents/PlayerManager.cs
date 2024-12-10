@@ -4,7 +4,7 @@ using System;
 using GanShin.CameraSystem;
 using GanShin.Content.Creature;
 using GanShin.Resource;
-using GanShin.Space.UI;
+using GanShin.UI.Space;
 using JetBrains.Annotations;
 using UnityEngine;
 using Object = UnityEngine.Object;

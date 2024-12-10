@@ -1,10 +1,9 @@
 using GanShin.Space.Content;
-using GanShin.UI;
 using Slash.Unity.DataBind.Core.Data;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace GanShin.Space.UI
+namespace GanShin.UI.Space
 {
     public class UIMiniMap : UIRootBase
     {

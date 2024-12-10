@@ -2,7 +2,7 @@ using GanShin.Content.Creature.Monster;
 using GanShin.GanObject;
 using JetBrains.Annotations;
 
-namespace GanShin.Space.UI
+namespace GanShin.UI.Space
 {
     [UsedImplicitly]
     public class FieldMonsterManagerContext : ActorManagerContext
