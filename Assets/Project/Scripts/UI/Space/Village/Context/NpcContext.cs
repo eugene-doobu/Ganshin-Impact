@@ -1,10 +1,9 @@
 #nullable enable
 
-using GanShin.UI;
 using GanShin.Village.Base;
 using JetBrains.Annotations;
 
-namespace GanShin.Village.UI
+namespace GanShin.UI.Village
 {
     public class NpcContext : GanContext
     {
