@@ -41,7 +41,7 @@ namespace GanShin.CameraSystem
         {
             _cameraBodyTarget = ProjectManager.Instance.GetManager<CameraManager>()?.CharacterBodyTarget;
             if (_cameraBodyTarget != null) return;
-            
+
             GanDebugger.CameraLogError("Failed to get camera body target");
         }
 

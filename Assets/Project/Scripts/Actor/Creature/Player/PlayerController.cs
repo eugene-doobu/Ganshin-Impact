@@ -18,6 +18,7 @@ namespace GanShin.Content.Creature
     public abstract class PlayerController : CreatureObject
     {
 #region Static
+
         protected static readonly int AnimPramHashIsMove      = Animator.StringToHash("IsMove");
         protected static readonly int AnimPramHashMoveSpeed   = Animator.StringToHash("MoveSpeed");
         protected static readonly int AnimPramHashRollStart   = Animator.StringToHash("RollStart");
@@ -25,11 +26,13 @@ namespace GanShin.Content.Creature
         protected static readonly int AnimPramHashSetIdle     = Animator.StringToHash("SetIdle");
         protected static readonly int AnimPramHashSetDead     = Animator.StringToHash("SetDead");
         protected static readonly int AnimPramHashOnSkill     = Animator.StringToHash("OnSkill");
-        protected static readonly int AnimPramHashOnSkill2     = Animator.StringToHash("OnSkill2");
+        protected static readonly int AnimPramHashOnSkill2    = Animator.StringToHash("OnSkill2");
         protected static readonly int AnimPramHashOnUltimate  = Animator.StringToHash("OnUltimate");
+
 #endregion Static
 
 #region Variables
+
         private CameraManager Camera        => ProjectManager.Instance.GetManager<CameraManager>();
         private PlayerManager PlayerManager => ProjectManager.Instance.GetManager<PlayerManager>();
 
@@ -80,9 +83,11 @@ namespace GanShin.Content.Creature
         private float _currentUltimateGauge;
         private bool  _isAvailableSkill  = true;
         private bool  _isAvailableSkill2 = true;
+
 #endregion Variables
 
 #region Properties
+
         public CharacterStatTable Stat => stat;
 
         public ePlayerAttack PlayerAttack
@@ -136,16 +141,18 @@ namespace GanShin.Content.Creature
             Player.GetAvatarContext(PlayerType);
 
         public bool IsDead { get; private set; }
-        
+
         /// <summary>
         /// 스킬이나 연출 애니메이션 등 현재 애니메이션 상태에서 강제로 Idle 애니메이션으로 돌아가는 것을 막습니다.
         /// </summary>
         public bool IsCantToIdleAnimation { get; set; }
-        
+
         protected Define.ePlayerAvatar PlayerType { get; set; }
+
 #endregion Properties
 
 #region Mono
+
         protected override void Awake()
         {
             base.Awake();
@@ -178,10 +185,18 @@ namespace GanShin.Content.Creature
             Roll();
             ApplyGravity();
             TryAttack();
+            SolveFeetPositions();
         }
+
+        private void OnAnimatorIK(int layerIndex)
+        {
+            SetFeetIK(layerIndex);
+        }
+
 #endregion Mono
 
 #region StateCheck
+
         private void InitializeAvatar()
         {
             CC  = GetComponent<CharacterController>();
@@ -206,6 +221,7 @@ namespace GanShin.Content.Creature
             else
                 _isOnGround = false;
         }
+
 #endregion StateCheck
 
         private void AddInputEvent()
@@ -254,7 +270,7 @@ namespace GanShin.Content.Creature
                 GanDebugger.ActorLogWarning("PlayerType is NONE");
                 return;
             }
-            
+
             var characterCutScene =
                 ProjectManager.Instance.GetManager<UIManager>()?.GetGlobalUI(EGlobalUI.CHARACTER_CUT_SCENE) as
                     UIRootCharacterCutScene;
@@ -263,6 +279,7 @@ namespace GanShin.Content.Creature
         }
 
 #region Movement
+
         private void Movement()
         {
             PlayMovementAnimation();
@@ -343,9 +360,11 @@ namespace GanShin.Content.Creature
         {
             CC.Move(Vector3.up * gravity * Time.deltaTime);
         }
+
 #endregion Movement
 
 #region Attack
+
         private void TryAttack()
         {
             if (!_desiredAttack) return;
@@ -363,7 +382,7 @@ namespace GanShin.Content.Creature
         protected abstract void Skill();
 
         protected abstract void Skill2();
-        
+
         protected abstract void UltimateSkill();
 
         protected abstract void SpecialAction();
@@ -385,8 +404,9 @@ namespace GanShin.Content.Creature
 
             return len > 0;
         }
-        
-        public bool ApplyAttackDamageCapsule(Vector3 attackPosition, Vector3 attackDir, float attackRadius, float attackHeight, float damage,
+
+        public bool ApplyAttackDamageCapsule(Vector3 attackPosition, Vector3 attackDir, float attackRadius,
+            float attackHeight, float damage,
             Collider[] monsterColliders, Action<Collider> monsterCollider)
         {
             var len = Physics.OverlapCapsuleNonAlloc(attackPosition + attackDir * (attackHeight * 0.5f - attackRadius),
@@ -489,7 +509,7 @@ namespace GanShin.Content.Creature
             GetPlayerContext.BaseSkillCoolTimePercent = 0f;
             _isAvailableSkill                         = true;
         }
-        
+
         private async UniTask Skill2CoolTime()
         {
             _isAvailableSkill2 = false;
@@ -497,7 +517,7 @@ namespace GanShin.Content.Creature
             while (value < coolTime)
             {
                 GetPlayerContext.BaseSkill2CoolTimePercent =  1 - value / coolTime;
-                value                                     += Time.deltaTime;
+                value                                      += Time.deltaTime;
                 await UniTask.Yield();
             }
 
@@ -509,9 +529,11 @@ namespace GanShin.Content.Creature
         {
             GetPlayerContext.UltimateGaugePercent = 1 - _currentUltimateGauge / stat.ultimateSkillAvailabilityGauge;
         }
+
 #endregion Attack
 
 #region ActionEvent
+
         private void OnMovement(Vector2 value)
         {
             _lastMovementValue = value;
@@ -576,6 +598,157 @@ namespace GanShin.Content.Creature
             UltimateSkill();
             RefreshUltimateGauge();
         }
+
 #endregion ActionEvent
+
+#region Animation
+
+        private struct FootIkSolverData
+        {
+            public bool       IsDetectGround;
+            public Vector3    FootPosition;
+            public Quaternion FootRotation;
+        }
+
+        [Header("Feet Grounder")]
+        public bool enableFeetIk = true;
+        [Range(0, 2)] [SerializeField]
+        private float heightFromGroundRaycast = 1.14f;
+        [Range(0, 2)] [SerializeField]
+        private float raycastDownDistance = 1.5f;
+        [SerializeField]
+        private LayerMask environmentLayer;
+        [SerializeField]
+        private float pelvisOffset;
+        [Range(0, 1)] [SerializeField]
+        private float pelvisUpAndDownSpeed = 0.28f;
+        [Range(0, 1)] [SerializeField]
+        private float feetToIkPositionSpeed = 0.5f;
+
+#if UNITY_EDITOR
+        [SerializeField]
+        private bool showSolverDebug = true;
+#endif // UNITY_EDITOR
+
+        private float _lastPelvisPositionY, _lastRightFootPositionY, _lastLeftFootPositionY;
+
+        private FootIkSolverData _rightFootSolverData, _leftFootSolverData;
+
+        private void SolveFeetPositions()
+        {
+            if (!enableFeetIk) return;
+            if (!HasAnimator) return;
+
+            var rightFootPosition = AdjustFeetTarget(HumanBodyBones.RightFoot);
+            var leftFootPosition = AdjustFeetTarget(HumanBodyBones.LeftFoot);
+
+            // find and raycast to the ground to find positions
+            _rightFootSolverData = FeetPositionSolver(rightFootPosition);
+            _leftFootSolverData = FeetPositionSolver(leftFootPosition);
+        }
+
+        private void SetFeetIK(int layerIndex)
+        {
+            if (!enableFeetIk) return;
+            if (!HasAnimator) return;
+
+            MovePelvisHeight();
+
+            ObjAnimator.SetIKPositionWeight(AvatarIKGoal.RightFoot, 1);
+            MoveFeetToIkPoint(AvatarIKGoal.RightFoot, _rightFootSolverData, ref _lastRightFootPositionY);
+
+            ObjAnimator.SetIKPositionWeight(AvatarIKGoal.LeftFoot, 1);
+            MoveFeetToIkPoint(AvatarIKGoal.LeftFoot, _leftFootSolverData, ref _lastLeftFootPositionY);
+        }
+
+        private void MoveFeetToIkPoint(AvatarIKGoal foot, FootIkSolverData solverData, ref float lastFootPositionY)
+        {
+            var isSolved = solverData.IsDetectGround;
+            var positionIkHolder = solverData.FootPosition;
+            var rotationIkHolder = solverData.FootRotation;
+            var targetIkPosition = ObjAnimator.GetIKPosition(foot);
+
+            if (isSolved)
+            {
+                targetIkPosition = transform.InverseTransformPoint(targetIkPosition);
+                positionIkHolder = transform.InverseTransformPoint(positionIkHolder);
+
+                var yVariable = Mathf.Lerp(lastFootPositionY, positionIkHolder.y, feetToIkPositionSpeed);
+                targetIkPosition.y += yVariable;
+
+                lastFootPositionY = yVariable;
+
+                targetIkPosition = transform.TransformPoint(targetIkPosition);
+
+                ObjAnimator.SetIKRotation(foot, rotationIkHolder);
+            }
+
+            ObjAnimator.SetIKPosition(foot, targetIkPosition);
+        }
+
+        private void MovePelvisHeight()
+        {
+            if (!_leftFootSolverData.IsDetectGround || !_rightFootSolverData.IsDetectGround || _lastPelvisPositionY == 0)
+            {
+                _lastPelvisPositionY = ObjAnimator.bodyPosition.y;
+                return;
+            }
+
+            var transformPositionY = transform.position.y;
+            var lOffsetPosition    = _leftFootSolverData.FootPosition.y - transformPositionY;
+            var rOffsetPosition    = _rightFootSolverData.FootPosition.y - transformPositionY;
+
+            var totalOffset = lOffsetPosition < rOffsetPosition ? lOffsetPosition : rOffsetPosition;
+            var newPelvisPosition = ObjAnimator.bodyPosition + Vector3.up * totalOffset;
+
+            newPelvisPosition.y = Mathf.Lerp(_lastPelvisPositionY, newPelvisPosition.y, pelvisUpAndDownSpeed);
+
+            ObjAnimator.bodyPosition = newPelvisPosition;
+            _lastPelvisPositionY = ObjAnimator.bodyPosition.y;
+        }
+
+        private FootIkSolverData FeetPositionSolver(Vector3 fromSkyPosition)
+        {
+#if UNITY_EDITOR
+            if (showSolverDebug)
+            {
+                Debug.DrawLine(fromSkyPosition,
+                               fromSkyPosition + Vector3.down * (raycastDownDistance + heightFromGroundRaycast),
+                               Color.yellow);
+            }
+#endif
+
+            if (!Physics.Raycast(fromSkyPosition, Vector3.down, out var feetOutHit,
+                                 raycastDownDistance + heightFromGroundRaycast, environmentLayer))
+            {
+                return new FootIkSolverData
+                {
+                    IsDetectGround = false,
+                    FootPosition   = Vector3.zero,
+                    FootRotation   = Quaternion.identity
+                };
+            }
+
+            var feetIkPositions = fromSkyPosition;
+            feetIkPositions.y = feetOutHit.point.y + pelvisOffset;
+            var feetIkRotations = Quaternion.FromToRotation(Vector3.up, feetOutHit.normal) * transform.rotation;
+
+            return new FootIkSolverData
+            {
+                IsDetectGround = true,
+                FootPosition   = feetIkPositions,
+                FootRotation   = feetIkRotations
+            };
+
+        }
+
+        private Vector3 AdjustFeetTarget(HumanBodyBones foot)
+        {
+            var feetPositions = ObjAnimator.GetBoneTransform(foot).position;
+            feetPositions.y = transform.position.y + heightFromGroundRaycast;
+            return feetPositions;
+        }
+
+#endregion Animation
     }
 }
