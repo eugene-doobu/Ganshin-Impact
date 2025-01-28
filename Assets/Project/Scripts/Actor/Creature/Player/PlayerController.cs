@@ -185,12 +185,12 @@ namespace GanShin.Content.Creature
             Roll();
             ApplyGravity();
             TryAttack();
-            SolveFeetPositions();
         }
 
         private void OnAnimatorIK(int layerIndex)
         {
-            SetFeetIK(layerIndex);
+            SolveFeetPositions();
+            SetFeetIK();
         }
 
 #endregion Mono
@@ -647,7 +647,7 @@ namespace GanShin.Content.Creature
             _leftFootSolverData = FeetPositionSolver(leftFootPosition);
         }
 
-        private void SetFeetIK(int layerIndex)
+        private void SetFeetIK()
         {
             if (!enableFeetIk) return;
             if (!HasAnimator) return;
