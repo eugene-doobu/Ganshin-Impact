@@ -663,26 +663,21 @@ namespace GanShin.Content.Creature
 
         private void MoveFeetToIkPoint(AvatarIKGoal foot, FootIkSolverData solverData, ref float lastFootPositionY)
         {
-            var isSolved = solverData.IsDetectGround;
+            if (!solverData.IsDetectGround) return;
             var positionIkHolder = solverData.FootPosition;
             var rotationIkHolder = solverData.FootRotation;
             var targetIkPosition = ObjAnimator.GetIKPosition(foot);
 
-            if (isSolved)
-            {
-                targetIkPosition = transform.InverseTransformPoint(targetIkPosition);
-                positionIkHolder = transform.InverseTransformPoint(positionIkHolder);
+            targetIkPosition = transform.InverseTransformPoint(targetIkPosition);
+            positionIkHolder = transform.InverseTransformPoint(positionIkHolder);
 
-                var yVariable = Mathf.Lerp(lastFootPositionY, positionIkHolder.y, feetToIkPositionSpeed);
-                targetIkPosition.y += yVariable;
+            var yVariable = Mathf.Lerp(lastFootPositionY, positionIkHolder.y, feetToIkPositionSpeed);
+            targetIkPosition.y += yVariable;
+            lastFootPositionY = yVariable;
 
-                lastFootPositionY = yVariable;
+            targetIkPosition = transform.TransformPoint(targetIkPosition);
 
-                targetIkPosition = transform.TransformPoint(targetIkPosition);
-
-                ObjAnimator.SetIKRotation(foot, rotationIkHolder);
-            }
-
+            ObjAnimator.SetIKRotation(foot, rotationIkHolder);
             ObjAnimator.SetIKPosition(foot, targetIkPosition);
         }
 
@@ -739,7 +734,6 @@ namespace GanShin.Content.Creature
                 FootPosition   = feetIkPositions,
                 FootRotation   = feetIkRotations
             };
-
         }
 
         private Vector3 AdjustFeetTarget(HumanBodyBones foot)
