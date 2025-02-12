@@ -57,4 +57,3 @@
 - UniTask
 - Zstring
 - JSON .NET For Unity
-- Zenject
