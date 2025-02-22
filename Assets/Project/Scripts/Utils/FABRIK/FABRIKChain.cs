@@ -1,3 +1,5 @@
+#nullable enable
+
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,7 +8,7 @@ namespace GanShin.FABRIK
     public class FabrikChain
     {
 #region Fields
-	    private readonly FabrikChain _parent;
+	    private readonly FabrikChain? _parent;
 
 	    private readonly List<FabrikChain>            _children = new();
 	    private readonly List<HumanoidFabrikEffector> _effectors;
@@ -27,7 +29,7 @@ namespace GanShin.FABRIK
 	    public  HumanoidFabrikEffector EndEffector  => _effectors[^1];
 #endregion Property
 
-		public FabrikChain(FabrikChain parent, List<HumanoidFabrikEffector> effectors, int layer)
+		public FabrikChain(FabrikChain? parent, List<HumanoidFabrikEffector> effectors, int layer)
 		{
 			for (var i = 1; i < effectors.Count; i++)
 				effectors[i - 1].Length = Vector3.Distance(effectors[i].Transform.position, effectors[i - 1].Transform.position);
