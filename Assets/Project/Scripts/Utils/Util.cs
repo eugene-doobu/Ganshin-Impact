@@ -1,5 +1,6 @@
 ﻿#nullable enable
 
+using System.Collections.Generic;
 using GanShin;
 using GanShin.Resource;
 using GanShin.UI;
@@ -7,6 +8,74 @@ using UnityEngine;
 
 public static class Util
 {
+    private static readonly Dictionary<HumanBodyBones, HumanBodyBones> ParentMap = new()
+    {
+        // Hips → Spine → Chest → Neck → Head
+        { HumanBodyBones.Spine, HumanBodyBones.Hips },
+        { HumanBodyBones.Chest, HumanBodyBones.Spine },
+        { HumanBodyBones.Neck, HumanBodyBones.Chest },
+        { HumanBodyBones.Head, HumanBodyBones.Neck },
+
+        // Hips → UpperLeg → LowerLeg → Foot → Toes
+        { HumanBodyBones.LeftUpperLeg, HumanBodyBones.Hips },
+        { HumanBodyBones.LeftLowerLeg, HumanBodyBones.LeftUpperLeg },
+        { HumanBodyBones.LeftFoot, HumanBodyBones.LeftLowerLeg },
+        { HumanBodyBones.LeftToes, HumanBodyBones.LeftFoot },
+
+        { HumanBodyBones.RightUpperLeg, HumanBodyBones.Hips },
+        { HumanBodyBones.RightLowerLeg, HumanBodyBones.RightUpperLeg },
+        { HumanBodyBones.RightFoot, HumanBodyBones.RightLowerLeg },
+        { HumanBodyBones.RightToes, HumanBodyBones.RightFoot },
+
+        // Spine - Chest - Shoulders - Arm - Forearm - Hand
+        // UpperChest는 인덱스 문제로 사용하지 않음
+        // { HumanBodyBones.UpperChest, HumanBodyBones.Chest },
+
+        { HumanBodyBones.LeftShoulder, HumanBodyBones.Chest /* UpperChest */ },
+        { HumanBodyBones.LeftUpperArm, HumanBodyBones.LeftShoulder },
+        { HumanBodyBones.LeftLowerArm, HumanBodyBones.LeftUpperArm },
+        { HumanBodyBones.LeftHand, HumanBodyBones.LeftLowerArm },
+
+        { HumanBodyBones.RightShoulder, HumanBodyBones.Chest /* UpperChest */ },
+        { HumanBodyBones.RightUpperArm, HumanBodyBones.RightShoulder },
+        { HumanBodyBones.RightLowerArm, HumanBodyBones.RightUpperArm },
+        { HumanBodyBones.RightHand, HumanBodyBones.RightLowerArm },
+
+        // 손가락 생략
+    };
+
+    public static readonly SortedSet<HumanBodyBones> IkEffectorBones = new()
+    {
+        HumanBodyBones.Hips,
+        HumanBodyBones.Spine,
+        HumanBodyBones.Chest,
+        HumanBodyBones.Neck,
+        HumanBodyBones.Head,
+        HumanBodyBones.LeftUpperLeg,
+        HumanBodyBones.LeftLowerLeg,
+        HumanBodyBones.LeftFoot,
+        HumanBodyBones.LeftToes,
+        HumanBodyBones.RightUpperLeg,
+        HumanBodyBones.RightLowerLeg,
+        HumanBodyBones.RightFoot,
+        HumanBodyBones.RightToes,
+        HumanBodyBones.LeftShoulder,
+        HumanBodyBones.LeftUpperArm,
+        HumanBodyBones.LeftLowerArm,
+        HumanBodyBones.LeftHand,
+        HumanBodyBones.RightShoulder,
+        HumanBodyBones.RightUpperArm,
+        HumanBodyBones.RightLowerArm,
+        HumanBodyBones.RightHand,
+    };
+
+    public static HumanBodyBones GetParentBone(HumanBodyBones bone)
+    {
+        return ParentMap.TryGetValue(bone, out var parentBone) ?
+            parentBone :
+            HumanBodyBones.LastBone;
+    }
+
     public static T GetOrAddComponent<T>(GameObject go) where T : Component
     {
         var component = go.GetComponent<T>();
