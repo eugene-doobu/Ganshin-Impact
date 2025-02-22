@@ -1,10 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using GanShin.CameraSystem;
 using GanShin.Content.Creature.Monster;
 using GanShin.Content.Weapon;
 using GanShin.Data;
+using GanShin.FABRIK;
 using GanShin.GanObject;
 using GanShin.InputSystem;
 using GanShin.UI.Space;
@@ -164,6 +166,8 @@ namespace GanShin.Content.Creature
 
             _playerAvatarContext.MaxHp = (int)stat.hp;
             CurrentHp                  = stat.hp;
+
+            InitializeFabrikEffectors();
         }
 
         private void OnEnable()
@@ -186,13 +190,6 @@ namespace GanShin.Content.Creature
             ApplyGravity();
             TryAttack();
         }
-
-        private void OnAnimatorIK(int layerIndex)
-        {
-            SolveFeetPositions();
-            SetFeetIK();
-        }
-
 #endregion Mono
 
 #region StateCheck
@@ -602,6 +599,7 @@ namespace GanShin.Content.Creature
 #endregion ActionEvent
 
 #region Animation
+        private readonly HumanoidFabrik _fabrik = new();
 
         private struct FootIkSolverData
         {
@@ -634,9 +632,23 @@ namespace GanShin.Content.Creature
 
         private FootIkSolverData _rightFootSolverData, _leftFootSolverData;
 
-        private void SolveFeetPositions()
+        private void InitializeFabrikEffectors()
+        {
+            _fabrik.Initialize(ObjAnimator);
+        }
+
+        private void LateUpdate()
         {
             if (!enableFeetIk) return;
+
+            SolveFeetPositions();
+            SetFeetIK();
+
+            _fabrik.Solve();
+        }
+
+        private void SolveFeetPositions()
+        {
             if (!HasAnimator) return;
 
             var rightFootPosition = AdjustFeetTarget(HumanBodyBones.RightFoot);
@@ -649,15 +661,11 @@ namespace GanShin.Content.Creature
 
         private void SetFeetIK()
         {
-            if (!enableFeetIk) return;
             if (!HasAnimator) return;
 
             MovePelvisHeight();
 
-            ObjAnimator.SetIKPositionWeight(AvatarIKGoal.RightFoot, 1);
             MoveFeetToIkPoint(AvatarIKGoal.RightFoot, _rightFootSolverData, ref _lastRightFootPositionY);
-
-            ObjAnimator.SetIKPositionWeight(AvatarIKGoal.LeftFoot, 1);
             MoveFeetToIkPoint(AvatarIKGoal.LeftFoot, _leftFootSolverData, ref _lastLeftFootPositionY);
         }
 
@@ -677,9 +685,10 @@ namespace GanShin.Content.Creature
 
             targetIkPosition = transform.TransformPoint(targetIkPosition);
 
-            ObjAnimator.SetIKRotation(foot, rotationIkHolder);
-            ObjAnimator.SetIKPosition(foot, targetIkPosition);
+            _fabrik.SetTarget(foot, targetIkPosition + offset);
         }
+
+        [SerializeField] private Vector3 offset;
 
         private void MovePelvisHeight()
         {
@@ -742,7 +751,6 @@ namespace GanShin.Content.Creature
             feetPositions.y = transform.position.y + heightFromGroundRaycast;
             return feetPositions;
         }
-
 #endregion Animation
     }
 }

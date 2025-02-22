@@ -16,14 +16,30 @@ namespace GanShin.FABRIK
 	    private readonly float _sqrThreshold = 0.01F;
 
 	    private float _summedWeight;
+
+	    private Vector3 _target;
+	    private bool _hasTarget;
 #endregion Fields
 
 #region Property
-	    public bool IsEndChain => EndEffector.Transform.childCount == 0;
+	    public bool IsEndChain => EndEffector.Bone is
+		    HumanBodyBones.Head or
+		    HumanBodyBones.LeftToes or
+		    HumanBodyBones.RightToes or
+		    HumanBodyBones.LeftHand or
+		    HumanBodyBones.RightHand;
 
 	    public int Layer { get; }
 
-	    private Vector3 _target;
+	    public Vector3 Target
+	    {
+		    get => _target;
+		    set
+		    {
+			    _target = value;
+			    _hasTarget = true;
+		    }
+	    }
 
 	    private HumanoidFabrikEffector BaseEffector => _effectors[0];
 	    public  HumanoidFabrikEffector EndEffector  => _effectors[^1];
@@ -52,13 +68,16 @@ namespace GanShin.FABRIK
 
 		public void Backward()
 		{
+			if (!_hasTarget)
+				return;
+
 			var origin = BaseEffector.Position;
 			if (_children.Count > 1)
-				_target /= _summedWeight;
+				Target /= _summedWeight;
 
-			if ((EndEffector.Position - _target).sqrMagnitude > _sqrThreshold)
+			if ((EndEffector.Position - Target).sqrMagnitude > _sqrThreshold)
 			{
-				EndEffector.Position = _target;
+				EndEffector.Position = Target;
 				for (var i = _effectors.Count - 2; i >= 0; i--)
 				{
 					var direction = Vector3.Normalize(_effectors[i].Position - _effectors[i + 1].Position);
@@ -67,13 +86,14 @@ namespace GanShin.FABRIK
 			}
 
 			if (_parent != null)
-				_parent._target += BaseEffector.Position * EndEffector.Weight;
+				_parent.Target += BaseEffector.Position * EndEffector.Weight;
 
 			BaseEffector.Position = origin;
 		}
 
 		private void Forward()
 		{
+			if (_effectors.Count == 1) return;
 			_effectors[1].Position = BaseEffector.Position + BaseEffector.Rotation * Vector3.forward * BaseEffector.Length;
 
 			for (var i = 2; i < _effectors.Count; i++)
@@ -85,7 +105,8 @@ namespace GanShin.FABRIK
 
 			if (_children.Count == 0) return;
 
-			_target = Vector3.zero;
+			Target = Vector3.zero;
+			_hasTarget = false;
 
 			var childrenDir = Vector3.zero;
 			foreach(var child in _children)
