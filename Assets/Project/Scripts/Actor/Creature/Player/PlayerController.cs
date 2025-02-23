@@ -674,7 +674,8 @@ namespace GanShin.Content.Creature
             if (!solverData.IsDetectGround) return;
             var positionIkHolder = solverData.FootPosition;
             var rotationIkHolder = solverData.FootRotation;
-            var targetIkPosition = ObjAnimator.GetIKPosition(foot);
+            var targetBone       = foot == AvatarIKGoal.RightFoot ? HumanBodyBones.RightFoot : HumanBodyBones.LeftFoot;
+            var targetIkPosition = ObjAnimator.GetBoneTransform(targetBone).position;
 
             targetIkPosition = transform.InverseTransformPoint(targetIkPosition);
             positionIkHolder = transform.InverseTransformPoint(positionIkHolder);
@@ -685,16 +686,17 @@ namespace GanShin.Content.Creature
 
             targetIkPosition = transform.TransformPoint(targetIkPosition);
 
-            _fabrik.SetTarget(foot, targetIkPosition + offset);
+            _fabrik.SetTarget(foot, targetIkPosition + offset, rotationIkHolder);
         }
 
         [SerializeField] private Vector3 offset;
 
         private void MovePelvisHeight()
         {
+            var bodyPosition = ObjAnimator.GetBoneTransform(HumanBodyBones.Hips).position;
             if (!_leftFootSolverData.IsDetectGround || !_rightFootSolverData.IsDetectGround || _lastPelvisPositionY == 0)
             {
-                _lastPelvisPositionY = ObjAnimator.bodyPosition.y;
+                _lastPelvisPositionY = bodyPosition.y;
                 return;
             }
 
@@ -703,12 +705,13 @@ namespace GanShin.Content.Creature
             var rOffsetPosition    = _rightFootSolverData.FootPosition.y - transformPositionY;
 
             var totalOffset = lOffsetPosition < rOffsetPosition ? lOffsetPosition : rOffsetPosition;
-            var newPelvisPosition = ObjAnimator.bodyPosition + Vector3.up * totalOffset;
+            var newPelvisPosition = bodyPosition + Vector3.up * totalOffset;
 
             newPelvisPosition.y = Mathf.Lerp(_lastPelvisPositionY, newPelvisPosition.y, pelvisUpAndDownSpeed);
 
-            ObjAnimator.bodyPosition = newPelvisPosition;
-            _lastPelvisPositionY = ObjAnimator.bodyPosition.y;
+            // TODO: !!!!
+            // ObjAnimator.bodyPosition = newPelvisPosition;
+            _lastPelvisPositionY = bodyPosition.y;
         }
 
         private FootIkSolverData FeetPositionSolver(Vector3 fromSkyPosition)

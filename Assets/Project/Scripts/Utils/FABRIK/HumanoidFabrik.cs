@@ -20,9 +20,6 @@ namespace GanShin.FABRIK
 
 			_rootChain = LoadSystem(rootEffector);
 			_chains.Sort((x, y) => y.Layer.CompareTo(x.Layer));
-
-			foreach(var chain in _chains)
-				chain.CalculateSummedWeight();
 		}
 
 		private void InitializeEffectors(Animator animator)
@@ -59,17 +56,18 @@ namespace GanShin.FABRIK
 				effector = _effectors[childrenBones[0]];
 			}
 
-			var chain = new FabrikChain(parent, effectors, layer);
+			var chain = new FabrikChain(effectors, layer, _effectors);
 			_chains.Add(chain);
 
 			if (chain.IsEndChain)
 			{
-				if (childrenBones is { Count: > 0 } && _effectors.TryGetValue(childrenBones[0], out var childEffector))
-					_endChains.Add(childEffector.Bone, chain);
+				_endChains.Add(chain.EndEffector.Bone, chain);
 			}
 			else if (childrenBones != null)
+			{
 				foreach (var child in childrenBones)
 					LoadSystem(_effectors[child], chain, layer + 1);
+			}
 
 			return chain;
 		}
@@ -77,21 +75,19 @@ namespace GanShin.FABRIK
 		public void Solve()
 		{
 			foreach (var chain in _chains)
-				chain.Backward();
-
-			_rootChain.ForwardMulti();
+				chain.SolveIK();
 		}
 
-		public void SetTarget(AvatarIKGoal avatarIKGoal, Vector3 target)
+		public void SetTarget(AvatarIKGoal avatarIKGoal, Vector3 target, Quaternion rotation)
 		{
 			var bone = HumanBodyBones.LastBone;
 			switch (avatarIKGoal)
 			{
 				case AvatarIKGoal.LeftFoot:
-					bone = HumanBodyBones.LeftToes;
+					bone = HumanBodyBones.LeftFoot;
 					break;
 				case AvatarIKGoal.RightFoot:
-					bone = HumanBodyBones.RightToes;
+					bone = HumanBodyBones.RightFoot;
 					break;
 				case AvatarIKGoal.LeftHand:
 					bone = HumanBodyBones.LeftHand;
@@ -104,15 +100,17 @@ namespace GanShin.FABRIK
 			if (!_endChains.TryGetValue(bone, out var chain))
 				return;
 
-			chain.Target = target;
+			chain.TargetTransform = target;
+			chain.TargetRotation = rotation;
 		}
 
-		public void SetTarget(HumanBodyBones bone, Vector3 target)
+		public void SetTarget(HumanBodyBones bone, Vector3 target, Quaternion rotation)
 		{
 			if (!_endChains.TryGetValue(bone, out var chain))
 				return;
 
-			chain.Target = target;
+			chain.TargetTransform = target;
+			chain.TargetRotation = rotation;
 		}
     }
 }

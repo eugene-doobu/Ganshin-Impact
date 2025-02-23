@@ -19,12 +19,10 @@ namespace GanShin
             { HumanBodyBones.LeftUpperLeg, HumanBodyBones.Hips },
             { HumanBodyBones.LeftLowerLeg, HumanBodyBones.LeftUpperLeg },
             { HumanBodyBones.LeftFoot, HumanBodyBones.LeftLowerLeg },
-            { HumanBodyBones.LeftToes, HumanBodyBones.LeftFoot },
 
             { HumanBodyBones.RightUpperLeg, HumanBodyBones.Hips },
             { HumanBodyBones.RightLowerLeg, HumanBodyBones.RightUpperLeg },
             { HumanBodyBones.RightFoot, HumanBodyBones.RightLowerLeg },
-            { HumanBodyBones.RightToes, HumanBodyBones.RightFoot },
 
             // Spine - Chest - Shoulders - Arm - Forearm - Hand
             // UpperChest는 인덱스 문제로 사용하지 않음
@@ -53,11 +51,9 @@ namespace GanShin
 
             { HumanBodyBones.LeftUpperLeg, new List<HumanBodyBones> { HumanBodyBones.LeftLowerLeg } },
             { HumanBodyBones.LeftLowerLeg, new List<HumanBodyBones> { HumanBodyBones.LeftFoot } },
-            { HumanBodyBones.LeftFoot, new List<HumanBodyBones> { HumanBodyBones.LeftToes } },
 
             { HumanBodyBones.RightUpperLeg, new List<HumanBodyBones> { HumanBodyBones.RightLowerLeg } },
             { HumanBodyBones.RightLowerLeg, new List<HumanBodyBones> { HumanBodyBones.RightFoot } },
-            { HumanBodyBones.RightFoot, new List<HumanBodyBones> { HumanBodyBones.RightToes } },
 
             { HumanBodyBones.LeftShoulder, new List<HumanBodyBones> { HumanBodyBones.LeftUpperArm } },
             { HumanBodyBones.LeftUpperArm, new List<HumanBodyBones> { HumanBodyBones.LeftLowerArm } },
@@ -78,11 +74,9 @@ namespace GanShin
             HumanBodyBones.LeftUpperLeg,
             HumanBodyBones.LeftLowerLeg,
             HumanBodyBones.LeftFoot,
-            HumanBodyBones.LeftToes,
             HumanBodyBones.RightUpperLeg,
             HumanBodyBones.RightLowerLeg,
             HumanBodyBones.RightFoot,
-            HumanBodyBones.RightToes,
             HumanBodyBones.LeftShoulder,
             HumanBodyBones.LeftUpperArm,
             HumanBodyBones.LeftLowerArm,
