@@ -67,7 +67,7 @@ namespace GanShin.FABRIK
 	    public Transform Target;
 	    public Transform Pole;
 
-		public FabrikChain(List<HumanoidFabrikEffector> effectors, int layer, IReadOnlyDictionary<HumanBodyBones, HumanoidFabrikEffector> dictionary)
+		public FabrikChain(List<HumanoidFabrikEffector> effectors, int layer, Animator animator, IReadOnlyDictionary<HumanBodyBones, HumanoidFabrikEffector> dictionary)
 		{
 			_effectors = new List<HumanoidFabrikEffector>(effectors);
 
@@ -100,6 +100,31 @@ namespace GanShin.FABRIK
 				SetPositionRootSpace(Target, GetPositionRootSpace(EndEffector.Transform));
 			}
 			StartRotationTarget = GetRotationRootSpace(Target);
+
+			if (Pole == null || EndEffector.Bone != HumanBodyBones.Head)
+			{
+				Pole = new GameObject("Pole" + EndEffector.Bone).transform;
+				Pole.SetParent(animator.transform, false);
+				switch (EndEffector.Bone)
+				{
+					case HumanBodyBones.LeftFoot:
+						var leftLowerLeg = dictionary[HumanBodyBones.LeftLowerLeg];
+						Pole.position = leftLowerLeg.Transform.position + animator.transform.forward;
+						break;
+					case HumanBodyBones.RightFoot:
+						var rightLowerLeg = dictionary[HumanBodyBones.RightLowerLeg];
+						Pole.position = rightLowerLeg.Transform.position + animator.transform.forward;
+						break;
+					case HumanBodyBones.LeftHand:
+						var leftLowerArm = dictionary[HumanBodyBones.LeftLowerArm];
+						Pole.position = leftLowerArm.Transform.position + animator.transform.forward;
+						break;
+					case HumanBodyBones.RightHand:
+						var rightLowerArm = dictionary[HumanBodyBones.RightLowerArm];
+						Pole.position = rightLowerArm.Transform.position + animator.transform.forward;
+						break;
+				}
+			}
 
 			//init data
 			var current = EndEffector;
@@ -188,18 +213,18 @@ namespace GanShin.FABRIK
             }
 
             //move towards pole
-            // if (Pole != null)
-            // {
-            //     var polePosition = GetPositionRootSpace(Pole);
-            //     for (int i = 1; i < Positions.Length - 1; i++)
-            //     {
-            //         var plane = new Plane(Positions[i + 1] - Positions[i - 1], Positions[i - 1]);
-            //         var projectedPole = plane.ClosestPointOnPlane(polePosition);
-            //         var projectedBone = plane.ClosestPointOnPlane(Positions[i]);
-            //         var angle = Vector3.SignedAngle(projectedBone - Positions[i - 1], projectedPole - Positions[i - 1], plane.normal);
-            //         Positions[i] = Quaternion.AngleAxis(angle, plane.normal) * (Positions[i] - Positions[i - 1]) + Positions[i - 1];
-            //     }
-            // }
+            if (Pole != null)
+            {
+                var polePosition = GetPositionRootSpace(Pole);
+                for (int i = 1; i < Positions.Length - 1; i++)
+                {
+                    var plane = new Plane(Positions[i + 1] - Positions[i - 1], Positions[i - 1]);
+                    var projectedPole = plane.ClosestPointOnPlane(polePosition);
+                    var projectedBone = plane.ClosestPointOnPlane(Positions[i]);
+                    var angle = Vector3.SignedAngle(projectedBone - Positions[i - 1], projectedPole - Positions[i - 1], plane.normal);
+                    Positions[i] = Quaternion.AngleAxis(angle, plane.normal) * (Positions[i] - Positions[i - 1]) + Positions[i - 1];
+                }
+            }
 
             //set position & rotation
             for (int i = 0; i < Positions.Length; i++)

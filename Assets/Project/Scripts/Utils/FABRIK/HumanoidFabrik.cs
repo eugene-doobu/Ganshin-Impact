@@ -6,6 +6,7 @@ namespace GanShin.FABRIK
     public class HumanoidFabrik
     {
 	    private FabrikChain _rootChain;
+	    private Animator _animator;
 
 		private readonly Dictionary<HumanBodyBones, HumanoidFabrikEffector> _effectors = new();
 
@@ -15,6 +16,8 @@ namespace GanShin.FABRIK
 
 		public void Initialize(Animator animator)
 		{
+			_animator = animator;
+
 			InitializeEffectors(animator);
 			var rootEffector = _effectors[HumanBodyBones.Hips];
 
@@ -56,7 +59,7 @@ namespace GanShin.FABRIK
 				effector = _effectors[childrenBones[0]];
 			}
 
-			var chain = new FabrikChain(effectors, layer, _effectors);
+			var chain = new FabrikChain(effectors, layer, _animator, _effectors);
 			_chains.Add(chain);
 
 			if (chain.IsEndChain)
