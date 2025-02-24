@@ -115,12 +115,5 @@ namespace GanShin.FABRIK
 			chain.TargetTransform = target;
 			chain.TargetRotation = rotation;
 		}
-
-		public void SetBodyPosition(Vector3 position)
-		{
-			var hips  = _animator.GetBoneTransform(HumanBodyBones.Hips);
-			var delta = position - hips.position;
-			hips.position -= delta.y * Vector3.up;
-		}
     }
 }

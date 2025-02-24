@@ -682,15 +682,12 @@ namespace GanShin.Content.Creature
 
             var yVariable = Mathf.Lerp(lastFootPositionY, positionIkHolder.y, feetToIkPositionSpeed);
             targetIkPosition.y += yVariable;
-            targetIkPosition.y -= _lastPelvisOffset;
             lastFootPositionY  =  yVariable;
 
             targetIkPosition = transform.TransformPoint(targetIkPosition);
 
             _fabrik.SetTarget(foot, targetIkPosition, rotationIkHolder);
         }
-
-        [SerializeField] private Vector3 offset;
 
         private void MovePelvisHeight()
         {
@@ -705,16 +702,12 @@ namespace GanShin.Content.Creature
             var lOffsetPosition    = _leftFootSolverData.FootPosition.y - transformPositionY;
             var rOffsetPosition    = _rightFootSolverData.FootPosition.y - transformPositionY;
 
-            _lastPelvisOffset = lOffsetPosition < rOffsetPosition ? lOffsetPosition : rOffsetPosition;
-            var newPelvisPosition = bodyPosition + Vector3.up * _lastPelvisOffset;
+            var currentPelvisOffset = lOffsetPosition < rOffsetPosition ? lOffsetPosition : rOffsetPosition;
+            var newPelvisPosition = bodyPosition + Vector3.up * currentPelvisOffset;
 
             newPelvisPosition.y = Mathf.Lerp(_lastPelvisPositionY, newPelvisPosition.y, pelvisUpAndDownSpeed);
-
-            _fabrik.SetBodyPosition(newPelvisPosition + offset);
             _lastPelvisPositionY = bodyPosition.y;
         }
-
-        private float _lastPelvisOffset;
 
         private FootIkSolverData FeetPositionSolver(Vector3 fromSkyPosition)
         {

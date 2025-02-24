@@ -7,16 +7,14 @@ namespace GanShin.FABRIK
 {
     public class FabrikChain
     {
+	    private const int   ITERATIONS         = 10;
+	    private const float DELTA              = 0.001f;
+	    private const float SNAP_BACK_STRENGTH = 1f;
+
 #region Fields
 	    private readonly List<HumanoidFabrikEffector> _effectors;
 
-	    private Vector3 _targetPosition;
-	    private Quaternion _targetRotation;
 	    private bool _hasTarget;
-
-	    private const int   Iterations       = 10;
-	    private const float Delta            = 0.001f;
-	    private const float SnapBackStrength = 1f;
 #endregion Fields
 
 #region Property
@@ -29,31 +27,23 @@ namespace GanShin.FABRIK
 
 	    public Vector3 TargetTransform
 	    {
-		    get => _targetPosition;
 		    set
 		    {
-			    if (Target != null)
-				    Target.position = value;
-
-			    _targetPosition = value;
+			    if (_target != null)
+				    _target.position = value;
 			    _hasTarget = true;
 		    }
 	    }
 
 	    public Quaternion TargetRotation
 	    {
-		    get => _targetRotation;
 		    set
 		    {
-			    this.Target.rotation = value;
-			    _targetRotation = value;
+			    if (_target != null)
+					_target.rotation = value;
 			    _hasTarget = true;
 		    }
 	    }
-	    
-	    public float BodyOffset { get; set; }
-	    
-	    public bool HasTarget => _hasTarget;
 
 	    public int Layer { get; private set; }
 
@@ -61,17 +51,19 @@ namespace GanShin.FABRIK
 	    public  HumanoidFabrikEffector EndEffector  => _effectors[^1];
 #endregion Property
 
-	    protected float[]      BonesLength; //Target to Origin
-	    protected float        CompleteLength;
-	    protected Transform[]  Bones;
-	    protected Vector3[]    Positions;
-	    protected Vector3[]    StartDirectionSucc;
-	    protected Quaternion[] StartRotationBone;
-	    protected Quaternion   StartRotationTarget;
-	    protected Transform    Root;
+	    private readonly HumanoidFabrikEffector[]? _bones;
+	    private readonly HumanoidFabrikEffector?   _root;
 
-	    public Transform Target;
-	    public Transform Pole;
+	    private readonly float[]?      _bonesLength; //Target to Origin
+	    private readonly float         _completeLength;
+	    private readonly Vector3[]?    _positions;
+	    private readonly Vector3[]?    _startDirectionSucc;
+	    private readonly Quaternion[]? _startRotationBone;
+	    private readonly Quaternion    _startRotationTarget;
+
+	    private readonly Transform? _target;
+
+	    private Transform? _pole;
 
 		public FabrikChain(List<HumanoidFabrikEffector> effectors, int layer, Animator animator, IReadOnlyDictionary<HumanBodyBones, HumanoidFabrikEffector> dictionary)
 		{
@@ -79,86 +71,64 @@ namespace GanShin.FABRIK
 
 			Layer = layer;
 
-			var ChainLength = _effectors.Count - 2;
-			if (ChainLength < 1)
+			var chainLength = _effectors.Count - 2;
+			if (chainLength < 1)
 			{
 				return;
 			}
 
 			//initial array
-			Bones              = new Transform[ChainLength + 1];
-			Positions          = new Vector3[ChainLength + 1];
-			BonesLength        = new float[ChainLength];
-			StartDirectionSucc = new Vector3[ChainLength + 1];
-			StartRotationBone  = new Quaternion[ChainLength + 1];
+			_bones              = new HumanoidFabrikEffector[chainLength + 1];
+			_positions          = new Vector3[chainLength + 1];
+			_bonesLength        = new float[chainLength];
+			_startDirectionSucc = new Vector3[chainLength + 1];
+			_startRotationBone  = new Quaternion[chainLength + 1];
 
-			//find root
-			Root = EndEffector.Transform;
-			for (var i = 0; i <= ChainLength; i++)
+			_root = EndEffector;
+			for (var i = 0; i <= chainLength; i++)
 			{
-				if (Root == null)
-					throw new UnityException("The chain value is longer than the ancestor chain!");
-				Root = Root.parent;
-			}
-
-			//init target
-			if (Target == null)
-			{
-				Target = new GameObject("Target").transform;
-				SetPositionRootSpace(Target, GetPositionRootSpace(EndEffector.Transform));
-			}
-			StartRotationTarget = GetRotationRootSpace(Target);
-
-			if (Pole == null || EndEffector.Bone != HumanBodyBones.Head)
-			{
-				Pole = new GameObject("Pole" + EndEffector.Bone).transform;
-				Pole.SetParent(animator.transform, false);
-				switch (EndEffector.Bone)
+				if (_root == null)
 				{
-					case HumanBodyBones.LeftFoot:
-						var leftLowerLeg = dictionary[HumanBodyBones.LeftLowerLeg];
-						Pole.position = leftLowerLeg.Transform.position + animator.transform.forward;
-						break;
-					case HumanBodyBones.RightFoot:
-						var rightLowerLeg = dictionary[HumanBodyBones.RightLowerLeg];
-						Pole.position = rightLowerLeg.Transform.position + animator.transform.forward;
-						break;
-					case HumanBodyBones.LeftHand:
-						var leftLowerArm = dictionary[HumanBodyBones.LeftLowerArm];
-						Pole.position = leftLowerArm.Transform.position + animator.transform.forward;
-						break;
-					case HumanBodyBones.RightHand:
-						var rightLowerArm = dictionary[HumanBodyBones.RightLowerArm];
-						Pole.position = rightLowerArm.Transform.position + animator.transform.forward;
-						break;
+					GanDebugger.LogError("Root is null");
+					return;
 				}
+				_root = _root.Parent;
 			}
+
+			if (_target == null)
+			{
+				_target = new GameObject("Target").transform;
+				SetPositionRootSpace(_target, GetPositionRootSpace(EndEffector.Transform));
+			}
+			_startRotationTarget = GetRotationRootSpace(_target);
+
+			if (_pole == null || EndEffector.Bone != HumanBodyBones.Head)
+				CreateNewPole(animator, dictionary);
 
 			//init data
 			var current = EndEffector;
-			CompleteLength = 0;
-			for (var i = Bones.Length - 1; i >= 0; i--)
+			_completeLength = 0;
+			for (var i = _bones.Length - 1; i >= 0; i--)
 			{
-				Bones[i]             = current.Transform;
-				StartRotationBone[i] = GetRotationRootSpace(current.Transform);
+				_bones[i]             = current;
+				_startRotationBone[i] = GetRotationRootSpace(current.Transform);
 
-				if (i == Bones.Length - 1)
+				if (i == _bones.Length - 1)
 				{
-					//leaf
-					StartDirectionSucc[i] = GetPositionRootSpace(Target) - GetPositionRootSpace(current.Transform);
+					_startDirectionSucc[i] = GetPositionRootSpace(_target) - GetPositionRootSpace(current.Transform);
 				}
 				else
 				{
-					//mid bone
-					StartDirectionSucc[i] =  GetPositionRootSpace(Bones[i + 1]) - GetPositionRootSpace(current.Transform);
-					BonesLength[i]        =  StartDirectionSucc[i].magnitude;
-					CompleteLength        += BonesLength[i];
+					_startDirectionSucc[i] =  GetPositionRootSpace(_bones[i + 1].Transform) - GetPositionRootSpace(current.Transform);
+					_bonesLength[i]        =  _startDirectionSucc[i].magnitude;
+					_completeLength        += _bonesLength[i];
 				}
 
 				var parent = HumanoidUtils.GetParentBone(current.Bone);
 				if (parent == HumanBodyBones.LastBone)
 					break;
-				GanDebugger.Log("Bone: " + current.Bone + " Parent: " + parent);
+
+				// GanDebugger.Log("Bone: " + current.Bone + " Parent: " + parent);
 				current = dictionary[parent];
 			}
 		}
@@ -168,134 +138,133 @@ namespace GanShin.FABRIK
 			if (!_hasTarget)
 				return;
 
-			if (Target == null)
+			if (_target == null)
 				return;
 
 			_hasTarget = false;
 
-            //Fabric
+			for (int i = 0; i < _bones.Length; i++)
+                _positions[i] = GetPositionRootSpace(_bones[i].Transform);
 
-            //  root
-            //  (bone0) (bonelen 0) (bone1) (bonelen 1) (bone2)...
-            //   x--------------------x--------------------x---...
+            var targetPosition = GetPositionRootSpace(_target);
+            var targetRotation = GetRotationRootSpace(_target);
 
-            //get position
-            for (int i = 0; i < Bones.Length; i++)
-                Positions[i] = GetPositionRootSpace(Bones[i]);
-
-            var targetPosition = GetPositionRootSpace(Target) - BodyOffset * Vector3.up;
-            var targetRotation = GetRotationRootSpace(Target);
-
-            //1st is possible to reach?
-            if ((targetPosition - GetPositionRootSpace(Bones[0])).sqrMagnitude >= CompleteLength * CompleteLength)
+            var isReachable = (targetPosition - GetPositionRootSpace(_bones[0].Transform)).sqrMagnitude >=
+                              _completeLength * _completeLength;
+            if (!isReachable)
             {
-	            //just strech it
-	            var direction = (targetPosition - Positions[0]).normalized;
-	            //set everything after root
-	            for (int i = 1; i < Positions.Length; i++)
-		            Positions[i] = Positions[i - 1] + direction * BonesLength[i - 1];
+	            // just stretch it
+	            var direction = (targetPosition - _positions[0]).normalized;
+	            for (int i = 1; i < _positions.Length; i++)
+		            _positions[i] = _positions[i - 1] + direction * _bonesLength[i - 1];
             }
             else
             {
-	            for (int i = 0; i < Positions.Length - 1; i++)
-		            Positions[i + 1] = Vector3.Lerp(Positions[i + 1], Positions[i] + StartDirectionSucc[i], SnapBackStrength);
+	            for (var i = 0; i < _positions.Length - 1; i++)
+		            _positions[i + 1] = Vector3.Lerp(_positions[i + 1], _positions[i] + _startDirectionSucc[i], SNAP_BACK_STRENGTH);
 
-                for (int iteration = 0; iteration < Iterations; iteration++)
+                for (var iteration = 0; iteration < ITERATIONS; iteration++)
                 {
-                    //https://www.youtube.com/watch?v=UNoX65PRehA
-                    //back
-                    for (int i = Positions.Length - 1; i > 0; i--)
+                    // https://www.youtube.com/watch?v=UNoX65PRehA
+                    // back
+                    for (var i = _positions.Length - 1; i > 0; i--)
                     {
-                        if (i == Positions.Length - 1)
-                            Positions[i] = targetPosition; //set it to target
+                        if (i == _positions.Length - 1)
+                            _positions[i] = targetPosition; //set it to target
                         else
-                            Positions[i] = Positions[i + 1] + (Positions[i] - Positions[i + 1]).normalized * BonesLength[i]; //set in line on distance
+                            _positions[i] = _positions[i + 1] + (_positions[i] - _positions[i + 1]).normalized * _bonesLength[i];
                     }
 
-                    //forward
-                    for (int i = 1; i < Positions.Length; i++)
-                        Positions[i] = Positions[i - 1] + (Positions[i] - Positions[i - 1]).normalized * BonesLength[i - 1];
+                    // forward
+                    for (var i = 1; i < _positions.Length; i++)
+                        _positions[i] = _positions[i - 1] + (_positions[i] - _positions[i - 1]).normalized * _bonesLength[i - 1];
 
-                    //close enough?
-                    if ((Positions[Positions.Length - 1] - targetPosition).sqrMagnitude < Delta * Delta)
+                    // close enough
+                    if ((_positions[^1] - targetPosition).sqrMagnitude < DELTA * DELTA)
                         break;
                 }
             }
 
             //move towards pole
-            if (Pole != null)
+            if (_pole != null)
             {
-                var polePosition = GetPositionRootSpace(Pole);
-                for (int i = 1; i < Positions.Length - 1; i++)
+                var polePosition = GetPositionRootSpace(_pole);
+                for (var i = 1; i < _positions.Length - 1; i++)
                 {
-                    var plane = new Plane(Positions[i + 1] - Positions[i - 1], Positions[i - 1]);
+                    var plane = new Plane(_positions[i + 1] - _positions[i - 1], _positions[i - 1]);
                     var projectedPole = plane.ClosestPointOnPlane(polePosition);
-                    var projectedBone = plane.ClosestPointOnPlane(Positions[i]);
-                    var angle = Vector3.SignedAngle(projectedBone - Positions[i - 1], projectedPole - Positions[i - 1], plane.normal);
-                    Positions[i] = Quaternion.AngleAxis(angle, plane.normal) * (Positions[i] - Positions[i - 1]) + Positions[i - 1];
+                    var projectedBone = plane.ClosestPointOnPlane(_positions[i]);
+                    var angle = Vector3.SignedAngle(projectedBone - _positions[i - 1], projectedPole - _positions[i - 1], plane.normal);
+                    _positions[i] = Quaternion.AngleAxis(angle, plane.normal) * (_positions[i] - _positions[i - 1]) + _positions[i - 1];
                 }
             }
 
             //set position & rotation
-            for (int i = 0; i < Positions.Length; i++)
+            for (var i = 0; i < _positions.Length; i++)
             {
-	            if (i == Positions.Length - 1)
-		            SetRotationRootSpace(Bones[i], Quaternion.Inverse(targetRotation) * StartRotationTarget * Quaternion.Inverse(StartRotationBone[i]));
+	            if (i == _positions.Length - 1)
+		            SetRotationRootSpace(_bones[i].Transform, Quaternion.Inverse(targetRotation) * _startRotationTarget * Quaternion.Inverse(_startRotationBone[i]));
 	            else
-		            SetRotationRootSpace(Bones[i], Quaternion.FromToRotation(StartDirectionSucc[i], Positions[i + 1] - Positions[i]) * Quaternion.Inverse(StartRotationBone[i]));
-	            SetPositionRootSpace(Bones[i], Positions[i]);
+		            SetRotationRootSpace(_bones[i].Transform, Quaternion.FromToRotation(_startDirectionSucc[i], _positions[i + 1] - _positions[i]) * Quaternion.Inverse(_startRotationBone[i]));
+	            SetPositionRootSpace(_bones[i].Transform, _positions[i]);
             }
-
-            BodyOffset = 0f;
-		}
-
-		private Vector3 GetPositionRootSpace(Vector3 position)
-		{
-			if (Root == null)
-				return position;
-			else
-				return Quaternion.Inverse(Root.rotation) * (position - Root.position);
 		}
 
 		private Vector3 GetPositionRootSpace(Transform current)
 		{
-			if (Root == null)
+			if (_root == null)
 				return current.position;
-			else
-				return Quaternion.Inverse(Root.rotation) * (current.position - Root.position);
+			return Quaternion.Inverse(_root.Transform.rotation) * (current.position - _root.Transform.position);
 		}
 
 		private void SetPositionRootSpace(Transform current, Vector3 position)
 		{
-			if (Root == null)
+			if (_root == null)
 				current.position = position;
 			else
-				current.position = Root.rotation * position + Root.position;
-		}
-
-		private Quaternion GetRotationRootSpace(Quaternion rotation)
-		{
-			if (Root == null)
-				return rotation;
-			else
-				return Quaternion.Inverse(Root.rotation) * rotation;
+				current.position = _root.Transform.rotation * position + _root.Transform.position;
 		}
 
 		private Quaternion GetRotationRootSpace(Transform current)
 		{
-			//inverse(after) * before => rot: before -> after
-			if (Root == null)
+			if (_root == null)
 				return current.rotation;
-			else
-				return Quaternion.Inverse(current.rotation) * Root.rotation;
+			return Quaternion.Inverse(current.rotation) * _root.Transform.rotation;
 		}
 
 		private void SetRotationRootSpace(Transform current, Quaternion rotation)
 		{
-			if (Root == null)
+			if (_root == null)
 				current.rotation = rotation;
 			else
-				current.rotation = Root.rotation * rotation;
+				current.rotation = _root.Transform.rotation * rotation;
+		}
+
+		private void CreateNewPole(Animator animator, IReadOnlyDictionary<HumanBodyBones, HumanoidFabrikEffector> dictionary)
+		{
+			_pole = new GameObject("Pole" + EndEffector.Bone).transform;
+			_pole.SetParent(animator.transform, false);
+
+			var forward = animator.transform.forward;
+			switch (EndEffector.Bone)
+			{
+				case HumanBodyBones.LeftFoot:
+					var leftLowerLeg = dictionary[HumanBodyBones.LeftLowerLeg];
+					_pole.position = leftLowerLeg.Transform.position + forward;
+					break;
+				case HumanBodyBones.RightFoot:
+					var rightLowerLeg = dictionary[HumanBodyBones.RightLowerLeg];
+					_pole.position = rightLowerLeg.Transform.position + forward;
+					break;
+				case HumanBodyBones.LeftHand:
+					var leftLowerArm = dictionary[HumanBodyBones.LeftLowerArm];
+					_pole.position = leftLowerArm.Transform.position + forward;
+					break;
+				case HumanBodyBones.RightHand:
+					var rightLowerArm = dictionary[HumanBodyBones.RightLowerArm];
+					_pole.position = rightLowerArm.Transform.position + forward;
+					break;
+			}
 		}
     }
 }
