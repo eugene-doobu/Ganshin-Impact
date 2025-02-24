@@ -32,7 +32,9 @@ namespace GanShin.FABRIK
 		    get => _targetPosition;
 		    set
 		    {
-			    this.Target.position = value;
+			    if (Target != null)
+				    Target.position = value;
+
 			    _targetPosition = value;
 			    _hasTarget = true;
 		    }
@@ -48,6 +50,10 @@ namespace GanShin.FABRIK
 			    _hasTarget = true;
 		    }
 	    }
+	    
+	    public float BodyOffset { get; set; }
+	    
+	    public bool HasTarget => _hasTarget;
 
 	    public int Layer { get; private set; }
 
@@ -75,7 +81,9 @@ namespace GanShin.FABRIK
 
 			var ChainLength = _effectors.Count - 2;
 			if (ChainLength < 1)
+			{
 				return;
+			}
 
 			//initial array
 			Bones              = new Transform[ChainLength + 1];
@@ -163,6 +171,8 @@ namespace GanShin.FABRIK
 			if (Target == null)
 				return;
 
+			_hasTarget = false;
+
             //Fabric
 
             //  root
@@ -173,7 +183,7 @@ namespace GanShin.FABRIK
             for (int i = 0; i < Bones.Length; i++)
                 Positions[i] = GetPositionRootSpace(Bones[i]);
 
-            var targetPosition = GetPositionRootSpace(Target);
+            var targetPosition = GetPositionRootSpace(Target) - BodyOffset * Vector3.up;
             var targetRotation = GetRotationRootSpace(Target);
 
             //1st is possible to reach?
@@ -235,6 +245,8 @@ namespace GanShin.FABRIK
 		            SetRotationRootSpace(Bones[i], Quaternion.FromToRotation(StartDirectionSucc[i], Positions[i + 1] - Positions[i]) * Quaternion.Inverse(StartRotationBone[i]));
 	            SetPositionRootSpace(Bones[i], Positions[i]);
             }
+
+            BodyOffset = 0f;
 		}
 
 		private Vector3 GetPositionRootSpace(Vector3 position)

@@ -682,11 +682,12 @@ namespace GanShin.Content.Creature
 
             var yVariable = Mathf.Lerp(lastFootPositionY, positionIkHolder.y, feetToIkPositionSpeed);
             targetIkPosition.y += yVariable;
-            lastFootPositionY = yVariable;
+            targetIkPosition.y -= _lastPelvisOffset;
+            lastFootPositionY  =  yVariable;
 
             targetIkPosition = transform.TransformPoint(targetIkPosition);
 
-            _fabrik.SetTarget(foot, targetIkPosition + offset, rotationIkHolder);
+            _fabrik.SetTarget(foot, targetIkPosition, rotationIkHolder);
         }
 
         [SerializeField] private Vector3 offset;
@@ -704,15 +705,16 @@ namespace GanShin.Content.Creature
             var lOffsetPosition    = _leftFootSolverData.FootPosition.y - transformPositionY;
             var rOffsetPosition    = _rightFootSolverData.FootPosition.y - transformPositionY;
 
-            var totalOffset = lOffsetPosition < rOffsetPosition ? lOffsetPosition : rOffsetPosition;
-            var newPelvisPosition = bodyPosition + Vector3.up * totalOffset;
+            _lastPelvisOffset = lOffsetPosition < rOffsetPosition ? lOffsetPosition : rOffsetPosition;
+            var newPelvisPosition = bodyPosition + Vector3.up * _lastPelvisOffset;
 
             newPelvisPosition.y = Mathf.Lerp(_lastPelvisPositionY, newPelvisPosition.y, pelvisUpAndDownSpeed);
 
-            // TODO: !!!!
-            // ObjAnimator.bodyPosition = newPelvisPosition;
+            _fabrik.SetBodyPosition(newPelvisPosition + offset);
             _lastPelvisPositionY = bodyPosition.y;
         }
+
+        private float _lastPelvisOffset;
 
         private FootIkSolverData FeetPositionSolver(Vector3 fromSkyPosition)
         {
