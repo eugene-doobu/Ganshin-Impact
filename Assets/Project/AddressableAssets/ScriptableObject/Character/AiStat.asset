@@ -31,7 +31,7 @@ MonoBehaviour:
   attack2Delay: 1
   aiProjectileSpeed: 10
   aiProjectileDuration: 1
-  aiProjectileDamage: 14
+  aiProjectileDamage: 100
   aiProjectileRadius: 0.4
   aiProjectileDetectRadius: 2
   aiProjectileMonsterHeightRatio: 0.7
