@@ -27,6 +27,8 @@ namespace GanShin.Content.Creature
         private EffectManager Effect => ProjectManager.Instance.GetManager<EffectManager>();
         private CameraManager Camera => ProjectManager.Instance.GetManager<CameraManager>();
 
+        public float HandIkWeight;
+
 #if UNITY_EDITOR
         private bool _isOnSkill1Debug;
 #endif // UNITY_EDITOR
@@ -303,6 +305,21 @@ namespace GanShin.Content.Creature
             _isOnSkill1Debug = true;
             await UniTask.Delay(TimeSpan.FromSeconds(duration));
             _isOnSkill1Debug = false;
+        }
+
+        [SerializeField] private Transform rightHandTarget;
+
+        protected override void LateUpdate()
+        {
+            base.LateUpdate();
+
+            if (rightHandTarget && HandIkWeight > 0.01f)
+            {
+                var rightHand = ObjAnimator.GetBoneTransform(HumanBodyBones.RightHand);
+                var targetPosition = Vector3.Lerp(rightHand.position, rightHandTarget.position, HandIkWeight);
+                var targetRotation = Quaternion.Lerp(rightHand.rotation, rightHandTarget.rotation, HandIkWeight);
+                Fabrik.SetTarget(AvatarIKGoal.RightHand, targetPosition, targetRotation);
+            }
         }
 #endif // UNITY_EDITOR
     }

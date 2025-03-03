@@ -601,6 +601,8 @@ namespace GanShin.Content.Creature
 #region Animation
         private readonly HumanoidFabrik _fabrik = new();
 
+        protected HumanoidFabrik Fabrik => _fabrik;
+
         private struct FootIkSolverData
         {
             public bool       IsDetectGround;
@@ -637,7 +639,7 @@ namespace GanShin.Content.Creature
             _fabrik.Initialize(ObjAnimator);
         }
 
-        private void LateUpdate()
+        protected virtual void LateUpdate()
         {
             if (!enableFeetIk) return;
 
