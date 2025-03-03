@@ -28,12 +28,12 @@ namespace GanShin
             // UpperChest는 인덱스 문제로 사용하지 않음
             // { HumanBodyBones.UpperChest, HumanBodyBones.Chest },
 
-            { HumanBodyBones.LeftShoulder, HumanBodyBones.Chest /* UpperChest */ },
+            // { HumanBodyBones.LeftShoulder, HumanBodyBones.Chest /* UpperChest */ },
             { HumanBodyBones.LeftUpperArm, HumanBodyBones.LeftShoulder },
             { HumanBodyBones.LeftLowerArm, HumanBodyBones.LeftUpperArm },
             { HumanBodyBones.LeftHand, HumanBodyBones.LeftLowerArm },
 
-            { HumanBodyBones.RightShoulder, HumanBodyBones.Chest /* UpperChest */ },
+            // { HumanBodyBones.RightShoulder, HumanBodyBones.Chest /* UpperChest */ },
             { HumanBodyBones.RightUpperArm, HumanBodyBones.RightShoulder },
             { HumanBodyBones.RightLowerArm, HumanBodyBones.RightUpperArm },
             { HumanBodyBones.RightHand, HumanBodyBones.RightLowerArm },

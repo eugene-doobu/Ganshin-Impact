@@ -149,9 +149,9 @@ namespace GanShin.FABRIK
             var targetPosition = GetPositionRootSpace(_target);
             var targetRotation = GetRotationRootSpace(_target);
 
-            var isReachable = (targetPosition - GetPositionRootSpace(_bones[0].Transform)).sqrMagnitude >=
-                              _completeLength * _completeLength;
-            if (!isReachable)
+            var val1 = (targetPosition - GetPositionRootSpace(_bones[0].Transform)).sqrMagnitude;
+            var isReachable = val1 >= _completeLength * _completeLength;
+            if (isReachable)
             {
 	            // just stretch it
 	            var direction = (targetPosition - _positions[0]).normalized;
@@ -245,7 +245,9 @@ namespace GanShin.FABRIK
 			_pole = new GameObject("Pole" + EndEffector.Bone).transform;
 			_pole.SetParent(animator.transform, false);
 
-			var forward = animator.transform.forward;
+			var tr      = animator.transform;
+			var forward = tr.forward;
+			var right   = tr.right;
 			switch (EndEffector.Bone)
 			{
 				case HumanBodyBones.LeftFoot:
@@ -258,11 +260,11 @@ namespace GanShin.FABRIK
 					break;
 				case HumanBodyBones.LeftHand:
 					var leftLowerArm = dictionary[HumanBodyBones.LeftLowerArm];
-					_pole.position = leftLowerArm.Transform.position + forward;
+					_pole.position = leftLowerArm.Transform.position + -right;
 					break;
 				case HumanBodyBones.RightHand:
 					var rightLowerArm = dictionary[HumanBodyBones.RightLowerArm];
-					_pole.position = rightLowerArm.Transform.position + forward;
+					_pole.position = rightLowerArm.Transform.position + right;
 					break;
 			}
 		}
