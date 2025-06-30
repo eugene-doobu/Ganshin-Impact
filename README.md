@@ -9,6 +9,8 @@
 
 ## 플레이
 
+[![Video Label](http://img.youtube.com/vi/2vaQIPE_Z44/0.jpg)](https://youtu.be/2vaQIPE_Z44)
+
 ## 환경
 
 - Unity 2022.1.13f1
