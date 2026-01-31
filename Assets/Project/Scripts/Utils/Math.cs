@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace GanShin
+namespace GanShin.Utils
 {
     public static class MathUtils
     {

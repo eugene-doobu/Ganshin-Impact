@@ -3,7 +3,7 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
 
-namespace GanShin
+namespace GanShin.Utils
 {
     public static class UniTaskHelper
     {

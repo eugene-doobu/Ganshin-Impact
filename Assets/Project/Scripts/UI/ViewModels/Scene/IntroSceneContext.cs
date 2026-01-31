@@ -1,4 +1,5 @@
 using GanShin.SceneManagement;
+using GanShin.Utils;
 using JetBrains.Annotations;
 #if UNITY_EDITOR
 using UnityEditor;

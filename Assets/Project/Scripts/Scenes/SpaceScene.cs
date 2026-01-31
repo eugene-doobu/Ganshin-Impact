@@ -3,6 +3,7 @@
 using GanShin.CameraSystem;
 using GanShin.Resource;
 using GanShin.UI;
+using GanShin.Utils;
 using UnityEngine;
 
 namespace GanShin.SceneManagement

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using Cinemachine;
 using Cysharp.Threading.Tasks;
+using GanShin.Utils;
 using UnityEngine;
 
 namespace GanShin.CameraSystem

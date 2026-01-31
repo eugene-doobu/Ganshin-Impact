@@ -1,4 +1,4 @@
-namespace GanShin
+namespace GanShin.Utils
 {
     // GanDebugger_Actor
     public static partial class GanDebugger

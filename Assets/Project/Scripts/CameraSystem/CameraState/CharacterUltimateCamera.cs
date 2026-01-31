@@ -1,6 +1,7 @@
 #nullable enable
 
 using Cinemachine;
+using GanShin.Utils;
 using JetBrains.Annotations;
 using UnityEngine;
 

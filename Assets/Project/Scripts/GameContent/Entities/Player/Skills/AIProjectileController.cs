@@ -5,6 +5,7 @@ using Cysharp.Threading.Tasks;
 using GanShin.Data;
 using GanShin.Entities.Enemy;
 using GanShin.Entities.Enemy.FieldEnemy;
+using GanShin.Utils;
 using UnityEngine;
 
 namespace GanShin.Entities.Player.Skills

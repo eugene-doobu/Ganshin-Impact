@@ -2,6 +2,7 @@
 
 using System;
 using GanShin.UI.ViewModels.Global;
+using GanShin.Utils;
 using Slash.Unity.DataBind.Core.Data;
 using UnityEngine;
 using UnityEngine.UI;

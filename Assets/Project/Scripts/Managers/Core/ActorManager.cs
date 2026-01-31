@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using GanShin.Utils;
 using JetBrains.Annotations;
 
 namespace GanShin.Entities

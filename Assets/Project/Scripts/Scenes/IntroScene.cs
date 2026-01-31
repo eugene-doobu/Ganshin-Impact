@@ -1,6 +1,7 @@
 using System;
 using Cysharp.Threading.Tasks;
 using GanShin.Resource;
+using GanShin.Utils;
 using Object = UnityEngine.Object;
 
 namespace GanShin.SceneManagement

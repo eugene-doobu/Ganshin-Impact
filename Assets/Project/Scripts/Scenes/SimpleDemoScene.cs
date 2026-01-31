@@ -2,6 +2,7 @@ using Cysharp.Threading.Tasks;
 using GanShin.Dialogue;
 using GanShin.Resource;
 using GanShin.UI;
+using GanShin.Utils;
 using UnityEngine;
 
 namespace GanShin.SceneManagement

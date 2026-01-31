@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using GanShin.Utils;
 
 namespace GanShin.Entities
 {

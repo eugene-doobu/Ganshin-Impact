@@ -8,7 +8,7 @@ using System.Runtime.CompilerServices;
 
 // https://github.com/FyiurAmron/PriorityQueue
 // namespace System.Collections.Generic {
-namespace Utils
+namespace GanShin.Utils
 {
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.

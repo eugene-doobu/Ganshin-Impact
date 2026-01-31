@@ -1,4 +1,4 @@
-﻿namespace GanShin
+﻿namespace GanShin.Utils
 {
     public class Define
     {

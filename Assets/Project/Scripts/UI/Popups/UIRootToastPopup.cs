@@ -4,6 +4,7 @@ using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using GanShin.UI.ViewModels.Global;
+using GanShin.Utils;
 using Slash.Unity.DataBind.Core.Data;
 using UnityEngine;
 using UnityEngine.UI;

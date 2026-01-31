@@ -2,6 +2,7 @@
 using Cysharp.Threading.Tasks;
 using GanShin.Resource;
 using GanShin.UI;
+using GanShin.Utils;
 using JetBrains.Annotations;
 using UnityEngine.SceneManagement;
 using Object = UnityEngine.Object;

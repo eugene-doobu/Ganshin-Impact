@@ -4,6 +4,7 @@ using System;
 using Cinemachine;
 using Cysharp.Threading.Tasks;
 using GanShin.Data;
+using GanShin.Utils;
 using GanShin.VFX;
 using UnityEngine;
 

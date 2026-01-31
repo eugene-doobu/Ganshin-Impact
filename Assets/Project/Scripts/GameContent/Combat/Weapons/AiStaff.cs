@@ -1,8 +1,9 @@
 #nullable enable
 
 using GanShin.Data;
-using GanShin.VFX;
 using GanShin.Entities;
+using GanShin.Utils;
+using GanShin.VFX;
 using UnityEngine;
 
 namespace GanShin.Combat.Weapons

@@ -2,6 +2,7 @@
 
 using System;
 using DG.Tweening;
+using GanShin.Utils;
 using JetBrains.Annotations;
 using Slash.Unity.DataBind.Core.Data;
 using Slash.Unity.DataBind.Core.Presentation;

@@ -3,6 +3,7 @@
 using System;
 using System.Runtime.CompilerServices;
 using GanShin.Entities;
+using GanShin.Utils;
 using JetBrains.Annotations;
 
 namespace GanShin.UI.ViewModels.WorldSpace
