@@ -3,7 +3,8 @@
 using System;
 using System.Collections.Generic;
 using GanShin.Resource;
-using GanShin.UI.Space;
+using GanShin.UI.Popups;
+using GanShin.UI.ViewModels.WorldSpace;
 using UnityEngine;
 using Object = UnityEngine.Object;
 

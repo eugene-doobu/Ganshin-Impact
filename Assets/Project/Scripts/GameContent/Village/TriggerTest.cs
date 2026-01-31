@@ -1,5 +1,5 @@
 using GanShin.Entities;
-using GanShin.UI.Space;
+using GanShin.UI.ViewModels.WorldSpace;
 using GanShin.UI;
 using UnityEngine;
 

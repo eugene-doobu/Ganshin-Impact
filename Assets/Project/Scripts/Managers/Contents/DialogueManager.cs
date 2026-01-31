@@ -1,7 +1,8 @@
 #nullable enable
 
 using GanShin.Dialogue;
-using GanShin.UI.Space;
+using GanShin.UI.ViewModels.WorldSpace;
+using GanShin.UI.WorldSpace;
 using JetBrains.Annotations;
 using UnityEngine;
 

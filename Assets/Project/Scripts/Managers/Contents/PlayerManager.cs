@@ -5,7 +5,7 @@ using GanShin.CameraSystem;
 using GanShin.Entities;
 using GanShin.Entities.Player;
 using GanShin.Resource;
-using GanShin.UI.Space;
+using GanShin.UI.ViewModels.WorldSpace;
 using JetBrains.Annotations;
 using UnityEngine;
 using Object = UnityEngine.Object;

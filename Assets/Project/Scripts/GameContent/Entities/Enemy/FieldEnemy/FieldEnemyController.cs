@@ -4,7 +4,7 @@ using System;
 using Cysharp.Threading.Tasks;
 using GanShin.Data;
 using GanShin.Entities.Player;
-using GanShin.UI.Space;
+using GanShin.UI.ViewModels.WorldSpace;
 using GanShin.UI;
 using Slash.Unity.DataBind.Core.Data;
 using UnityEngine;
