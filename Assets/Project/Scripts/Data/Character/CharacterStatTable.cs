@@ -1,10 +1,13 @@
+using GanShin.Data.Core;
 using UnityEngine;
 
 namespace GanShin.Data
 {
-    public class CharacterStatTable : ScriptableObject
+    public class CharacterStatTable : ScriptableObject, IStatTable
     {
         [Header("Common")] public float hp = 100f;
+
+        public float Hp => hp;
 
         public float baseSkillCoolTime           = 10f;
         public float baseSkill2CoolTime           = 10f;
