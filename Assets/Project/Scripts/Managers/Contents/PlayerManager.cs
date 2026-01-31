@@ -2,7 +2,8 @@
 
 using System;
 using GanShin.CameraSystem;
-using GanShin.Content.Creature;
+using GanShin.Entities;
+using GanShin.Entities.Player;
 using GanShin.Resource;
 using GanShin.UI.Space;
 using JetBrains.Annotations;

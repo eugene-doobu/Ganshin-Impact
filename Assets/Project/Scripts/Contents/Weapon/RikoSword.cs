@@ -1,6 +1,7 @@
 using Cinemachine;
 using GanShin.Data;
 using GanShin.Effect;
+using GanShin.Entities;
 using GanShin.Sound;
 using UnityEngine;
 

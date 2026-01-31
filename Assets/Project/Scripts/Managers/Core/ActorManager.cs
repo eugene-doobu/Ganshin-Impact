@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 
-namespace GanShin.GanObject
+namespace GanShin.Entities
 {
     [UsedImplicitly]
     public class ActorManager : ManagerBase

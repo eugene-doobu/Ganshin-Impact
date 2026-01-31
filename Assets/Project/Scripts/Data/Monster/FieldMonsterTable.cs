@@ -1,4 +1,4 @@
-using GanShin.Content.Creature.Monster;
+using GanShin.Entities.Enemy.FieldEnemy;
 using UnityEngine;
 
 namespace GanShin.Data
@@ -6,7 +6,7 @@ namespace GanShin.Data
     [CreateAssetMenu(menuName = "DataTable/FieldMonster")]
     public class FieldMonsterTable : MonsterTable
     {
-        [Header("FieldMonster")] public eFieldMonsterType monsterType = eFieldMonsterType.DEFAULT;
+        [Header("FieldMonster")] public eFieldEnemyType monsterType = eFieldEnemyType.DEFAULT;
 
         public float monsterHeight        = 1f;
         public float destroyDelay         = 5f;

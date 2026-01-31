@@ -2,7 +2,7 @@
 
 using System;
 using System.Runtime.CompilerServices;
-using GanShin.GanObject;
+using GanShin.Entities;
 using JetBrains.Annotations;
 
 namespace GanShin.UI.Space

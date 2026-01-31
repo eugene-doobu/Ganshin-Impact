@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using GanShin.CameraSystem;
-using GanShin.GanObject;
+using GanShin.Entities;
 using GanShin.UI.Space;
 using UnityEngine;
 

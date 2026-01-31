@@ -1,5 +1,5 @@
-using GanShin.Content.Creature.Monster;
-using GanShin.GanObject;
+using GanShin.Entities;
+using GanShin.Entities.Enemy.FieldEnemy;
 using JetBrains.Annotations;
 
 namespace GanShin.UI.Space
@@ -9,7 +9,7 @@ namespace GanShin.UI.Space
     {
         protected override void AddContext(Actor actor)
         {
-            if (actor is not FieldMonsterController)
+            if (actor is not FieldEnemyController)
                 return;
 
             Add(actor.Id, new FieldMonsterContext());

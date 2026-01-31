@@ -2,6 +2,7 @@
 
 using GanShin.Data;
 using GanShin.Effect;
+using GanShin.Entities;
 using UnityEngine;
 
 namespace GanShin.Content.Weapon

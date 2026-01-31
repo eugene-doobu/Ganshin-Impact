@@ -1,4 +1,4 @@
-using GanShin.GanObject;
+using GanShin.Entities;
 using GanShin.Village.Base;
 using UnityEngine;
 

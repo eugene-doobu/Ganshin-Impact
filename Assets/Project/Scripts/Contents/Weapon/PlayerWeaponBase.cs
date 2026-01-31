@@ -1,4 +1,5 @@
-using GanShin.Content.Creature;
+using GanShin.Entities;
+using GanShin.Entities.Player;
 using UnityEngine;
 
 namespace GanShin.Content.Weapon
