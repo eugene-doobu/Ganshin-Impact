@@ -17,7 +17,7 @@ namespace GanShin.Content.Creature
 
         protected override void Awake()
         {
-            PlayerType = Define.ePlayerAvatar.RIKO;
+            PlayerType = ePlayerAvatar.RIKO;
             
             base.Awake();
 

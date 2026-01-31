@@ -13,7 +13,7 @@ namespace GanShin.UI
         [UsedImplicitly]
         public void OnClickStart()
         {
-            SceneManager?.LoadScene(Define.eScene.SIMPLE_DEMO);
+            SceneManager?.LoadScene(eScene.SIMPLE_DEMO);
         }
 
         [UsedImplicitly]

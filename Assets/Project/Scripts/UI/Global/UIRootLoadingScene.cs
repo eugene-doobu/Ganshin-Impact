@@ -33,7 +33,7 @@ namespace GanShin.UI
                 _tips                 = loadingSetting.tips;
                 _progressSmoothFactor = loadingSetting.progressSmoothFactor;
             }
-            
+
             return new LoadingSceneDataContext();
         }
 

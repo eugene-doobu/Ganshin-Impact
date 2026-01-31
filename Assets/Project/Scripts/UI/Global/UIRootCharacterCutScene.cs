@@ -19,20 +19,20 @@ namespace GanShin.UI
         [SerializeField] private RectTransform aiRoot;
         [SerializeField] private RectTransform muscleCatRoot;
 
-        public void OnCharacterCutScene(Define.ePlayerAvatar avatar)
+        public void OnCharacterCutScene(ePlayerAvatar avatar)
         {
             gameObject.SetActive(true);
 
             RectTransform target = null;
             switch (avatar)
             {
-                case Define.ePlayerAvatar.RIKO:
+                case ePlayerAvatar.RIKO:
                     target = rikoRoot;
                     break;
-                case Define.ePlayerAvatar.AI:
+                case ePlayerAvatar.AI:
                     target = aiRoot;
                     break;
-                case Define.ePlayerAvatar.MUSCLE_CAT:
+                case ePlayerAvatar.MUSCLE_CAT:
                     target = muscleCatRoot;
                     break;
             }

@@ -149,7 +149,7 @@ namespace GanShin.Content.Creature
         /// </summary>
         public bool IsCantToIdleAnimation { get; set; }
 
-        protected Define.ePlayerAvatar PlayerType { get; set; }
+        protected ePlayerAvatar PlayerType { get; set; }
 
 #endregion Properties
 
@@ -262,7 +262,7 @@ namespace GanShin.Content.Creature
 
         protected void ShowCutScene()
         {
-            if (PlayerType == Define.ePlayerAvatar.NONE)
+            if (PlayerType == ePlayerAvatar.NONE)
             {
                 GanDebugger.ActorLogWarning("PlayerType is NONE");
                 return;
@@ -388,7 +388,7 @@ namespace GanShin.Content.Creature
             Collider[] monsterColliders, Action<Collider> monsterCollider)
         {
             var len = Physics.OverlapSphereNonAlloc(attackPosition, attackRadius, monsterColliders,
-                                                    Define.GetLayerMask(Define.eLayer.MONSTER));
+                                                    eLayer.MONSTER.GetLayerMask());
             for (var i = 0; i < len; ++i)
             {
                 var monster = monsterColliders[i].GetComponent<MonsterController>();
@@ -409,7 +409,7 @@ namespace GanShin.Content.Creature
             var len = Physics.OverlapCapsuleNonAlloc(attackPosition + attackDir * (attackHeight * 0.5f - attackRadius),
                                                      attackPosition - attackDir * (attackHeight * 0.5f - attackRadius),
                                                      attackRadius, monsterColliders,
-                                                     Define.GetLayerMask(Define.eLayer.MONSTER));
+                                                     eLayer.MONSTER.GetLayerMask());
             for (var i = 0; i < len; ++i)
             {
                 var monster = monsterColliders[i].GetComponent<MonsterController>();

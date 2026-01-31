@@ -9,7 +9,7 @@ namespace GanShin.SceneManagement
 {
     public class SimpleDemoScene : SpaceScene
     {
-        [SerializeField] private Define.ePlayerAvatar playerAvatar;
+        [SerializeField] private ePlayerAvatar playerAvatar;
 
         [SerializeField] private Vector3 startPosition;
 
@@ -66,7 +66,7 @@ namespace GanShin.SceneManagement
         private void ProcessCommonDebugInput()
         {
             if (Input.GetKeyDown("]"))
-                SceneManager.LoadScene(Define.eScene.SIMPLE_DEMO).Forget();
+                SceneManager.LoadScene(eScene.SIMPLE_DEMO).Forget();
 
             if (Input.GetKeyDown("["))
             {
@@ -93,13 +93,13 @@ namespace GanShin.SceneManagement
         private void ProcessCharacterChangeDebugInput()
         {
             if (Input.GetKeyDown("1"))
-                PlayerManager.SetCurrentPlayer(Define.ePlayerAvatar.RIKO);
+                PlayerManager.SetCurrentPlayer(ePlayerAvatar.RIKO);
 
             if (Input.GetKeyDown("2"))
-                PlayerManager.SetCurrentPlayer(Define.ePlayerAvatar.AI);
+                PlayerManager.SetCurrentPlayer(ePlayerAvatar.AI);
 
             if (Input.GetKeyDown("3"))
-                PlayerManager.SetCurrentPlayer(Define.ePlayerAvatar.MUSCLE_CAT);
+                PlayerManager.SetCurrentPlayer(ePlayerAvatar.MUSCLE_CAT);
         }
 
         private void ProcessGlobalUIDebugInput()

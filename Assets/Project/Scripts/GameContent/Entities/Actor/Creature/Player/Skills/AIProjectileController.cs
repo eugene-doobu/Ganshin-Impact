@@ -52,7 +52,7 @@ namespace GanShin
             
             base.Awake();
             
-            var player = ProjectManager.Instance.GetManager<PlayerManager>()?.GetPlayer(Define.ePlayerAvatar.AI);
+            var player = ProjectManager.Instance.GetManager<PlayerManager>()?.GetPlayer(ePlayerAvatar.AI);
             if (player == null)
             {
                 GanDebugger.ActorLogError("Failed to get player");
@@ -70,7 +70,7 @@ namespace GanShin
 
         protected override void Initialize()
         {
-            var player = ProjectManager.Instance.GetManager<PlayerManager>()?.GetPlayer(Define.ePlayerAvatar.AI);
+            var player = ProjectManager.Instance.GetManager<PlayerManager>()?.GetPlayer(ePlayerAvatar.AI);
             if (player == null)
             {
                 GanDebugger.ActorLogError("Failed to get player");
@@ -97,7 +97,7 @@ namespace GanShin
             
             _tr.position += _direction * _stat.aiProjectileSpeed * Time.deltaTime;
             
-            var len = Physics.OverlapSphereNonAlloc(transform.position, _stat.aiProjectileDetectRadius, _monsterColliders, Define.GetLayerMask(Define.eLayer.MONSTER));
+            var len = Physics.OverlapSphereNonAlloc(transform.position, _stat.aiProjectileDetectRadius, _monsterColliders, eLayer.MONSTER.GetLayerMask());
             for (var i = 0; i < len; i++)
             {
                 // TODO: FieldMonsterController가 아닌 MonsterController로 변경
@@ -119,7 +119,7 @@ namespace GanShin
         {	
             if (_stat == null) return;
 
-            var layerMask = Define.GetLayerMask(Define.eLayer.GROUND) | Define.GetLayerMask(Define.eLayer.MONSTER) | Define.GetLayerMask(Define.eLayer.ENVIRONMENT);
+            var layerMask = eLayer.GROUND.GetLayerMask() | eLayer.MONSTER.GetLayerMask() | eLayer.ENVIRONMENT.GetLayerMask();
             var len = Physics.OverlapSphereNonAlloc(transform.position, _stat.aiProjectileRadius, _monsterColliders, layerMask);
             if (len <= 0) 
                 return;
@@ -154,7 +154,7 @@ namespace GanShin
 
             if (_stat != null)
             {
-                var len = Physics.OverlapSphereNonAlloc(transform.position, _stat.aiProjectileRadius, _monsterColliders, Define.GetLayerMask(Define.eLayer.MONSTER));
+                var len = Physics.OverlapSphereNonAlloc(transform.position, _stat.aiProjectileRadius, _monsterColliders, eLayer.MONSTER.GetLayerMask());
                 for (var i = 0; i < len; i++)
                 {
                     var monster = _monsterColliders[i].GetComponent<MonsterController>();

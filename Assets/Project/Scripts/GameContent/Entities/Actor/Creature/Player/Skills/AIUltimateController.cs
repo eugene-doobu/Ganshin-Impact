@@ -34,7 +34,7 @@ namespace GanShin.GanObject
 
         protected override void Initialize()
         {
-            var player = ProjectManager.Instance.GetManager<PlayerManager>()?.GetPlayer(Define.ePlayerAvatar.AI);
+            var player = ProjectManager.Instance.GetManager<PlayerManager>()?.GetPlayer(ePlayerAvatar.AI);
             if (player == null)
             {
                 GanDebugger.ActorLogError("Failed to get player");

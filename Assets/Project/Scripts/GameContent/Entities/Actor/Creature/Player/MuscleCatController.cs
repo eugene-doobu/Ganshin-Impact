@@ -35,7 +35,7 @@ namespace GanShin.Content.Creature
         
         protected override void Awake()
         {
-            PlayerType = Define.ePlayerAvatar.MUSCLE_CAT;
+            PlayerType = ePlayerAvatar.MUSCLE_CAT;
             
             base.Awake();
 

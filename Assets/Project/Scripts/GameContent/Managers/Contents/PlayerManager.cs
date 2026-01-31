@@ -40,7 +40,7 @@ namespace GanShin
                 _muscleCat = muscleCatObject.GetComponent<MuscleCatController>()!;
         }
 
-        public PlayerController? SetCurrentPlayer(Define.ePlayerAvatar avatar)
+        public PlayerController? SetCurrentPlayer(ePlayerAvatar avatar)
         {
             if (_currentAvatar == avatar)
             {
@@ -88,7 +88,7 @@ namespace GanShin
             }
         }
 
-        private PlayerController? ActivePlayerContext(Define.ePlayerAvatar avatar, bool value = true)
+        private PlayerController? ActivePlayerContext(ePlayerAvatar avatar, bool value = true)
         {
             var player = GetPlayer(avatar);
             if (player == null) return null;
@@ -100,17 +100,17 @@ namespace GanShin
 
             switch (avatar)
             {
-                case Define.ePlayerAvatar.RIKO:
+                case ePlayerAvatar.RIKO:
                     if (_avatarContextBundle.RikoHpBarContext == null) return player;
                     _playerContext.IsRikoActive                    = !isDead && value;
                     _avatarContextBundle.RikoHpBarContext.IsActive = value;
                     break;
-                case Define.ePlayerAvatar.AI:
+                case ePlayerAvatar.AI:
                     if (_avatarContextBundle.AIHpBarContext == null) return player;
                     _playerContext.IsAiActive                    = !isDead && value;
                     _avatarContextBundle.AIHpBarContext.IsActive = value;
                     break;
-                case Define.ePlayerAvatar.MUSCLE_CAT:
+                case ePlayerAvatar.MUSCLE_CAT:
                     if (_avatarContextBundle.MuscleCatHpBarContext == null) return player;
                     _playerContext.IsMuscleCatActive                    = !isDead && value;
                     _avatarContextBundle.MuscleCatHpBarContext.IsActive = value;
@@ -120,31 +120,31 @@ namespace GanShin
             return player;
         }
 
-        public PlayerController? GetPlayer(Define.ePlayerAvatar avatar)
+        public PlayerController? GetPlayer(ePlayerAvatar avatar)
         {
             // TODO: 캐릭터 변경 로직으로 변경
             switch (avatar)
             {
-                case Define.ePlayerAvatar.RIKO:
+                case ePlayerAvatar.RIKO:
                     return _riko;
-                case Define.ePlayerAvatar.AI:
+                case ePlayerAvatar.AI:
                     return _ai;
-                case Define.ePlayerAvatar.MUSCLE_CAT:
+                case ePlayerAvatar.MUSCLE_CAT:
                     return _muscleCat;
                 default:
                     return null;
             }
         }
 
-        public PlayerAvatarContext? GetAvatarContext(Define.ePlayerAvatar avatar)
+        public PlayerAvatarContext? GetAvatarContext(ePlayerAvatar avatar)
         {
             switch (avatar)
             {
-                case Define.ePlayerAvatar.RIKO:
+                case ePlayerAvatar.RIKO:
                     return _avatarContextBundle.RikoHpBarContext;
-                case Define.ePlayerAvatar.AI:
+                case ePlayerAvatar.AI:
                     return _avatarContextBundle.AIHpBarContext;
-                case Define.ePlayerAvatar.MUSCLE_CAT:
+                case ePlayerAvatar.MUSCLE_CAT:
                     return _avatarContextBundle.MuscleCatHpBarContext;
                 default:
                     return null;
@@ -190,7 +190,7 @@ namespace GanShin
             get
             {
                 if (CurrentPlayer == null) return null;
-                return _currentAvatar == Define.ePlayerAvatar.NONE ? null : CurrentPlayer!.transform;
+                return _currentAvatar == ePlayerAvatar.NONE ? null : CurrentPlayer!.transform;
             }
         }
 
@@ -200,9 +200,9 @@ namespace GanShin
             {
                 return _currentAvatar switch
                 {
-                    Define.ePlayerAvatar.RIKO       => _riko,
-                    Define.ePlayerAvatar.AI         => _ai,
-                    Define.ePlayerAvatar.MUSCLE_CAT => _muscleCat,
+                    ePlayerAvatar.RIKO       => _riko,
+                    ePlayerAvatar.AI         => _ai,
+                    ePlayerAvatar.MUSCLE_CAT => _muscleCat,
                     _                               => null
                 };
             }
@@ -218,7 +218,7 @@ namespace GanShin
 
         private bool _isChargingStamina = true;
 
-        private Define.ePlayerAvatar _currentAvatar = Define.ePlayerAvatar.NONE;
+        private ePlayerAvatar _currentAvatar = ePlayerAvatar.NONE;
 #endregion Fields
 
 #region Event

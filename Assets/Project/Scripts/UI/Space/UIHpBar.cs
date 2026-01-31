@@ -31,11 +31,11 @@ namespace GanShin.UI.Space
             switch (target)
             {
                 case eHpTarget.RIKO:
-                    return playerManager?.GetAvatarContext(Define.ePlayerAvatar.RIKO);
+                    return playerManager?.GetAvatarContext(ePlayerAvatar.RIKO);
                 case eHpTarget.AI:
-                    return playerManager?.GetAvatarContext(Define.ePlayerAvatar.AI);
+                    return playerManager?.GetAvatarContext(ePlayerAvatar.AI);
                 case eHpTarget.MUSCLE_CAT:
-                    return playerManager?.GetAvatarContext(Define.ePlayerAvatar.MUSCLE_CAT);
+                    return playerManager?.GetAvatarContext(ePlayerAvatar.MUSCLE_CAT);
                 case eHpTarget.OBJECT:
                     if (owner == null)
                     {

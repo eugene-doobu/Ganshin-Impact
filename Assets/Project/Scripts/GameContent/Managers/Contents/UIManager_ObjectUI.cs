@@ -16,7 +16,7 @@ namespace GanShin.UI
         private readonly List<long> _nearByObjectIds = new();
 
         private readonly Dictionary<long, Actor> _nearByObjects = new();
-        
+
         private CancellationTokenSource? _cancellationToken;
 
         private FieldMonsterManagerContext? _fieldMonsterManagerContext;
@@ -30,8 +30,8 @@ namespace GanShin.UI
         public void AddNearByObject(Actor actor)
         {
             _nearByObjects.TryAdd(actor.Id, actor);
-        }	
-		
+        }
+
         public void RemoveNearByObject(Actor actor)
         {
             _nearByObjects.Remove(actor.Id);
@@ -79,11 +79,11 @@ namespace GanShin.UI
             HudDistanceChecker(_cancellationToken).Forget();
 
             var actorManagerContext = GetOrAddContext<FieldMonsterManagerContext>();
-            if (actorManagerContext != null)
-            {
-                _fieldMonsterManagerContext = actorManagerContext;
-                actorManagerContext.Enable  = true;
-            }
+            if (actorManagerContext == null)
+                return;
+
+            _fieldMonsterManagerContext = actorManagerContext;
+            actorManagerContext.Enable  = true;
         }
 
         public void DisableControlObjectUI()
@@ -93,7 +93,7 @@ namespace GanShin.UI
                 _fieldMonsterManagerContext.Dispose();
                 _fieldMonsterManagerContext = null;
             }
-            
+
             _nearByObjects.Clear();
             _nearByObjectIds.Clear();
 

@@ -3,18 +3,19 @@
 using System;
 using Cysharp.Threading.Tasks;
 using GanShin.Content.Creature;
+using GanShin.Content.Creature.Monster;
 using GanShin.Data;
 using UnityEngine;
 
 namespace GanShin.GanObject
 {
-    public class AiSkill2Controller : SkillObject
+    public class AISkill1Controller : SkillObject
     {
-        private readonly Collider[] _playerColliders = new Collider[3];
+        private readonly Collider[] _monsterColliders = new Collider[20];
         
         private AiStatTable? _stat;
         
-        private float _healCooldown;
+        private float _damageCooldown;
 
         public override CreatureObject Owner
         {
@@ -43,26 +44,26 @@ namespace GanShin.GanObject
             
             if (_stat == null) return;
             
-            _healCooldown = Mathf.Clamp(_healCooldown - Time.deltaTime, 0, _stat.skill2HealDelay);
+            _damageCooldown = Mathf.Clamp(_damageCooldown - Time.deltaTime, 0, _stat.skill1DamageDelay);
             
-            if (_healCooldown > 0) 
+            if (_damageCooldown > 0) 
                 return;
             
-            _healCooldown += _stat.skill2HealDelay;
-            var len = Physics.OverlapSphereNonAlloc(transform.position, _stat.skill2Radius, _playerColliders, Define.GetLayerMask(Define.eLayer.CHARACTER));
+            _damageCooldown += _stat.skill1DamageDelay;
+            var len = Physics.OverlapSphereNonAlloc(transform.position, _stat.skill1Radius, _monsterColliders, eLayer.MONSTER.GetLayerMask());
             for (var i = 0; i < len; i++)
             {
-                var player = _playerColliders[i].GetComponent<PlayerController>();
-                if (player == null)
+                var monster = _monsterColliders[i].GetComponent<MonsterController>();
+                if (monster == null)
                     continue;
                 
-                player.OnHealed(_stat.skill2HealAmount);
+                monster.OnDamaged(_stat.skill1Damage);
             }
         }
 
         protected override void Initialize()
         {
-            var player = ProjectManager.Instance.GetManager<PlayerManager>()?.GetPlayer(Define.ePlayerAvatar.AI);
+            var player = ProjectManager.Instance.GetManager<PlayerManager>()?.GetPlayer(ePlayerAvatar.AI);
             if (player == null)
             {
                 GanDebugger.ActorLogError("Failed to get player");
@@ -78,9 +79,13 @@ namespace GanShin.GanObject
                 return;
             }
             
-            var tr       = transform;
-            var playerTr = player.transform;
-            tr.position = playerTr.position + Vector3.up * _stat.skill2YPositionOffset;
+            var tr        = transform;
+            var playerTr  = player.transform;
+            var playerPos = playerTr.position;
+            var pos       = playerPos + playerTr.right * _stat.skill1PositionOffset.x;
+            pos    += playerTr.up * _stat.skill1PositionOffset.y;
+            pos    += playerTr.forward * _stat.skill1PositionOffset.z;
+            tr.position = pos;
             tr.rotation = playerTr.rotation;
 
             DestroySelf().Forget();
@@ -91,7 +96,7 @@ namespace GanShin.GanObject
             if (_stat == null)
                 return;
             
-            await UniTask.Delay(TimeSpan.FromSeconds(_stat.skill2Duration));
+            await UniTask.Delay(TimeSpan.FromSeconds(_stat.skill1Duration));
             
             Destroy(gameObject);
         }
@@ -102,7 +107,7 @@ namespace GanShin.GanObject
             if (_stat == null)
                 return;
             
-            Gizmos.DrawWireSphere(transform.position, _stat.skill2Radius);
+            Gizmos.DrawWireSphere(transform.position, _stat.skill1Radius);
         }
 #endif // UNITY_EDITOR
     }

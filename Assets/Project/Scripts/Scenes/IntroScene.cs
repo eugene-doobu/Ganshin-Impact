@@ -25,7 +25,7 @@ namespace GanShin.SceneManagement
                 return;
             }
 
-            if (scene.ESceneType != Define.eScene.INTRO)
+            if (scene.ESceneType != eScene.INTRO)
                 GanDebugger.LogWarning("Current logical scene is not IntroScene");
         }
 

@@ -21,7 +21,7 @@ namespace GanShin.Content.Creature
         
         protected override void Awake()
         {
-            PlayerType = Define.ePlayerAvatar.AI;
+            PlayerType = ePlayerAvatar.AI;
             
             base.Awake();
 
@@ -179,7 +179,7 @@ namespace GanShin.Content.Creature
 
         protected override void SpecialAction()
         {
-            var len = Physics.OverlapSphereNonAlloc(transform.position, _statTable.aiDetectMonsterRadius, _monsterColliders, Define.GetLayerMask(Define.eLayer.MONSTER));
+            var len = Physics.OverlapSphereNonAlloc(transform.position, _statTable.aiDetectMonsterRadius, _monsterColliders, eLayer.MONSTER.GetLayerMask());
             for (var i = 0; i < len; i++)
             {
                 var monster = _monsterColliders[i].GetComponent<MonsterController>();

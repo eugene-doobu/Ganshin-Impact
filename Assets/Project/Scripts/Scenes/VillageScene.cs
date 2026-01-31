@@ -7,7 +7,7 @@ namespace GanShin.SceneManagement
 {
     public class VillageScene : SpaceScene
     {
-        [SerializeField] private Define.ePlayerAvatar playerAvatar;
+        [SerializeField] private ePlayerAvatar playerAvatar;
 
         [SerializeField] private Vector3        startPosition;
         private readonly         PlayerManager  _playerManager = ProjectManager.Instance.GetManager<PlayerManager>();
@@ -17,7 +17,7 @@ namespace GanShin.SceneManagement
         protected override void Initialize()
         {
             base.Initialize();
-            if (_sceneManager.ESceneType != Define.eScene.VILLAGE)
+            if (_sceneManager.ESceneType != eScene.VILLAGE)
                 GanDebugger.LogWarning("Current logical scene is not VillageScene");
 
             var player = _playerManager.SetCurrentPlayer(playerAvatar);

@@ -346,12 +346,12 @@ namespace GanShin.Content.Creature.Monster
             var tr       = transform;
             var position = tr.position + tr.forward * attackForwardDistance;
             var len = Physics.OverlapSphereNonAlloc(position, attackRadius, CharacterCollider,
-                                                    Define.GetLayerMask(Define.eLayer.CHARACTER));
+                                                    eLayer.CHARACTER.GetLayerMask());
             for (var i = 0; i < len; ++i)
             {
                 var player = CharacterCollider[i].GetComponent<PlayerController>();
                 if (ReferenceEquals(player, null)) continue;
-                if (!player.CompareTag(Define.Tag.Player)) continue;
+                if (!player.CompareTag(Tag.Player)) continue;
 
                 player.OnDamaged(table.attackDamage);
             }

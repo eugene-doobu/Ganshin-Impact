@@ -23,10 +23,10 @@ namespace GanShin.SceneManagement
 
         private UIManager UIManager => ProjectManager.Instance.GetManager<UIManager>();
 
-        public Define.eScene ESceneType { get; private set; } = Define.eScene.INTRO;
+        public eScene ESceneType { get; private set; } = eScene.INTRO;
 
         private BaseScene _currentScene;
-        
+
         public override void Initialize()
         {
             base.Initialize();
@@ -34,19 +34,19 @@ namespace GanShin.SceneManagement
             if (loadingSetting != null)
                 _changeSceneDelay = loadingSetting.changeSceneDelay;
         }
-        
+
         public override void PostInitialize()
         {
             base.PostInitialize();
             _currentScene = Object.FindObjectOfType<BaseScene>();
         }
 
-        public async UniTask LoadScene(Define.eScene type)
+        public async UniTask LoadScene(eScene type)
         {
             UIManager.SetLoadingSceneUiActive(true);
             ESceneType = type;
             ClearScene();
-            await SceneManager.LoadSceneAsync(GetSceneName(Define.eScene.LOADING_SCENE)).ToUniTask();
+            await SceneManager.LoadSceneAsync(GetSceneName(eScene.LOADING_SCENE)).ToUniTask();
             await UniTask.Delay(TimeSpan.FromMilliseconds(_changeSceneDelay));
             await SceneManager.LoadSceneAsync(GetSceneName(type))
                 .ToUniTask(Progress.Create<float>(ApplyProgressToLoadingBar));
@@ -63,17 +63,17 @@ namespace GanShin.SceneManagement
         }
 
         // TODO: Addressable로 변경
-        private string GetSceneName(Define.eScene type)
+        private string GetSceneName(eScene type)
         {
             switch (type)
             {
-                case Define.eScene.UNKNOWN:
+                case eScene.UNKNOWN:
                     return string.Empty;
-                case Define.eScene.LOADING_SCENE:
+                case eScene.LOADING_SCENE:
                     return "Project/AddressableAssets/Scenes/LoadingScene";
-                case Define.eScene.INTRO:
+                case eScene.INTRO:
                     return "Project/AddressableAssets/Scenes/IntroScene";
-                case Define.eScene.SIMPLE_DEMO:
+                case eScene.SIMPLE_DEMO:
                     return "Project/Scenes/SimpleDemo";
             }
 

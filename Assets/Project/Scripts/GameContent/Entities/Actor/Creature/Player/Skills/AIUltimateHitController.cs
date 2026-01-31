@@ -36,7 +36,7 @@ namespace GanShin.GanObject
 
         protected override void Initialize()
         {
-            var player = ProjectManager.Instance.GetManager<PlayerManager>()?.GetPlayer(Define.ePlayerAvatar.AI);
+            var player = ProjectManager.Instance.GetManager<PlayerManager>()?.GetPlayer(ePlayerAvatar.AI);
             if (player == null)
             {
                 GanDebugger.ActorLogError("Failed to get player");
@@ -52,7 +52,7 @@ namespace GanShin.GanObject
                 return;
             }
             
-            var len = Physics.OverlapSphereNonAlloc(transform.position, _stat.ultimateHitRadius, _monsterColliders, Define.GetLayerMask(Define.eLayer.MONSTER));
+            var len = Physics.OverlapSphereNonAlloc(transform.position, _stat.ultimateHitRadius, _monsterColliders, eLayer.MONSTER.GetLayerMask());
             for (var i = 0; i < len; i++)
             {
                 var monster = _monsterColliders[i].GetComponent<MonsterController>();
