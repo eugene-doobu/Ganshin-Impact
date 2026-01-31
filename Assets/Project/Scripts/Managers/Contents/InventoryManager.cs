@@ -6,7 +6,7 @@ using GanShin.UI;
 using JetBrains.Annotations;
 using UnityEngine;
 
-namespace GanShin.GameContent.Item
+namespace GanShin.Item
 {
     public enum ConsumableItemType
     {

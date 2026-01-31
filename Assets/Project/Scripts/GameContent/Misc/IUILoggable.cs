@@ -1,6 +1,6 @@
 using GanShin.UI;
 
-namespace GanShin.GameContent.Item
+namespace GanShin.Item
 {
     public interface IUILoggable
     {

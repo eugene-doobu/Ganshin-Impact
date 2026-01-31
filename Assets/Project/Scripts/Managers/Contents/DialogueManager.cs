@@ -1,11 +1,11 @@
 #nullable enable
 
-using GanShin.GameContent.Dialogue;
+using GanShin.Dialogue;
 using GanShin.UI.Space;
 using JetBrains.Annotations;
 using UnityEngine;
 
-namespace GanShin.GameContent.Item
+namespace GanShin.Dialogue
 {
     [UsedImplicitly]
     public class DialogueManager : ManagerBase

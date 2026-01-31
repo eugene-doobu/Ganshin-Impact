@@ -3,7 +3,7 @@ using GanShin.UI.Space;
 using GanShin.UI;
 using UnityEngine;
 
-namespace GanShin.GameContent.Village
+namespace GanShin.Village
 {
     public class TriggerTest : MonoBehaviour, ITriggerEventProvider
     {

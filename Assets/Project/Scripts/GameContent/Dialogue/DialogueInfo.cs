@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace GanShin.GameContent.Dialogue
+namespace GanShin.Dialogue
 {
     public enum ENpcDialogueImage
     {

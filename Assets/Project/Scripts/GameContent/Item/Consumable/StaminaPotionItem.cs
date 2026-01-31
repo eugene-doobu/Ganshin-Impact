@@ -1,4 +1,4 @@
-namespace GanShin.GameContent.Item
+namespace GanShin.Item
 {
     public class StaminaPotionItem : ConsumableItem
     {
