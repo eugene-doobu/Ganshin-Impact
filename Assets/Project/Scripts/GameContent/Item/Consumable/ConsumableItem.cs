@@ -1,4 +1,4 @@
-namespace GanShin.Space.Content
+namespace GanShin.GameContent.Item
 {
     public abstract class ConsumableItem : IUILoggable
     {

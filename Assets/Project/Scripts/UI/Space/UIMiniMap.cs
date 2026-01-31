@@ -1,4 +1,4 @@
-using GanShin.Space.Content;
+using GanShin.GameContent.Item;
 using Slash.Unity.DataBind.Core.Data;
 using UnityEngine;
 using UnityEngine.UI;

@@ -1,11 +1,11 @@
 using Cinemachine;
 using GanShin.Data;
-using GanShin.Effect;
+using GanShin.VFX;
 using GanShin.Entities;
 using GanShin.Sound;
 using UnityEngine;
 
-namespace GanShin.Content.Weapon
+namespace GanShin.Combat.Weapons
 {
     public class RikoSword : PlayerWeaponBase
     {

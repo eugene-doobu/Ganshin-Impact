@@ -1,6 +1,5 @@
 using System.Collections.Generic;
-using GanShin.Village.Base;
-using GanShin.Village.Contents;
+using GanShin.GameContent.Village;
 using Slash.Unity.DataBind.Core.Data;
 using UnityEngine;
 

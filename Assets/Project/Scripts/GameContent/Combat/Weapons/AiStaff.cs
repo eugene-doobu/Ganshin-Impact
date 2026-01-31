@@ -1,11 +1,11 @@
 #nullable enable
 
 using GanShin.Data;
-using GanShin.Effect;
+using GanShin.VFX;
 using GanShin.Entities;
 using UnityEngine;
 
-namespace GanShin.Content.Weapon
+namespace GanShin.Combat.Weapons
 {
     public class AiStaff : PlayerWeaponBase
     {

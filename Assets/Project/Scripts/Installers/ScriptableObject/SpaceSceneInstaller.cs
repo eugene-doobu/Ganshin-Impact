@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using GanShin.Dialogue.Base;
+using GanShin.GameContent.Dialogue;
 using UnityEngine;
 
 namespace GanShin

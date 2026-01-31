@@ -2,7 +2,7 @@ using GanShin.Entities;
 using GanShin.Entities.Player;
 using UnityEngine;
 
-namespace GanShin.Content.Weapon
+namespace GanShin.Combat.Weapons
 {
     public abstract class PlayerWeaponBase : MonoBehaviour
     {

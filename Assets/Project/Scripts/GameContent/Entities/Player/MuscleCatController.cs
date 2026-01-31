@@ -4,7 +4,7 @@ using Cinemachine;
 using Cysharp.Threading.Tasks;
 using GanShin.CameraSystem;
 using GanShin.Data;
-using GanShin.Effect;
+using GanShin.VFX;
 using UnityEngine;
 using Random = UnityEngine.Random;
 

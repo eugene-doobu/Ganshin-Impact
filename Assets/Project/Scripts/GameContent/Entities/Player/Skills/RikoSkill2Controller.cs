@@ -4,7 +4,7 @@ using System;
 using Cinemachine;
 using Cysharp.Threading.Tasks;
 using GanShin.Data;
-using GanShin.Effect;
+using GanShin.VFX;
 using UnityEngine;
 
 namespace GanShin.Entities.Player.Skills

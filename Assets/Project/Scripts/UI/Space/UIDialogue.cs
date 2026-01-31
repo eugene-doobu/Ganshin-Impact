@@ -3,8 +3,8 @@
 using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using GanShin.Dialogue.Base;
-using GanShin.Space.Content;
+using GanShin.GameContent.Dialogue;
+using GanShin.GameContent.Item;
 using GanShin.UI;
 using Slash.Unity.DataBind.Core.Data;
 using UnityEngine;

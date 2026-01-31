@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace GanShin.Effect
+namespace GanShin.VFX
 {
     public enum eEffectType
     {

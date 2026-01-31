@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using GanShin.Dialogue.Base;
+using GanShin.GameContent.Dialogue;
 
-namespace GanShin.Village.Base
+namespace GanShin.GameContent.Village
 {
     public enum ENpcType
     {

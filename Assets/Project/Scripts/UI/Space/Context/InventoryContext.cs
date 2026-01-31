@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using GanShin.Space.Content;
+using GanShin.GameContent.Item;
 using JetBrains.Annotations;
 using Slash.Unity.DataBind.Core.Data;
 

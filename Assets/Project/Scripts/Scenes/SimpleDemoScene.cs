@@ -1,7 +1,7 @@
 using Cysharp.Threading.Tasks;
-using GanShin.Dialogue.Base;
+using GanShin.GameContent.Dialogue;
+using GanShin.GameContent.Item;
 using GanShin.Resource;
-using GanShin.Space.Content;
 using GanShin.UI;
 using UnityEngine;
 

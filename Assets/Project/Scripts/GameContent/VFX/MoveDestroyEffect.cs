@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace GanShin.Effect
+namespace GanShin.VFX
 {
     public class MoveDestroyEffect : MonoBehaviour
     {

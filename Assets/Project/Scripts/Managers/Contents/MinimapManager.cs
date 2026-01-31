@@ -3,7 +3,7 @@
 using JetBrains.Annotations;
 using UnityEngine;
 
-namespace GanShin.Space.Content
+namespace GanShin.GameContent.Item
 {
     [UsedImplicitly]
     public class MinimapManager : ManagerBase

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GanShin.Village.Base
+namespace GanShin.GameContent.Village
 {
     public class VillageSceneInstaller : ScriptableObject
     {

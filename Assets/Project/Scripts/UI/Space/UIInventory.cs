@@ -1,5 +1,5 @@
 using System;
-using GanShin.Space.Content;
+using GanShin.GameContent.Item;
 using Slash.Unity.DataBind.Core.Data;
 using Slash.Unity.DataBind.Core.Presentation;
 using UnityEngine;

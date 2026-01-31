@@ -1,8 +1,7 @@
 using GanShin.Entities;
-using GanShin.Village.Base;
 using UnityEngine;
 
-namespace GanShin.Village.Contents
+namespace GanShin.GameContent.Village
 {
     public class NpcObject : PassiveObject, ITriggerEventProvider
     {

@@ -2,7 +2,7 @@ using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using GanShin.CameraSystem;
-using GanShin.Content.Weapon;
+using GanShin.Combat.Weapons;
 using GanShin.Data;
 using GanShin.Entities.Enemy;
 using GanShin.InputSystem;

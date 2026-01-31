@@ -1,6 +1,6 @@
 #nullable enable
 
-using GanShin.Village.Base;
+using GanShin.GameContent.Village;
 using JetBrains.Annotations;
 
 namespace GanShin.UI.Village
